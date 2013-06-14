@@ -1286,16 +1286,27 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	/* jQuery JavaScript library */
 	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
 
-	/* datetimepicker libs and css */
-	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID) {
+	/* jquery-ui libs and css */
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID || cgi_id == STATUS_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
+
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
+	}
+
+	if (cgi_id == STATUS_CGI_ID) {
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_EFFECT_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_EFFECT_BLIND_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_BUTTON_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, STATUS_FILTER_JS);
+	}
+
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID ) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_SLIDER_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_DATEPICKER_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_addon_path, JQ_UI_TIMEPICKER_JS);
 
-		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_addon_path, JQ_UI_TIMEPICKER_CSS);
 
 		printf("<script type=\"text/javascript\">\n");

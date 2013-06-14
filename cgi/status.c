@@ -6348,12 +6348,6 @@ int passes_host_properties_filter(hoststatus *temp_hoststatus) {
 	if ((host_properties & HOST_PASSIVE_CHECKS_ENABLED) && temp_hoststatus->accept_passive_host_checks == FALSE)
 		return FALSE;
 
-	if ((host_properties & HOST_PASSIVE_CHECK) && temp_hoststatus->check_type == HOST_CHECK_ACTIVE)
-		return FALSE;
-
-	if ((host_properties & HOST_ACTIVE_CHECK) && temp_hoststatus->check_type == HOST_CHECK_PASSIVE)
-		return FALSE;
-
 	if ((host_properties & HOST_HARD_STATE) && temp_hoststatus->state_type == SOFT_STATE)
 		return FALSE;
 
@@ -6421,12 +6415,6 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus) {
 	if ((service_properties & SERVICE_PASSIVE_CHECKS_ENABLED) && temp_servicestatus->accept_passive_service_checks == FALSE)
 		return FALSE;
 
-	if ((service_properties & SERVICE_PASSIVE_CHECK) && temp_servicestatus->check_type == SERVICE_CHECK_ACTIVE)
-		return FALSE;
-
-	if ((service_properties & SERVICE_ACTIVE_CHECK) && temp_servicestatus->check_type == SERVICE_CHECK_PASSIVE)
-		return FALSE;
-
 	if ((service_properties & SERVICE_HARD_STATE) && temp_servicestatus->state_type == SOFT_STATE)
 		return FALSE;
 
@@ -6452,270 +6440,252 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus) {
 
 /* shows service and host filters in use */
 void show_filters(void) {
-	int found = 0;
 
-	/* show filters box if necessary */
-	if (host_properties != 0L || service_properties != 0L || host_status_types != all_host_status_types || service_status_types != all_service_status_types) {
-
-		printf("<table border='1' class='filter' cellspacing='0' cellpadding='0'>\n");
-		printf("<tr><td valign='top' align='left' class='filterTitle'>Display Filters:&nbsp;");
-		printf("<img id='expand_image' src='%s%s' border='0' onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
-		printf("</td></tr>");
-		printf("<tr><td><table id='filters' border='0' cellspacing='2' cellpadding='0' style='display:none;'>\n");
-		printf("<tr><td valign='top' align='left' class='filterName'>Host Status Types:</td>");
-		printf("<td valign='top' align='left' class='filterValue'>");
-		if (host_status_types == all_host_status_types)
-			printf("All");
-		else if (host_status_types == all_host_problems)
-			printf("All problems");
-		else {
-			found = 0;
-			if (host_status_types & HOST_PENDING) {
-				printf(" Pending");
-				found = 1;
-			}
-			if (host_status_types & HOST_UP) {
-				printf("%s Up", (found == 1) ? " |" : "");
-				found = 1;
-			}
-			if (host_status_types & HOST_DOWN) {
-				printf("%s Down", (found == 1) ? " |" : "");
-				found = 1;
-			}
-			if (host_status_types & HOST_UNREACHABLE)
-				printf("%s Unreachable", (found == 1) ? " |" : "");
-		}
-		printf("</td></tr>");
-		printf("<tr><td valign='top' align='left' class='filterName'>Host Properties:</td>");
-		printf("<td valign='top' align='left' class='filterValue'>");
-		if (host_properties == 0)
-			printf("Any");
-		else {
-			found = 0;
-			if (host_properties & HOST_SCHEDULED_DOWNTIME) {
-				printf(" In Scheduled Downtime");
-				found = 1;
-			}
-			if (host_properties & HOST_NO_SCHEDULED_DOWNTIME) {
-				printf("%s Not In Scheduled Downtime", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_STATE_ACKNOWLEDGED) {
-				printf("%s Has Been Acknowledged", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_STATE_UNACKNOWLEDGED) {
-				printf("%s Has Not Been Acknowledged", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_CHECKS_DISABLED) {
-				printf("%s Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_CHECKS_ENABLED) {
-				printf("%s Checks Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_EVENT_HANDLER_DISABLED) {
-				printf("%s Event Handler Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_EVENT_HANDLER_ENABLED) {
-				printf("%s Event Handler Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_FLAP_DETECTION_DISABLED) {
-				printf("%s Flap Detection Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_FLAP_DETECTION_ENABLED) {
-				printf("%s Flap Detection Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_IS_FLAPPING) {
-				printf("%s Is Flapping", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_IS_NOT_FLAPPING) {
-				printf("%s Is Not Flapping", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_NOTIFICATIONS_DISABLED) {
-				printf("%s Notifications Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_NOTIFICATIONS_ENABLED) {
-				printf("%s Notifications Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_PASSIVE_CHECKS_DISABLED) {
-				printf("%s Passive Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_PASSIVE_CHECKS_ENABLED) {
-				printf("%s Passive Checks Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_PASSIVE_CHECK) {
-				printf("%s Passive Checks", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_ACTIVE_CHECK) {
-				printf("%s Active Checks", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_HARD_STATE) {
-				printf("%s In Hard State", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_SOFT_STATE) {
-				printf("%s In Soft State", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_STATE_HANDLED) {
-				printf("%s Problem Handled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (host_properties & HOST_NOT_ALL_CHECKS_DISABLED) {
-				printf("%s Not All Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-		}
-		printf("</td>");
-		printf("</tr>\n");
+	/* don't allow filters for views with special pre defined filters */
+	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
+		return;
 
 
-		printf("<tr><td valign='top' align='left' class='filterName'>Service Status Types:</td>");
-		printf("<td valign='top' align='left' class='filterValue'>");
-		if (service_status_types == all_service_status_types)
-			printf("All");
-		else if (service_status_types == all_service_problems)
-			printf("All Problems");
-		else {
-			found = 0;
-			if (service_status_types & SERVICE_PENDING) {
-				printf(" Pending");
-				found = 1;
-			}
-			if (service_status_types & SERVICE_OK) {
-				printf("%s Ok", (found == 1) ? " |" : "");
-				found = 1;
-			}
-			if (service_status_types & SERVICE_UNKNOWN) {
-				printf("%s Unknown", (found == 1) ? " |" : "");
-				found = 1;
-			}
-			if (service_status_types & SERVICE_WARNING) {
-				printf("%s Warning", (found == 1) ? " |" : "");
-				found = 1;
-			}
-			if (service_status_types & SERVICE_CRITICAL) {
-				printf("%s Critical", (found == 1) ? " |" : "");
-				found = 1;
-			}
-		}
-		printf("</td></tr>");
-		printf("<tr><td valign='top' align='left' class='filterName'>Service Properties:</td>");
-		printf("<td valign='top' align='left' class='filterValue'>");
-		if (service_properties == 0)
-			printf("Any");
-		else {
-			found = 0;
-			if (service_properties & SERVICE_SCHEDULED_DOWNTIME) {
-				printf(" In Scheduled Downtime");
-				found = 1;
-			}
-			if (service_properties & SERVICE_NO_SCHEDULED_DOWNTIME) {
-				printf("%s Not In Scheduled Downtime", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_STATE_ACKNOWLEDGED) {
-				printf("%s Has Been Acknowledged", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_STATE_UNACKNOWLEDGED) {
-				printf("%s Has Not Been Acknowledged", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_CHECKS_DISABLED) {
-				printf("%s Active Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_CHECKS_ENABLED) {
-				printf("%s Active Checks Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_EVENT_HANDLER_DISABLED) {
-				printf("%s Event Handler Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_EVENT_HANDLER_ENABLED) {
-				printf("%s Event Handler Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_FLAP_DETECTION_DISABLED) {
-				printf("%s Flap Detection Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_FLAP_DETECTION_ENABLED) {
-				printf("%s Flap Detection Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_IS_FLAPPING) {
-				printf("%s Is Flapping", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_IS_NOT_FLAPPING) {
-				printf("%s Is Not Flapping", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_NOTIFICATIONS_DISABLED) {
-				printf("%s Notifications Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_NOTIFICATIONS_ENABLED) {
-				printf("%s Notifications Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_PASSIVE_CHECKS_DISABLED) {
-				printf("%s Passive Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_PASSIVE_CHECKS_ENABLED) {
-				printf("%s Passive Checks Enabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_PASSIVE_CHECK) {
-				printf("%s Passive Checks", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_ACTIVE_CHECK) {
-				printf("%s Active Checks", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_HARD_STATE) {
-				printf("%s In Hard State", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_SOFT_STATE) {
-				printf("%s In Soft State", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_STATE_HANDLED) {
-				printf("%s Problem Handled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-			if (service_properties & SERVICE_NOT_ALL_CHECKS_DISABLED) {
-				printf("%s Not All Checks Disabled", (found == 1) ? " &amp;" : "");
-				found = 1;
-			}
-		}
-		printf("</td></tr>");
-		printf("</table>\n");
+	/* set status on properie values */
+	printf("<script language='javascript' type='text/javascript'>\n");
 
-		printf("</td></tr>");
-		printf("</table>\n");
-	}
+	printf("all_host_status_types = %d;\n", all_host_status_types);
+	printf("all_host_problems = %d;\n", all_host_problems);
+
+	printf("all_service_status_types = %d;\n", all_service_status_types);
+	printf("all_service_problems = %d;\n", all_service_problems);
+
+	printf("org_host_status_types = host_status_types = %d;\n", host_status_types);
+	printf("org_host_properties = host_properties = %lu;\n", host_properties);
+
+	printf("org_service_status_types = service_status_types = %d;\n", service_status_types);
+	printf("org_service_properties = service_properties = %lu;\n", service_properties);
+
+	printf("</script>\n");
+
+
+	/* overwrite jQuery-UI button style */
+	printf("<style>.ui-button-text-only .ui-button-text { padding: 0em 1em; width: 5em;} </style>\n");
+
+	printf("<table border='0' cellspacing='2' cellpadding='0'><tr><td>\n");
+	printf("<a href='#' class='filterTitle' onClick=\"return icinga_filter_toggle('display_filters');\">&nbsp;&nbsp;<span title='Click To Modify'>Set Filters</span></a></td>\n");
+	printf("<td><div id='display_filters_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
+
+
+	/* host status filter entry */
+	printf("<table border='0' cellspacing='5' cellpadding='5'>\n");
+	printf("<tr><td valign='top' align='left' class='filterName' nowrap>Host Status Types:</td>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='host_status_types_text_cell' nowrap>\n");
+
+	/* host status type options box */
+	printf("<div id='host_status_types_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
+	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
+	printf("<tr><td align='left' class='filterName'>Pending</td><td><input id='host_status_types_%d' type='checkbox' value='%d'></td></tr>\n", HOST_PENDING, HOST_PENDING);
+	printf("<tr><td align='left' class='filterName'>Up</td><td><input id='host_status_types_%d' type='checkbox' value='%d'></td></tr>\n", HOST_UP, HOST_UP);
+	printf("<tr><td align='left' class='filterName'>Down</td><td><input id='host_status_types_%d' type='checkbox' value='%d'></td></tr>\n", HOST_DOWN, HOST_DOWN);
+	printf("<tr><td align='left' class='filterName'>Unreachable</td><td><input id='host_status_types_%d' type='checkbox' value='%d'></td></tr>\n", HOST_UNREACHABLE, HOST_UNREACHABLE);
+	printf("<tr><td align='center' colspan='2'><button id='apply_button' onClick=\"return icinga_filter_toggle('host_status_types');\">Apply</button></td></tr>\n");
+	printf("</table>\n");
+	printf("</div>\n");
+
+	/* host status filter text */
+	printf("<span id='host_status_types_text' onClick=\"return icinga_filter_toggle('host_status_types');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
+
+
+	/* host propertie filter entry */
+	printf("<tr><td valign='top' align='left' class='filterName' nowrap>Host Properties:</td>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='host_properties_text_cell' nowrap>\n");
+
+	/* host properties options box */
+	printf("<div id='host_properties_box' class='ui-widget-content ui-corner-all' style='display:none;'>");
+	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>In Scheduled Donwtime</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_scheduled_downtime_1' name='filter_hp_scheduled_downtime' type='radio' value='%d'><label for='filter_hp_scheduled_downtime_1'>Yes</label>\n", HOST_SCHEDULED_DOWNTIME);
+	printf("<input id='filter_hp_scheduled_downtime_2' name='filter_hp_scheduled_downtime' type='radio' value='%d'><label for='filter_hp_scheduled_downtime_2'>No</label>\n", HOST_NO_SCHEDULED_DOWNTIME);
+	printf("<input id='filter_hp_scheduled_downtime_3' name='filter_hp_scheduled_downtime' type='radio' value='0' ><label for='filter_hp_scheduled_downtime_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Stat Is Acknowledged</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_acknowledge_1' name='filter_hp_acknowledge' type='radio' value='%d'><label for='filter_hp_acknowledge_1'>Yes</label>\n", HOST_STATE_ACKNOWLEDGED);
+	printf("<input id='filter_hp_acknowledge_2' name='filter_hp_acknowledge' type='radio' value='%d'><label for='filter_hp_acknowledge_2'>No</label>\n", HOST_STATE_UNACKNOWLEDGED);
+	printf("<input id='filter_hp_acknowledge_3' name='filter_hp_acknowledge' type='radio' value='0' ><label for='filter_hp_acknowledge_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Active Checks</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_active_checks_1' name='filter_hp_active_checks' type='radio' value='%d'><label for='filter_hp_active_checks_1'>Enabled</label>\n", HOST_CHECKS_ENABLED);
+	printf("<input id='filter_hp_active_checks_2' name='filter_hp_active_checks' type='radio' value='%d'><label for='filter_hp_active_checks_2'>Disabled</label>\n", HOST_CHECKS_DISABLED);
+	printf("<input id='filter_hp_active_checks_3' name='filter_hp_active_checks' type='radio' value='0' ><label for='filter_hp_active_checks_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Passive Checks</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_passive_checks_1' name='filter_hp_passive_checks' type='radio' value='%d'><label for='filter_hp_passive_checks_1'>Enabled</label>\n", HOST_PASSIVE_CHECKS_ENABLED);
+	printf("<input id='filter_hp_passive_checks_2' name='filter_hp_passive_checks' type='radio' value='%d'><label for='filter_hp_passive_checks_2'>Disabled</label>\n", HOST_PASSIVE_CHECKS_DISABLED);
+	printf("<input id='filter_hp_passive_checks_3' name='filter_hp_passive_checks' type='radio' value='0' ><label for='filter_hp_passive_checks_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Event Handler</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_eventhandler_1' name='filter_hp_eventhandler' type='radio' value='%d'><label for='filter_hp_eventhandler_1'>Enabled</label>\n", HOST_EVENT_HANDLER_ENABLED);
+	printf("<input id='filter_hp_eventhandler_2' name='filter_hp_eventhandler' type='radio' value='%d'><label for='filter_hp_eventhandler_2'>Disabled</label>\n", HOST_EVENT_HANDLER_DISABLED);
+	printf("<input id='filter_hp_eventhandler_3' name='filter_hp_eventhandler' type='radio' value='0' ><label for='filter_hp_eventhandler_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Flap Detection</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_flap_detection_1' name='filter_hp_flap_detection' type='radio' value='%d'><label for='filter_hp_flap_detection_1'>Enabled</label>\n", HOST_FLAP_DETECTION_ENABLED);
+	printf("<input id='filter_hp_flap_detection_2' name='filter_hp_flap_detection' type='radio' value='%d'><label for='filter_hp_flap_detection_2'>Disabled</label>\n", HOST_FLAP_DETECTION_DISABLED);
+	printf("<input id='filter_hp_flap_detection_3' name='filter_hp_flap_detection' type='radio' value='0' ><label for='filter_hp_flap_detection_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Is Flapping</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_is_flapping_1' name='filter_hp_is_flapping' type='radio' value='%d'><label for='filter_hp_is_flapping_1'>Yes</label>\n", HOST_IS_FLAPPING);
+	printf("<input id='filter_hp_is_flapping_2' name='filter_hp_is_flapping' type='radio' value='%d'><label for='filter_hp_is_flapping_2'>No</label>\n", HOST_IS_NOT_FLAPPING);
+	printf("<input id='filter_hp_is_flapping_3' name='filter_hp_is_flapping' type='radio' value='0' ><label for='filter_hp_is_flapping_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Notifications</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_notifications_1' name='filter_hp_notifications' type='radio' value='%d'><label for='filter_hp_notifications_1'>Enabled</label>\n", HOST_NOTIFICATIONS_ENABLED);
+	printf("<input id='filter_hp_notifications_2' name='filter_hp_notifications' type='radio' value='%d'><label for='filter_hp_notifications_2'>Disabled</label>\n", HOST_NOTIFICATIONS_DISABLED);
+	printf("<input id='filter_hp_notifications_3' name='filter_hp_notifications' type='radio' value='0' ><label for='filter_hp_notifications_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>State Type</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_state_type_1' name='filter_hp_state_type' type='radio' value='%d'><label for='filter_hp_state_type_1'>Hard</label>\n", HOST_HARD_STATE);
+	printf("<input id='filter_hp_state_type_2' name='filter_hp_state_type' type='radio' value='%d'><label for='filter_hp_state_type_2'>Soft</label>\n", HOST_SOFT_STATE);
+	printf("<input id='filter_hp_state_type_3' name='filter_hp_state_type' type='radio' value='0' ><label for='filter_hp_state_type_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Host State Handled</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_state_handled_1' name='filter_hp_state_handled' type='radio' value='%d'><label for='filter_hp_state_handled_1'>Yes</label>\n", HOST_STATE_HANDLED);
+	printf("<input id='filter_hp_state_handled_2' name='filter_hp_state_handled' type='radio' value='0' ><label for='filter_hp_state_handled_2'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Not All Checks Disabled</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_not_all_checks_disabled_1' name='filter_hp_not_all_checks_disabled' type='radio' value='%d'><label for='filter_hp_not_all_checks_disabled_1'>Yes</label>\n", HOST_NOT_ALL_CHECKS_DISABLED);
+	printf("<input id='filter_hp_not_all_checks_disabled_2' name='filter_hp_not_all_checks_disabled' type='radio' value='0' ><label for='filter_hp_not_all_checks_disabled_2'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
+
+	printf("<tr><td align='right' colspan='2'><button id='apply_button' onClick=\"return icinga_filter_toggle('host_properties');\">Apply</button></td></tr>\n");
+	printf("</table>\n");
+	printf("</div>\n");
+
+	/* host propertie filter text */
+	printf("<span id='host_properties_text' onClick=\"return icinga_filter_toggle('host_properties');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
+
+
+	/* service status filter entry (only visible if services are displayed) */
+	printf("<tr style='display:%s;'><td valign='top' align='left' class='filterName' nowrap>Service Status Types:</td>\n", (group_style_type == STYLE_HOST_DETAIL) ? "none" : "");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='service_status_types_text_cell' nowrap>\n");
+
+	/* service status type options box */
+	printf("<div id='service_status_types_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
+	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
+	printf("<tr><td align='left' class='filterName'>Pending</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_PENDING, SERVICE_PENDING);
+	printf("<tr><td align='left' class='filterName'>Ok</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_OK, SERVICE_OK);
+	printf("<tr><td align='left' class='filterName'>Warning</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_WARNING, SERVICE_WARNING);
+	printf("<tr><td align='left' class='filterName'>Unknown</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_UNKNOWN, SERVICE_UNKNOWN);
+	printf("<tr><td align='left' class='filterName'>Critical</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_CRITICAL, SERVICE_CRITICAL);
+	printf("<tr><td align='right' colspan='2'><button id='apply_button' onClick=\"return icinga_filter_toggle('service_status_types');\">Apply</button></td></tr>\n");
+	printf("</table>\n");
+	printf("</div>\n");
+
+	/* service status filter text */
+	printf("<span id='service_status_types_text' onClick=\"return icinga_filter_toggle('service_status_types');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
+
+
+	/* service propertie filter entry (only visible if services are displayed) */
+	printf("<tr style='display:%s;'><td valign='top' align='left' class='filterName' nowrap>Service Properties:</td>\n", (group_style_type == STYLE_HOST_DETAIL) ? "none" : "");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='service_properties_text_cell' nowrap>\n");
+
+	/* service properties options box */
+	printf("<div id='service_properties_box' class='ui-widget-content ui-corner-all' style='display:none;'>");
+	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>In Scheduled Donwtime</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_scheduled_downtime_1' name='filter_sp_scheduled_downtime' type='radio' value='%d'><label for='filter_sp_scheduled_downtime_1'>Yes</label>\n", SERVICE_SCHEDULED_DOWNTIME);
+	printf("<input id='filter_sp_scheduled_downtime_2' name='filter_sp_scheduled_downtime' type='radio' value='%d'><label for='filter_sp_scheduled_downtime_2'>No</label>\n", SERVICE_NO_SCHEDULED_DOWNTIME);
+	printf("<input id='filter_sp_scheduled_downtime_3' name='filter_sp_scheduled_downtime' type='radio' value='0' ><label for='filter_sp_scheduled_downtime_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Stat Is Acknowledged</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_acknowledge_1' name='filter_sp_acknowledge' type='radio' value='%d'><label for='filter_sp_acknowledge_1'>Yes</label>\n", SERVICE_STATE_ACKNOWLEDGED);
+	printf("<input id='filter_sp_acknowledge_2' name='filter_sp_acknowledge' type='radio' value='%d'><label for='filter_sp_acknowledge_2'>No</label>\n", SERVICE_STATE_UNACKNOWLEDGED);
+	printf("<input id='filter_sp_acknowledge_3' name='filter_sp_acknowledge' type='radio' value='0' ><label for='filter_sp_acknowledge_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Active Checks</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_active_checks_1' name='filter_sp_active_checks' type='radio' value='%d'><label for='filter_sp_active_checks_1'>Enabled</label>\n", SERVICE_CHECKS_ENABLED);
+	printf("<input id='filter_sp_active_checks_2' name='filter_sp_active_checks' type='radio' value='%d'><label for='filter_sp_active_checks_2'>Disabled</label>\n", SERVICE_CHECKS_DISABLED);
+	printf("<input id='filter_sp_active_checks_3' name='filter_sp_active_checks' type='radio' value='0' ><label for='filter_sp_active_checks_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Passive Checks</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_passive_checks_1' name='filter_sp_passive_checks' type='radio' value='%d'><label for='filter_sp_passive_checks_1'>Enabled</label>\n", SERVICE_PASSIVE_CHECKS_ENABLED);
+	printf("<input id='filter_sp_passive_checks_2' name='filter_sp_passive_checks' type='radio' value='%d'><label for='filter_sp_passive_checks_2'>Disabled</label>\n", SERVICE_PASSIVE_CHECKS_DISABLED);
+	printf("<input id='filter_sp_passive_checks_3' name='filter_sp_passive_checks' type='radio' value='0' ><label for='filter_sp_passive_checks_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Event Handler</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_eventhandler_1' name='filter_sp_eventhandler' type='radio' value='%d'><label for='filter_sp_eventhandler_1'>Enabled</label>\n", SERVICE_EVENT_HANDLER_ENABLED);
+	printf("<input id='filter_sp_eventhandler_2' name='filter_sp_eventhandler' type='radio' value='%d'><label for='filter_sp_eventhandler_2'>Disabled</label>\n", SERVICE_EVENT_HANDLER_DISABLED);
+	printf("<input id='filter_sp_eventhandler_3' name='filter_sp_eventhandler' type='radio' value='0' ><label for='filter_sp_eventhandler_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Flap Detection</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_flap_detection_1' name='filter_sp_flap_detection' type='radio' value='%d'><label for='filter_sp_flap_detection_1'>Enabled</label>\n", SERVICE_FLAP_DETECTION_ENABLED);
+	printf("<input id='filter_sp_flap_detection_2' name='filter_sp_flap_detection' type='radio' value='%d'><label for='filter_sp_flap_detection_2'>Disabled</label>\n", SERVICE_FLAP_DETECTION_DISABLED);
+	printf("<input id='filter_sp_flap_detection_3' name='filter_sp_flap_detection' type='radio' value='0' ><label for='filter_sp_flap_detection_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Is Flapping</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_is_flapping_1' name='filter_sp_is_flapping' type='radio' value='%d'><label for='filter_sp_is_flapping_1'>Yes</label>\n", SERVICE_IS_FLAPPING);
+	printf("<input id='filter_sp_is_flapping_2' name='filter_sp_is_flapping' type='radio' value='%d'><label for='filter_sp_is_flapping_2'>No</label>\n", SERVICE_IS_NOT_FLAPPING);
+	printf("<input id='filter_sp_is_flapping_3' name='filter_sp_is_flapping' type='radio' value='0' ><label for='filter_sp_is_flapping_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Notifications</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_notifications_1' name='filter_sp_notifications' type='radio' value='%d'><label for='filter_sp_notifications_1'>Enabled</label>\n", SERVICE_NOTIFICATIONS_ENABLED);
+	printf("<input id='filter_sp_notifications_2' name='filter_sp_notifications' type='radio' value='%d'><label for='filter_sp_notifications_2'>Disabled</label>\n", SERVICE_NOTIFICATIONS_DISABLED);
+	printf("<input id='filter_sp_notifications_3' name='filter_sp_notifications' type='radio' value='0' ><label for='filter_sp_notifications_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>State Type</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_state_type_1' name='filter_sp_state_type' type='radio' value='%d'><label for='filter_sp_state_type_1'>Hard</label>\n", SERVICE_HARD_STATE);
+	printf("<input id='filter_sp_state_type_2' name='filter_sp_state_type' type='radio' value='%d'><label for='filter_sp_state_type_2'>Soft</label>\n", SERVICE_SOFT_STATE);
+	printf("<input id='filter_sp_state_type_3' name='filter_sp_state_type' type='radio' value='0' ><label for='filter_sp_state_type_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Service State Handled</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_state_handled_1' name='filter_sp_state_handled' type='radio' value='%d'><label for='filter_sp_state_handled_1'>Yes</label>\n", SERVICE_STATE_HANDLED);
+	printf("<input id='filter_sp_state_handled_2' name='filter_sp_state_handled' type='radio' value='0' ><label for='filter_sp_state_handled_2'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Not All Checks Disabled</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_not_all_checks_disabled_1' name='filter_sp_not_all_checks_disabled' type='radio' value='%d'><label for='filter_sp_not_all_checks_disabled_1'>Yes</label>\n", SERVICE_NOT_ALL_CHECKS_DISABLED);
+	printf("<input id='filter_sp_not_all_checks_disabled_2' name='filter_sp_not_all_checks_disabled' type='radio' value='0' ><label for='filter_sp_not_all_checks_disabled_2'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
+
+	printf("<tr><td align='right' colspan='2'><button id='apply_button' onClick=\"return icinga_filter_toggle('service_properties');\">Apply</button></td></tr>\n");
+	printf("</table>\n");
+	printf("</div>\n");
+
+	/* service propertie filter text */
+	printf("<span id='service_properties_text' onClick=\"return icinga_filter_toggle('service_properties');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
+
+	/* submit button */
+	printf("<tr><td align='right' colspan='3'><a href='#' id='submit_button' onClick=\"icinga_apply_new_filters();\">Submit</a></td></tr>\n");
+
+	printf("</table>\n");
+	printf("</div>\n");
+
+	printf("</td></tr></table>\n");
 
 	return;
 }
