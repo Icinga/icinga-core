@@ -889,7 +889,7 @@ void show_filter(void) {
 
 	printf("<table border='0' cellspacing='0' cellpadding='0' width='100%%'>\n");
 	printf("<tr><td valign='top' align='right' style='padding-right:21.5em;'>Filters:&nbsp;&nbsp;");
-	printf("<img id='expand_image' src='%s%s' border='0' onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('display_filter').value = 'true'; document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('display_filter').value = 'false'; document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, (display_filter == TRUE) ? COLLAPSE_ICON : EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+	printf("<img id='expand_image' src='%s%s' border='0' onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('display_filter').value = 'true'; $( '#filters' ).toggle( 'blind', {}, 200 ); document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('display_filter').value = 'false'; $( '#filters' ).toggle( 'blind', {}, 200 ); document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, (display_filter == TRUE) ? COLLAPSE_ICON : EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
 	printf("<input type='hidden' name='display_filter' id='display_filter' value='true'>\n");
 	printf("</td></tr></table>");
 
@@ -908,7 +908,7 @@ void show_filter(void) {
 	printf("<tr><td align='left'>Timeperiod:</td>");
 	printf("<td align='left'>");
 
-	printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { document.getElementById('custtime').style.display = ''; } else { document.getElementById('custtime').style.display = 'none';}\">\n");
+	printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { $( '#custtime' ).toggle( 'blind', {}, 200 ); } else { $( '#custtime' ).toggle( 'blind', {}, 200 );}\">\n");
 	printf("<option value='singleday' %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
 	printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
 	printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");

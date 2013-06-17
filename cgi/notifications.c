@@ -302,7 +302,7 @@ int main(void) {
 		printf("<tr><td align='left'>Timeperiod:</td>");
 		printf("<td align='left'>\n");
 
-		printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { document.getElementById('custtime').style.display = ''; } else { document.getElementById('custtime').style.display = 'none';}\">\n");
+		printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { $( '#custtime' ).toggle( 'blind', {}, 200 ); } else { $( '#custtime' ).toggle( 'blind', {}, 200 ); }\">\n");
 		printf("<option value='singleday' %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
 		printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
 		printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");

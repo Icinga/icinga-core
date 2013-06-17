@@ -40,20 +40,9 @@ function icinga_reload_scroll_position() {
 	/* save current scrolling position */
 	scroll_pos = icinga_get_scroll_position();
 
-	/* if there was none, we just reload */
-	if (scroll_pos < 0) {
-		window.location.href=window.location.href;
-	}
-	/* we are in the middle of the page, save the scroll position to the url, and reload */
-	else {
-		/* remove previous scroll leftovers */
-		url = window.location.href;
-		url_c = url.replace(/[\?&]scroll=(\d+)/,'');
-
-		/* create new querystring and reload */
-		q = url_c.indexOf('?') === -1 ? '?' : '&';
-		window.location.href = url_c + q + 'scroll=' + scroll_pos;
-	}
+	/* if scroll position is zero, remove it from the url and reload
+	   if scroll position is NOT zero, add/update scroll option and reload */
+	window.location.href = icinga_update_url_option(window.location.href, "scroll", (scroll_pos <= 0) ? null : scroll_pos);
 }
 
 /* check if url provided a scroll position, and scroll there */
@@ -72,12 +61,6 @@ function icinga_set_scroll_position() {
 			//document.title = 'icinga_set_scroll_position=' + scroll_pos;
 		}
 	}
-}
-
-
-function icinga_update_text(id,text) {
-	if (document.getElementById(id) != null )
-		document.getElementById(id).innerHTML = text;
 }
 
 function icinga_update_refresh_counter() {

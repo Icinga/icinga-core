@@ -1273,7 +1273,13 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, cgi_css);
 	}
 
-	// javascript refresh
+	/* first: jQuery JavaScript library */
+	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
+
+	/* second: common functions library */
+	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, COMMON_FUNCTIONS_JS);
+
+	/* third: javascript refresh */
 	if (refresh_type == JAVASCRIPT_REFRESH) {
 		printf("<script type=\"text/javascript\">\n");
 		printf("var refresh_rate=%d;\n", refresh_rate);
@@ -1283,10 +1289,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, PAGE_REFRESH_JS);
 	}
 
-	/* jQuery JavaScript library */
-	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
-
-	/* jquery-ui libs and css */
+	/* forth: jquery-ui libs and css */
 	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID || cgi_id == STATUS_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
@@ -1294,9 +1297,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
 	}
 
-	if (cgi_id == STATUS_CGI_ID) {
+	if (cgi_id == STATUS_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_EFFECT_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_EFFECT_BLIND_JS);
+	}
+
+	if (cgi_id == STATUS_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_BUTTON_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, STATUS_FILTER_JS);
 	}
@@ -1345,30 +1351,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\t\t\tts_start = date.substring(0,date.length-3);\n");
 		printf("\t\t\tts_end = parseInt(ts_start,10) + parseInt(86399,10);\n");
 		printf("\t\t\turl = window.location.href;\n");
-		printf("\t\t\toptions = '';\n");
-		printf("\t\t\tnewoptionsArray = new Array();\n");
-		printf("\t\t\tif (url.indexOf('?') === -1) {\n");
-		printf("\t\t\t\tbase_url = url;\n");
-		printf("\t\t\t} else {\n");
-		printf("\t\t\t\tbase_url = url.substring(0,url.indexOf('?'));\n");
-		printf("\t\t\t\toptions = url.substring(url.indexOf('?')+1);\n");
-		printf("\t\t\t\toptionsArray = options.split('&');\n");
-		printf("\t\t\t\tfor (var i=0; i<optionsArray.length; i++) {\n");
-		printf("\t\t\t\t\tswitch (optionsArray[i].substring(0,optionsArray[i].indexOf('='))) {\n");
-		printf("\t\t\t\t\t\tcase 'ts_start':\n");
-		printf("\t\t\t\t\t\tcase 'ts_end':\n");
-		printf("\t\t\t\t\t\tcase 'start':\n");
-		printf("\t\t\t\t\t\tcase 'start_time':\n");
-		printf("\t\t\t\t\t\tcase 'end_time':\n");
-		printf("\t\t\t\t\t\tcase '':\n");
-		printf("\t\t\t\t\t\t\tbreak;\n");
-		printf("\t\t\t\t\t\tdefault:\n");
-		printf("\t\t\t\t\t\t\tnewoptionsArray.push(optionsArray[i]);\n");
-		printf("\t\t\t\t\t}\n");
-		printf("\t\t\t\t}\n");
-		printf("\t\t\t}\n");
-		printf("\t\t\tnewoptionsArray.push('ts_start=' + ts_start, 'ts_end=' + ts_end);\n");
-		printf("\t\t\twindow.location.href = base_url + '?' + newoptionsArray.join('&');\n");
+		printf("\t\t\turl = icinga_update_url_option(url, \"ts_start\", ts_start);\n");
+		printf("\t\t\turl = icinga_update_url_option(url, \"ts_end\", ts_end);\n");
+		printf("\t\t\turl = icinga_update_url_option(url, \"start\", null);\n");
+		printf("\t\t\turl = icinga_update_url_option(url, \"start_time\", null);\n");
+		printf("\t\t\turl = icinga_update_url_option(url, \"end_time\", null);\n");
+		printf("\t\t\twindow.location.href = url;\n");
 		printf("\t\t}\n");
 		printf("\t});\n");
 
