@@ -27,11 +27,13 @@ FIXES
 
 SUPPORT
 * fixed gcc warnings about unused vars and unused return values #3984 - RB
+* classic ui: javascript cleanup and common.lib added #4324 - RB
 
 CHANGES
 * core: multiple neb modules from same bin are copied to tmp with random name (again) #4199
 	** trick dlopen() to register callbacks for every neb module with different instance_name
 	** no need to manually copy binaries around
+
 
 1.9.1 - 22/05/2013
 

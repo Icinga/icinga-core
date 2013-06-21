@@ -112,6 +112,7 @@ extern "C" {
 /**************************** JAVASCRIPT NAMES ******************************/
 
 #define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
+#define COMMON_FUNCTIONS_JS	"common_functions.js"
 #define JQUERY_MAIN_JS		"jquery-1.8.0.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
