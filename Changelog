@@ -22,6 +22,8 @@ FIXES
 * classic ui: fix URL construction issue in icinga_reload_scroll_position() javascript (Karsten Sühring) #4233 - MF
 
 * idoutils: fix mysql: output/perfdata limits cut escaped string leaving '\' at the end (Yannik Charton) #4196 - MF
+* idoutils: bugfixes for socket queue, transactions and libdbi handling #4049 - GB
+* idoutils: fix ido2db gradually consumes more and more CPU time with time #4210 - CF
 
 
 1.9.1 - 22/05/2013
