@@ -224,6 +224,9 @@ max_contactnotifications_age=44640
 # Keep contactnotificationmethods for 31 days
 max_contactnotificationmethods_age=44640
 
+# Keep downtimehistory for 31 days
+max_downtimehistory_age=44640
+
 
 ## CLEAN REALTIME TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
 # If you don't want to clean all those tables, set this option to 0.

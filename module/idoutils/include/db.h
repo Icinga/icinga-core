@@ -33,6 +33,7 @@ typedef struct ido2db_dbconfig_struct{
         unsigned long max_notifications_age;
         unsigned long max_contactnotifications_age;
         unsigned long max_contactnotificationmethods_age;
+	unsigned long max_downtimehistory_age;
 	unsigned long trim_db_interval;
 	unsigned long housekeeping_thread_startup_delay;
         unsigned long clean_realtime_tables_on_core_startup;

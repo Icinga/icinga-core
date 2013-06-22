@@ -19,6 +19,8 @@ ENHANCEMENTS
 
 * classic ui: add display filter modification for status.cgi #852 - RB
 
+* idoutils: add a table trimming option for 'downtime history' #3989 - MF
+
 * install: allow enable perfdata config switch via configure #3996 - MF
 
 * contrib: add vim highlight script for Icinga syntax #4150 - LE
@@ -37,6 +39,9 @@ CHANGES
 * core: multiple neb modules from same bin are copied to tmp with random name (again) #4199
 	** trick dlopen() to register callbacks for every neb module with different instance_name
 	** no need to manually copy binaries around
+
+* idoutils: add max_downtimhistory_age to ido2db.cfg #3989
+
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
 
