@@ -951,7 +951,7 @@ enable_event_handlers=1
 # performance data.
 # Values: 1 = process performance data, 0 = do not process performance data
 
-process_performance_data=0
+process_performance_data=@ENABLEPERFDATA@
 
 
 

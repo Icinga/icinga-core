@@ -368,6 +368,21 @@ if test x$EVENTHANDLERDIR = xno; then
         fi
 AC_SUBST(EVENTHANDLERDIR)
 
+dnl enable perfdata
+ENABLE_PERFDATA=no
+AC_ARG_ENABLE(perfdata,AC_HELP_STRING([--enable-perfdata],[enables perfdata in icinga.cfg]),[
+        if test x$enableval = xyes; then
+                ENABLE_PERFDATA=yes
+        fi
+        ],ENABLE_PERFDATA=no)
+
+if test x$ENABLE_PERFDATA = xyes; then
+        ENABLEPERFDATA=1
+else   
+        ENABLEPERFDATA=0
+fi
+AC_SUBST(ENABLEPERFDATA)
+
 
 
 dnl ################
@@ -1405,6 +1420,11 @@ if test x$USE_EVENTBROKER = xyes; then
 AC_MSG_RESULT([             Event Broker:  yes])
 else
 AC_MSG_RESULT([             Event Broker:  no])
+fi
+if test x$ENABLE_PERFDATA = xyes; then
+AC_MSG_RESULT([  Enable Performance Data:  yes])
+else
+AC_MSG_RESULT([  Enable Performance Data:  no])
 fi
 if test x$USE_IDOUTILS = xyes; then
 AC_MSG_RESULT([          ido2db lockfile:  $IDO2DBLOCKFILE])
