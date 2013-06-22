@@ -877,7 +877,7 @@ int xodtemplate_expand_contactgroups(xodtemplate_memberlist **,xodtemplate_membe
 int xodtemplate_expand_contacts(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_add_contactgroup_members_to_memberlist(xodtemplate_memberlist **,xodtemplate_contactgroup *,int,int);
 
-xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *,char *,int,int);
+int xodtemplate_expand_hostgroups_and_hosts(xodtemplate_memberlist **,char *,char *,int,int);
 int xodtemplate_expand_hostgroups(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_expand_hosts(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_add_hostgroup_members_to_memberlist(xodtemplate_memberlist **,xodtemplate_hostgroup *,int,int);

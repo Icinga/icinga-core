@@ -23,6 +23,8 @@ ENHANCEMENTS
 
 FIXES
 * core: multiple idomod modules: only first gets data from registered callback functions #4199 - MF
+* core: fix services with no host mappings are not accepted (Viranch Metha) #3961 - MF
+
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 
 SUPPORT

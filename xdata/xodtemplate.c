@@ -4031,6 +4031,7 @@ int xodtemplate_get_weekday_from_string(char *str, int *weekday) {
 int xodtemplate_duplicate_services(void) {
 	int result = OK;
 	xodtemplate_service *temp_service = NULL;
+	xodtemplate_service *temp_service_previous = NULL;
 	xodtemplate_memberlist *temp_memberlist = NULL;
 	xodtemplate_memberlist *temp_rejectlist = NULL;
 	xodtemplate_memberlist *this_memberlist = NULL;
@@ -4039,7 +4040,11 @@ int xodtemplate_duplicate_services(void) {
 
 
 	/****** DUPLICATE SERVICE DEFINITIONS WITH ONE OR MORE HOSTGROUP AND/OR HOST NAMES ******/
-	for (temp_service = xodtemplate_service_list; temp_service != NULL; temp_service = temp_service->next) {
+	for (temp_service = xodtemplate_service_list; temp_service != NULL; temp_service_previous = temp_service, temp_service = temp_service->next) {
+
+		/* free up top of the service list if it is marked (indicated by the following condition) */
+		if (temp_service == xodtemplate_service_list && temp_service_previous != NULL)
+			my_free(temp_service_previous);
 
 		/* skip service definitions without enough data */
 		if (temp_service->hostgroup_name == NULL && temp_service->host_name == NULL)
@@ -4070,10 +4075,21 @@ int xodtemplate_duplicate_services(void) {
 			continue;
 
 		/* get list of hosts */
-		temp_memberlist = xodtemplate_expand_hostgroups_and_hosts(temp_service->hostgroup_name, temp_service->host_name, temp_service->_config_file, temp_service->_start_line);
-		if (temp_memberlist == NULL) {
+		if (xodtemplate_expand_hostgroups_and_hosts(&temp_memberlist, temp_service->hostgroup_name, temp_service->host_name, temp_service->_config_file, temp_service->_start_line) == ERROR) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand hostgroups and/or hosts specified in service (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
 			return ERROR;
+		} else if (temp_memberlist == NULL) {
+			/* delete services with no host mapping */
+			if (temp_service_previous == NULL) {
+				xodtemplate_service_list = temp_service->next;
+				/* temp_service marked for my_free()-ing in increment statement of for loop:
+				   temp_service_previous = temp_service */
+			} else {
+				temp_service_previous->next = temp_service->next;
+				my_free(temp_service);
+				temp_service = temp_service_previous;
+			}
+			continue;
 		}
 
 		/* add a copy of the service for every host in the hostgroup/host name list */
@@ -4107,6 +4123,7 @@ int xodtemplate_duplicate_services(void) {
 		/* free memory we used for host list */
 		xodtemplate_free_memberlist(&temp_memberlist);
 	}
+	temp_service_previous = NULL;
 
 
 	/***************************************/
@@ -4245,8 +4262,8 @@ int xodtemplate_duplicate_objects(void) {
 			continue;
 
 		/* get list of hosts */
-		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostescalation->hostgroup_name, temp_hostescalation->host_name, temp_hostescalation->_config_file, temp_hostescalation->_start_line);
-		if (master_hostlist == NULL) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_hostescalation->hostgroup_name, temp_hostescalation->host_name, temp_hostescalation->_config_file, temp_hostescalation->_start_line);
+		if (result == ERROR || master_hostlist == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand hostgroups and/or hosts specified in host escalation (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostescalation->_config_file), temp_hostescalation->_start_line);
 			return ERROR;
 		}
@@ -4292,8 +4309,8 @@ int xodtemplate_duplicate_objects(void) {
 			continue;
 
 		/* get list of hosts */
-		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_serviceescalation->hostgroup_name, temp_serviceescalation->host_name, temp_serviceescalation->_config_file, temp_serviceescalation->_start_line);
-		if (master_hostlist == NULL) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_serviceescalation->hostgroup_name, temp_serviceescalation->host_name, temp_serviceescalation->_config_file, temp_serviceescalation->_start_line);
+		if (result == ERROR || master_hostlist == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand hostgroups and/or hosts specified in service escalation (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_serviceescalation->_config_file), temp_serviceescalation->_start_line);
 			return ERROR;
 		}
@@ -4440,15 +4457,15 @@ int xodtemplate_duplicate_objects(void) {
 			continue;
 
 		/* get list of master host names */
-		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->hostgroup_name, temp_hostdependency->host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
-		if (master_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_hostdependency->hostgroup_name, temp_hostdependency->host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
+		if (result == ERROR || (master_hostlist == NULL && allow_empty_hostgroup_assignment==0)) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand master hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostdependency->_config_file), temp_hostdependency->_start_line);
 			return ERROR;
 		}
 
 		/* get list of dependent host names */
-		dependent_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->dependent_hostgroup_name, temp_hostdependency->dependent_host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
-		if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&dependent_hostlist, temp_hostdependency->dependent_hostgroup_name, temp_hostdependency->dependent_host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
+		if (result == ERROR || (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0)) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand dependent hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostdependency->_config_file), temp_hostdependency->_start_line);
 			xodtemplate_free_memberlist(&master_hostlist);
 			return ERROR;
@@ -4579,8 +4596,8 @@ int xodtemplate_duplicate_objects(void) {
 			printf("1a) H: %s  HG: %s  SD: %s\n", temp_servicedependency->host_name, temp_servicedependency->hostgroup_name, temp_servicedependency->service_description);
 #endif
 
-			master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->hostgroup_name, temp_servicedependency->host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
-			if (master_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
+			result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_servicedependency->hostgroup_name, temp_servicedependency->host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
+			if (result == ERROR || (master_hostlist == NULL && allow_empty_hostgroup_assignment==0)) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand master hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_servicedependency->_config_file), temp_servicedependency->_start_line);
 				return ERROR;
 			}
@@ -4771,8 +4788,8 @@ int xodtemplate_duplicate_objects(void) {
 		/* expand dependent hosts/hostgroups into a list of host names */
 		if (temp_servicedependency->dependent_host_name != NULL || temp_servicedependency->dependent_hostgroup_name != NULL) {
 
-			dependent_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->dependent_hostgroup_name, temp_servicedependency->dependent_host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
-			if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
+			result = xodtemplate_expand_hostgroups_and_hosts(&dependent_hostlist, temp_servicedependency->dependent_hostgroup_name, temp_servicedependency->dependent_host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
+			if (result == ERROR || (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0)) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand dependent hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_servicedependency->_config_file), temp_servicedependency->_start_line);
 				return ERROR;
 			}
@@ -4857,8 +4874,8 @@ int xodtemplate_duplicate_objects(void) {
 			continue;
 
 		/* get list of hosts */
-		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostextinfo->hostgroup_name, temp_hostextinfo->host_name, temp_hostextinfo->_config_file, temp_hostextinfo->_start_line);
-		if (master_hostlist == NULL) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_hostextinfo->hostgroup_name, temp_hostextinfo->host_name, temp_hostextinfo->_config_file, temp_hostextinfo->_start_line);
+		if (result == ERROR || master_hostlist == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand hostgroups and/or hosts specified in extended host info (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostextinfo->_config_file), temp_hostextinfo->_start_line);
 			return ERROR;
 		}
@@ -4903,8 +4920,8 @@ int xodtemplate_duplicate_objects(void) {
 			continue;
 
 		/* get list of hosts */
-		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_serviceextinfo->hostgroup_name, temp_serviceextinfo->host_name, temp_serviceextinfo->_config_file, temp_serviceextinfo->_start_line);
-		if (master_hostlist == NULL) {
+		result = xodtemplate_expand_hostgroups_and_hosts(&master_hostlist, temp_serviceextinfo->hostgroup_name, temp_serviceextinfo->host_name, temp_serviceextinfo->_config_file, temp_serviceextinfo->_start_line);
+		if (result == ERROR || master_hostlist == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand hostgroups and/or hosts specified in extended service info (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_serviceextinfo->_config_file), temp_serviceextinfo->_start_line);
 			return ERROR;
 		}
@@ -7901,6 +7918,7 @@ int xodtemplate_recombobulate_hostgroups(void) {
 	char *hostgroup_names = NULL;
 	char *temp_ptr = NULL;
 	char *new_members = NULL;
+	int result = OK;
 
 #ifdef DEBUG
 	printf("** PRE-EXPANSION 1\n");
@@ -8007,10 +8025,10 @@ int xodtemplate_recombobulate_hostgroups(void) {
 			continue;
 
 		/* get list of hosts in the hostgroup */
-		temp_memberlist = xodtemplate_expand_hostgroups_and_hosts(NULL, temp_hostgroup->members, temp_hostgroup->_config_file, temp_hostgroup->_start_line);
+		result = xodtemplate_expand_hostgroups_and_hosts(&temp_memberlist, NULL, temp_hostgroup->members, temp_hostgroup->_config_file, temp_hostgroup->_start_line);
 
 		/* add all members to the host group */
-		if (temp_memberlist == NULL && allow_empty_hostgroup_assignment == 0) {
+		if (result != OK || (temp_memberlist == NULL && allow_empty_hostgroup_assignment == 0)) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand members specified in hostgroup (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
 			return ERROR;
 		}
@@ -12674,22 +12692,22 @@ int xodtemplate_add_contactgroup_members_to_memberlist(xodtemplate_memberlist **
 
 
 /* expands a comma-delimited list of hostgroups and/or hosts to member host names */
-xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *hostgroups, char *hosts, int _config_file, int _start_line) {
-	xodtemplate_memberlist *temp_list = NULL;
+int xodtemplate_expand_hostgroups_and_hosts(xodtemplate_memberlist **temp_list, char *hostgroups, char *hosts, int _config_file, int _start_line) {
 	xodtemplate_memberlist *reject_list = NULL;
 	xodtemplate_memberlist *list_ptr = NULL;
 	xodtemplate_memberlist *reject_ptr = NULL;
 	int result = OK;
+	*temp_list = NULL;
 
 	/* process list of hostgroups... */
 	if (hostgroups != NULL) {
 
 		/* expand host */
-		result = xodtemplate_expand_hostgroups(&temp_list, &reject_list, hostgroups, _config_file, _start_line);
+		result = xodtemplate_expand_hostgroups(temp_list, &reject_list, hostgroups, _config_file, _start_line);
 		if (result != OK) {
-			xodtemplate_free_memberlist(&temp_list);
+			xodtemplate_free_memberlist(temp_list);
 			xodtemplate_free_memberlist(&reject_list);
-			return NULL;
+			return ERROR;
 		}
 	}
 
@@ -12697,11 +12715,11 @@ xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *hostgroups
 	if (hosts != NULL) {
 
 		/* expand hosts */
-		result = xodtemplate_expand_hosts(&temp_list, &reject_list, hosts, _config_file, _start_line);
+		result = xodtemplate_expand_hosts(temp_list, &reject_list, hosts, _config_file, _start_line);
 		if (result != OK) {
-			xodtemplate_free_memberlist(&temp_list);
+			xodtemplate_free_memberlist(temp_list);
 			xodtemplate_free_memberlist(&reject_list);
-			return NULL;
+			return ERROR;
 		}
 	}
 
@@ -12720,9 +12738,9 @@ xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *hostgroups
 	/* remove rejects (if any) from the list (no duplicate entries exist in either list) */
 	/* NOTE: rejects from this list also affect hosts generated from processing hostgroup names (see above) */
 	for (reject_ptr = reject_list; reject_ptr != NULL; reject_ptr = reject_ptr->next) {
-		for (list_ptr = temp_list; list_ptr != NULL; list_ptr = list_ptr->next) {
+		for (list_ptr = *temp_list; list_ptr != NULL; list_ptr = list_ptr->next) {
 			if (!strcmp(reject_ptr->name1, list_ptr->name1)) {
-				xodtemplate_remove_memberlist_item(list_ptr, &temp_list);
+				xodtemplate_remove_memberlist_item(list_ptr, temp_list);
 				break;
 			}
 		}
@@ -12730,7 +12748,7 @@ xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *hostgroups
 	xodtemplate_free_memberlist(&reject_list);
 	reject_list = NULL;
 
-	return temp_list;
+	return OK;
 }
 
 
