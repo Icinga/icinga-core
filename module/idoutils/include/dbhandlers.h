@@ -25,7 +25,8 @@ int ido2db_object_hashfunc(const char *,const char *,int);
 int ido2db_compare_object_hashdata(const char *,const char *,const char *,const char *);
 
 int ido2db_set_all_objects_as_inactive(ido2db_idi *);
-int ido2db_set_object_as_active(ido2db_idi *,int,unsigned long);
+int ido2db_set_objects_as_active(ido2db_idi *idi, unsigned long *object_ids, int count);
+int ido2db_set_object_as_active(ido2db_idi *,unsigned long);
 
 int ido2db_handle_logentry(ido2db_idi *);
 int ido2db_handle_processdata(ido2db_idi *);

@@ -141,8 +141,8 @@ int ido2db_db_init(ido2db_idi *);
 int ido2db_db_deinit(ido2db_idi *);
 
 int ido2db_db_connect(ido2db_idi *);
-int ido2db_db_is_connected(ido2db_idi *);
-int ido2db_db_reconnect(ido2db_idi *);
+int ido2db_db_is_connected(ido2db_idi *, int);
+int ido2db_db_reconnect(ido2db_idi *, int);
 int ido2db_db_disconnect(ido2db_idi *);
 
 int ido2db_db_hello(ido2db_idi *);
@@ -161,6 +161,10 @@ int ido2db_db_clear_table(ido2db_idi *,char *);
 int ido2db_db_get_latest_data_time(ido2db_idi *,char *,char *,unsigned long *);
 int ido2db_db_perform_maintenance(ido2db_idi *);
 int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
+
+void ido2db_db_txbuf_init(ido2db_txbuf *txbuf);
+void ido2db_db_txbuf_add_id_to_activate(ido2db_txbuf *txbuf, unsigned long);
+void ido2db_db_txbuf_flush(ido2db_idi *idi, ido2db_txbuf *txbuf);
 
 int ido2db_db_tx_begin(ido2db_idi *idi);
 int ido2db_db_tx_commit(ido2db_idi *idi);

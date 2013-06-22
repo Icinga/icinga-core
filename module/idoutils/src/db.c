@@ -372,10 +372,10 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /* connects to the database server  */
 /************************************/
 
-int ido2db_db_is_connected(ido2db_idi *idi) {
+int ido2db_db_is_connected(ido2db_idi *idi, int ping) {
 
 #ifdef USE_LIBDBI
-	if (!dbi_conn_ping(idi->dbinfo.dbi_conn))
+	if (ping && !dbi_conn_ping(idi->dbinfo.dbi_conn))
 		return IDO_FALSE;
 #endif
 
@@ -399,12 +399,12 @@ int ido2db_db_is_connected(ido2db_idi *idi) {
 	return IDO_TRUE;
 }
 
-int ido2db_db_reconnect(ido2db_idi *idi) {
+int ido2db_db_reconnect(ido2db_idi *idi, int ping) {
 
 	int result = IDO_OK;
 
 	/* check connection */
-	if (ido2db_db_is_connected(idi) == IDO_FALSE)
+	if (ido2db_db_is_connected(idi, ping) == IDO_FALSE)
 		idi->dbinfo.connected = IDO_FALSE;
 
 	/* try to reconnect... */
@@ -1166,7 +1166,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 
 	/* we're not connected... */
-	if (ido2db_db_is_connected(idi) == IDO_FALSE) {
+	if (ido2db_db_is_connected(idi, IDO_FALSE) == IDO_FALSE) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() already disconnected\n");
 #ifdef USE_ORACLE
 		OCI_Cleanup();
@@ -2516,7 +2516,7 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 		return IDO_ERROR;
 
 	/* if we're not connected, try and reconnect... */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_FALSE) == IDO_ERROR)
 		return IDO_ERROR;
 
 
@@ -2615,7 +2615,7 @@ int ido2db_handle_db_error(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* we're not currently connected... */
-	if (ido2db_db_is_connected(idi) == IDO_TRUE)
+	if (ido2db_db_is_connected(idi, IDO_FALSE) == IDO_TRUE)
 		return IDO_OK;
 
 	ido2db_db_disconnect(idi);
@@ -2906,19 +2906,51 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 	return IDO_OK;
 }
 
+void ido2db_db_txbuf_init(ido2db_txbuf *txbuf) {
+	txbuf->ids_to_activate = NULL;
+	txbuf->ids_to_activate_count = 0;
+}
+
+void ido2db_db_txbuf_add_id_to_activate(ido2db_txbuf *txbuf, unsigned long object_id) {
+	txbuf->ids_to_activate_count++;
+	txbuf->ids_to_activate = (unsigned long *)realloc(txbuf->ids_to_activate, txbuf->ids_to_activate_count * sizeof(unsigned long));
+	txbuf->ids_to_activate[txbuf->ids_to_activate_count - 1] = object_id;
+}
+
+void ido2db_db_txbuf_flush(ido2db_idi *idi, ido2db_txbuf *txbuf)
+{
+#ifdef USE_LIBDBI
+	if (txbuf->ids_to_activate_count > 0) {
+		ido2db_set_objects_as_active(idi, txbuf->ids_to_activate, txbuf->ids_to_activate_count);
+	}
+
+	txbuf->ids_to_activate_count = 0;
+
+	free(txbuf->ids_to_activate);
+	txbuf->ids_to_activate = NULL;
+#endif
+}
+
 int ido2db_db_tx_begin(ido2db_idi *idi) {
+	int result = IDO_ERROR;
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_begin()\n");
-	return ido2db_db_query(idi, "BEGIN");
+	result = ido2db_db_query(idi, "BEGIN");
+	dbi_result_free(idi->dbinfo.dbi_result);
+	return result;
 #else /* USE_LIBDBI */
 	return IDO_OK;
 #endif /* USE_LIBDBI */
 }
 
 int ido2db_db_tx_commit(ido2db_idi *idi) {
+	int result = IDO_ERROR;
+	ido2db_db_txbuf_flush(idi, &(idi->txbuf));
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_commit()\n");
-	return ido2db_db_query(idi, "COMMIT");
+	result = ido2db_db_query(idi, "COMMIT");
+	dbi_result_free(idi->dbinfo.dbi_result);
+	return result;
 #else /* USE_LIBDBI */
 	return IDO_OK;
 #endif /* USE_LIBDBI */
@@ -3585,7 +3617,7 @@ int ido2db_oci_prepared_statement_objects_update_active(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf, "UPDATE %s SET is_active=1 "
-	             "WHERE instance_id=:X2 AND objecttype_id=:X3 AND id=:X4",
+	             "WHERE id=:X2",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
 		buf = NULL;
 	}
@@ -7926,4 +7958,3 @@ int ido2db_oci_bind_bigint(OCI_Statement *st, char * bindname, void ** data) {
 }
 */
 #endif /* Oracle ocilib specific */
-

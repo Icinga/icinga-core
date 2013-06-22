@@ -474,6 +474,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	char *tmp1 = NULL;
 	char *tmp2 = NULL;
 #ifdef USE_LIBDBI
+	unsigned long offset, stride;
 	char *buf = NULL;
 #endif
 
@@ -484,37 +485,50 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 	/* find all the object definitions we already have */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
-		buf = NULL;
+	offset = 0;
+	stride = 2500;
 
-	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
-		while (idi->dbinfo.dbi_result) {
-			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
-				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
+	for (;;) {
+		if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
+			buf = NULL;
 
-				/* get string and free it later on */
-				if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
-					tmp1 = NULL;
-				if (asprintf(&tmp2, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2")) == -1)
-					tmp2 = NULL;
+		if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
+			if (dbi_result_get_numrows(idi->dbinfo.dbi_result) == 0)
+				break;
 
-				ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+			while (idi->dbinfo.dbi_result) {
+				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+					char *name2;
+					
+					object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
+					objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
 
-				free(tmp1);
-				free(tmp2);
+					/* get string and free it later on */
+					if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
+						tmp1 = NULL;
+					name2 = dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2");
+					if (!name2 || asprintf(&tmp2, "%s", name2) == -1)
+						tmp2 = NULL;
 
-			} else {
-				dbi_result_free(idi->dbinfo.dbi_result);
-				idi->dbinfo.dbi_result = NULL;
+					ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+
+					free(tmp1);
+					free(tmp2);
+
+				} else {
+					dbi_result_free(idi->dbinfo.dbi_result);
+					idi->dbinfo.dbi_result = NULL;
+				}
 			}
+		} else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 		}
-	} else {
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-	}
 
-	free(buf);
+		free(buf);
+
+		offset += stride;
+	}
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -544,6 +558,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_cached);
 
 	if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+		char *name2;
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_cached_object_ids() fetchnext ok\n");
 		object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
@@ -552,7 +567,8 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 		/* dirty little hack for mtext* <-> char* */
 		if (asprintf(&tmp1, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name1"))) == -1)
 			tmp1 = NULL;
-		if (asprintf(&tmp2, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2"))) == -1)
+		name2 = OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2"));
+		if (!name2 || asprintf(&tmp2, "%s", name2) == -1)
 			tmp2 = NULL;
 
 		ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
@@ -860,8 +876,49 @@ int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 	return result;
 }
 
-int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
-                                unsigned long object_id) {
+int ido2db_set_objects_as_active(ido2db_idi *idi, unsigned long *object_ids, int count) {
+	int i, first, result;
+	char *buf;
+
+#ifdef USE_LIBDBI
+	buf = malloc(128 + 20 * count + 2);
+
+	snprintf(buf, 128, "UPDATE %s SET is_active='1' WHERE object_id IN (", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]);
+
+	first = 1;
+
+	for (i = 0; i < count; i++) {
+		if (!first)
+			strcat(buf, ",");
+		else
+			first = 0;
+
+		snprintf(buf + strlen(buf), 15, "%lu", object_ids[i]);
+	}
+
+	strcat(buf, ")");
+
+	result = ido2db_db_query(idi, buf);
+
+	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
+	free(buf);
+
+	return result;
+
+#else
+	result = IDO_OK;
+
+	for (i = 0; i < count; i++) {
+		if (ido2db_set_object_as_active(idi, object_ids[i]) != IDO_OK)
+			result = IDO_ERROR;
+	}
+#endif
+
+	return result;
+}
+
+int ido2db_set_object_as_active(ido2db_idi *idi, unsigned long object_id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
 	char *buf = NULL;
@@ -876,19 +933,7 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 
 	/* mark the object as being active */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(
-	            &buf,
-	            "UPDATE %s SET is_active='1' WHERE instance_id=%lu AND objecttype_id=%d AND object_id=%lu",
-	            ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS],
-	            idi->dbinfo.instance_id, object_type, object_id) == -1)
-		buf = NULL;
-
-	result = ido2db_db_query(idi, buf);
-
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-	free(buf);
-
+	ido2db_db_txbuf_add_id_to_activate(&(idi->txbuf), object_id);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -902,18 +947,10 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 		return IDO_ERROR;
 
 
-	data[0] = (void *) &idi->dbinfo.instance_id;
-	data[1] = (void *) &object_type;
-	data[2] = (void *) &object_id;
+	data[0] = (void *) &object_id;
 
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X2"), (uint *) data[0])) {
-		return IDO_ERROR;
-	}
-	if (!OCI_BindInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X3"), (int *) data[1])) {
-		return IDO_ERROR;
-	}
-	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X4"), (uint *) data[2])) {
 		return IDO_ERROR;
 	}
 
@@ -1472,6 +1509,8 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]);
 		}
 
+		idi->tables_cleared = IDO_FALSE;
+
 		if (ido2db_db_settings.clean_config_tables_on_core_startup == IDO_TRUE) { /* only if desired */
 			/* clear config data */
 
@@ -1535,6 +1574,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES]);
 
 
+			idi->tables_cleared = IDO_TRUE;
 		}
 
 		/* flag all objects as being inactive */
@@ -5505,7 +5545,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_HOST, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* get the timeperiod ids */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_id);
@@ -6039,7 +6079,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOSTGROUP, idi->buffered_input[IDO_DATA_HOSTGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_HOSTGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -6347,7 +6387,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &host_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_SERVICE, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* get the timeperiod ids */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_SERVICECHECKPERIOD], NULL, &check_timeperiod_id);
@@ -6750,7 +6790,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, idi->buffered_input[IDO_DATA_SERVICEGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7271,7 +7311,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_COMMAND, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7338,7 +7378,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_TIMEPERIODNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7601,7 +7641,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	         &service_timeperiod_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_CONTACT, contact_id);
+	ido2db_set_object_as_active(idi, contact_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7852,7 +7892,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, idi->buffered_input[IDO_DATA_CONTACTGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
