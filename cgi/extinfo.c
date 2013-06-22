@@ -32,11 +32,6 @@
 
 static icinga_macros *mac;
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-#include "../include/statsprofiler.h"
-#endif
-
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
@@ -61,10 +56,6 @@ extern int              obsess_over_hosts;
 extern int              enable_flap_detection;
 extern int              enable_failure_prediction;
 extern int              process_performance_data;
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-extern int		event_profiling_enabled;
-#endif
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
@@ -95,11 +86,6 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency *hostdependency_list;
-
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-extern profile_object* profiled_data;
-#endif
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -2376,13 +2362,6 @@ void show_performance_data(void) {
 	int passive_host_checks_start = 0;
 	int passive_host_checks_ever = 0;
 	time_t current_time;
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	profile_object *t, *p = profiled_data;
-	int count = 0;
-	double elapsed = 0.0, total_time = 0.0;
-	char *name = NULL;
-#endif
 
 	time(&current_time);
 
@@ -2804,42 +2783,8 @@ void show_performance_data(void) {
 	printf("</td></tr>\n");
 	printf("</table>\n");
 
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	if (event_profiling_enabled) {
-		printf("<tr>\n");
-		printf("<td valign='middle'><div class='perfTypeTitle'>Event profiling:</div></td>\n");
-		printf("<td valign='top' colspan='2'>\n");
-
-		printf("<table border='1' cellspacing='0' cellpadding='0'>\n");
-		printf("<tr><td class='stateInfoTable1'>\n");
-		printf("<table border='0'>\n");
-
-
-		printf("<tr class='data'><th class='data'>EVENT PROFILE DATA:</th><th class='data'>total seconds spent</th><th class='data'>number of events</th><th class='data'>avg time per event</th><th class='data'>events per second</th></tr>\n");
-		while (p) {
-			name = p->name;
-			count = p->count;
-			elapsed = p->elapsed;
-			t = profile_object_find_by_name("EVENT_LOOP_COMPLETION");
-			total_time = t->elapsed;
-
-			printf("<tr><td class='dataVar'>%s&nbsp;</td><td class='dataVal'>%.2f</td><td class='dataVal'>%d</td><td class='dataVal'>%.3f</td><td class='dataVal'>%.3f</td></tr>", name, elapsed, count, safe_divide(elapsed, count, 0), safe_divide(total_time, count, 1));
-			p = p->next;
-		}
-
-
-		printf("</table>\n");
-		printf("</td></tr>\n");
-		printf("</table>\n");
-	}
-#endif
-
-
 	printf("</td>\n");
 	printf("</tr>\n");
-
-
 
 	printf("</table>\n");
 

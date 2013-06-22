@@ -29,13 +29,6 @@
 /* stop gcc from bitching about implicit asprintf declarations */
 #define _GNU_SOURCE 1
 
-/* check if gcc3 */
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)
-#undef GCCTOOOLD
-#else
-#define GCCTOOOLD 1
-#endif
-
 /* Event broker integration */
 #undef USE_EVENT_BROKER
 

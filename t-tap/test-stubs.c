@@ -221,9 +221,6 @@ int             enable_predictive_host_dependency_checks = DEFAULT_ENABLE_PREDIC
 int      stalking_event_handlers_for_hosts;
 int      stalking_event_handlers_for_services;
 
-int	event_profiling_enabled = FALSE;
-void 	profiler_update(int event, struct timeval start) {}
-
 int has_shell_metachars(const char *s) {}
 
 void remove_host_acknowledgement(host * hst) {}

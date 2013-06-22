@@ -45,11 +45,6 @@
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-#include "../include/profiler.h"
-#endif
-
 /*#define DEBUG_MEMORY 1*/
 #ifdef DEBUG_MEMORY
 #include <mcheck.h>
@@ -250,11 +245,6 @@ int             allow_empty_hostgroup_assignment = DEFAULT_ALLOW_EMPTY_HOSTGROUP
 int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created = FALSE;
-
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-int             event_profiling_enabled = FALSE;
-#endif
 
 int		keep_unknown_macros = FALSE;
 
@@ -658,13 +648,6 @@ int main(int argc, char **argv, char **env) {
 
 	/* else start to monitor things... */
 	else {
-
-		/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-		/* This is Sparta! */
-		if (event_profiling_enabled == TRUE)
-			profiler_init();
-#endif
 
 		/* keep monitoring things until we get a shutdown command */
 		do {

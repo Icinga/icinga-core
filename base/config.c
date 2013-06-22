@@ -231,11 +231,6 @@ extern int              allow_empty_hostgroup_assignment;
 extern unsigned long    max_check_result_list_items;
 extern int		enable_state_based_escalation_ranges;
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-extern int              event_profiling_enabled;
-#endif
-
 /******************************************************************/
 /************** CONFIGURATION INPUT FUNCTIONS *********************/
 /******************************************************************/
@@ -1446,12 +1441,7 @@ int read_main_config_file(char *main_config_file) {
 			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: bare_update_check variable ignored. Icinga Core does not support program update checking");
 		}
 
-		else if (!strcmp(variable, "event_profiling_enabled")) {
-			/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-			event_profiling_enabled = (atoi(value) > 0) ? TRUE : FALSE;
-#endif
-		} else if (!strcmp(variable, "allow_empty_hostgroup_assignment")) {
+		else if (!strcmp(variable, "allow_empty_hostgroup_assignment")) {
 			allow_empty_hostgroup_assignment = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 

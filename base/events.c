@@ -32,11 +32,6 @@
 #include "../include/broker.h"
 #include "../include/sretention.h"
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-#include "../include/profiler.h"
-#endif
-
 extern char	*config_file;
 
 extern int      test_scheduling;
@@ -91,11 +86,6 @@ extern int      child_processes_fork_twice;
 extern int      time_change_threshold;
 
 extern time_t	disable_notifications_expire_time;
-
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-extern int 	event_profiling_enabled;
-#endif
 
 timed_event *event_list_low = NULL;
 timed_event *event_list_low_tail = NULL;
@@ -1160,11 +1150,6 @@ int event_execution_loop(void) {
 	struct timespec delay;
 	pid_t wait_result;
 
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	struct timeval start;
-#endif
-
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "event_execution_loop() start\n");
 
 	time(&last_time);
@@ -1185,12 +1170,6 @@ int event_execution_loop(void) {
 	sleep_event.prev = NULL;
 
 	while (1) {
-
-		/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-		if (event_profiling_enabled)
-			gettimeofday(&start, NULL);
-#endif
 
 		/* see if we should exit or restart (a signal was encountered) */
 		if (sigshutdown == TRUE || sigrestart == TRUE)
@@ -1456,13 +1435,6 @@ int event_execution_loop(void) {
 			last_status_update = current_time;
 			update_program_status(FALSE);
 		}
-
-		/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-		if (event_profiling_enabled)
-			profiler_update(EVENT_LOOP_COMPLETION, start);
-#endif
-
 	}
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "event_execution_loop() end\n");
@@ -1481,11 +1453,6 @@ int handle_timed_event(timed_event *event) {
 	void (*userfunc)(void *);
 	struct timeval tv;
 	double latency = 0.0;
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	struct timeval start;
-	gettimeofday(&start, NULL);
-#endif
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "handle_timed_event() start\n");
 
@@ -1716,12 +1683,6 @@ int handle_timed_event(timed_event *event) {
 	}
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "handle_timed_event() end\n");
-
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	if (event_profiling_enabled)
-		profiler_update(event->event_type, start);
-#endif
 
 	return OK;
 }

@@ -326,9 +326,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 
 
 /* Icinga special */
-int     event_profiling_enabled = FALSE;
 unsigned long max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
-void    profiler_update(int event, struct timeval start) {}
 
 void remove_host_acknowledgement(host * hst) {}
 void remove_service_acknowledgement(service * svc) {}

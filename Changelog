@@ -28,6 +28,7 @@ ENHANCEMENTS
 FIXES
 * core: multiple idomod modules: only first gets data from registered callback functions #4199 - MF
 * core: fix services with no host mappings are not accepted (Viranch Metha) #3961 - MF
+* core: remove event_profiling_enabled functionality causing core dumps #2244 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 
@@ -39,6 +40,7 @@ CHANGES
 * core: multiple neb modules from same bin are copied to tmp with random name (again) #4199
 	** trick dlopen() to register callbacks for every neb module with different instance_name
 	** no need to manually copy binaries around
+* core: drop event_profiling_enabled functionality #2244
 
 * idoutils: add max_downtimhistory_age to ido2db.cfg #3989
 

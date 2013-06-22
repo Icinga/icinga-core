@@ -47,10 +47,6 @@
 extern comment *comment_list;
 extern scheduled_downtime *scheduled_downtime_list;
 
-/* Icinga special */
-void profile_object_update_count(char * name, int val) {}
-void profile_object_update_elapsed(char * name, double val) {}
-
 /* Icinga cgiutils.c special (extern!) */
 char alert_message;
 char *host_name;

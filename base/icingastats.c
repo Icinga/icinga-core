@@ -28,21 +28,11 @@
 #include "../include/icinga.h"
 #include "../include/locations.h"
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-#include "../include/statsprofiler.h"
-#endif
-
 #define STATUS_NO_DATA             0
 #define STATUS_INFO_DATA           1
 #define STATUS_PROGRAM_DATA        2
 #define STATUS_HOST_DATA           3
 #define STATUS_SERVICE_DATA        4
-
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-profile_object* profiled_data = NULL;
-#endif
 
 char *main_config_file = NULL;
 char *status_file = NULL;
@@ -204,11 +194,6 @@ int total_external_command_buffer_slots = 0;
 int used_external_command_buffer_slots = 0;
 int high_external_command_buffer_slots = 0;
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-int event_profiling_enabled = 0;
-#endif
-
 
 int display_mrtg_values(void);
 int display_stats(void);
@@ -224,10 +209,6 @@ int main(int argc, char **argv) {
 	int display_license = FALSE;
 	int display_help = FALSE;
 	int c;
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	profile_object *p = NULL;
-#endif
 
 #ifdef HAVE_GETOPT_H
 	int option_index = 0;
@@ -404,32 +385,6 @@ int main(int argc, char **argv) {
 		printf(" NUMPSVSVCCHECKSxM    number of passive service checks occuring in last 1/5/15 minutes.\n");
 		printf(" NUMEXTCMDSxM         number of external commands processed in last 1/5/15 minutes.\n");
 
-		/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-		/* event profiler */
-		if (event_profiling_enabled == TRUE) {
-
-			/* read main config file */
-			result = read_config_file();
-			if (result == ERROR && mrtg_mode == FALSE) {
-				printf("Error processing config file '%s'\n", main_config_file);
-				return ERROR;
-			}
-
-			/* read the status file */
-			result = read_status_file();
-			if (result == ERROR && mrtg_mode == FALSE) {
-				printf("Error reading status file '%s'\n", status_file);
-				return ERROR;
-			}
-
-			p = profiled_data;
-			while (p) {
-				printf("PROFILE_(COUNTER/ELAPSED/EVENTPS)_%s\t\tdynamically generated profile data.\n", p->name);
-				p = p->next;
-			}
-		}
-#endif
 		printf("\n");
 		printf(" Note: Replace x's in MRTG variable names with 'MIN', 'MAX', 'AVG', or the\n");
 		printf("       the appropriate number (i.e. '1', '5', '15', or '60').\n");
@@ -795,11 +750,6 @@ int display_mrtg_values(void) {
 		else if (!strcmp(temp_ptr, "NUMHSTDOWNTIME"))
 			printf("%d%s", hosts_in_downtime, mrtg_delimiter);
 
-		/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-		else if (strstr(temp_ptr, "PROFILE_") && event_profiling_enabled)
-			profile_data_output_mrtg(temp_ptr + strlen("PROFILE_"), mrtg_delimiter);
-#endif
 		else
 			printf("%s%s", temp_ptr, mrtg_delimiter);
 	}
@@ -887,16 +837,6 @@ int display_stats(void) {
 	printf("External Commands Last 1/5/15 min:      %d / %d / %d\n", external_commands_last_1min, external_commands_last_5min, external_commands_last_15min);
 	printf("\n");
 	printf("\n");
-
-	/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	if (event_profiling_enabled) {
-		printf("\n\nEVENT PROFILE DATA:\t\ttotal seconds spent / number of events / avg time per event / events per second \n");
-		printf("----------------------------------------------------\n");
-
-		profile_data_print();
-	}
-#endif
 
 
 	/*
@@ -1352,21 +1292,6 @@ int read_status_file(void) {
 						serial_host_checks_last_5min = atoi(temp_ptr);
 					if ((temp_ptr = strtok(NULL, ",")))
 						serial_host_checks_last_15min = atoi(temp_ptr);
-				} else if (!strcmp(var, "event_profiling_enabled")) {
-					/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-					event_profiling_enabled = atoi(val);
-#endif
-				} else if (strstr(var, "PROFILE_") && !strstr(var, "null")) {
-
-					/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-					if (strstr(var, "COUNTER"))
-						profile_object_update_count(var + strlen("PROFILE_COUNTER_"), strtod(val, NULL));
-
-					if (strstr(var, "ELAPSED"))
-						profile_object_update_elapsed(var + strlen("PROFILE_ELAPSED_"), atoi(val));
-#endif
 				}
 				break;
 

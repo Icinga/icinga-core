@@ -310,9 +310,7 @@ int my_recvall(int s, char *buf, int *len, int timeout) {}
 int neb_free_module_list(void) {}
 
 /* Icinga special */
-int     event_profiling_enabled = FALSE;
 unsigned long max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
-void    profiler_update(int event, struct timeval start) {}
 
 void remove_host_acknowledgement(host * hst) {}
 void remove_service_acknowledgement(service * svc) {}
