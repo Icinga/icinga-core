@@ -679,7 +679,11 @@ int main(int argc, char **argv, char **env) {
 			nagios_pid = (int)getpid();
 
 			/* read in the configuration files (main and resource config files) */
-			result = read_main_config_file(config_file);
+			if (read_main_config_file(config_file) == ERROR) {
+				logit(NSLOG_PROCESS_INFO | NSLOG_RUNTIME_ERROR | NSLOG_CONFIG_ERROR, TRUE, "Failed to read main config file.  Aborting.");
+				cleanup();
+				exit(EXIT_FAILURE);
+			}
 
 			/* we need to read the modules in the first place as object configuration before neb modules are initialized/loaded */
 			result = read_object_config_data(config_file, READ_MODULES, FALSE, FALSE);
