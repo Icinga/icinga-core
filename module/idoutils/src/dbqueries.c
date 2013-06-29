@@ -1176,8 +1176,8 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() bind clob error\n");
 	}
 	//free lobs
-	if (lob_oi !=NULL) OCI_LobFree(lob_loi);
-	if (lob_ou !=NULL) OCI_LobFree(lob_lou);
+	if (lob_oi !=NULL) OCI_LobFree(lob_oi);
+	if (lob_ou !=NULL) OCI_LobFree(lob_ou);
 	if (lob_loi !=NULL) OCI_LobFree(lob_loi);
 	if (lob_lou !=NULL) OCI_LobFree(lob_lou);
 
