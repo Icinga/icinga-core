@@ -333,7 +333,18 @@
 
     <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
-    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Icinga 1.9 hat sich der Default geändert, so dass Sie die Kompilation der IDOUtils explizit
+      verhindern müssen.</p>
+    </td></tr>
+</table></div>
+
+    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --disable-idoutils</pre>
 
     <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
 
@@ -603,9 +614,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp459968"></a>
+    <a class="indexterm" name="idp467168"></a>
 
-    <a class="indexterm" name="idp456144"></a>
+    <a class="indexterm" name="idp468736"></a>
   </div>
 </div>
 <div class="navfooter">

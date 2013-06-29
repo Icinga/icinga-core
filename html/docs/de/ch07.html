@@ -45,7 +45,7 @@
 <dd><dl>
 <dt><span class="section">7.3.1. <a href="eventhandlers.html#introduction">Einführung</a></span></dt>
 <dt><span class="section">7.3.2. <a href="eventhandlers.html#execution">Wann werden Eventhandler ausgeführt?</a></span></dt>
-<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp13100576">Eventhandler-Typen</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp13114736">Eventhandler-Typen</a></span></dt>
 <dt><span class="section">7.3.4. <a href="eventhandlers.html#enable">Eventhandler aktivieren</a></span></dt>
 <dt><span class="section">7.3.5. <a href="eventhandlers.html#executionorder">Eventhandler-Ausführungsreihenfolge</a></span></dt>
 <dt><span class="section">7.3.6. <a href="eventhandlers.html#writingcommands">Eventhandler-Kommandos schreiben</a></span></dt>
@@ -195,7 +195,7 @@
 <dt><span class="section">7.18.2. <a href="embeddedperl.html#cons">Nachteile</a></span></dt>
 <dt><span class="section">7.18.3. <a href="embeddedperl.html#interpreter">Benutzung des eingebetteten Perl-Interpreters</a></span></dt>
 <dt><span class="section">7.18.4. <a href="embeddedperl.html#compileicinga">Icinga mit eingebettetem Perl kompilieren</a></span></dt>
-<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14917648">Plugin-spezifische Benutzung des Perl-Interpreters</a></span></dt>
+<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14930528">Plugin-spezifische Benutzung des Perl-Interpreters</a></span></dt>
 <dt><span class="section">7.18.6. <a href="embeddedperl.html#plugspecs">Plugins für die Nutzung mit Embedded Perl entwickeln</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.19. <a href="adaptive.html">Adaptive Überwachung</a></span></dt>
@@ -209,7 +209,7 @@
 <dt><span class="section">7.20.1. <a href="dependencychecks.html#introduction">Einführung</a></span></dt>
 <dt><span class="section">7.20.2. <a href="dependencychecks.html#howitworks">Wie arbeiten vorausschauende Prüfungen?</a></span></dt>
 <dt><span class="section">7.20.3. <a href="dependencychecks.html#enable">Vorausschauende Prüfungen aktivieren</a></span></dt>
-<dt><span class="section">7.20.4. <a href="dependencychecks.html#idp14986256">Cached Checks</a></span></dt>
+<dt><span class="section">7.20.4. <a href="dependencychecks.html#idp15000352">Cached Checks</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.21. <a href="cachedchecks.html">Zwischengespeicherte Prüfungen</a></span></dt>
 <dd><dl>
@@ -255,13 +255,19 @@
 </dl></dd>
 <dt><span class="section">7.26. <a href="objectinheritance.html">Objektvererbung</a></span></dt>
 <dd><dl>
-<dt><span class="section">7.26.1. <a href="objectinheritance.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">7.26.2. <a href="objectinheritance.html#basics">Grundlagen</a></span></dt>
-<dt><span class="section">7.26.3. <a href="objectinheritance.html#localvsinveritedvars">Lokale Variablen gegenüber vererbten Variablen</a></span></dt>
-<dt><span class="section">7.26.4. <a href="objectinheritance.html#inheritancechaining">Vererbungsverkettung</a></span></dt>
-<dt><span class="section">7.26.5. <a href="objectinheritance.html#templates">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt>
-<dt><span class="section">7.26.6. <a href="objectinheritance.html#customobjectvariables">eigene Objektvariablen (custom object variables)</a></span></dt>
-<dt><span class="section">7.26.7. <a href="objectinheritance.html#multipleinheritancesources">Vorrang bei mehreren Vererbungsquellen</a></span></dt>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#objectinheritance-introduction">Einführung</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#objectinheritance-basics">Grundlagen</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#objectinheritance-localvsinveritedvars">Lokale Variablen gegenüber vererbten Variablen</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#objectinheritance-inheritancechaining">Vererbungsverkettung</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#objectinheritance-templates">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#objectinheritance-customobjectvariables">eigene Objektvariablen (custom object variables)</a></span></dt>
+<dt><span class="section">7.26.7. <a href="objectinheritance.html#objectinheritance-cancel_string">Vererbung für Zeichenketten-Werte aufheben</a></span></dt>
+<dt><span class="section">7.26.8. <a href="objectinheritance.html#objectinheritance-add_string">additive Vererbung von Zeichenketten-Werten</a></span></dt>
+<dt><span class="section">7.26.9. <a href="objectinheritance.html#objectinheritance-implied_inheritance">Implizite Vererbung</a></span></dt>
+<dt><span class="section">7.26.10. <a href="objectinheritance.html#objectinheritance-implied_escalations">implizite/additive Vererbung bei Eskalationen</a></span></dt>
+<dt><span class="section">7.26.11. <a href="objectinheritance.html#objectinheritance-important_values">Wichtige Werte (important values)</a></span></dt>
+<dt><span class="section">7.26.12. <a href="objectinheritance.html#objectinheritance-multiple_templates">Mehrere Vererbungsquellen</a></span></dt>
+<dt><span class="section">7.26.13. <a href="objectinheritance.html#objectinheritance-multipleinheritancesources">Vorrang bei mehreren Vererbungsquellen</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.27. <a href="objecttricks.html">Zeitsparende Tricks für Objektdefinitionen</a></span></dt>
 </dl>

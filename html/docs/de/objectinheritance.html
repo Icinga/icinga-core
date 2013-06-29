@@ -30,19 +30,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="objectinheritance"></a>7.26. Objektvererbung</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.26.1. <a href="objectinheritance.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">7.26.2. <a href="objectinheritance.html#basics">Grundlagen</a></span></dt>
-<dt><span class="section">7.26.3. <a href="objectinheritance.html#localvsinveritedvars">Lokale Variablen gegenüber vererbten Variablen</a></span></dt>
-<dt><span class="section">7.26.4. <a href="objectinheritance.html#inheritancechaining">Vererbungsverkettung</a></span></dt>
-<dt><span class="section">7.26.5. <a href="objectinheritance.html#templates">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt>
-<dt><span class="section">7.26.6. <a href="objectinheritance.html#customobjectvariables">eigene Objektvariablen (custom object variables)</a></span></dt>
-<dt><span class="section">7.26.7. <a href="objectinheritance.html#multipleinheritancesources">Vorrang bei mehreren Vererbungsquellen</a></span></dt>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#objectinheritance-introduction">Einführung</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#objectinheritance-basics">Grundlagen</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#objectinheritance-localvsinveritedvars">Lokale Variablen gegenüber vererbten Variablen</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#objectinheritance-inheritancechaining">Vererbungsverkettung</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#objectinheritance-templates">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#objectinheritance-customobjectvariables">eigene Objektvariablen (custom object variables)</a></span></dt>
+<dt><span class="section">7.26.7. <a href="objectinheritance.html#objectinheritance-cancel_string">Vererbung für Zeichenketten-Werte aufheben</a></span></dt>
+<dt><span class="section">7.26.8. <a href="objectinheritance.html#objectinheritance-add_string">additive Vererbung von Zeichenketten-Werten</a></span></dt>
+<dt><span class="section">7.26.9. <a href="objectinheritance.html#objectinheritance-implied_inheritance">Implizite Vererbung</a></span></dt>
+<dt><span class="section">7.26.10. <a href="objectinheritance.html#objectinheritance-implied_escalations">implizite/additive Vererbung bei Eskalationen</a></span></dt>
+<dt><span class="section">7.26.11. <a href="objectinheritance.html#objectinheritance-important_values">Wichtige Werte (important values)</a></span></dt>
+<dt><span class="section">7.26.12. <a href="objectinheritance.html#objectinheritance-multiple_templates">Mehrere Vererbungsquellen</a></span></dt>
+<dt><span class="section">7.26.13. <a href="objectinheritance.html#objectinheritance-multipleinheritancesources">Vorrang bei mehreren Vererbungsquellen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.26.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>7.26.1. Einführung</h3></div></div></div>
+<a name="objectinheritance-introduction"></a>7.26.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument versucht Objektvererbung zu erklären und wie sie in Ihren <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen</a> genutzt werden kann.</p>
@@ -55,7 +61,7 @@
 
   <div class="section" title="7.26.2. Grundlagen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="basics"></a>7.26.2. Grundlagen</h3></div></div></div>
+<a name="objectinheritance-basics"></a>7.26.2. Grundlagen</h3></div></div></div>
     
 
     <p>Es gibt drei Variablen in allen Objektdefinitionen, die Rekursion und Vererbung beeinflussen. Sie sind wie folgt
@@ -87,7 +93,7 @@
 
   <div class="section" title="7.26.3. Lokale Variablen gegenüber vererbten Variablen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="localvsinveritedvars"></a>7.26.3. Lokale Variablen gegenüber vererbten Variablen</h3></div></div></div>
+<a name="objectinheritance-localvsinveritedvars"></a>7.26.3. Lokale Variablen gegenüber vererbten Variablen</h3></div></div></div>
     
 
     <p>Bei der Vererbung ist es wichtig zu wissen, dass "lokale" Objektvariablen immer Vorrang vor Variablen aus der Vorlage haben.
@@ -125,13 +131,13 @@
     verstehendes Konzept sein.</p>
 
     <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: wenn Sie möchten, dass lokale Zeichenketten-Variablen an geerbte Zeichenkettenwerte angehängt werden,
-    können Sie das tun. Lesen Sie <a class="link" href="objectinheritance.html#objectinheritance-add_string">weiter unten</a> mehr darüber, wie das erreicht werden
+    können Sie das tun. Lesen Sie <a class="link" href="objectinheritance.html#objectinheritance-add_string" title="7.26.8. additive Vererbung von Zeichenketten-Werten">weiter unten</a> mehr darüber, wie das erreicht werden
     kann.</p>
   </div>
 
   <div class="section" title="7.26.4. Vererbungsverkettung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="inheritancechaining"></a>7.26.4. Vererbungsverkettung</h3></div></div></div>
+<a name="objectinheritance-inheritancechaining"></a>7.26.4. Vererbungsverkettung</h3></div></div></div>
     
 
     <p>Objekte können Eigenschaften/Variablen aus mehreren Ebenen von Vorlagenobjekten erben. Nehmen Sie das folgende Beispiel:</p>
@@ -183,7 +189,7 @@
 
   <div class="section" title="7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="templates"></a>7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen</h3></div></div></div>
+<a name="objectinheritance-templates"></a>7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen</h3></div></div></div>
     
 
     <p>Es ist möglich, unvollständige Objektdefinitionen als Vorlage für andere Objektdefinitionen zu nutzen. Mit "unvollständiger"
@@ -241,7 +247,7 @@
 
     <div class="section" title="7.26.6. eigene Objektvariablen (custom object variables)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="customobjectvariables"></a>7.26.6. eigene Objektvariablen (custom object variables)</h3></div></div></div>
+<a name="objectinheritance-customobjectvariables"></a>7.26.6. eigene Objektvariablen (custom object variables)</h3></div></div></div>
 	    
 
     <p>Jede <a class="link" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">eigene Objektvariable</a>, die Sie in Ihren Host-, Service- oder Kontaktdefinitionen
@@ -270,8 +276,12 @@
         _snmp_community         public
         }</pre>
 
-    <p><a name="objectinheritance-cancel_string"></a><span class="bold"><strong>Vererbung für Zeichenketten-Werte
-    aufheben</strong></span></p>
+    </div>
+
+    <div class="section" title="7.26.7. Vererbung für Zeichenketten-Werte aufheben">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-cancel_string"></a>7.26.7. Vererbung für Zeichenketten-Werte aufheben</h3></div></div></div>
+	    
 
     <p>In einigen Fällen möchten Sie vielleicht nicht, dass Ihre Host-, Service- oder Kontakt-Definitionen Werte von
     Zeichenketten-Variablen aus Vorlagen erben. Wenn das der Fall ist, können Sie "<span class="bold"><strong>null</strong></span>" (ohne
@@ -296,9 +306,14 @@
     <pre class="screen"> define host{
         host_name               bighost1
         address                 192.168.1.3
-        }</pre>
+    	}</pre>
 
-    <p><a name="objectinheritance-add_string"></a><span class="bold"><strong>additive Vererbung von Zeichenketten-Werten</strong></span></p>
+    </div>
+
+    <div class="section" title="7.26.8. additive Vererbung von Zeichenketten-Werten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-add_string"></a>7.26.8. additive Vererbung von Zeichenketten-Werten</h3></div></div></div>
+	    
 
     <p>Icinga gibt lokalen Variablen Vorrang vor Werten, die von Vorlagen vererbt werden. In den meisten Fällen überschreiben
     lokale Variablenwerte jene, die in Vorlagen definiert sind. In einigen Fällen ist es sinnvoll, dass Icinga die Werte von geerbten
@@ -328,7 +343,12 @@
         hostgroups              all-servers,linux-servers,web-servers
         }</pre>
 
-    <p><a name="objectinheritance-implied_inheritance"></a><span class="bold"><strong>Implizite Vererbung</strong></span></p>
+    </div>
+
+    <div class="section" title="7.26.9. Implizite Vererbung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-implied_inheritance"></a>7.26.9. Implizite Vererbung</h3></div></div></div>
+	    
 
     <p>Normalerweise müssen Sie entweder explizit den Wert einer erforderlichen Variable in einer Objektdefinition angeben oder sie von
     einer Vorlage erben. Es gibt ein paar Ausnahmen zu dieser Regel, in denen Icinga annimmt, dass Sie einen Wert benutzen wollen,
@@ -418,8 +438,11 @@
     </td></tr>
 </table></div>
 
-    <p><a name="objectinheritance-impliedescalations"></a><span class="bold"><strong>implizite/additive Vererbung bei
-    Eskalationen</strong></span></p>
+    </div>
+    <div class="section" title="7.26.10. implizite/additive Vererbung bei Eskalationen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-implied_escalations"></a>7.26.10. implizite/additive Vererbung bei Eskalationen</h3></div></div></div>
+	    
 
     <p>Service- und Host-Eskalationsdefinitionen können eine spezielle Regel benutzen, die die Möglichkeiten von impliziter und additiver
     Vererbung kombiniert. Wenn Eskalationen 1) nicht die Werte ihrer <span class="emphasis"><em>contact_groups</em></span>- oder
@@ -447,9 +470,14 @@
         host_name               linux-server
         contact_groups  linux-admins,management
         ...
-        }</pre>
+	}</pre>
 
-    <p><a name="objectinheritance-important_values"></a><span class="bold"><strong>Wichtige Werte</strong></span> (important values)</p>
+    </div>
+
+    <div class="section" title="7.26.11. Wichtige Werte (important values)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-important_values"></a>7.26.11. Wichtige Werte (important values)</h3></div></div></div>
+	    
 
     <p>Service-Vorlagen können eine spezielle Regel benutzen, die ihrem check_command-Wert Vorrang gibt. Wenn das check_command mit einem
     Ausrufungszeichen (!) beginnt, dann wird das check_command der Vorlage als wichtig markiert und wird statt des im Service definierten
@@ -499,7 +527,12 @@ define service {
     </td></tr>
 </table></div>
 
-    <p><a name="objectinheritance-multiple_templates"></a><span class="bold"><strong>Mehrere Vererbungsquellen</strong></span></p>
+    </div>
+
+    <div class="section" title="7.26.12. Mehrere Vererbungsquellen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="objectinheritance-multiple_templates"></a>7.26.12. Mehrere Vererbungsquellen</h3></div></div></div>
+	    
 
     <p>Bisher haben alle Beispiele Objektdefinitionen gezeigt, die Variablen/Werte von einer einzelnen Quelle erben. Sie können für
     komplexere Konfigurationen auch Variablen/Werte von mehreren Quellen erben, wie unten gezeigt.</p>
@@ -559,9 +592,9 @@ define service {
         }</pre>
   </div>
 
-  <div class="section" title="7.26.7. Vorrang bei mehreren Vererbungsquellen">
+  <div class="section" title="7.26.13. Vorrang bei mehreren Vererbungsquellen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="multipleinheritancesources"></a>7.26.7. Vorrang bei mehreren Vererbungsquellen</h3></div></div></div>
+<a name="objectinheritance-multipleinheritancesources"></a>7.26.13. Vorrang bei mehreren Vererbungsquellen</h3></div></div></div>
     
 
     <p>Wenn Sie mehrere Vererbungsquellen nutzen, ist es wichtig zu wissen, wie Icinga Variablen behandelt, die in mehreren
@@ -591,17 +624,17 @@ define service {
 </table>
     </div>
 
-    <a class="indexterm" name="idp15442944"></a>
+    <a class="indexterm" name="idp15456528"></a>
 
-    <a class="indexterm" name="idp15444224"></a>
+    <a class="indexterm" name="idp15457728"></a>
 
-    <a class="indexterm" name="idp15445856"></a>
+    <a class="indexterm" name="idp15459120"></a>
 
-    <a class="indexterm" name="idp15447488"></a>
+    <a class="indexterm" name="idp15460512"></a>
 
-    <a class="indexterm" name="idp15449120"></a>
+    <a class="indexterm" name="idp15461904"></a>
 
-    <a class="indexterm" name="idp15450752"></a>
+    <a class="indexterm" name="idp15463504"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -431,8 +431,7 @@
             packages "libdbi", "libdbi-devel", "libdbi-drivers" and "libdbi-dbd-mysql", or alternatively <code class="filename">zypper</code>.</p>
 
             <pre class="screen"> #&gt; zypper install mysql mysql-devel mysql-client \
-    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql
-      </pre>
+    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
 
             <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -589,7 +588,18 @@
 
     <p>Run the Icinga configure script and enable IDOUtils. You will get help by using the --help flag:</p>
 
-    <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils </pre>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Starting with Icinga 1.9 the default has changed so the IDOUtils will be compiled automatically unless disabled
+      explicitly.</p>
+    </td></tr>
+</table></div>
+
+    <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
 
     <p>Also with PostgreSQL you should not use the argument --enable-pgsq because it is not supported yet.</p>
 
@@ -1167,9 +1177,9 @@
     You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp803968"></a>
+    <a class="indexterm" name="idp808272"></a>
 
-    <a class="indexterm" name="idp801888"></a>
+    <a class="indexterm" name="idp806192"></a>
   </div>
 </div>
 <div class="navfooter">
