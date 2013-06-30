@@ -456,6 +456,15 @@ int ido2db_process_config_file(char *filename) {
 	return result;
 }
 
+/* log generic deprecation warning on variables */
+static void log_deprecation_warning(char *var) {
+
+	if (!var)
+		return;
+
+	syslog(LOG_USER | LOG_INFO, "Warning: config setting '%s' ignored. This has been deprecated. Remove it from your configuration!", var);
+}
+
 
 /* process a single module config variable */
 int ido2db_process_config_var(char *arg) {
@@ -611,7 +620,7 @@ int ido2db_process_config_var(char *arg) {
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
 	} else if (!strcmp(var, "enable_sla")) {
-		syslog(LOG_USER | LOG_INFO, "Warning: enable_sla is deprecated!\n");
+		log_deprecation_warning(var);
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;

@@ -260,6 +260,14 @@ int read_all_object_data(char *main_config_file) {
 	return OK;
 }
 
+/* log generic deprecation warning on variables */
+static void log_deprecation_warning(char *var) {
+
+	if (!var)
+		return;
+
+	logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: config setting '%s' ignored. This has been deprecated. Remove it from your configuration!", var);
+}
 
 /* process the main configuration file */
 int read_main_config_file(char *main_config_file) {
@@ -629,10 +637,6 @@ int read_main_config_file(char *main_config_file) {
 			}
 
 			log_external_commands = (atoi(value) > 0) ? TRUE : FALSE;
-		}
-
-		else if (!strcmp(variable, "log_external_commands_user")) {
-			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: log_external_commands_user variable ignored. This has been deprecated.");
 		}
 
 		else if (!strcmp(variable, "log_passive_checks")) {
@@ -1513,6 +1517,14 @@ int read_main_config_file(char *main_config_file) {
 			continue;
 		else if (strstr(input, "precached_object_file=") == input)
 			continue;
+
+		/* DEPRECATED variables */
+		else if (!strcmp(variable, "log_external_commands_user")) {
+			log_deprecation_warning(variable);
+		}
+		else if (!strcmp(variable, "event_profiling_enabled")) {
+			log_deprecation_warning(variable);
+		}
 
 		/* we don't know what this variable is... */
 		else {
