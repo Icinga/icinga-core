@@ -191,7 +191,7 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -378,7 +378,7 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -560,7 +560,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -788,7 +788,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_systemcommanddata, MT(":X1"), (uint *) data[0])) {
@@ -1082,7 +1082,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X1"), (uint *) data[0])) {
@@ -1472,7 +1472,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -1802,7 +1802,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_contactnotificationdata, MT(":X1"), (uint *) data[0])) {
@@ -2003,7 +2003,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X1"), (uint *) data[0])) {
@@ -2189,7 +2189,7 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -2441,7 +2441,7 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -2746,7 +2746,7 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_commentdata, MT(":X1"), (uint *) data[14])) { /* unixtimestamp instead of time2sql */
@@ -2990,7 +2990,7 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3250,7 +3250,7 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3512,7 +3512,7 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3830,7 +3830,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -4265,7 +4265,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -4793,7 +4793,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -5143,7 +5143,7 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -5425,7 +5425,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -5592,7 +5592,7 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6074,7 +6074,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6484,7 +6484,7 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6633,7 +6633,7 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6878,7 +6878,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -7478,7 +7478,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -7848,7 +7848,7 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8096,7 +8096,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8263,7 +8263,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8457,7 +8457,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8677,7 +8677,7 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8983,7 +8983,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9164,7 +9164,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9325,7 +9325,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9610,7 +9610,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9796,7 +9796,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9958,7 +9958,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10122,7 +10122,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10385,7 +10385,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10559,7 +10559,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10886,7 +10886,7 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11127,7 +11127,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11300,7 +11300,7 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -11476,7 +11476,7 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11653,7 +11653,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11842,7 +11842,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -12121,7 +12121,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -12284,7 +12284,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
