@@ -45,11 +45,11 @@ SNPRINTF_O_IDO=@SNPRINTF_O_IDO@
 SNPRINTF_C=../../../common/snprintf.c
 
 
-COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h $(SRC_INCLUDE)/sla.h $(SRC_INCLUDE)/logging.h
+COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h $(SRC_INCLUDE)/logging.h
 COMMON_SRC=io.c utils.c
 COMMON_OBJS=io.o utils.o ${SNPRINTF_O_IDO}
 
-IDO2DB_OBJS=dbhandlers.o dbqueries.o sla.o logging.o
+IDO2DB_OBJS=dbhandlers.o dbqueries.o logging.o
 
 IDO_INC=$(SRC_INCLUDE)/ido2db.h $(SRC_INCLUDE)/db.h
 IDO_SRC=db.c
@@ -89,9 +89,6 @@ dbhandlers.o: dbhandlers.c $(SRC_INCLUDE)/dbhandlers.h
 
 dbqueries.o: dbqueries.c $(SRC_INCLUDE)/dbqueries.h
 	$(CC) $(CFLAGS) -c -o $@ dbqueries.c
-
-sla.o: sla.c $(COMMON_INC)
-	$(CC) $(CFLAGS) -c -o $@ sla.c
 
 logging.o: logging.c $(COMMON_INC)
 	$(CC) $(CFLAGS) -c -o $@ logging.c

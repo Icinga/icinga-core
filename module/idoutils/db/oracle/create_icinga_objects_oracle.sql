@@ -1812,28 +1812,6 @@ alter table timeperiods add CONSTRAINT timeperiods_uq UNIQUE (instance_id,config
 	using index tablespace &&IDXTBS;
 
 
--- --------------------------------------------------------
-
--- 
--- Table structure for table slahistory
--- 
-
-CREATE TABLE slahistory (
-  id integer ,
-  instance_id integer default 0 ,
-  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  acknowledgement_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  object_id integer default 0 ,
-  state integer default 0 ,
-  state_type integer default 0 ,
-  scheduled_downtime integer default 0
-)tablespace &&DATATBS;
-alter table slahistory add constraint slahistory_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-
-
-
 -- -----------------------------------------
 -- add index (delete)
 -- -----------------------------------------
@@ -1986,10 +1964,6 @@ CREATE INDEX statehist_time_idx on statehistory(instance_id, object_id, state_ty
 -- #2274
 create index statehistory_state_idx on statehistory(object_id,state)
 tablespace &&IDXTBS;
-
-
--- slahistory
-CREATE INDEX slahist_idx on slahistory(instance_id,object_id,start_time,end_time) tablespace &&IDXTBS;
 
 -- Icinga Web Notifications
 CREATE INDEX notification_idx ON notifications(notification_type, object_id, start_time) tablespace &&IDXTBS;

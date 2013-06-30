@@ -16,7 +16,6 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 #include "../include/dbqueries.h"
-#include "../include/sla.h"
 #include "../include/logging.h"
 
 /* Icinga header files */
@@ -29,8 +28,6 @@ extern int errno;
 extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
 extern ido2db_dbconfig ido2db_db_settings; /* for tables cleanup settings */
-
-extern int enable_sla;
 
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
@@ -3102,18 +3099,12 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 
 		ido2db_query_insert_or_update_downtimedata_downtime_history_add(idi, data);
-
-		if (enable_sla)
-			sla_process_downtime_history(idi, object_id, start_time, end_time);
 	}
 
 	/* save a record of scheduled downtime that starts */
 	if (type == NEBTYPE_DOWNTIME_START) {
 		/* start means downtime in effect as well, fake it */
 		is_in_effect = 1;
-
-		if (enable_sla)
-			sla_process_downtime(idi, object_id, tstamp.tv_sec, type);
 
 		/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -3212,8 +3203,6 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 	/* save a record of scheduled downtime that ends */
 	if (type == NEBTYPE_DOWNTIME_STOP) {
-		if (enable_sla)
-			sla_process_downtime(idi, object_id, tstamp.tv_sec, type);
 
 		/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -3924,9 +3913,6 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
-	if (enable_sla)
-		sla_process_acknowledgement(idi, object_id, tstamp.tv_sec, problem_has_been_acknowledged);
-
 	/* save entry to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
 	data[1] = (void *) &object_id;
@@ -4130,9 +4116,6 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	         IDO2DB_OBJECTTYPE_TIMEPERIOD,
 	         idi->buffered_input[IDO_DATA_SERVICECHECKPERIOD], NULL,
 	         &check_timeperiod_object_id);
-
-	if (enable_sla)
-		sla_process_acknowledgement(idi, object_id, tstamp.tv_sec, problem_has_been_acknowledged);
 
 	/* save entry to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -4764,10 +4747,6 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 	else
 		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
 		         idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
-
-	if (enable_sla)
-		sla_process_statechange(idi, object_id, tstamp.tv_sec,
-		    tstamp.tv_sec, &state, &state_type, NULL);
 
 	/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */

@@ -1402,26 +1402,6 @@ CREATE TABLE  icinga_timeperiod_timeranges (
   CONSTRAINT PK_timeperiod_timerange_id PRIMARY KEY (timeperiod_timerange_id)
 ) ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table icinga_slahistory
---
-                                                                                
-CREATE TABLE icinga_slahistory (
-  slahistory_id serial,
-  instance_id bigint default 0,
-  start_time timestamp with time zone default '1970-01-01 00:00:00',
-  end_time timestamp with time zone default '1970-01-01 00:00:00',
-  acknowledgement_time timestamp with time zone default '1970-01-01 00:00:00',
-  object_id bigint default 0,
-  state INTEGER default 0,
-  state_type INTEGER default '0',
-  scheduled_downtime INTEGER default 0,
-  CONSTRAINT PK_slahistory_id PRIMARY KEY (slahistory_id)
-) ;
-
-
 
 -- -----------------------------------------
 -- add index (delete)
@@ -1611,9 +1591,6 @@ CREATE INDEX services_combined_object_idx ON icinga_services(service_object_id, 
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
 --#2274
 create index statehist_state_idx on icinga_statehistory(object_id,state);
-
--- SLA statehistory
-CREATE INDEX slahist_i_id_o_id_s_ti_s_s_ti_e on icinga_slahistory(instance_id,object_id,start_time,end_time);
 
 -- #2618
 CREATE INDEX cntgrpmbrs_cgid_coid ON icinga_contactgroup_members (contactgroup_id,contact_object_id);

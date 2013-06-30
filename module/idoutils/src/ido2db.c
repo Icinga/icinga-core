@@ -22,7 +22,6 @@
 #include "../include/ido2db.h"
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
-#include "../include/sla.h"
 #include "../include/logging.h"
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
@@ -87,7 +86,6 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
-int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
 static time_t ido2db_proxy_last_report = 0;
@@ -619,9 +617,6 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.oci_errors_to_syslog = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
-	} else if (!strcmp(var, "enable_sla")) {
-		log_deprecation_warning(var);
-		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
         }
@@ -629,6 +624,11 @@ int ido2db_process_config_var(char *arg) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
 	}
+	/* DEPRECATED variables */
+	else if (!strcmp(var, "enable_sla")) {
+		log_deprecation_warning(var);
+	}
+
 	//syslog(LOG_ERR,"ido2db_process_config_var(%s) end\n",var);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var(%s) end\n", var);

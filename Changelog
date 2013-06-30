@@ -15,6 +15,9 @@ UPGRADE NOTES
 
 1.10.0 - 24/10/2013
 
+* idoutils: slahistory table must be removed manually after enable_sla removal #4363
+	- DROP TABLE icinga_slahistory
+
 ENHANCEMENTS
 
 * classic ui: add display filter modification for status.cgi #852 - RB
@@ -33,6 +36,8 @@ FIXES
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 
+* idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
+
 SUPPORT
 * fixed gcc warnings about unused vars and unused return values #3984 - RB
 * classic ui: javascript cleanup and common.lib added #4324 - RB
@@ -44,6 +49,7 @@ CHANGES
 * core: drop event_profiling_enabled functionality #2244
 
 * idoutils: add max_downtimhistory_age to ido2db.cfg #3989
+* idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
