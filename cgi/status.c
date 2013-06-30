@@ -671,7 +671,6 @@ int main(void) {
 	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
 		result_limit = 0;
 
-
 	/**
 	 *	check submitted data and create cgi_title
 	**/
@@ -803,9 +802,14 @@ int main(void) {
 		search_string = strdup(req_hosts[0].entry);
 	}
 
+	/* keep backwards compatibility with nostatusheader option */
+	if (nostatusheader_option == TRUE)
+		display_status_totals = FALSE;
+
 	/* allow service_filter only for status lists */
 	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
 		my_free(service_filter);
+
 
 	/**
 	 *	filter status data if user searched for something
@@ -878,7 +882,7 @@ int main(void) {
 			}
 
 
-			/* if didn't found anything until now we start looking for hostgroups and servicegroups */
+			/* if we didn't found anything until now we start looking for hostgroups and servicegroups */
 			if (host_items_found == FALSE && service_items_found == FALSE) {
 
 				/* try to find hostgroup */
@@ -917,6 +921,123 @@ int main(void) {
 		else if (host_items_found == FALSE && service_items_found == TRUE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
+
+
+	/**
+	 *	check submitted data, create url_parts and create cgi_title
+	**/
+
+	/* determine display of hosts */
+	if (req_hosts[0].entry != NULL) {
+		show_all_hosts = FALSE;
+		for (i = 0; req_hosts[i].entry != NULL; i++) {
+			if (!strcmp(req_hosts[i].entry, "all")) {
+				show_all_hosts = TRUE;
+				my_free(url_hosts_part);
+				my_free(cgi_title);
+				req_hosts[0].entry = strdup("all");
+				req_hosts[1].entry = NULL;
+				asprintf(&url_hosts_part, "host=all");
+				break;
+			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				asprintf(&cgi_title, "%s%s[%s]", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hosts[i].entry, FALSE));
+
+				if (i == 0)
+					asprintf(&url_hosts_part, "host=%s", url_encode(req_hosts[i].entry));
+				else {
+					strncpy(temp_buffer, url_hosts_part, sizeof(temp_buffer));
+					my_free(url_hosts_part);
+					asprintf(&url_hosts_part, "%s&host=%s", temp_buffer, url_encode(req_hosts[i].entry));
+				}
+			}
+		}
+	} else {
+		req_hosts[0].entry = strdup("all");
+		req_hosts[1].entry = NULL;
+		asprintf(&url_hosts_part, "host=all");
+	}
+
+	/* determine display of hostgroups */
+	if (req_hostgroups[0].entry != NULL) {
+		show_all_hostgroups = FALSE;
+		for (i = 0; req_hostgroups[i].entry != NULL; i++) {
+			if (!strcmp(req_hostgroups[i].entry, "all")) {
+				show_all_hostgroups = TRUE;
+				my_free(url_hostgroups_part);
+				my_free(cgi_title);
+				req_hostgroups[0].entry = strdup("all");
+				req_hostgroups[1].entry = NULL;
+				asprintf(&url_hostgroups_part, "hostgroup=all");
+				break;
+			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				asprintf(&cgi_title, "%s%s{%s}", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hostgroups[i].entry, FALSE));
+
+				if (i == 0)
+					asprintf(&url_hostgroups_part, "hostgroup=%s", url_encode(req_hostgroups[i].entry));
+				else {
+					strncpy(temp_buffer, url_hostgroups_part, sizeof(temp_buffer));
+					my_free(url_hostgroups_part);
+					asprintf(&url_hostgroups_part, "%s&hostgroup=%s", temp_buffer, url_encode(req_hostgroups[i].entry));
+				}
+			}
+		}
+	} else {
+		req_hostgroups[0].entry = strdup("all");
+		req_hostgroups[1].entry = NULL;
+		asprintf(&url_hostgroups_part, "hostgroup=all");
+	}
+
+	/* determine display of servicegroups */
+	if (req_servicegroups[0].entry != NULL) {
+		show_all_servicegroups = FALSE;
+		for (i = 0; req_servicegroups[i].entry != NULL; i++) {
+			if (!strcmp(req_servicegroups[i].entry, "all")) {
+				show_all_servicegroups = TRUE;
+				my_free(url_servicegroups_part);
+				my_free(cgi_title);
+				req_servicegroups[0].entry = strdup("all");
+				req_servicegroups[1].entry = NULL;
+				asprintf(&url_servicegroups_part, "servicegroup=all");
+				break;
+			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				asprintf(&cgi_title, "%s%s(%s)", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_servicegroups[i].entry, FALSE));
+
+				if (i == 0)
+					asprintf(&url_servicegroups_part, "servicegroup=%s", url_encode(req_servicegroups[i].entry));
+				else {
+					strncpy(temp_buffer, url_servicegroups_part, sizeof(temp_buffer));
+					my_free(url_servicegroups_part);
+					asprintf(&url_servicegroups_part, "%s&servicegroup=%s", temp_buffer, url_encode(req_servicegroups[i].entry));
+				}
+			}
+		}
+	} else {
+		req_servicegroups[0].entry = strdup("all");
+		req_servicegroups[1].entry = NULL;
+		asprintf(&url_servicegroups_part, "servicegroup=all");
+	}
+
+
+	/**
+	 *	send HTML header
+	**/
+
+	document_header(CGI_ID, TRUE, (tab_friendly_titles && cgi_title != NULL) ? cgi_title : "Current Network Status");
+
+	my_free(cgi_title);
+
 
 	/* pre filter for service groups
 	   this way we mark all services which belong to a servicegroup we want to see once.

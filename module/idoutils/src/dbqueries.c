@@ -189,7 +189,7 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -376,7 +376,7 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -558,7 +558,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -637,6 +637,10 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			if (strlen(*(char **) data[11]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[11])[strlen(*(char **) data[11]) - 1] == '\\') {
+					(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 
@@ -782,7 +786,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_systemcommanddata, MT(":X1"), (uint *) data[0])) {
@@ -904,6 +908,10 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[17])[strlen(*(char **) data[17]) - 1] == '\\') {
+					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 
@@ -1072,7 +1080,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X1"), (uint *) data[0])) {
@@ -1174,8 +1182,8 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() bind clob error\n");
 	}
 	//free lobs
-	if (lob_oi !=NULL) OCI_LobFree(lob_loi);
-	if (lob_ou !=NULL) OCI_LobFree(lob_lou);
+	if (lob_oi !=NULL) OCI_LobFree(lob_oi);
+	if (lob_ou !=NULL) OCI_LobFree(lob_ou);
 	if (lob_loi !=NULL) OCI_LobFree(lob_loi);
 	if (lob_lou !=NULL) OCI_LobFree(lob_lou);
 
@@ -1224,6 +1232,10 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			if (strlen(*(char **) data[10]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[10])[strlen(*(char **) data[10]) - 1] == '\\') {
+					(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 
@@ -1458,7 +1470,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -1788,7 +1800,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_contactnotificationdata, MT(":X1"), (uint *) data[0])) {
@@ -1989,7 +2001,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X1"), (uint *) data[0])) {
@@ -2076,12 +2088,20 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[17])[strlen(*(char **) data[17]) - 1] == '\\') {
+					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 		if (*(char **) data[18] != NULL) {
 			if (strlen(*(char **) data[18]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:perfdata truncated\n");
+				if ((*(char **) data[18])[strlen(*(char **) data[18]) - 1] == '\\') {
+					(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
                 asprintf(&query1,
@@ -2167,7 +2187,7 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -2319,12 +2339,20 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			if (strlen(*(char **) data[21]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[21])[strlen(*(char **) data[21]) - 1] == '\\') {
+					(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 		if (*(char **) data[22] != NULL) {
 			if (strlen(*(char **) data[22]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:perfdata truncated\n");
+				if ((*(char **) data[22])[strlen(*(char **) data[22]) - 1] == '\\') {
+					(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
                 asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, "
@@ -2411,7 +2439,7 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -2716,7 +2744,7 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_commentdata, MT(":X1"), (uint *) data[14])) { /* unixtimestamp instead of time2sql */
@@ -2960,7 +2988,7 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3220,7 +3248,7 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3482,7 +3510,7 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -3800,7 +3828,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -3942,12 +3970,20 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[4])[strlen(*(char **) data[4]) - 1] == '\\') {
+					(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 		if (*(char **) data[5] != NULL) {
 			if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
+				if ((*(char **) data[5])[strlen(*(char **) data[5]) - 1] == '\\') {
+					(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
 	        asprintf(&query1, "UPDATE %s SET instance_id=%lu, host_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE host_object_id=%lu",
@@ -4227,7 +4263,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -4455,12 +4491,20 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
+				if ((*(char **) data[4])[strlen(*(char **) data[4]) - 1] == '\\') {
+					(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}	
 		if (*(char **) data[5] != NULL) {
 			if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
 				(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
+				if ((*(char **) data[5])[strlen(*(char **) data[5]) - 1] == '\\') {
+					(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+				}
 			}
 		}
                 asprintf(&query1, "UPDATE %s SET instance_id=%lu, service_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_service=%d, modified_service_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE service_object_id=%lu",
@@ -4747,7 +4791,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -5097,7 +5141,7 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -5161,7 +5205,6 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf1 = NULL;
-//        unsigned long configfile_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -5380,7 +5423,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -5547,7 +5590,7 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6028,7 +6071,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6438,7 +6481,7 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6587,7 +6630,7 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -6629,7 +6672,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long hostgroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -6833,7 +6875,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -7432,7 +7474,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -7802,7 +7844,7 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -7844,7 +7886,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long servicegroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -8051,7 +8092,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8218,7 +8259,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8412,7 +8453,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8632,7 +8673,7 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -8698,7 +8739,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long hostescalation_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -8939,7 +8979,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9120,7 +9160,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9281,7 +9321,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9323,7 +9363,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long serviceescalation_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -9567,7 +9606,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9753,7 +9792,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -9915,7 +9954,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10079,7 +10118,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10136,7 +10175,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long timeperiod_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -10343,7 +10381,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10517,7 +10555,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -10563,7 +10601,6 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long contact_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -10845,7 +10882,7 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11086,7 +11123,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11259,7 +11296,7 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* bind params to prepared statement */
@@ -11435,7 +11472,7 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11612,7 +11649,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11801,7 +11838,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -11873,7 +11910,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-//        unsigned long contactgroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -12081,7 +12117,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */
@@ -12244,7 +12280,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* check if we lost connection, and reconnect */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_TRUE) == IDO_ERROR)
 		return IDO_ERROR;
 
 	/* use prepared statements and ocilib */

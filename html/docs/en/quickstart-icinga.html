@@ -336,7 +336,18 @@
 
     <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
 
-    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Starting with Icinga 1.9 the default has changed so you have to disable the compilation of IDOUtils
+      explicitly.</p>
+    </td></tr>
+</table></div>
+
+    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --disable-idoutils</pre>
 
     <p>Compile the Icinga source code. To see available options, only use "make".</p>
 
@@ -598,7 +609,7 @@
     <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp466496"></a>
+    <a class="indexterm" name="idp472800"></a>
   </div>
 </div>
 <div class="navfooter">
