@@ -438,7 +438,7 @@ fi
 
 
 %changelog
-* Mon Jul 01 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.2-1
+* Sun Jun 30 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.2-1
 - bump 1.9.2
 
 * Wed May 22 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.1-1

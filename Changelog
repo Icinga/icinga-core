@@ -13,7 +13,7 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
-1.9.2 - 01/07/2013
+1.9.2 - 30/06/2013
 
 FIXES
 * core: fix bug with non-ASCII (> 127) illegal macro output characters on char-to-int cast (Jason Young) #4211 - MF
