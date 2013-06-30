@@ -5207,7 +5207,6 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf1 = NULL;
-        unsigned long configfile_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -5647,7 +5646,6 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long host_id;
 	int do_insert = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -6677,7 +6675,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long hostgroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -7083,7 +7080,6 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long service_id;
         int do_insert = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -7894,7 +7890,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long servicegroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -8748,7 +8743,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long hostescalation_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -9373,7 +9367,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long serviceescalation_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -10186,7 +10179,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long timeperiod_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -10613,7 +10605,6 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long contact_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
@@ -11923,7 +11914,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
         char * query1 = NULL;
         char * query2 = NULL;
 	char * buf = NULL;
-        unsigned long contactgroup_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE

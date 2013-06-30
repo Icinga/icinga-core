@@ -1228,7 +1228,7 @@ static size_t ido2db_proxy_get_size_left(ido2db_proxy *proxy) {
 
 	return result;
 }
-
+/*
 static size_t ido2db_proxy_get_size_right(ido2db_proxy *proxy) {
 	size_t result;
 
@@ -1238,7 +1238,7 @@ static size_t ido2db_proxy_get_size_right(ido2db_proxy *proxy) {
 
 	return result;
 }
-
+*/
 int ido2db_wait_for_connections(void) {
 	int sd_flag = 1;
 	int new_sd = 0;

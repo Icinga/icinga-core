@@ -922,9 +922,6 @@ int ido2db_set_objects_as_active(ido2db_idi *idi, unsigned long *object_ids, int
 
 int ido2db_set_object_as_active(ido2db_idi *idi, unsigned long object_id) {
 	int result = IDO_OK;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
 
 #ifdef USE_ORACLE
 
