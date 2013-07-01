@@ -114,9 +114,8 @@ typedef struct ido2db_dbconfig_struct{
 #define IDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS    66
 #define IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS 67
 #define IDO2DB_DBTABLE_DBVERSION                      68
-#define IDO2DB_DBTABLE_SLAHISTORY                     69
 
-#define IDO2DB_MAX_DBTABLES                           70
+#define IDO2DB_MAX_DBTABLES                           69
 
 
 /**************** Object types *****************/
