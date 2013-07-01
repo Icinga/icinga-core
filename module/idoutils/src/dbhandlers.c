@@ -486,8 +486,16 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	stride = 2500;
 
 	for (;;) {
-		if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
-			buf = NULL;
+                switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_PGSQL:
+			if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu OFFSET %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, stride, offset) == -1)
+				buf = NULL;
+			break;
+		default:
+			if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
+				buf = NULL;
+			break;
+		}
 
 		if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 			if (dbi_result_get_numrows(idi->dbinfo.dbi_result) == 0)
@@ -496,7 +504,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 			while (idi->dbinfo.dbi_result) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
 					char *name2;
-					
+
 					object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
 					objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
 
