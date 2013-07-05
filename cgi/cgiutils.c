@@ -234,11 +234,26 @@ int		cgi_log_rotation_method = LOG_ROTATION_NONE;
  * source-files once. A decent linker will make the call
  * a no-op anyway, so it's not a big issue
  */
-void logit(int data_type, int display, const char *fmt, ...) {
-	return;
-}
+
 int log_debug_info(int leve, int verbosity, const char *fmt, ...) {
 	return 0;
+}
+
+/*
+ * pipe all common logit calls into our cgi log file
+ * if enabled using 'use_logging'
+ */
+void logit(int data_type, int display, const char *fmt, ...) {
+	if (use_logging) {
+		va_list ap;
+		char *buffer = NULL;
+		va_start(ap, fmt);
+		if (vasprintf(&buffer, fmt, ap) > 0) {
+			write_to_cgi_log(buffer);
+			free(buffer);
+		}
+		va_end(ap);
+	}
 }
 
 /**********************************************************

@@ -21,6 +21,7 @@ UPGRADE NOTES
 ENHANCEMENTS
 
 * classic ui: add display filter modification for status.cgi #852 - RB
+* classic ui: log errors into cgi log (use_logging=1) #4389 - MF
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 
