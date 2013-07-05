@@ -33,6 +33,17 @@ CGI_O=$(SRC_CGI)/getcgi.o $(SNPRINTF_O)
 CGI_H=$(SRC_INCLUDE)/getcgi.h
 COMMON_H=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/locations.h
 
+
+###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+# Compiler flags for use with Valgrind - set when debug is enabled
+ifeq ('$(ENABLE_DEBUG)', 'yes')
+        CFLAGS=-O0 -g
+endif
+
 ##############################################################################
 # standard targets (all, clean, distclean, devclean, install)
 

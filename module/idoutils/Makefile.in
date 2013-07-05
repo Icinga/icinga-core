@@ -20,6 +20,16 @@ INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
 USE_IDOUTILS=@USE_IDOUTILS@
 
+###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+# Compiler flags for use with Valgrind - set when debug is enabled
+ifeq ('$(ENABLE_DEBUG)', 'yes')
+        CFLAGS=-O0 -g
+endif
+
 all:
 	if [ x$(USE_IDOUTILS) = xyes ]; then \
 	    cd $(SRC_BASE) && $(MAKE); \

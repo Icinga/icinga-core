@@ -29,6 +29,17 @@ CP=@CP@
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@ -DNSCGI
 
+
+###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+# Compiler flags for use with Valgrind - set when debug is enabled
+ifeq ('$(ENABLE_DEBUG)', 'yes')
+        CFLAGS=-O0 -g -DHAVE_CONFIG_H -DNSCGI
+endif
+
 # for profiling
 #CFLAGS += -pg -ftest-coverage
 

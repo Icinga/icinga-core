@@ -58,6 +58,11 @@ PERLDIR=@PERLDIR@
 STATEDIR=@STATEDIR@
 
 ###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+###############################
 # Modules
 ###############################
 USE_EVENTBROKER=@USE_EVENTBROKER@

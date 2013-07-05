@@ -85,6 +85,18 @@ BROKER_H=@BROKER_H@
 
 TAPOBJ += $(SNPRINTF_O)
 
+
+###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+# Compiler flags for use with Valgrind - set when debug is enabled
+ifeq ('$(ENABLE_DEBUG)', 'yes')
+        CFLAGS=-O0 -g -DNSCORE -I../include -I../tools/libtap
+endif
+
+
 all: $(TESTS)
 
 ########## TESTS ##########

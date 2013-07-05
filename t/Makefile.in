@@ -4,6 +4,16 @@ CP=@CP@
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@
 
+###############################
+# Debug
+###############################
+ENABLE_DEBUG=@ENABLE_DEBUG@
+
+# Compiler flags for use with Valgrind - set when debug is enabled
+ifeq ('$(ENABLE_DEBUG)', 'yes')
+        CFLAGS=-O0 -g
+endif
+
 all:
 
 test:	JSON_checker

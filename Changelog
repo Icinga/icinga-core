@@ -25,6 +25,7 @@ ENHANCEMENTS
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 
 * install: allow enable perfdata config switch via configure #3996 - MF
+* install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
 
 * contrib: add vim highlight script for Icinga syntax #4150 - LE
 
