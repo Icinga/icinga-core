@@ -730,6 +730,30 @@ show_tac_header_pending=1
 #
 ######################################
 
+# EXCLUDE CUSTOMVAR NAMES
+# This Option allows you to specify a comma seperated list of
+# custom variable names which are automatically excluded when
+# a variable name would contain that name.
+# NOTE: For security reasons, you should at least exclude all
+# sensitive information like passwords, snmp communities, etc
+# Use * to exclude all custom variable names.
+
+exclude_customvar_name=PASSWORD,COMMUNITY
+
+
+
+# EXCLUDE CUSTOMVAR VALUES
+# This Option allows you to specify a comma seperated list of
+# custom variable values which are automatically excluded when
+# a variable value would contain that value.
+# NOTE: For security reasons, you should at least exclude all
+# sensitive information like passwords, snmp communities, etc
+# Use * to exclude all custom variable values.
+
+exclude_customvar_value=secret
+
+
+
 # SHOW CHILD HOSTS IN EXTINFO OPTION
 # This Option allows you to specify if the extended host information
 # cgi will show child hosts for the selected host.

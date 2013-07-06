@@ -1578,6 +1578,20 @@ void show_host_info(void) {
 
 			printf("<tr><td class='dataVar'>Executed Command:</td><td class='dataVal'><a href='%s?type=command&amp;host=%s&amp;expand=%s'>Command Expander</a></td></tr>\n", CONFIG_CGI, url_encode(host_name), url_encode(temp_host->host_check_command));
 
+			/* Custom Variables */
+			if (temp_host->custom_variables) {
+				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
+				printf("<table>\n");
+				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
+				customvariablesmember *temp_customvar;
+				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+					if (check_exclude_customvar(temp_customvar) == FALSE)
+						printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
+				}
+				printf("</table>\n");
+				printf("</td></tr>\n");
+			}
+
 			printf("</table>\n");
 			printf("</td></tr>\n");
 			printf("</table>\n");
@@ -2013,6 +2027,20 @@ void show_service_info(void) {
 			printf("</td></tr>\n");
 
 			printf("<tr><td class='dataVar'>Executed Command:</td><td class='dataVal'><a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>Command Expander</a></td></tr>\n", CONFIG_CGI, url_encode(host_name), url_encode(service_desc), url_encode(temp_service->service_check_command));
+
+			/* Custom Variables */
+			if (temp_service->custom_variables) {
+				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
+				printf("<table>\n");
+				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
+				customvariablesmember *temp_customvar;
+				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+				if (check_exclude_customvar(temp_customvar) == FALSE)
+					printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
+				}
+				printf("</table>\n");
+				printf("</td></tr>\n");
+			}
 
 			printf("</table>\n");
 			printf("</td></tr>\n");

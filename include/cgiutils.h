@@ -526,6 +526,8 @@ extern "C" {
 
 /******************************** FUNCTIONS *******************************/
 
+int check_exclude_customvar(customvariablesmember *);
+
 void reset_cgi_vars(void);
 void free_memory(void);
 

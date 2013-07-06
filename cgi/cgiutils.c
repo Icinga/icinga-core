@@ -99,6 +99,10 @@ char		*authorized_contactgroup_for_comments_read_only = NULL;
 char		*authorized_contactgroup_for_downtimes_read_only = NULL;
 char		*authorized_contactgroup_for_system_commands = NULL;
 char		*authorized_contactgroup_for_system_information = NULL;
+
+char 		*exclude_customvar_name = NULL;
+char		*exclude_customvar_value = NULL;
+
 char		*default_user_name = NULL;
 
 extern time_t   program_start;
@@ -254,6 +258,28 @@ void logit(int data_type, int display, const char *fmt, ...) {
 		}
 		va_end(ap);
 	}
+}
+
+/* check if customvar name or value must be excluded */
+int check_exclude_customvar(customvariablesmember *customvariable) {
+	char *temp_ptr;
+	char temp_data[MAX_INPUT_BUFFER];
+
+#define EXCLUDE_CUSTOMVAR(type) \
+        if (exclude_customvar_##type != NULL && strlen(exclude_customvar_##type) > 0) { \
+                strncpy(temp_data, exclude_customvar_##type, sizeof(temp_data) -1); \
+                for (temp_ptr = strtok(temp_data, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) { \
+                        if (strstr(customvariable->variable_##type, temp_ptr) || !strcmp(temp_ptr, "*")) { \
+                                return TRUE; \
+                        } \
+                } \
+        }
+
+	EXCLUDE_CUSTOMVAR(name)
+	EXCLUDE_CUSTOMVAR(value)
+
+	/* if both did not hit do not exclude any */
+	return FALSE;
 }
 
 /**********************************************************
@@ -749,6 +775,14 @@ int read_cgi_config_file(char *filename) {
 		} else if (!strcmp(var, "authorized_contactgroup_for_system_information")) {
 			authorized_contactgroup_for_system_information = strdup(val);
 			strip(authorized_contactgroup_for_system_information);
+
+		} else if (!strcmp(var, "exclude_customvar_name")) {
+			exclude_customvar_name = strdup(val);
+			strip(exclude_customvar_name);
+
+		} else if (!strcmp(var, "exclude_customvar_value")) {
+			exclude_customvar_value = strdup(val);
+			strip(exclude_customvar_value);
 
 		} else if (!strcmp(var, "default_user_name")) {
 			default_user_name = strdup(val);
