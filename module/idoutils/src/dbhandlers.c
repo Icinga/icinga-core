@@ -478,6 +478,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 #ifdef USE_LIBDBI
 	unsigned long offset, stride;
 	char *buf = NULL;
+	char *name2 = NULL;
 #endif
 
 #ifdef USE_ORACLE
@@ -487,28 +488,16 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 	/* find all the object definitions we already have */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	offset = 0;
-	stride = 2500;
-
-	for (;;) {
-                switch (idi->dbinfo.server_type) {
-                case IDO2DB_DBSERVER_PGSQL:
-			if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu OFFSET %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, stride, offset) == -1)
-				buf = NULL;
-			break;
-		default:
-			if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
-				buf = NULL;
-			break;
-		}
+	switch (idi->dbinfo.server_type) {
+	case IDO2DB_DBSERVER_PGSQL:
+		/* postgresql works well with dbi_result_next_now() */
+		if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
+			buf = NULL;
 
 		if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
-			if (dbi_result_get_numrows(idi->dbinfo.dbi_result) == 0)
-				break;
 
 			while (idi->dbinfo.dbi_result) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-					char *name2;
 
 					object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
 					objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
@@ -537,7 +526,53 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 		free(buf);
 
-		offset += stride;
+		break;
+	default:
+		/* provide a workaround for mysql bug with dbi_result_nextrow() */
+		offset = 0;
+		stride = 2500;
+
+		for (;;) {
+			if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
+				buf = NULL;
+
+			if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
+				if (dbi_result_get_numrows(idi->dbinfo.dbi_result) == 0)
+					break;
+
+				while (idi->dbinfo.dbi_result) {
+					if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+
+						object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
+						objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
+
+						/* get string and free it later on */
+						if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
+							tmp1 = NULL;
+						name2 = dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2");
+						if (!name2 || asprintf(&tmp2, "%s", name2) == -1)
+							tmp2 = NULL;
+
+						ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+
+						free(tmp1);
+						free(tmp2);
+
+					} else {
+						dbi_result_free(idi->dbinfo.dbi_result);
+						idi->dbinfo.dbi_result = NULL;
+					}
+				}
+			} else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+				idi->dbinfo.dbi_result = NULL;
+			}
+
+			free(buf);
+
+			offset += stride;
+		}
+		break;
 	}
 #endif
 
