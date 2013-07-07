@@ -1204,14 +1204,14 @@ static void *ido2db_proxy_thread_proc(void *pargs) {
 
 static ido2db_proxy *ido2db_proxy_new(int fd_left, int fd_right) {
 	pthread_t tid;
-
 	ido2db_proxy *proxy = (ido2db_proxy *)malloc(sizeof(ido2db_proxy));
+	ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
+
 	pthread_mutex_init(&(proxy->mutex), NULL);
 	proxy->size_left = 0;
 	proxy->size_right = 0;
 	proxy->refs = 2;
 
-	ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
 	pa->fd_left = fd_left;
 	pa->fd_right = fd_right;
 	pa->proxy = proxy;
