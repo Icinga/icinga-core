@@ -461,6 +461,24 @@ dnl User can override init script location
 AC_ARG_WITH(init_dir,AC_HELP_STRING([--with-init-dir=<path>],[sets directory to place init script into]),init_dir=$withval)
 AC_SUBST(init_dir)
 
+dnl Check for location of systemd unit files
+systemd_unit_dir=/usr/lib/systemd/system
+if test -d /usr/lib/systemd/system; then
+       systemd_unit_dir=/usr/lib/systemd/system
+elif test -d /lib/systemd/system; then
+       systemd_unit_dir=/lib/systemd/system
+fi
+
+systemd_sysconfig_dir=/etc/sysconfig
+
+dnl User can override unit file directory location
+AC_ARG_WITH(systemd_unit_dir,AC_HELP_STRING([--with-systemd-unitdir=<path>],[sets directory to place systemd service file into]),systemd_unit_dir=$withval)
+AC_SUBST(systemd_unit_dir)
+
+dnl User can override sysconfig file directory location
+AC_ARG_WITH(systemd_sysconfig_dir,AC_HELP_STRING([--with-systemd-sysconfigdir=<path>],[sets directory to place systemd service configuration file]),systemd_sysconfig_dir=$withval)
+AC_SUBST(systemd_sysconfig_dir)
+
 dnl User can override lock file location
 AC_ARG_WITH(lockfile,AC_HELP_STRING([--with-lockfile=<path>],[sets path and file name for lock file]),lockfile=$withval,lockfile=$localstatedir/icinga.lock)
 AC_SUBST(lockfile)
@@ -1355,7 +1373,7 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
 
 
 dnl OUTPUT
-AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
+AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
 
 perl subst $srcdir/include/locations.h
 

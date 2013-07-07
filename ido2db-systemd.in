@@ -1,0 +1,11 @@
+[Unit]
+Description=Icinga Data Out Utilities (IDOUtils)
+After=syslog.target network.target
+
+[Service]
+EnvironmentFile=@systemd_sysconfig_dir@/icinga
+ExecStart=@bindir@/ido2db -f $IDO2DB_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

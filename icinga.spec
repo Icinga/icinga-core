@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 1
+%define revision 2
 
 %define logmsg logger -t %{name}/rpm
 
@@ -18,6 +18,23 @@
 %define apacheuser apache
 %define apachegroup apache
 
+# Systemd support for Fedora >= 15
+%if 0%{?fedora} >= 15
+%define using_systemd 1
+%else
+%define using_sysvinit 1
+%endif
+
+# Check to see if we're allowed to use macroized systemd scriptlets, as
+# introduced in Fedora 18.
+%if 0%{?using_systemd}
+%if 0%{?fedora} >= 18
+%define systemd_macro_scriptlet 1
+%else
+%define systemd_macro_scriptlet 0
+%endif  # Fedora >= 18
+%endif  # using_systemd
+
 Summary: Open Source host, service and network monitoring program
 Name: icinga
 Version: 1.9.3
@@ -28,6 +45,12 @@ URL: http://www.icinga.org/
 
 Source0: http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+
+%if 0%{?using_systemd}
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
+%endif
 
 BuildRequires: gcc
 BuildRequires: gd-devel > 1.8
@@ -174,8 +197,19 @@ EOF
 %install
 %{__rm} -rf %{buildroot}
 %{__mkdir} -p %{buildroot}/%{apacheconfdir}
+
+# Our make install invocation will differ depending on whether or not we're
+# using systemd.
+#   without:  make ... install-init ...
+#   with:     make ... install-systemd ...
+%if 0%{?using_systemd}
+%define init_install systemd
+%else
+%define init_install init
+%endif
+
 %{__make} install-unstripped \
-    install-init \
+    install-%{init_install} \
     install-commandmode \
     install-config \
     install-webconf \
@@ -220,7 +254,22 @@ install -d -m0755 "%{buildroot}%{_localstatedir}/spool/%{name}/perfdata"
 
 
 %post
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_post icinga.service
+%else
+# manual systemd scriptlet
+if [ $1 -eq 1 ] ; then
+    # Initial installation
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+fi
+%endif
+%else
+# No systemd, just plain old sysvinit
 /sbin/chkconfig --add icinga
+%endif
+
 # restart httpd for auth change
 /sbin/service httpd condrestart > /dev/null 2>&1 || :
 
@@ -260,10 +309,25 @@ fi
 fi
 
 %preun
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_preun icinga.service
+%else
 if [ $1 -eq 0 ]; then
+    # manual systemd scriptlet
+    # Package removal, not upgrade
+    /bin/systemctl --no-reload disable icinga.service > /dev/null 2>&1 || :
+    /bin/systemctl stop icinga.service > /dev/null 2>&1 || :
+fi
+%endif
+%else
+if [ $1 -eq 0 ]; then
+    # No systemd, just plain old sysvinit
     /sbin/service icinga stop &>/dev/null || :
     /sbin/chkconfig --del icinga
 fi
+%endif
 
 %postun
 /sbin/service httpd condrestart > /dev/null 2>&1 || :
@@ -274,7 +338,21 @@ fi
 
 
 %post idoutils-libdbi-mysql
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_post ido2db.service
+%else
+# manual systemd scriptlet
+if [ $1 -eq 1 ] ; then
+    # Initial installation
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+fi
+%endif
+%else
+# No systemd, just plain old sysvinit
 /sbin/chkconfig --add ido2db
+%endif
 
 # delete old bindir/idomod.o if it exists
 if [ -f %{_bindir}/idomod.o ]
@@ -285,13 +363,43 @@ fi
 %logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
 
 %preun idoutils-libdbi-mysql
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_preun ido2db.service
+%else
 if [ $1 -eq 0 ]; then
+    # manual systemd scriptlet
+    # Package removal, not upgrade
+    /bin/systemctl --no-reload disable ido2db.service > /dev/null 2>&1 || :
+    /bin/systemctl stop ido2db.service > /dev/null 2>&1 || :
+fi
+%endif
+%else
+f [ $1 -eq 0 ]; then
+    # No systemd, just plain old sysvinit
     /sbin/service ido2db stop &>/dev/null || :
     /sbin/chkconfig --del ido2db
 fi
+%endif
 
 %post idoutils-libdbi-pgsql
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_post ido2db.service
+%else
+# manual systemd scriptlet
+if [ $1 -eq 1 ] ; then
+    # Initial installation
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+fi
+%endif
+%else
+# No systemd, just plain old sysvinit
 /sbin/chkconfig --add ido2db
+%endif
+
 # delete old bindir/idomod.o if it exists
 if [ -f %{_bindir}/idomod.o ]
 then
@@ -321,10 +429,25 @@ fi
 
 
 %preun idoutils-libdbi-pgsql
+
+%if 0%{?using_systemd}
+%if 0%{?systemd_macro_scriptlet}
+%systemd_preun ido2db.service
+%else
 if [ $1 -eq 0 ]; then
+    # manual systemd scriptlet
+    # Package removal, not upgrade
+    /bin/systemctl --no-reload disable ido2db.service > /dev/null 2>&1 || :
+    /bin/systemctl stop ido2db.service > /dev/null 2>&1 || :
+fi
+%endif
+%else
+if [ $1 -eq 0 ]; then
+    # No systemd, just plain old sysvinit
     /sbin/service ido2db stop &>/dev/null || :
     /sbin/chkconfig --del ido2db
 fi
+%endif
 
 
 %clean
@@ -333,7 +456,12 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING README.RHEL
+%if 0%{?using_systemd}
+%attr(755,-,-)  %{_unitdir}/icinga.service
+%attr(644,-,-)  %{_sysconfdir}/sysconfig/icinga
+%else
 %attr(755,-,-) %{_initrddir}/icinga
+%endif
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/modules
 %config(noreplace) %{_sysconfdir}/%{name}/icinga.cfg
@@ -415,7 +543,11 @@ fi
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%if 0%{?using_systemd}
+%attr(644,-,-)  %{_unitdir}/ido2db.service
+%else
 %attr(755,-,-) %{_initrddir}/ido2db
+%endif
 %attr(660,root,root) %config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
@@ -427,7 +559,11 @@ fi
 %files idoutils-libdbi-pgsql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%if 0%{?using_systemd}
+%attr(644,-,-)  %{_unitdir}/ido2db.service
+%else
 %attr(755,-,-) %{_initrddir}/ido2db
+%endif
 %attr(660,root,root) %config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg

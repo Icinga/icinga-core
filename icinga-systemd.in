@@ -1,0 +1,12 @@
+[Unit]
+Description=Icinga Open-Source Monitoring System
+After=syslog.target network.target ido2db.service
+
+[Service]
+EnvironmentFile=@systemd_sysconfig_dir@/icinga
+ExecStartPre=@bindir@/icinga $ICINGA_VERIFY_OPTS
+ExecStart=@bindir@/icinga $ICINGA_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

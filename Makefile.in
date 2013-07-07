@@ -53,6 +53,8 @@ HTTPDCONFFILE=@HTTPDCONFFILE@
 HTTPAUTHFILE=@HTTPAUTHFILE@
 INIT_DIR=@init_dir@
 INIT_OPTS=@INIT_OPTS@
+SYSTEMD_UNIT_DIR=@systemd_unit_dir@
+SYSTEMD_SYSCONFIG_DIR=@systemd_sysconfig_dir@
 CGICFGDIR=$(CGIDIR)
 PERLDIR=@PERLDIR@
 STATEDIR=@STATEDIR@
@@ -284,7 +286,7 @@ distclean: clean
 	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
-	rm -f daemon-init pkginfo rc.ido2db
+	rm -f daemon-init pkginfo rc.ido2db ido2db-systemd icinga-systemd sysconfig-env
 	rm -f include/dh.h
 	rm -f Makefile subst p1.pl
 	rm -f config.log config.status config.cache
@@ -524,6 +526,15 @@ install-daemoninit:
 	@echo "*** Init script installed ***"
 	@echo ""
 
+install-systemd:
+	$(INSTALL) -m 755 -d $(INIT_OPTS) $(DESTDIR)$(SYSTEMD_UNIT_DIR)
+	$(INSTALL) -m 755 -d $(INIT_OPTS) $(DESTDIR)$(SYSTEMD_SYSCONFIG_DIR)
+	$(INSTALL) -m 644 $(INIT_OPTS) icinga-systemd $(DESTDIR)$(SYSTEMD_UNIT_DIR)/icinga.service
+	$(INSTALL) -m 644 $(INIT_OPTS) sysconfig-env $(DESTDIR)$(SYSTEMD_SYSCONFIG_DIR)/icinga
+
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		$(INSTALL) -m 644 $(INIT_OPTS) ido2db-systemd $(DESTDIR)$(SYSTEMD_UNIT_DIR)/ido2db.service ;\
+	fi
 
 install-commandmode:
 	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)

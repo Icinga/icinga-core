@@ -1,0 +1,11 @@
+# Options for the icinga binary
+
+ICINGA_OPTS="@sysconfdir@/icinga.cfg"
+ICINGA_VERIFY_OPTS="-v @sysconfdir@/icinga.cfg"
+ICINGA_LOCKFILE="@lockfile@"
+ICINGA_USER="@icinga_user@"
+ICINGA_GROUP="@icinga_grp@"
+
+# ido2db options
+IDO2DB_OPTS="-c @sysconfdir@/ido2db.cfg"
+
