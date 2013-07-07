@@ -61,6 +61,14 @@ CHANGES
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
 
+1.9.3 - 07/07/2013
+
+FIXES
+* core: fix init script status exit codes on not running daemon and present pid file #4243 - MF
+
+* idoutils: fix workaround on libdbi fetch_next_row() bug applied for postgresql too, causing faulty queries #4367 - MF
+
+
 1.9.2 - 30/06/2013
 
 FIXES
