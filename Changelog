@@ -20,6 +20,8 @@ UPGRADE NOTES
 
 ENHANCEMENTS
 
+* core: allow exclude (!) to work for regexp matches as well (Matthias Kerk) #3720 - MF
+
 * classic ui: add display filter modification for status.cgi #852 - RB
 * classic ui: log errors into cgi log (use_logging=1) #4389 - MF
 * classic ui: show custom variables in extended info #4390 - MF
