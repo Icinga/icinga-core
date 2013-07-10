@@ -1580,10 +1580,11 @@ void show_host_info(void) {
 
 			/* Custom Variables */
 			if (temp_host->custom_variables) {
+				customvariablesmember *temp_customvar;
+
 				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
 				printf("<table>\n");
 				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
-				customvariablesmember *temp_customvar;
 				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 					if (check_exclude_customvar(temp_customvar) == FALSE)
 						printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
@@ -2030,10 +2031,11 @@ void show_service_info(void) {
 
 			/* Custom Variables */
 			if (temp_service->custom_variables) {
+				customvariablesmember *temp_customvar;
+
 				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
 				printf("<table>\n");
 				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
-				customvariablesmember *temp_customvar;
 				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 				if (check_exclude_customvar(temp_customvar) == FALSE)
 					printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);

@@ -46,6 +46,8 @@ FIXES
 
 SUPPORT
 * fixed gcc warnings about unused vars and unused return values #3984 - RB
+* fixed gcc errors in extinfo.c and ido2db.c #4392 - CF
+
 * classic ui: javascript cleanup and common.lib added #4324 - RB
 
 CHANGES
