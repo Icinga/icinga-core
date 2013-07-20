@@ -13,7 +13,7 @@
 -- Functions
 --
 
-CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp with time zone AS '
+CREATE OR REPLACE FUNCTION from_unixtime(bigint) RETURNS timestamp with time zone AS '
          SELECT to_timestamp($1) AS result
 ' LANGUAGE sql;
 
@@ -426,7 +426,7 @@ CREATE TABLE  icinga_downtimehistory (
   internal_downtime_id bigint default 0,
   triggered_by_id bigint default 0,
   is_fixed INTEGER  default 0,
-  duration INTEGER  default 0,
+  duration BIGINT  default 0,
   scheduled_start_time timestamp with time zone default '1970-01-01 00:00:00',
   scheduled_end_time timestamp with time zone default '1970-01-01 00:00:00',
   was_started INTEGER  default 0,
@@ -984,7 +984,7 @@ CREATE TABLE  icinga_scheduleddowntime (
   internal_downtime_id bigint default 0,
   triggered_by_id bigint default 0,
   is_fixed INTEGER  default 0,
-  duration INTEGER  default 0,
+  duration BIGINT  default 0,
   scheduled_start_time timestamp with time zone default '1970-01-01 00:00:00',
   scheduled_end_time timestamp with time zone default '1970-01-01 00:00:00',
   was_started INTEGER  default 0,

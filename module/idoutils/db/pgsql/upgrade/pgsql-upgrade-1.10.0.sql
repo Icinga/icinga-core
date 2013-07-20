@@ -28,6 +28,17 @@ ALTER TABLE icinga_services ADD action_url_expanded TEXT  default '';
 ALTER TABLE icinga_services ADD icon_image_expanded TEXT  default '';
 
 -- -----------------------------------------
+-- #4420 "integer" out-of-range
+-- -----------------------------------------
+
+CREATE OR REPLACE FUNCTION from_unixtime(bigint) RETURNS timestamp with time zone AS '
+	SELECT to_timestamp($1) AS result
+' LANGUAGE sql;
+
+ALTER TABLE icinga_downtimehistory ALTER COLUMN duration TYPE BIGINT;
+ALTER TABLE icinga_scheduleddowntime ALTER COLUMN duration TYPE BIGINT;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
