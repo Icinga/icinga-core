@@ -31,7 +31,7 @@
 /* specify event broker API version (required) */
 NEB_API_VERSION(CURRENT_NEB_API_VERSION)
 
-
+static icinga_macros *mac;
 
 void *idomod_module_handle = NULL;
 char *idomod_instance_name = NULL;
@@ -3277,7 +3277,7 @@ int idomod_write_config(int config_type) {
 }
 
 
-#define OBJECTCONFIG_ES_ITEMS 16
+#define OBJECTCONFIG_ES_ITEMS 20
 
 /* dumps object configuration data to sink */
 int idomod_write_object_config(int config_type) {
@@ -3286,6 +3286,7 @@ int idomod_write_object_config(int config_type) {
 	struct timeval now;
 	int x = 0;
 	char *es[OBJECTCONFIG_ES_ITEMS];
+	char *processed_string;
 	command *temp_command = NULL;
 	timeperiod *temp_timeperiod = NULL;
 	timerange *temp_timerange = NULL;
@@ -3328,6 +3329,10 @@ int idomod_write_object_config(int config_type) {
 	servicesmember *temp_servicesmember = NULL;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_object_config() start\n");
+
+	/* fetch required global macros */
+	mac = get_global_macros();
+	init_macros();
 
 	if (!(idomod_process_options & IDOMOD_PROCESS_OBJECT_CONFIG_DATA))
 		return IDO_OK;
@@ -3663,8 +3668,23 @@ int idomod_write_object_config(int config_type) {
 		es[14] = ido_escape_buffer(temp_host->display_name);
 		es[15] = ido_escape_buffer(temp_host->address6);
 
+		/* expand macros for notes, notes_url, action_url, icon_image */
+		grab_host_macros_r(mac, temp_host);
+		process_macros_r(mac, temp_host->notes, &processed_string, 0);
+		es[16] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_host->notes_url, &processed_string, 0);
+		es[17] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_host->action_url, &processed_string, 0);
+		es[18] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_host->icon_image, &processed_string, 0);
+		es[19] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
-		         , "\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%lf\n"
+		         , "\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%lf\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n"
 		         , IDO_API_HOSTDEFINITION
 		         , IDO_DATA_TIMESTAMP
 		         , now.tv_sec
@@ -3777,11 +3797,20 @@ int idomod_write_object_config(int config_type) {
 		         , y_3d
 		         , IDO_DATA_Z3D
 		         , z_3d
+			 , IDO_DATA_NOTES_EXPANDED
+			 , (es[16] == NULL) ? "" : es[16]
+			 , IDO_DATA_NOTESURL_EXPANDED
+			 , (es[17] == NULL) ? "" : es[17]
+			 , IDO_DATA_ACTIONURL_EXPANDED
+			 , (es[18] == NULL) ? "" : es[18]
+			 , IDO_DATA_ICONIMAGE_EXPANDED
+			 , (es[19] == NULL) ? "" : es[19]
 		        );
+
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		for (x = 0; x < 16; x++)
+		for (x = 0; x < 20; x++)
 			free(es[x]);
 
 		/* dump parent hosts */
@@ -3942,8 +3971,23 @@ int idomod_write_object_config(int config_type) {
 		flap_detection_on_critical = temp_service->flap_detection_on_critical;
 		es[12] = ido_escape_buffer(temp_service->display_name);
 
+		/* expand macros for notes, notes_url, action_url, icon_image */
+		grab_service_macros_r(mac, temp_service);
+		process_macros_r(mac, temp_service->notes, &processed_string, 0);
+		es[13] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_service->notes_url, &processed_string, 0);
+		es[14] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_service->action_url, &processed_string, 0);
+		es[15] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+		process_macros_r(mac, temp_service->icon_image, &processed_string, 0);
+		es[16] = ido_escape_buffer(processed_string);
+		my_free(processed_string);
+
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
-		         , "\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n"
+		         , "\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n"
 		         , IDO_API_SERVICEDEFINITION
 		         , IDO_DATA_TIMESTAMP
 		         , now.tv_sec
@@ -4042,11 +4086,20 @@ int idomod_write_object_config(int config_type) {
 		         , (es[10] == NULL) ? "" : es[10]
 		         , IDO_DATA_ICONIMAGEALT
 		         , (es[11] == NULL) ? "" : es[11]
+			 , IDO_DATA_NOTES_EXPANDED
+			 , (es[13] == NULL) ? "" : es[13]
+			 , IDO_DATA_NOTESURL_EXPANDED
+			 , (es[14] == NULL) ? "" : es[14]
+			 , IDO_DATA_ACTIONURL_EXPANDED
+			 , (es[15] == NULL) ? "" : es[15]
+			 , IDO_DATA_ICONIMAGE_EXPANDED
+			 , (es[16] == NULL) ? "" : es[16]
 		        );
+
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		for (x = 0; x < 13; x++)
+		for (x = 0; x < 17; x++)
 			free(es[x]);
 
 		/* dump contactgroups */

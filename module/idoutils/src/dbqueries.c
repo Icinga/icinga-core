@@ -5662,7 +5662,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		if (!idi->tables_cleared) {
-			asprintf(&query1, "UPDATE %s SET alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf, address6='%s' WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
+			asprintf(&query1, "UPDATE %s SET alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf, address6='%s', notes_expanded='%s', notes_url_expanded='%s', action_url_expanded='%s', icon_image_expanded='%s' WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
 					 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
 					 *(char **) data[3],             /* update start */
 					 *(char **) data[4],
@@ -5718,7 +5718,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 					 *(double *) data[54],
 					 *(double *) data[55],
 					 *(double *) data[56],
-					 *(char **) data[57],           /* update end */
+					 *(char **) data[57],
+					 *(char **) data[58],
+					 *(char **) data[59],
+					 *(char **) data[60],
+					 *(char **) data[61],           /* update end */
 					 *(unsigned long *) data[0],     /* unique constraint start */
 					 *(int *) data[1],
 					 *(unsigned long *) data[2]      /* unique constraint end */
@@ -5801,7 +5805,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 
 		if (do_insert) {
 			/* try insert instead */
-			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf, '%s')",
+			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6, notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf, '%s', '%s', '%s', '%s', '%s')",
 				 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
 				 *(unsigned long *) data[0],     /* insert start */
 				 *(int *) data[1],
@@ -5860,7 +5864,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 				 *(double *) data[54],
 				 *(double *) data[55],
 				 *(double *) data[56],
-				 *(char **) data[57]           /* insert end */
+				 *(char **) data[57],
+				 *(char **) data[58],
+				 *(char **) data[59],
+				 *(char **) data[60],
+				 *(char **) data[61]           /* insert end */
 				);
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -5878,7 +5886,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
-		asprintf(&query1, "UPDATE %s SET alias=E'%s', display_name=E'%s', address=E'%s', check_command_object_id=%lu, check_command_args=E'%s', eventhandler_command_object_id=%lu, eventhandler_command_args=E'%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options=E'%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes=E'%s', notes_url=E'%s', action_url=E'%s', icon_image=E'%s', icon_image_alt=E'%s', vrml_image=E'%s', statusmap_image=E'%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf, address6=E'%s' WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
+		asprintf(&query1, "UPDATE %s SET alias=E'%s', display_name=E'%s', address=E'%s', check_command_object_id=%lu, check_command_args=E'%s', eventhandler_command_object_id=%lu, eventhandler_command_args=E'%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options=E'%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes=E'%s', notes_url=E'%s', action_url=E'%s', icon_image=E'%s', icon_image_alt=E'%s', vrml_image=E'%s', statusmap_image=E'%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf, address6=E'%s', notes_expanded=E'%s', notes_url_expanded=E'%s', action_url_expanded=E'%s', icon_image_expanded=E'%s' WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
 		                 *(char **) data[3],             /* update start */
 		                 *(char **) data[4],
@@ -5934,7 +5942,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 		                 *(double *) data[54],
 		                 *(double *) data[55],
 		                 *(double *) data[56],
-		                 *(char **) data[57],           /* update end */
+				 *(char **) data[57],
+				 *(char **) data[58],
+				 *(char **) data[59],
+				 *(char **) data[60],
+				 *(char **) data[61],           /* update end */
 		                 *(unsigned long *) data[0],     /* unique constraint start */
 		                 *(int *) data[1],
 		                 *(unsigned long *) data[2]      /* unique constraint end */
@@ -5949,7 +5961,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			idi->dbinfo.dbi_result = NULL;
 
 			/* try insert instead */
-			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) VALUES (%lu, %d, %lu, E'%s', E'%s', E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', %d, %d, %d, %d, %lf, %lf, %lf, E'%s')",
+			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6, notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) VALUES (%lu, %d, %lu, E'%s', E'%s', E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', %d, %d, %d, %d, %lf, %lf, %lf, E'%s', E'%s', E'%s', E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
 			                 *(unsigned long *) data[0],     /* insert start */
 			                 *(int *) data[1],
@@ -6008,7 +6020,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			                 *(double *) data[54],
 			                 *(double *) data[55],
 			                 *(double *) data[56],
-			                 *(char **) data[57]           /* insert end */
+					 *(char **) data[57],
+					 *(char **) data[58],
+					 *(char **) data[59],
+					 *(char **) data[60],
+					 *(char **) data[61]           /* insert end */
 			                );
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -6335,6 +6351,42 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X58"), *(char **) data[57], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[58] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X59") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X59"), *(char **) data[58], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[59] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X60") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X60"), *(char **) data[59], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[60] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X61") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X61"), *(char **) data[60], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[61] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X62") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X62"), *(char **) data[61], 0)) {
 			return IDO_ERROR;
 		}
 	}
@@ -7095,7 +7147,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		if (!idi->tables_cleared) {
-			asprintf(&query1, "UPDATE %s SET host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s' WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
+			asprintf(&query1, "UPDATE %s SET host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', notes_expanded='%s', notes_url_expanded='%s', action_url_expanded='%s', icon_image_expanded='%s' WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
 					 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
 					 *(unsigned long *) data[2],    /* update start */
 					 *(char **) data[4],
@@ -7144,7 +7196,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 					 *(char **) data[47],
 					 *(char **) data[48],
 					 *(char **) data[49],
-					 *(char **) data[50],            /* update end */
+					 *(char **) data[50],
+					 *(char **) data[51],
+					 *(char **) data[52],
+					 *(char **) data[53],
+					 *(char **) data[54],            /* update end */
 					 *(unsigned long *) data[0],     /* unique constraint start */
 					 *(int *) data[1],
 					 *(unsigned long *) data[3]      /* unique constraint end */
@@ -7225,7 +7281,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 
 		if (do_insert) {
 			/* try insert instead */
-			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')",
+			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
 				 *(unsigned long *) data[0],     /* insert start */
 				 *(int *) data[1],
@@ -7277,7 +7333,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 				 *(char **) data[47],
 				 *(char **) data[48],
 				 *(char **) data[49],
-				 *(char **) data[50]            /* insert end */
+				 *(char **) data[50],
+				 *(char **) data[51],
+				 *(char **) data[52],
+				 *(char **) data[53],
+				 *(char **) data[54]            /* insert end */
 				);
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -7295,7 +7355,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
-		asprintf(&query1, "UPDATE %s SET host_object_id=%lu, display_name=E'%s', check_command_object_id=%lu, check_command_args=E'%s', eventhandler_command_object_id=%lu, eventhandler_command_args=E'%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options=E'%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes=E'%s', notes_url=E'%s', action_url=E'%s', icon_image=E'%s', icon_image_alt=E'%s' WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
+		asprintf(&query1, "UPDATE %s SET host_object_id=%lu, display_name=E'%s', check_command_object_id=%lu, check_command_args=E'%s', eventhandler_command_object_id=%lu, eventhandler_command_args=E'%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options=E'%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes=E'%s', notes_url=E'%s', action_url=E'%s', icon_image=E'%s', icon_image_alt=E'%s', notes_expanded=E'%s', notes_url_expanded=E'%s', action_url_expanded=E'%s', icon_image_expanded=E'%s' WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
 		                 *(unsigned long *) data[2], 	/* update start */
 		                 *(char **) data[4],
@@ -7344,7 +7404,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 		                 *(char **) data[47],
 		                 *(char **) data[48],
 		                 *(char **) data[49],
-		                 *(char **) data[50],            /* update end */
+		                 *(char **) data[50],
+		                 *(char **) data[51],
+		                 *(char **) data[52],
+		                 *(char **) data[53],
+		                 *(char **) data[54],            /* update end */
 		                 *(unsigned long *) data[0],     /* unique constraint start */
 		                 *(int *) data[1],
 		                 *(unsigned long *) data[3]      /* unique constraint end */
@@ -7359,7 +7423,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			idi->dbinfo.dbi_result = NULL;
 
 			/* try insert instead */
-			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s')",
+			asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) VALUES (%lu, %d, %lu, %lu, E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
 			                 *(unsigned long *) data[0],     /* insert start */
 			                 *(int *) data[1],
@@ -7411,7 +7475,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			                 *(char **) data[47],
 			                 *(char **) data[48],
 			                 *(char **) data[49],
-			                 *(char **) data[50]            /* insert end */
+			                 *(char **) data[50],
+			                 *(char **) data[51],
+			                 *(char **) data[52],
+			                 *(char **) data[53],
+			                 *(char **) data[54]            /* insert end */
 			                );
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -7698,6 +7766,42 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X51"), *(char **) data[50], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[51] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X52") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X52"), *(char **) data[51], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[52] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X53") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X53"), *(char **) data[52], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[53] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X54") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X54"), *(char **) data[53], 0)) {
+			return IDO_ERROR;
+		}
+	}
+	if (*(char **) data[54] == NULL) {
+		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X55") == IDO_ERROR) {
+			return IDO_ERROR;
+		}
+	} else {
+		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X55"), *(char **) data[54], 0)) {
 			return IDO_ERROR;
 		}
 	}

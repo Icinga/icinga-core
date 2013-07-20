@@ -5518,7 +5518,9 @@ int ido2db_oci_prepared_statement_hostdefinition_definition(ido2db_idi *idi) {
 	             "notes=:X44, notes_url=:X45, action_url=:X46, icon_image=:X47, "
 	             "icon_image_alt=:X48, vrml_image=:X49, statusmap_image=:X50, "
 	             "have_2d_coords=:X51, x_2d=:X52, y_2d=:X53, have_3d_coords=:X54, "
-	             "x_3d=:X55, y_3d=:X56, z_3d=:X57, address6=:X58 "
+	             "x_3d=:X55, y_3d=:X56, z_3d=:X57, address6=:X58, "
+		     "notes_expanded=:X59, notes_url_expanded=:X60, "
+		     "action_url_expanded:X61, icon_image_expanded=:X62 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, config_type, host_object_id, alias, "
 	             "display_name, address, check_command_object_id, check_command_args, "
@@ -5537,13 +5539,14 @@ int ido2db_oci_prepared_statement_hostdefinition_definition(ido2db_idi *idi) {
 	             "retain_nonstatus_information, notifications_enabled, obsess_over_host, "
 	             "failure_prediction_enabled, notes, notes_url, action_url, "
 	             "icon_image, icon_image_alt, vrml_image, statusmap_image, "
-	             "have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) "
+	             "have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6, "
+		     "notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) "
 	             "VALUES (seq_hosts.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, "
 	             ":X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, "
 	             ":X22, :X23, :X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, "
 	             ":X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, "
 	             ":X44, :X45, :X46, :X47, :X48, :X49, :X50, :X51, :X52, :X53, :X54, "
-	             ":X55, :X56, :X57, :X58)",
+	             ":X55, :X56, :X57, :X58, :X59, :X60, :X61, :X62)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS]) == -1) {
 		buf = NULL;
 	}
@@ -5823,7 +5826,9 @@ int ido2db_oci_prepared_statement_servicedefinition_definition(ido2db_idi *idi) 
 	             "retain_status_information=:X42, retain_nonstatus_information=:X43, "
 	             "notifications_enabled=:X44, obsess_over_service=:X45, "
 	             "failure_prediction_enabled=:X46, notes=:X47, "
-	             "notes_url=:X48, action_url=:X49, icon_image=:X50, icon_image_alt=:X51 "
+	             "notes_url=:X48, action_url=:X49, icon_image=:X50, icon_image_alt=:X51, "
+		     "notes_expanded=:X52, notes_url_expanded=:X53, "
+		     "action_url_expanded:X54, icon_image_expanded=:X55 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, config_type, host_object_id, service_object_id, "
 	             "display_name, check_command_object_id, check_command_args, "
@@ -5841,12 +5846,13 @@ int ido2db_oci_prepared_statement_servicedefinition_definition(ido2db_idi *idi) 
 	             "freshness_checks_enabled, freshness_threshold, passive_checks_enabled, "
 	             "event_handler_enabled, active_checks_enabled, retain_status_information, "
 	             "retain_nonstatus_information, notifications_enabled, obsess_over_service, "
-	             "failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) "
+	             "failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, "
+		     "notes_expanded, notes_url_expanded, action_url_expanded, icon_image_expanded) "
 	             "VALUES (seq_services.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, "
 	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23, "
 	             ":X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, "
 	             ":X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46, :X47, "
-	             ":X48, :X49, :X50, :X51)",
+	             ":X48, :X49, :X50, :X51, :X52, :X53, :X54, :X55)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES]) == -1) {
 		buf = NULL;
 	}

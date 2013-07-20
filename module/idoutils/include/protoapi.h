@@ -109,7 +109,7 @@
 
 /************** COMMON DATA ATTRIBUTES **************/
 
-#define IDO_MAX_DATA_TYPES                           271
+#define IDO_MAX_DATA_TYPES                           275
 
 #define IDO_DATA_NONE                                0
 
@@ -393,4 +393,9 @@
 #define IDO_DATA_DOWNTIMEISINEFFECT		     268
 #define IDO_DATA_DOWNTIMETRIGGERTIME		     269
 #define IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME  270
+
+#define IDO_DATA_NOTES_EXPANDED			     271
+#define IDO_DATA_NOTESURL_EXPANDED		     272
+#define IDO_DATA_ACTIONURL_EXPANDED		     273
+#define IDO_DATA_ICONIMAGE_EXPANDED		     274
 #endif
