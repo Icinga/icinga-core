@@ -12900,6 +12900,12 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 		/* strip trailing spaces */
 		strip(temp_ptr);
 
+		/* this host should be excluded (rejected) */
+		if (temp_ptr[0] == '!') {
+			reject_item = TRUE;
+			temp_ptr++;
+		}
+
 		/* should we use regular expression matching? */
 		if (use_regexp_matches == TRUE && (use_true_regexp_matching == TRUE || strstr(temp_ptr, "*") || strstr(temp_ptr, "?") || strstr(temp_ptr, "+") || strstr(temp_ptr, "\\.")))
 			use_regexp = TRUE;
