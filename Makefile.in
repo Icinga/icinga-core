@@ -609,13 +609,13 @@ Prototype:
 	cd sample-config; \
 	for file in *.cfg; \
 	do \
-	    $(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/$$file.$(VERSION); \
+	    ../$(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/$$file.$(VERSION); \
 	done
 	chmod 640 $(PACKDIR)/$(CFGDIR)/resource.cfg.$(VERSION)
 	cd sample-config/template-object; \
 	for file in *.cfg; \
 	do \
-	    $(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/objects/$$file.$(VERSION); \
+	    ../../$(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/objects/$$file.$(VERSION); \
 	done
 	mkdir -p $(PACKDIR)/lib/svc/method/
 	$(INSTALL) -o root -g bin -m 555 daemon-init $(PACKDIR)/lib/svc/method/icinga
@@ -630,7 +630,7 @@ Prototype:
 	do \
 	    if [ -f $$file ] ; then echo i $$file >> Prototype; fi ; \
 	done
-	pkgproto $(PACKDIR)=/ | sed -e "s|$(LOGNAME) $(GROUP)$$|root root|" | egrep -v "(s|d) none (/ |/var|/usr|/etc|/lib)" >> solaris/Prototype
+	pkgproto $(PACKDIR)=/ | egrep -v "(s|d) none (/|/var|/usr|/etc|/lib) " >> solaris/Prototype
 
 pkg/icinga/pkgmap: Prototype
 	mkdir $(PACKDIR)/$(SOL_PKG_NAME)
