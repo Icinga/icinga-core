@@ -246,6 +246,8 @@ int log_debug_info(int leve, int verbosity, const char *fmt, ...) {
 /*
  * pipe all common logit calls into our cgi log file
  * if enabled using 'use_logging'
+ * ATTENTION: do not use logit() calls within cgi log rotate.
+ * creates a loop.
  */
 void logit(int data_type, int display, const char *fmt, ...) {
 	if (use_logging) {
@@ -2878,7 +2880,7 @@ int write_to_cgi_log(char *buffer) {
 
 	time(&log_time);
 
-	// allways check if log file has to be rotated
+	// always check if log file has to be rotated
 	rotate_cgi_log_file();
 
 	// open log file and try again if failed
@@ -2888,6 +2890,10 @@ int write_to_cgi_log(char *buffer) {
 	}
 
 	if (i >= write_retries)
+		return ERROR;
+
+	/* verify that fp is really opened */
+	if (fp == NULL)
 		return ERROR;
 
 	/* strip any newlines from the end of the buffer */
@@ -3013,7 +3019,6 @@ int my_rename(char *source, char *dest) {
 
 			/* try copying the file */
 			if (my_fcopy(source, dest) == ERROR) {
-				logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to rename file '%s' to '%s': %s\n", source, dest, strerror(errno));
 				return -1;
 			}
 
@@ -3026,7 +3031,6 @@ int my_rename(char *source, char *dest) {
 
 		/* some other error occurred */
 		else {
-			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to rename file '%s' to '%s': %s\n", source, dest, strerror(errno));
 			return rename_result;
 		}
 	}
@@ -3047,7 +3051,6 @@ int my_fcopy(char *source, char *dest) {
 
 	/* open destination file for writing */
 	if ((dest_fd = open(dest, O_WRONLY | O_TRUNC | O_CREAT | O_APPEND, 0644)) < 0) {
-		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to open file '%s' for writing: %s\n", dest, strerror(errno));
 		return ERROR;
 	}
 
@@ -3069,7 +3072,6 @@ int my_fdcopy(char *source, char *dest, int dest_fd) {
 
 	/* open source file for reading */
 	if ((source_fd = open(source, O_RDONLY, 0644)) < 0) {
-		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to open file '%s' for reading: %s\n", source, strerror(errno));
 		return ERROR;
 	}
 
@@ -3078,7 +3080,6 @@ int my_fdcopy(char *source, char *dest, int dest_fd) {
 	 * we've written all of it
 	 */
 	if (fstat(source_fd, &st) < 0) {
-		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to stat source file '%s' for my_fcopy(): %s\n", source, strerror(errno));
 		close(source_fd);
 		return ERROR;
 	}
@@ -3095,7 +3096,6 @@ int my_fdcopy(char *source, char *dest, int dest_fd) {
 	buf_size = st.st_size > 128 << 10 ? 128 << 10 : st.st_size;
 	buf = malloc(buf_size);
 	if (!buf) {
-		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to malloc(%lu) bytes: %s\n", buf_size, strerror(errno));
 		close(source_fd);
 		return ERROR;
 	}
@@ -3107,7 +3107,6 @@ int my_fdcopy(char *source, char *dest, int dest_fd) {
 		if (rd_result < 0) {
 			if (errno == EAGAIN || errno == EINTR)
 				continue;
-			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: my_fcopy() failed to read from '%s': %s\n", source, strerror(errno));
 			break;
 		}
 		tot_read += rd_result;
@@ -3118,7 +3117,6 @@ int my_fdcopy(char *source, char *dest, int dest_fd) {
 			if (wr_result < 0) {
 				if (errno == EAGAIN || errno == EINTR)
 					continue;
-				logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: my_fcopy() failed to write to '%s': %s\n", dest, strerror(errno));
 				break;
 			}
 			loop_wr += wr_result;
