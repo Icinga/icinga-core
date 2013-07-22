@@ -30,6 +30,7 @@ ENHANCEMENTS
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 * idoutils: add processed macro strings into database (notes, notes_url, action_url, icon_image) #1883 - MF
+	** NOTE: static object attributes on config dump supported
 
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
@@ -65,6 +66,7 @@ CHANGES
 * idoutils: add max_downtimhistory_age to ido2db.cfg #3989
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 * idoutils: new hosts/table columns for expanded macros #1883
+	** NOTE: only static object attributes on config dump supported
 	** notes_expanded
 	** notes_url_expanded
 	** action_url_expanded
