@@ -3121,7 +3121,7 @@ int commit_command(int cmd) {
 
 int write_command_to_file(char *cmd) {
 	char *buffer;
-	char *ip_address;
+	char *ip_address = NULL;
 	char *p;
 	FILE *fp;
 	struct stat statbuf;
@@ -3166,7 +3166,8 @@ int write_command_to_file(char *cmd) {
 			p = &cmd[0];
 
 		/* get remote address */
-		ip_address = strdup(getenv("REMOTE_ADDR"));
+		if (getenv("REMOTE_ADDR"))
+			ip_address = strdup(getenv("REMOTE_ADDR"));
 
 		/* construct log entry */
 		asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;%s", current_authdata.username, (ip_address != NULL) ? ip_address : "unknown remote address", p);

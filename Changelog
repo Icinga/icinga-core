@@ -44,6 +44,7 @@ FIXES
 * core: fix init script status exit codes on not running daemon and present pid file #4243 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
+* classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
 
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 * idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
