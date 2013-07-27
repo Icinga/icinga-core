@@ -174,7 +174,6 @@ EOF
     --enable-embedded-perl \
     --enable-idoutils \
     --with-httpd-conf=%{apacheconfdir} \
-    --with-init-dir=%{_initrddir} \
     --with-log-dir=%{logdir} \
     --enable-cgi-log \
     --with-cgi-log-dir=%{logdir}/gui \
