@@ -4524,7 +4524,7 @@ void store_default_settings(void) {
 	org_color_transparency_index_b = color_transparency_index_b;
 	org_color_transparency_index_g = color_transparency_index_g;
 	org_color_transparency_index_r = color_transparency_index_r;
-	org_cgi_log_rotation_method = org_cgi_log_rotation_method;
+	org_cgi_log_rotation_method = cgi_log_rotation_method;
 	org_default_downtime_duration = default_downtime_duration;
 	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
 	org_display_status_totals = display_status_totals;
