@@ -49,6 +49,8 @@ FIXES
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 * idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
 
+* icinga.spec: remove commandgrp/user flags for configure (INSTALL_OPTS useless on package build) #4394 - MF
+
 SUPPORT
 * fixed gcc warnings about unused vars and unused return values #3984 - RB
 * fixed gcc errors in extinfo.c and ido2db.c #4392 - CF

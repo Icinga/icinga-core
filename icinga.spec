@@ -160,8 +160,6 @@ EOF
     --libdir="%{_libdir}/%{name}" \
     --sbindir="%{_libdir}/%{name}/cgi" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
-    --with-command-user="icinga" \
-    --with-command-group="icingacmd" \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
