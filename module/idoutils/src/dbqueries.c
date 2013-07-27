@@ -10363,7 +10363,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
                 		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", *id);
 				}
-+
+
                         	dbi_result_free(idi->dbinfo.dbi_result);
 	                        idi->dbinfo.dbi_result = NULL;
 			}
