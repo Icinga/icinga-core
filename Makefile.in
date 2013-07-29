@@ -130,7 +130,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-classicui-standalone" "install standalone classic ui"
 
 
-# FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
+# Solaris make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
 
 ###############################
 # Compile
