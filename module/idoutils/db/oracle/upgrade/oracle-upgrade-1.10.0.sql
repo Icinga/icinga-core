@@ -42,20 +42,6 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 -- DROP TABLE slahistory;
 
 -- -----------------------------------------
--- #1883 expanded values 
--- -----------------------------------------
-
-ALTER TABLE hosts ADD notes_expanded varchar2(1024);
-ALTER TABLE hosts ADD notes_url_expanded varchar2(1024);
-ALTER TABLE hosts ADD action_url_expanded varchar2(1024);
-ALTER TABLE hosts ADD icon_image_expanded varchar2(1024);
-
-ALTER TABLE services ADD notes_expanded varchar2(1024);
-ALTER TABLE services ADD notes_url_expanded varchar2(1024);
-ALTER TABLE services ADD action_url_expanded varchar2(1024);
-ALTER TABLE services ADD icon_image_expanded varchar2(1024);
-
--- -----------------------------------------
 -- #4482 deprecate timedevent* tables
 -- -----------------------------------------
 

@@ -1,8 +1,8 @@
 -- -----------------------------------------
--- upgrade path for Icinga IDOUtils 1.10.0
+-- upgrade path for Icinga IDOUtils 1.9.0
 --
 -- -----------------------------------------
--- Copyright (c) 2013 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2012-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- Please check http://docs.icinga.org for upgrading information!
 -- -----------------------------------------
@@ -12,20 +12,6 @@
 -- -----------------------------------------
 
 -- DROP TABLE icinga_slahistory;
-
--- -----------------------------------------
--- #1883 expanded values
--- -----------------------------------------
-
-ALTER TABLE icinga_hosts ADD notes_expanded TEXT  default '';
-ALTER TABLE icinga_hosts ADD notes_url_expanded TEXT  default '';
-ALTER TABLE icinga_hosts ADD action_url_expanded TEXT  default '';
-ALTER TABLE icinga_hosts ADD icon_image_expanded TEXT  default '';
-
-ALTER TABLE icinga_services ADD notes_expanded TEXT  default '';
-ALTER TABLE icinga_services ADD notes_url_expanded TEXT  default '';
-ALTER TABLE icinga_services ADD action_url_expanded TEXT  default '';
-ALTER TABLE icinga_services ADD icon_image_expanded TEXT  default '';
 
 -- -----------------------------------------
 -- #4420 "integer" out-of-range

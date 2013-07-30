@@ -1036,13 +1036,9 @@ CREATE TABLE hosts (
   obsess_over_host integer default 0 ,
   failure_prediction_enabled integer default 0 ,
   notes varchar2(1024),
-  notes_expanded varchar2(1024),
   notes_url varchar2(1024),
-  notes_url_expanded varchar2(1024),
   action_url varchar2(1024),
-  action_url_expanded varchar2(1024),
   icon_image varchar2(1024),
-  icon_image_expanded varchar2(1024),
   icon_image_alt varchar2(1024),
   vrml_image varchar2(1024),
   statusmap_image varchar2(1024),
@@ -1593,13 +1589,9 @@ CREATE TABLE services (
   obsess_over_service integer default 0 ,
   failure_prediction_enabled integer default 0 ,
   notes varchar2(1024),
-  notes_expanded varchar2(1024),
   notes_url varchar2(1024),
-  notes_url_expanded varchar2(1024),
   action_url varchar2(1024),
-  action_url_expanded varchar2(1024),
   icon_image varchar2(1024),
-  icon_image_expanded varchar2(1024),
   icon_image_alt varchar2(1024)
 )tablespace &&DATATBS;
 alter table services add constraint services_pk PRIMARY KEY  (id)

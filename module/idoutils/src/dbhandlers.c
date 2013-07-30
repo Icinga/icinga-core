@@ -5099,7 +5099,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	unsigned long host_id = 0L;
 	unsigned long member_id = 0L;
 	int result = IDO_OK;
-	char *es[18];
+	char *es[14];
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
@@ -5116,7 +5116,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	big_uint  *memberid_arr;
 
 #endif
-	void *data[62];
+	void *data[58];
 	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() start\n");
@@ -5197,11 +5197,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	es[12] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_HOSTALIAS]);
 	es[13] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_HOSTADDRESS6]);
 
-	es[14] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTES_EXPANDED]);
-	es[15] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTESURL_EXPANDED]);
-	es[16] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ACTIONURL_EXPANDED]);
-	es[17] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ICONIMAGE_EXPANDED]);
-
 	/* get the object id */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
 
@@ -5273,10 +5268,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	data[55] = (void *) &y_3d;
 	data[56] = (void *) &z_3d;
 	data[57] = (void *) &es[13]; /* HOSTADDRESS6 */
-	data[58] = (void *) &es[14]; /* expanded */
-	data[59] = (void *) &es[15]; /* expanded */
-	data[60] = (void *) &es[16]; /* expanded */
-	data[61] = (void *) &es[17]; /* expanded */
 
 	result = ido2db_query_insert_or_update_hostdefinition_definition_add(idi, data, &host_id);
 
@@ -5954,7 +5945,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	unsigned long service_id = 0L;
 	unsigned long member_id = 0L;
 	int result = IDO_OK;
-	char *es[13];
+	char *es[9];
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
@@ -5971,7 +5962,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	big_uint  *memberid_arr;
 
 #endif
-	void *data[55];
+	void *data[51];
 	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() start\n");
@@ -6047,11 +6038,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	es[7] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ICONIMAGEALT]);
 	es[8] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_DISPLAYNAME]);
 
-	es[9] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTES_EXPANDED]);
-	es[10] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTESURL_EXPANDED]);
-	es[11] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ACTIONURL_EXPANDED]);
-	es[12] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ICONIMAGE_EXPANDED]);
-
 	/* get the object ids */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOSTNAME], idi->buffered_input[IDO_DATA_SERVICEDESCRIPTION], &object_id);
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &host_id);
@@ -6117,10 +6103,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	data[48] = (void *) &es[5];
 	data[49] = (void *) &es[6];
 	data[50] = (void *) &es[7];
-	data[51] = (void *) &es[9]; /* expanded */
-	data[52] = (void *) &es[10]; /* expanded */
-	data[53] = (void *) &es[11]; /* expanded */
-	data[54] = (void *) &es[12]; /* expanded */
 
 	result = ido2db_query_insert_or_update_servicedefinition_definition_add(idi, data, &service_id);
 

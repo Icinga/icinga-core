@@ -14,20 +14,6 @@
 -- DROP TABLE icinga_slahistory;
 
 -- -----------------------------------------
--- #1883 expanded values
--- -----------------------------------------
-
-ALTER TABLE icinga_hosts ADD notes_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_hosts ADD notes_url_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_hosts ADD action_url_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_hosts ADD icon_image_expanded TEXT character set latin1  default '';
-
-ALTER TABLE icinga_services ADD notes_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_services ADD notes_url_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_services ADD action_url_expanded TEXT character set latin1  default '';
-ALTER TABLE icinga_services ADD icon_image_expanded TEXT character set latin1  default '';
-
--- -----------------------------------------
 -- #4482 deprecate timedevent* tables
 -- -----------------------------------------
 
