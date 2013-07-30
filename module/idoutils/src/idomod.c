@@ -92,9 +92,11 @@ extern int __icinga_object_structure_version;
 
 extern int use_ssl;
 
+int resolve_attribute_macros = IDO_TRUE;
+
 #define DEBUG_IDO 1
 
-
+static icinga_macros *mac;
 
 /* this function gets called when the module is loaded by the event broker */
 int nebmodule_init(int flags, char *args, void *handle) {
@@ -481,6 +483,15 @@ int idomod_process_config_var(char *arg) {
 				use_ssl = atoi(val);
 			else
 				use_ssl = 0;
+		}
+	}
+
+        else if (!strcmp(var, "resolve_attribute_macros")) {
+		if (strlen(val) == 1) {
+			if (isdigit((int)val[strlen(val)-1]) != IDO_FALSE)
+				resolve_attribute_macros = atoi(val);
+			else
+				resolve_attribute_macros = 0;
 		}
 	}
 
@@ -3146,6 +3157,7 @@ int idomod_write_object_config(int config_type) {
 	struct timeval now;
 	int x = 0;
 	char *es[OBJECTCONFIG_ES_ITEMS];
+	char *processed_string = NULL;
 	command *temp_command = NULL;
 	timeperiod *temp_timeperiod = NULL;
 	timerange *temp_timerange = NULL;
@@ -3194,6 +3206,10 @@ int idomod_write_object_config(int config_type) {
 
 	if (!(idomod_config_output_options & config_type))
 		return IDO_OK;
+
+	/* fetch required global macros */
+	mac = get_global_macros();
+	init_macros();
 
 	/* get current time */
 	gettimeofday(&now, NULL);
@@ -3499,10 +3515,28 @@ int idomod_write_object_config(int config_type) {
 		es[6] = ido_escape_buffer(temp_host->check_period);
 		es[7] = ido_escape_buffer(temp_host->failure_prediction_options);
 
-		es[7] = ido_escape_buffer(temp_host->notes);
-		es[8] = ido_escape_buffer(temp_host->notes_url);
-		es[9] = ido_escape_buffer(temp_host->action_url);
-		es[10] = ido_escape_buffer(temp_host->icon_image);
+		if (resolve_attribute_macros == IDO_TRUE) {
+			/* expand macros for notes, notes_url, action_url, icon_image */
+			grab_host_macros_r(mac, temp_host);
+			process_macros_r(mac, temp_host->notes, &processed_string, 0);
+			es[7] = ido_escape_buffer(processed_string);
+			my_free(processed_string);
+			process_macros_r(mac, temp_host->notes_url, &processed_string, 0);
+			es[8] = ido_escape_buffer(processed_string);
+			my_free(processed_string);
+			process_macros_r(mac, temp_host->action_url, &processed_string, 0);
+			es[9] = ido_escape_buffer(processed_string);
+			my_free(processed_string);
+			process_macros_r(mac, temp_host->icon_image, &processed_string, 0);
+			es[10] = ido_escape_buffer(processed_string);
+			my_free(processed_string);
+		} else {
+			es[7] = ido_escape_buffer(temp_host->notes);
+			es[8] = ido_escape_buffer(temp_host->notes_url);
+			es[9] = ido_escape_buffer(temp_host->action_url);
+			es[10] = ido_escape_buffer(temp_host->icon_image);
+		}
+
 		es[11] = ido_escape_buffer(temp_host->icon_image_alt);
 		es[12] = ido_escape_buffer(temp_host->vrml_image);
 		es[13] = ido_escape_buffer(temp_host->statusmap_image);
@@ -3788,10 +3822,29 @@ int idomod_write_object_config(int config_type) {
 		es[4] = ido_escape_buffer(temp_service->notification_period);
 		es[5] = ido_escape_buffer(temp_service->check_period);
 		es[6] = ido_escape_buffer(temp_service->failure_prediction_options);
-		es[7] = ido_escape_buffer(temp_service->notes);
-		es[8] = ido_escape_buffer(temp_service->notes_url);
-		es[9] = ido_escape_buffer(temp_service->action_url);
-		es[10] = ido_escape_buffer(temp_service->icon_image);
+
+		if (resolve_attribute_macros == IDO_TRUE) {
+	                /* expand macros for notes, notes_url, action_url, icon_image */
+	                grab_service_macros_r(mac, temp_service);
+	                process_macros_r(mac, temp_service->notes, &processed_string, 0);
+	                es[7] = ido_escape_buffer(processed_string);
+	                my_free(processed_string);
+	                process_macros_r(mac, temp_service->notes_url, &processed_string, 0);
+	                es[8] = ido_escape_buffer(processed_string);
+	                my_free(processed_string);
+	                process_macros_r(mac, temp_service->action_url, &processed_string, 0);
+	                es[9] = ido_escape_buffer(processed_string);
+	                my_free(processed_string);
+	                process_macros_r(mac, temp_service->icon_image, &processed_string, 0);
+	                es[10] = ido_escape_buffer(processed_string);
+	                my_free(processed_string);
+		} else {
+			es[7] = ido_escape_buffer(temp_service->notes);
+			es[8] = ido_escape_buffer(temp_service->notes_url);
+			es[9] = ido_escape_buffer(temp_service->action_url);
+			es[10] = ido_escape_buffer(temp_service->icon_image);
+		}
+
 		es[11] = ido_escape_buffer(temp_service->icon_image_alt);
 
 		first_notification_delay = temp_service->first_notification_delay;
