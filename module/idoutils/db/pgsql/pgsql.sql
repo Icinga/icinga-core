@@ -1340,47 +1340,6 @@ CREATE TABLE  icinga_systemcommands (
 -- --------------------------------------------------------
 
 --
--- Table structure for table icinga_timedeventqueue
---
-
-CREATE TABLE  icinga_timedeventqueue (
-  timedeventqueue_id bigserial,
-  instance_id bigint default 0,
-  event_type INTEGER  default 0,
-  queued_time timestamp with time zone default '1970-01-01 00:00:00',
-  queued_time_usec INTEGER  default 0,
-  scheduled_time timestamp with time zone default '1970-01-01 00:00:00',
-  recurring_event INTEGER  default 0,
-  object_id bigint default 0,
-  CONSTRAINT PK_timedeventqueue_id PRIMARY KEY (timedeventqueue_id) 
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table icinga_timedevents
---
-
-CREATE TABLE  icinga_timedevents (
-  timedevent_id bigserial,
-  instance_id bigint default 0,
-  event_type INTEGER  default 0,
-  queued_time timestamp with time zone default '1970-01-01 00:00:00',
-  queued_time_usec INTEGER  default 0,
-  event_time timestamp with time zone default '1970-01-01 00:00:00',
-  event_time_usec INTEGER  default 0,
-  scheduled_time timestamp with time zone default '1970-01-01 00:00:00',
-  recurring_event INTEGER  default 0,
-  object_id bigint default 0,
-  deletion_time timestamp with time zone default '1970-01-01 00:00:00',
-  deletion_time_usec INTEGER  default 0,
-  CONSTRAINT PK_timedevent_id PRIMARY KEY (timedevent_id) ,
-  CONSTRAINT UQ_timedevents UNIQUE (instance_id,event_type,scheduled_time,object_id)
-) ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table icinga_timeperiods
 --
 
@@ -1422,8 +1381,6 @@ CREATE TABLE  icinga_timeperiod_timeranges (
 -- EXTERNALCOMMANDS => entry_time
 
 -- instance_id
-CREATE INDEX timedevents_i_id_idx on icinga_timedevents(instance_id);
-CREATE INDEX timedeventq_i_id_idx on icinga_timedeventqueue(instance_id);
 CREATE INDEX systemcommands_i_id_idx on icinga_systemcommands(instance_id);
 CREATE INDEX servicechecks_i_id_idx on icinga_servicechecks(instance_id);
 CREATE INDEX hostchecks_i_id_idx on icinga_hostchecks(instance_id);
@@ -1431,8 +1388,6 @@ CREATE INDEX eventhandlers_i_id_idx on icinga_eventhandlers(instance_id);
 CREATE INDEX externalcommands_i_id_idx on icinga_externalcommands(instance_id);
 
 -- time
-CREATE INDEX timedevents_time_id_idx on icinga_timedevents(scheduled_time);
-CREATE INDEX timedeventq_time_id_idx on icinga_timedeventqueue(scheduled_time);
 CREATE INDEX systemcommands_time_id_idx on icinga_systemcommands(start_time);
 CREATE INDEX servicechecks_time_id_idx on icinga_servicechecks(start_time);
 CREATE INDEX hostchecks_time_id_idx on icinga_hostchecks(start_time);
@@ -1448,7 +1403,6 @@ CREATE INDEX programstatus_i_id_idx on icinga_programstatus(instance_id);
 CREATE INDEX hoststatus_i_id_idx on icinga_hoststatus(instance_id);
 CREATE INDEX servicestatus_i_id_idx on icinga_servicestatus(instance_id);
 CREATE INDEX contactstatus_i_id_idx on icinga_contactstatus(instance_id);
-CREATE INDEX timedeventqueue_i_id_idx on icinga_timedeventqueue(instance_id);
 CREATE INDEX comments_i_id_idx on icinga_comments(instance_id);
 CREATE INDEX scheduleddowntime_i_id_idx on icinga_scheduleddowntime(instance_id);
 CREATE INDEX runtimevariables_i_id_idx on icinga_runtimevariables(instance_id);
@@ -1530,18 +1484,6 @@ CREATE INDEX srvcstatus_p_state_chg_idx on icinga_servicestatus(percent_state_ch
 CREATE INDEX srvcstatus_latency_idx on icinga_servicestatus(latency);
 CREATE INDEX srvcstatus_ex_time_idx on icinga_servicestatus(execution_time);
 CREATE INDEX srvcstatus_sch_downt_d_idx on icinga_servicestatus(scheduled_downtime_depth);
-
--- timedeventqueue
-CREATE INDEX timed_e_q_event_type_idx on icinga_timedeventqueue(event_type);
-CREATE INDEX timed_e_q_sched_time_idx on icinga_timedeventqueue(scheduled_time);
-CREATE INDEX timed_e_q_object_id_idx on icinga_timedeventqueue(object_id);
-CREATE INDEX timed_e_q_rec_ev_id_idx on icinga_timedeventqueue(recurring_event);
-
--- timedevents
-CREATE INDEX timed_e_event_type_idx on icinga_timedevents(event_type);
---CREATE INDEX timed_e_sched_time_idx on icinga_timedevents(scheduled_time); --already set for delete
-CREATE INDEX timed_e_object_id_idx on icinga_timedevents(object_id);
-CREATE INDEX timed_e_rec_ev_idx on icinga_timedevents(recurring_event);
 
 -- hostchecks
 CREATE INDEX hostchks_h_obj_id_idx on icinga_hostchecks(host_object_id);

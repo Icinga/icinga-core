@@ -147,7 +147,7 @@ reconnect_warning_interval=15
 # Basically you have to calculate from the following values
 #
 #define IDOMOD_PROCESS_PROCESS_DATA                   1
-#define IDOMOD_PROCESS_TIMED_EVENT_DATA               2
+#define IDOMOD_PROCESS_TIMED_EVENT_DATA               2 /* removed */
 #define IDOMOD_PROCESS_LOG_DATA                       4
 #define IDOMOD_PROCESS_SYSTEM_COMMAND_DATA            8
 #define IDOMOD_PROCESS_EVENT_HANDLER_DATA             16
@@ -178,9 +178,8 @@ reconnect_warning_interval=15
 # ATTENTION: if process data is not dumped via idomod, ido2db won't
 #            clean tables and set objects inactive!!!
 #
-# You may use the Online Calculator by Gerhard Lausser:
-# http://labs.consol.de/nagios/ndo-data-processing-options/
-# (please note that there is a checkbox for everything!)
+# NOTE: TIMED_EVENT_DATA was removed in IDOUtils 1.10 - this setting
+# 	has no effect anymore.
 #
 # The default setting will remove everything not used by default.
 #	TIMED_EVENT_DATA 	(-2)

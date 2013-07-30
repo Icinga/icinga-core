@@ -191,9 +191,6 @@ db_pass=icinga
 
 # ***DEFAULT***
 
-# Keep timed events for 1 hour
-max_timedevents_age=60
-
 # Keep system commands for 1 day
 max_systemcommands_age=1440
 

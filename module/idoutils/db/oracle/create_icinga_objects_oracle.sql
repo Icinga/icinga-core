@@ -1739,53 +1739,6 @@ alter table systemcommands add CONSTRAINT systemcommands_uq UNIQUE (instance_id,
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table timedeventqueue
--- 
-
-CREATE TABLE timedeventqueue (
-  id integer ,
-  instance_id integer default 0 ,
-  event_type integer default 0 ,
-  queued_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  queued_time_usec integer default 0 ,
-  scheduled_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  recurring_event integer default 0 ,
-  object_id integer default 0 
-)tablespace &&DATATBS;
-alter table timedeventqueue add constraint timedeventqueue_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-
-
-
--- --------------------------------------------------------
-
--- 
--- Table structure for table timedevents
--- 
-
-CREATE TABLE timedevents (
-  id integer ,
-  instance_id integer default 0 ,
-  event_type integer default 0 ,
-  queued_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  queued_time_usec integer default 0 ,
-  event_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  event_time_usec integer default 0 ,
-  scheduled_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  recurring_event integer default 0 ,
-  object_id integer default 0 ,
-  deletion_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  deletion_time_usec integer default 0 
-)tablespace &&DATATBS;
-alter table timedevents add constraint timedevents_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table timedevents add CONSTRAINT timedevents_uq UNIQUE (instance_id,event_type,scheduled_time,object_id)
-	using index tablespace &&IDXTBS;
-
-
--- --------------------------------------------------------
-
--- 
 -- Table structure for table timeperiod_timeranges
 -- 
 
@@ -1831,8 +1784,6 @@ alter table timeperiods add CONSTRAINT timeperiods_uq UNIQUE (instance_id,config
 -- EXTERNALCOMMANDS => entry_time
 
 -- instance_id
-CREATE INDEX timedevents_i_id_idx on timedevents(instance_id) tablespace &&IDXTBS;
-CREATE INDEX timedeventq_i_id_idx on timedeventqueue(instance_id) tablespace &&IDXTBS;
 CREATE INDEX systemcommands_i_id_idx on systemcommands(instance_id) tablespace &&IDXTBS;
 CREATE INDEX servicechecks_i_id_idx on servicechecks(instance_id)tablespace &&IDXTBS;
 CREATE INDEX hostchecks_i_id_idx on hostchecks(instance_id) tablespace &&IDXTBS;
@@ -1840,8 +1791,6 @@ CREATE INDEX eventhandlers_i_id_idx on eventhandlers(instance_id) tablespace &&I
 CREATE INDEX externalcommands_i_id_idx on externalcommands(instance_id) tablespace &&IDXTBS;
 
 -- time
-CREATE INDEX timedevents_time_id_idx on timedevents(scheduled_time) tablespace &&IDXTBS;
-CREATE INDEX timedeventq_time_id_idx on timedeventqueue(scheduled_time) tablespace &&IDXTBS;
 CREATE INDEX systemcommands_time_id_idx on systemcommands(start_time) tablespace &&IDXTBS;
 CREATE INDEX servicechecks_time_id_idx on servicechecks(start_time) tablespace &&IDXTBS;
 CREATE INDEX hostchecks_time_id_idx on hostchecks(start_time) tablespace &&IDXTBS;
@@ -1855,7 +1804,6 @@ CREATE INDEX externalcommands_time_id_idx on externalcommands(entry_time) tables
 CREATE INDEX hoststatus_i_id_idx on hoststatus(instance_id) tablespace &&IDXTBS;
 CREATE INDEX servicestatus_i_id_idx on servicestatus(instance_id) tablespace &&IDXTBS;
 CREATE INDEX contactstatus_i_id_idx on contactstatus(instance_id) tablespace &&IDXTBS;
--- CREATE INDEX timedeventqueue_i_id_idx on timedeventqueue(instance_id); -- defined adobe
 CREATE INDEX comments_i_id_idx on comments(instance_id) tablespace &&IDXTBS;
 CREATE INDEX scheduleddowntime_i_id_idx on scheduleddowntime(instance_id) tablespace &&IDXTBS;
 CREATE INDEX runtimevariables_i_id_idx on runtimevariables(instance_id) tablespace &&IDXTBS;
@@ -1938,18 +1886,6 @@ CREATE INDEX srvcstatus_p_state_chg_idx on servicestatus(percent_state_change) t
 CREATE INDEX srvcstatus_latency_idx on servicestatus(latency) tablespace &&IDXTBS;
 CREATE INDEX srvcstatus_ex_time_idx on servicestatus(execution_time) tablespace &&IDXTBS;
 CREATE INDEX srvcstatus_sch_downt_d_idx on servicestatus(scheduled_downtime_depth) tablespace &&IDXTBS;
-
--- timedeventqueue
-CREATE INDEX timed_e_q_event_type_idx on timedeventqueue(event_type) tablespace &&IDXTBS;
--- CREATE INDEX timed_e_q_sched_time_idx on timedeventqueue(scheduled_time); -- defined above
-CREATE INDEX timed_e_q_object_id_idx on timedeventqueue(object_id) tablespace &&IDXTBS;
-CREATE INDEX timed_e_q_rec_ev_id_idx on timedeventqueue(recurring_event) tablespace &&IDXTBS;
-
--- timedevents
-CREATE INDEX timed_e_event_type_idx on timedevents(event_type) tablespace &&IDXTBS;
---CREATE INDEX timed_e_sched_time_idx on timedevents(scheduled_time); --already set for delete
-CREATE INDEX timed_e_object_id_idx on timedevents(object_id) tablespace &&IDXTBS;
-CREATE INDEX timed_e_rec_ev_idx on timedevents(recurring_event) tablespace &&IDXTBS;
 
 -- hostchecks
 CREATE INDEX hostchks_h_obj_id_idx on hostchecks(host_object_id) tablespace &&IDXTBS;
@@ -2267,16 +2203,6 @@ CREATE SEQUENCE seq_statehistory
    nocache nomaxvalue;
 
 CREATE SEQUENCE seq_systemcommands
-   start with 1
-   increment by 1
-   nocache nomaxvalue;
-
-CREATE SEQUENCE seq_timedeventqueue
-   start with 1
-   increment by 1
-   nocache nomaxvalue;
-
-CREATE SEQUENCE seq_timedevents
    start with 1
    increment by 1
    nocache nomaxvalue;

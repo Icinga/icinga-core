@@ -56,6 +56,29 @@ ALTER TABLE services ADD action_url_expanded varchar2(1024);
 ALTER TABLE services ADD icon_image_expanded varchar2(1024);
 
 -- -----------------------------------------
+-- #4482 deprecate timedevent* tables
+-- -----------------------------------------
+
+DROP INDEX timedevents_i_id_idx;
+DROP INDEX timedeventq_i_id_idx;
+DROP INDEX timedevents_time_id_idx;
+DROP INDEX timedeventq_time_id_idx;
+DROP INDEX timed_e_q_event_type_idx;
+DROP INDEX timed_e_q_sched_time_idx;
+DROP INDEX timed_e_q_object_id_idx;
+DROP INDEX timed_e_q_rec_ev_id_idx;
+DROP INDEX timed_e_event_type_idx;
+DROP INDEX timed_e_object_id_idx;
+DROP INDEX timed_e_rec_ev_idx;
+
+DROP SEQUENCE seq_timedeventqueue;
+DROP SEQUENCE seq_timedevents;
+
+DROP TABLE timedevents;
+DROP TABLE timedeventqueue;
+
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 

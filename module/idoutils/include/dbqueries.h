@@ -13,12 +13,6 @@
 
 #define ICINGA_SIZEOF_ARRAY(var)       (sizeof(var)/sizeof(var[0]))
 
-/* TIMEDEVENTS */
-int ido2db_query_insert_or_update_timedevents_add(ido2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **data);
-
 /* SYSTEMCOMMANDS */
 int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **data);
 

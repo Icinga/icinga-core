@@ -30,7 +30,6 @@ int ido2db_set_object_as_active(ido2db_idi *,unsigned long);
 
 int ido2db_handle_logentry(ido2db_idi *);
 int ido2db_handle_processdata(ido2db_idi *);
-int ido2db_handle_timedeventdata(ido2db_idi *);
 int ido2db_handle_logdata(ido2db_idi *);
 int ido2db_handle_systemcommanddata(ido2db_idi *);
 int ido2db_handle_eventhandlerdata(ido2db_idi *);

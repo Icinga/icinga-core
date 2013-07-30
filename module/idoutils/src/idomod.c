@@ -1159,8 +1159,6 @@ int idomod_register_callbacks(void) {
 	if (result == IDO_OK)
 		result = neb_register_callback(NEBCALLBACK_PROCESS_DATA, idomod_module_handle, priority, idomod_broker_data);
 	if (result == IDO_OK)
-		result = neb_register_callback(NEBCALLBACK_TIMED_EVENT_DATA, idomod_module_handle, priority, idomod_broker_data);
-	if (result == IDO_OK)
 		result = neb_register_callback(NEBCALLBACK_LOG_DATA, idomod_module_handle, priority, idomod_broker_data);
 	if (result == IDO_OK)
 		result = neb_register_callback(NEBCALLBACK_SYSTEM_COMMAND_DATA, idomod_module_handle, priority, idomod_broker_data);
@@ -1221,7 +1219,6 @@ int idomod_deregister_callbacks(void) {
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_deregister_callbacks() start\n");
 
 	neb_deregister_callback(NEBCALLBACK_PROCESS_DATA, idomod_broker_data);
-	neb_deregister_callback(NEBCALLBACK_TIMED_EVENT_DATA, idomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_LOG_DATA, idomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_SYSTEM_COMMAND_DATA, idomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_EVENT_HANDLER_DATA, idomod_broker_data);
@@ -1317,10 +1314,6 @@ int idomod_broker_data(int event_type, void *data) {
 
 	case NEBCALLBACK_PROCESS_DATA:
 		if (!(idomod_process_options & IDOMOD_PROCESS_PROCESS_DATA))
-			return 0;
-		break;
-	case NEBCALLBACK_TIMED_EVENT_DATA:
-		if (!(idomod_process_options & IDOMOD_PROCESS_TIMED_EVENT_DATA))
 			return 0;
 		break;
 	case NEBCALLBACK_LOG_DATA:
@@ -1461,139 +1454,6 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (unsigned long)getpid()
 		         , IDO_API_ENDDATA
 		        );
-
-		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
-		ido_dbuf_strcat(&dbuf, temp_buffer);
-
-		break;
-
-	case NEBCALLBACK_TIMED_EVENT_DATA:
-
-		eventdata = (nebstruct_timed_event_data *)data;
-
-		switch (eventdata->event_type) {
-
-		case EVENT_SERVICE_CHECK:
-			temp_service = (service *)eventdata->event_data;
-
-			es[0] = ido_escape_buffer(temp_service->host_name);
-			es[1] = ido_escape_buffer(temp_service->description);
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d\n\n"
-			         , IDO_API_TIMEDEVENTDATA
-			         , IDO_DATA_TYPE
-			         , eventdata->type
-			         , IDO_DATA_FLAGS
-			         , eventdata->flags
-			         , IDO_DATA_ATTRIBUTES
-			         , eventdata->attr
-			         , IDO_DATA_TIMESTAMP
-			         , eventdata->timestamp.tv_sec
-			         , eventdata->timestamp.tv_usec
-			         , IDO_DATA_EVENTTYPE
-			         , eventdata->event_type
-			         , IDO_DATA_RECURRING
-			         , eventdata->recurring
-			         , IDO_DATA_RUNTIME
-			         , (unsigned long)eventdata->run_time
-			         , IDO_DATA_HOST
-			         , (es[0] == NULL) ? "" : es[0]
-			         , IDO_DATA_SERVICE
-			         , (es[1] == NULL) ? "" : es[1]
-			         , IDO_API_ENDDATA
-			        );
-
-			break;
-
-		case EVENT_HOST_CHECK:
-			temp_host = (host *)eventdata->event_data;
-
-			es[0] = ido_escape_buffer(temp_host->name);
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d\n\n"
-			         , IDO_API_TIMEDEVENTDATA
-			         , IDO_DATA_TYPE
-			         , eventdata->type
-			         , IDO_DATA_FLAGS
-			         , eventdata->flags
-			         , IDO_DATA_ATTRIBUTES
-			         , eventdata->attr
-			         , IDO_DATA_TIMESTAMP
-			         , eventdata->timestamp.tv_sec
-			         , eventdata->timestamp.tv_usec
-			         , IDO_DATA_EVENTTYPE
-			         , eventdata->event_type
-			         , IDO_DATA_RECURRING
-			         , eventdata->recurring
-			         , IDO_DATA_RUNTIME
-			         , (unsigned long)eventdata->run_time
-			         , IDO_DATA_HOST
-			         , (es[0] == NULL) ? "" : es[0]
-			         , IDO_API_ENDDATA
-			        );
-
-			break;
-
-		case EVENT_SCHEDULED_DOWNTIME:
-			temp_downtime = find_downtime(ANY_DOWNTIME, (unsigned long)eventdata->event_data);
-
-			if (temp_downtime != NULL) {
-				es[0] = ido_escape_buffer(temp_downtime->host_name);
-				es[1] = ido_escape_buffer(temp_downtime->service_description);
-			}
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d\n\n"
-			         , IDO_API_TIMEDEVENTDATA
-			         , IDO_DATA_TYPE
-			         , eventdata->type
-			         , IDO_DATA_FLAGS
-			         , eventdata->flags
-			         , IDO_DATA_ATTRIBUTES
-			         , eventdata->attr
-			         , IDO_DATA_TIMESTAMP
-			         , eventdata->timestamp.tv_sec
-			         , eventdata->timestamp.tv_usec
-			         , IDO_DATA_EVENTTYPE
-			         , eventdata->event_type
-			         , IDO_DATA_RECURRING
-			         , eventdata->recurring
-			         , IDO_DATA_RUNTIME
-			         , (unsigned long)eventdata->run_time
-			         , IDO_DATA_HOST
-			         , (es[0] == NULL) ? "" : es[0]
-			         , IDO_DATA_SERVICE
-			         , (es[1] == NULL) ? "" : es[1]
-			         , IDO_API_ENDDATA
-			        );
-
-			break;
-
-		default:
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%d\n%d=%lu\n%d\n\n"
-			         , IDO_API_TIMEDEVENTDATA
-			         , IDO_DATA_TYPE
-			         , eventdata->type
-			         , IDO_DATA_FLAGS
-			         , eventdata->flags
-			         , IDO_DATA_ATTRIBUTES
-			         , eventdata->attr
-			         , IDO_DATA_TIMESTAMP
-			         , eventdata->timestamp.tv_sec
-			         , eventdata->timestamp.tv_usec
-			         , IDO_DATA_EVENTTYPE
-			         , eventdata->event_type
-			         , IDO_DATA_RECURRING
-			         , eventdata->recurring
-			         , IDO_DATA_RUNTIME
-			         , (unsigned long)eventdata->run_time
-			         , IDO_API_ENDDATA
-			        );
-			break;
-		}
 
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);

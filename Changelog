@@ -17,6 +17,7 @@ UPGRADE NOTES
 
 * idoutils: slahistory table must be removed manually after enable_sla removal #4363
 	- DROP TABLE icinga_slahistory
+* idoutils: timedevents & timedeventqueue tables are deprecated and removed #4482
 
 ENHANCEMENTS
 
@@ -48,6 +49,7 @@ FIXES
 
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 * idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
+* idoutils: remove timedevent support and tables #4482 - MF
 
 * icinga.spec: remove commandgrp/user flags for configure (INSTALL_OPTS useless on package build) #4394 - MF
 
@@ -75,6 +77,7 @@ CHANGES
 	** notes_url_expanded
 	** action_url_expanded
 	** icon_image_expanded
+* idoutils: remove timedevents functionality, drop tables #4482
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 

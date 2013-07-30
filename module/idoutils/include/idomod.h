@@ -33,7 +33,7 @@ typedef struct idomod_sink_buffer_struct{
 /************* types of process data ***********/
 
 #define IDOMOD_PROCESS_PROCESS_DATA                   1
-#define IDOMOD_PROCESS_TIMED_EVENT_DATA               2
+#define IDOMOD_PROCESS_TIMED_EVENT_DATA               2		/* removed */
 #define IDOMOD_PROCESS_LOG_DATA                       4
 #define IDOMOD_PROCESS_SYSTEM_COMMAND_DATA            8
 #define IDOMOD_PROCESS_EVENT_HANDLER_DATA             16

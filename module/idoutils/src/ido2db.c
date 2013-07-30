@@ -549,8 +549,7 @@ int ido2db_process_config_var(char *arg) {
 	} else if (!strcmp(var, "db_socket")) {
 		if ((ido2db_db_settings.dbsocket = strdup(val)) == NULL)
 			return IDO_ERROR;
-	} else if (!strcmp(var, "max_timedevents_age"))
-		ido2db_db_settings.max_timedevents_age = strtoul(val, NULL, 0) * 60;
+	}
 	else if (!strcmp(var, "max_systemcommands_age"))
 		ido2db_db_settings.max_systemcommands_age = strtoul(val, NULL, 0) * 60;
 	else if (!strcmp(var, "max_servicechecks_age"))
@@ -650,7 +649,6 @@ int ido2db_initialize_variables(void) {
 	ido2db_db_settings.dbname = NULL;
 	ido2db_db_settings.dbprefix = NULL;
 	ido2db_db_settings.dbsocket = NULL;
-	ido2db_db_settings.max_timedevents_age = 0L;
 	ido2db_db_settings.max_systemcommands_age = 0L;
 	ido2db_db_settings.max_servicechecks_age = 0L;
 	ido2db_db_settings.max_hostchecks_age = 0L;
@@ -1945,9 +1943,6 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 			case IDO_API_PROCESSDATA:
 				idi->current_input_data = IDO2DB_INPUT_DATA_PROCESSDATA;
 				break;
-			case IDO_API_TIMEDEVENTDATA:
-				idi->current_input_data = IDO2DB_INPUT_DATA_TIMEDEVENTDATA;
-				break;
 			case IDO_API_LOGDATA:
 				idi->current_input_data = IDO2DB_INPUT_DATA_LOGDATA;
 				break;
@@ -2427,9 +2422,6 @@ int ido2db_end_input_data(ido2db_idi *idi) {
 		/* realtime Icinga data */
 	case IDO2DB_INPUT_DATA_PROCESSDATA:
 		result = ido2db_handle_processdata(idi);
-		break;
-	case IDO2DB_INPUT_DATA_TIMEDEVENTDATA:
-		result = ido2db_handle_timedeventdata(idi);
 		break;
 	case IDO2DB_INPUT_DATA_LOGDATA:
 		result = ido2db_handle_logdata(idi);

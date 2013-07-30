@@ -22,7 +22,6 @@ typedef struct ido2db_dbconfig_struct{
 	char *dbprefix;
 	char *dbserver;
 	char *dbsocket;
-	unsigned long max_timedevents_age;
 	unsigned long max_systemcommands_age;
 	unsigned long max_servicechecks_age;
 	unsigned long max_hostchecks_age;
@@ -58,8 +57,8 @@ typedef struct ido2db_dbconfig_struct{
 #define IDO2DB_DBTABLE_SERVICESTATUS                  11
 #define IDO2DB_DBTABLE_HOSTSTATUS                     12
 #define IDO2DB_DBTABLE_PROCESSEVENTS                  13
-#define IDO2DB_DBTABLE_TIMEDEVENTS                    14
-#define IDO2DB_DBTABLE_TIMEDEVENTQUEUE                15
+#define IDO2DB_DBTABLE_TIMEDEVENTS                    14 /* removed */
+#define IDO2DB_DBTABLE_TIMEDEVENTQUEUE                15 /* removed */
 #define IDO2DB_DBTABLE_FLAPPINGHISTORY                16
 #define IDO2DB_DBTABLE_COMMENTHISTORY                 17
 #define IDO2DB_DBTABLE_COMMENTS                       18

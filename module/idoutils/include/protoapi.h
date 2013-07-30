@@ -58,7 +58,7 @@
 #define IDO_API_LOGENTRY                             100
 
 #define IDO_API_PROCESSDATA                          200
-#define IDO_API_TIMEDEVENTDATA                       201
+#define IDO_API_TIMEDEVENTDATA                       201	/* removed */
 #define IDO_API_LOGDATA                              202
 #define IDO_API_SYSTEMCOMMANDDATA                    203
 #define IDO_API_EVENTHANDLERDATA                     204

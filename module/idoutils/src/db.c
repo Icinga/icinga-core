@@ -25,9 +25,6 @@ extern int errno;
 #ifdef USE_ORACLE
 int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_logentries_insert(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_timedevents_queue(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_timedeventqueue(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_timedevents(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostchecks(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi);
@@ -95,7 +92,6 @@ int ido2db_oci_prepared_statement_objects_update_inactive(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_objects_update_active(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_object_enable_disable(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_timedevents_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_comment_history_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtimehistory_update_stop(ido2db_idi *idi);
@@ -104,8 +100,6 @@ int ido2db_oci_prepared_statement_conninfo_update_checkin(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_scheduleddowntime_update_start(ido2db_idi *idi);
 
 /* delete stuff */
-int ido2db_oci_prepared_statement_timedeventqueue_delete(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_timedeventqueue_delete_more(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_comments_delete(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtime_delete(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances_delete(ido2db_idi *idi);
@@ -136,8 +130,8 @@ char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
 	"servicestatus",
 	"hoststatus",
 	"processevents",
-	"timedevents",
-	"timedeventqueue",
+	"",
+	"",
 	"flappinghistory",
 	"commenthistory",
 	"comments",
@@ -272,7 +266,6 @@ int ido2db_db_init(ido2db_idi *idi) {
 	idi->dbinfo.clean_event_queue = IDO_FALSE;
 	idi->dbinfo.last_notification_id = 0L;
 	idi->dbinfo.last_contact_notification_id = 0L;
-	idi->dbinfo.max_timedevents_age = ido2db_db_settings.max_timedevents_age;
 	idi->dbinfo.max_systemcommands_age = ido2db_db_settings.max_systemcommands_age;
 	idi->dbinfo.max_servicechecks_age = ido2db_db_settings.max_servicechecks_age;
 	idi->dbinfo.max_hostchecks_age = ido2db_db_settings.max_hostchecks_age;
@@ -627,22 +620,6 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	/* logentries */
 	if (ido2db_oci_prepared_statement_logentries_insert(idi) == IDO_ERROR) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_insert() failed\n");
-		return IDO_ERROR;
-	}
-
-	/* timed events */
-	if (ido2db_oci_prepared_statement_timedevents_queue(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() failed\n");
-		return IDO_ERROR;
-	}
-
-	if (ido2db_oci_prepared_statement_timedevents(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() failed\n");
-		return IDO_ERROR;
-	}
-
-	if (ido2db_oci_prepared_statement_timedeventqueue(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() failed\n");
 		return IDO_ERROR;
 	}
 
@@ -1015,24 +992,6 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
-	/* timedevents update */
-	if (ido2db_oci_prepared_statement_timedevents_update(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_update() failed\n");
-		return IDO_ERROR;
-	}
-
-	/* timdeventqueue delete */
-	if (ido2db_oci_prepared_statement_timedeventqueue_delete(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
-		return IDO_ERROR;
-	}
-
-	/* timdeventqueue delete more*/
-	if (ido2db_oci_prepared_statement_timedeventqueue_delete_more(idi) == IDO_ERROR) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
-		return IDO_ERROR;
-	}
-
 	/* comment history update  */
 	if (ido2db_oci_prepared_statement_comment_history_update(idi) == IDO_ERROR) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
@@ -1164,10 +1123,6 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	 *  2011-06-19 only if handle is set
 	 * */
 	//ido2db_oci_statement_free(idi->dbinfo.oci_statement, "oci_statement");
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents, "oci_statement_objects_update_inactive");
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents_queue, "oci_statement_timedevents_queue");
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue, "oci_statement_timedeventqueue");
-
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostchecks, "oci_statement_hostchecks");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hoststatus, "oci_statement_hoststatus");
 
@@ -1255,10 +1210,6 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_logentries_select, "oci_statement_logentries_select");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus_update, "oci_statement_programstatus_update");
-
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents_update, "oci_statement_timedevents_update");
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue_delete, "oci_statement_timedeventqueue_delete");
-	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue_delete_more, "oci_statement_timedeventqueue_delete_more");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comment_history_update, "oci_statement_comment_history_update");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comments_delete, "oci_statement_comments_delete");
@@ -1771,7 +1722,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_host_status_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_service_status_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_contact_status_time);
-	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE], "queued_time", (unsigned long *) &idi->dbinfo.latest_queued_event_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS], "entry_time", (unsigned long *) &idi->dbinfo.latest_comment_time);
 
 	/* calculate time of latest realtime data */
@@ -2090,7 +2040,6 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_host_status_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_service_status_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_contact_status_time);
-	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE], "queued_time", (unsigned long *) &idi->dbinfo.latest_queued_event_time);
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS], "entry_time", (unsigned long *) &idi->dbinfo.latest_comment_time);
 
 	/* calculate time of latest realtime data */
@@ -2838,8 +2787,6 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 
 	/* trim tables */
 	if (((unsigned long) current_time - idi->dbinfo.trim_db_interval) > (unsigned long) idi->dbinfo.last_table_trim_time) {
-		if (idi->dbinfo.max_timedevents_age > 0L)
-			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS], "scheduled_time", (time_t)((unsigned long) current_time - idi->dbinfo.max_timedevents_age));
 		if (idi->dbinfo.max_systemcommands_age > 0L)
 			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS], "start_time", (time_t)((unsigned long) current_time - idi->dbinfo.max_systemcommands_age));
 		if (idi->dbinfo.max_servicechecks_age > 0L)
@@ -3955,202 +3902,6 @@ int ido2db_oci_prepared_statement_statehistory(ido2db_idi *idi) {
 		OCI_AllowRebinding(idi->dbinfo.oci_statement_statehistory, 1);
 
 		if (!OCI_Prepare(idi->dbinfo.oci_statement_statehistory, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
-
-	return IDO_OK;
-}
-
-
-
-/************************************/
-/* TIMED EVENTS                     */
-/************************************/
-
-int ido2db_oci_prepared_statement_timedevents_queue(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() start\n");
-
-	if (asprintf(&buf, "MERGE INTO %s USING DUAL "
-	             "ON (instance_id=:X1 "
-	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2localts(:X5) "
-	             "AND object_id=:X7) "
-	             "WHEN MATCHED THEN "
-	             "UPDATE SET queued_time=unixts2localts(:X3), "
-	             "queued_time_usec=:X4, "
-	             "recurring_event=:X6 "
-	             "WHEN NOT MATCHED THEN "
-	             "INSERT (id, instance_id, event_type, queued_time, queued_time_usec, "
-	             "scheduled_time, recurring_event, object_id) "
-	             "VALUES (seq_timedevents.nextval, :X1, :X2, unixts2localts(:X3), :X4, "
-	             "unixts2localts(:X5), :X6, :X7)",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedevents_queue = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedevents_queue, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedevents_queue, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
-
-	return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_timedeventqueue(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() start\n");
-
-	if (asprintf(&buf,
-	             "MERGE INTO %s USING DUAL "
-	             "ON (instance_id=:X1 "
-	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2localts(:X5)"
-	             "AND object_id=:X7) "
-	             "WHEN MATCHED THEN "
-	             "UPDATE SET queued_time=unixts2localts(:X3), "
-	             "queued_time_usec=:X4, "
-	             "recurring_event=:X6 "
-	             "WHEN NOT MATCHED THEN "
-	             "INSERT (id, instance_id, event_type, "
-	             "queued_time, queued_time_usec, scheduled_time, "
-	             "recurring_event, object_id) "
-	             "VALUES (seq_timedeventqueue.nextval, :X1, :X2, "
-	             "unixts2localts(:X3), :X4, unixts2localts(:X5), :X6, :X7)",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedeventqueue = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() end\n");
-
-	return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_timedevents(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() start\n");
-
-	if (asprintf(&buf,
-	             "MERGE INTO %s USING DUAL "
-	             "ON (instance_id=:X1 "
-	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2localts(:X5) "
-	             "AND object_id=:X7) "
-	             "WHEN MATCHED THEN "
-	             "UPDATE SET event_time=unixts2localts(:X3), "
-	             "event_time_usec=:X4, "
-	             "recurring_event=:X6 "
-	             "WHEN NOT MATCHED THEN "
-	             "INSERT (id, instance_id, event_type, "
-	             "event_time, event_time_usec, scheduled_time, "
-	             "recurring_event, object_id) "
-	             "VALUES (seq_timedevents.nextval, :X1, :X2, "
-	             "unixts2localts(:X3), :X4, unixts2localts(:X5), :X6, :X7)",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedevents = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedevents, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedevents, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() end\n");
-
-	return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_timedevents_update(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
-
-	if (asprintf(&buf,
-	             "UPDATE %s SET deletion_time=unixts2localts(:X1), "
-	             "deletion_time_usec=:X2 "
-	             "WHERE instance_id=:X3 "
-	             "AND event_type=:X4 "
-	             "AND scheduled_time=unixts2localts(:X5) "
-	             "AND recurring_event=:X6 "
-	             "AND object_id=:X7",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedevents_update = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedevents_update, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedevents_update, MT(buf))) {
 			free(buf);
 			return IDO_ERROR;
 		}
@@ -6924,86 +6675,6 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido
 /************************************/
 /* DELETE                           */
 /************************************/
-
-
-int ido2db_oci_prepared_statement_timedeventqueue_delete(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
-
-	if (asprintf(&buf, ""
-	             "DELETE FROM %s "
-	             "WHERE instance_id=:X1 "
-	             "AND scheduled_time<= unixts2localts(:X2)",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedeventqueue_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue_delete, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
-
-	return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_timedeventqueue_delete_more(ido2db_idi *idi) {
-
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
-
-	if (asprintf(&buf,
-	             "DELETE FROM %s "
-	             "WHERE instance_id=:X1 "
-	             "AND event_type=:X2 "
-	             "AND scheduled_time= unixts2localts(:X3) "
-	             "AND recurring_event=:X4 "
-	             "AND object_id=:X5",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
-		buf = NULL;
-	}
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
-
-	if (idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement_timedeventqueue_delete_more = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-		/* allow rebinding values */
-		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue_delete_more, 1);
-
-		if (!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(buf))) {
-			free(buf);
-			return IDO_ERROR;
-		}
-	} else {
-		free(buf);
-		return IDO_ERROR;
-	}
-	free(buf);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
-
-	return IDO_OK;
-}
 
 
 int ido2db_oci_prepared_statement_comments_delete(ido2db_idi *idi) {
