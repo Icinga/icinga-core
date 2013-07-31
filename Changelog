@@ -15,11 +15,9 @@ UPGRADE NOTES
 
 1.10.0 - 24/10/2013
 
-IMPORTANT
 * idoutils: slahistory table must be removed manually after enable_sla removal #4363
 	- DROP TABLE icinga_slahistory
 * idoutils: timedevents & timedeventqueue tables are deprecated and removed #4482
-* idoutils: attribute macros are resolved by default in idomod #1883
 
 ENHANCEMENTS
 
@@ -32,7 +30,7 @@ ENHANCEMENTS
 * classic ui: allow to exclude custom variable name/value based on pattern #4390 - MF
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
-* idoutils: resolve attribute macros for host/service (notes, notes_url, action_url, icon_image) #1883 - MF
+* idoutils: add processed macro strings into database (notes, notes_url, action_url, icon_image) #1883 - MF
 	** NOTE: static object attributes on config dump supported
 
 * install: allow enable perfdata config switch via configure #3996 - MF
@@ -73,10 +71,13 @@ CHANGES
 
 * idoutils: add max_downtimhistory_age to ido2db.cfg #3989
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
-* idoutils: remove timedevents functionality, drop tables #4482
-* idoutils: add resolve_attribute_macros=0|1 to idomod.cfg #1883
-	** default enabled, notes, notes_url, action_url, icon_image are resolved
+* idoutils: new hosts/table columns for expanded macros #1883
 	** NOTE: only static object attributes on config dump supported
+	** notes_expanded
+	** notes_url_expanded
+	** action_url_expanded
+	** icon_image_expanded
+* idoutils: remove timedevents functionality, drop tables #4482
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
