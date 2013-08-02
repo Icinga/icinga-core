@@ -10,12 +10,12 @@
 define host{
 	name				3509linux-server
 	use				generic-host
-	check_period			24x7
+	check_period			testconfig-24x7
 	check_interval			5
 	retry_interval			1
 	max_check_attempts		10
         check_command           	testconfig-check-host-alive
-	notification_period		workhours
+	notification_period		testconfig-workhours
 	notification_interval		120
 	notification_options		d,u,r
 	contact_groups			testconfig-group-admin
@@ -62,7 +62,7 @@ define service {
 	check_interval                  7
 	retry_interval                  3
 	active_checks_enabled           0
-	check_period                    24x7
+	check_period                    testconfig-24x7
 	obsess_over_service             0
 	check_freshness                 1
 	event_handler_enabled           0
