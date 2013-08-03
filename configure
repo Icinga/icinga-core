@@ -677,6 +677,8 @@ IDOSOCKFILE
 IDO2DBLOCKFILE
 ICINGACHKFILE
 lockfile
+systemd_sysconfig_dir
+systemd_unit_dir
 init_dir
 P1FILELOC
 PHPAPIEXTCMDDIR
@@ -693,6 +695,7 @@ STATEDIR
 TMPFILE
 TMPDIR
 CHECKRESULTDIR
+APACHE24_DEBIAN
 HTTPD_CONF
 MAIL_PROG
 INSTALL_OPTS_WEB
@@ -797,6 +800,8 @@ with_cgi_log_dir
 with_ext_cmd_file_dir
 with_p1_file_dir
 with_init_dir
+with_systemd_unit_dir
+with_systemd_sysconfig_dir
 with_lockfile
 with_icinga_chkfile
 with_ido2db_lockfile
@@ -1520,6 +1525,11 @@ Optional Packages:
   --with-p1-file-dir=<path>
                           sets path to embedded perl p1.pl directory
   --with-init-dir=<path>  sets directory to place init script into
+  --with-systemd-unitdir=<path>
+                          sets directory to place systemd service file into
+  --with-systemd-sysconfigdir=<path>
+                          sets directory to place systemd service
+                          configuration file
   --with-lockfile=<path>  sets path and file name for lock file
   --with-icinga-chkfile=<path>
                           sets path and file name for icinga initscript error
@@ -5369,6 +5379,7 @@ fi
 
 
 HTTPD_CONF=no
+APACHE24_DEBIAN=no
 
 # Check whether --with-httpd_conf was given.
 if test "${with_httpd_conf+set}" = set; then :
@@ -5380,6 +5391,9 @@ fi
 if test x$HTTPD_CONF = xno; then
 	if test -d /etc/httpd/conf.d; then
 		HTTPD_CONF="/etc/httpd/conf.d"
+	elif test -d /etc/apache2/conf-available; then
+				HTTPD_CONF="/etc/apache2/conf-available"
+		APACHE24_DEBIAN=yes
 	elif test -d /etc/apache2/conf.d; then
 		HTTPD_CONF="/etc/apache2/conf.d"
 	elif test -d /etc/apache/conf.d; then
@@ -5388,6 +5402,7 @@ if test x$HTTPD_CONF = xno; then
 		HTTPD_CONF="/etc/httpd/conf.d"
 	fi
 fi
+
 
 
 CHECKRESULTDIR=no
@@ -5625,6 +5640,31 @@ fi
 # Check whether --with-init_dir was given.
 if test "${with_init_dir+set}" = set; then :
   withval=$with_init_dir; init_dir=$withval
+fi
+
+
+
+systemd_unit_dir=/usr/lib/systemd/system
+if test -d /usr/lib/systemd/system; then
+       systemd_unit_dir=/usr/lib/systemd/system
+elif test -d /lib/systemd/system; then
+       systemd_unit_dir=/lib/systemd/system
+fi
+
+systemd_sysconfig_dir=/etc/sysconfig
+
+
+# Check whether --with-systemd_unit_dir was given.
+if test "${with_systemd_unit_dir+set}" = set; then :
+  withval=$with_systemd_unit_dir; systemd_unit_dir=$withval
+fi
+
+
+
+
+# Check whether --with-systemd_sysconfig_dir was given.
+if test "${with_systemd_sysconfig_dir+set}" = set; then :
+  withval=$with_systemd_sysconfig_dir; systemd_sysconfig_dir=$withval
 fi
 
 
@@ -7261,7 +7301,7 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
         esac
 
 
-ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
+ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
 
 
 
@@ -7884,6 +7924,9 @@ do
     "xdata/Makefile") CONFIG_FILES="$CONFIG_FILES xdata/Makefile" ;;
     "daemon-init") CONFIG_FILES="$CONFIG_FILES daemon-init" ;;
     "rc.ido2db") CONFIG_FILES="$CONFIG_FILES rc.ido2db" ;;
+    "icinga-systemd") CONFIG_FILES="$CONFIG_FILES icinga-systemd" ;;
+    "sysconfig-env") CONFIG_FILES="$CONFIG_FILES sysconfig-env" ;;
+    "ido2db-systemd") CONFIG_FILES="$CONFIG_FILES ido2db-systemd" ;;
     "module/idoutils/src/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/src/Makefile" ;;
     "t-tap/Makefile") CONFIG_FILES="$CONFIG_FILES t-tap/Makefile" ;;
     "t/Makefile") CONFIG_FILES="$CONFIG_FILES t/Makefile" ;;

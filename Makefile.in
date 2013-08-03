@@ -49,6 +49,7 @@ INSTALL_OPTS=@INSTALL_OPTS@
 INSTALL_OPTS_WEB=@INSTALL_OPTS_WEB@
 COMMAND_OPTS=@COMMAND_OPTS@
 HTTPD_CONF=@HTTPD_CONF@
+APACHE24_DEBIAN=@APACHE24_DEBIAN@
 HTTPDCONFFILE=@HTTPDCONFFILE@
 HTTPAUTHFILE=@HTTPAUTHFILE@
 INIT_DIR=@init_dir@
@@ -472,6 +473,10 @@ install-testconfig:
 install-webconf:
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
 	$(INSTALL) -b -m 644 $(INSTALL_OPTS) sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
+	@if [ x$(APACHE24_DEBIAN) = xyes ]; then \
+		echo " Debian Apache 2.4 detected. " ;\
+		echo " Run 'a2enconf icinga' and 'service apache2 reload'" ;\
+	fi
 
 	@echo ""
 	@echo "*** Icinga/Apache conf file installed ***"

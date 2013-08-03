@@ -287,10 +287,15 @@ AC_SUBST(MAIL_PROG)
 
 dnl Check for location of Apache conf.d directory
 HTTPD_CONF=no
+APACHE24_DEBIAN=no
 AC_ARG_WITH(httpd_conf,AC_HELP_STRING([--with-httpd-conf=<path_to_conf>],[sets path to Apache conf.d directory]),HTTPD_CONF=$withval,HTTPD_CONF=no)
 if test x$HTTPD_CONF = xno; then
 	if test -d /etc/httpd/conf.d; then
 		HTTPD_CONF="/etc/httpd/conf.d"
+	elif test -d /etc/apache2/conf-available; then
+		dnl debian apache 2.4
+		HTTPD_CONF="/etc/apache2/conf-available"
+		APACHE24_DEBIAN=yes
 	elif test -d /etc/apache2/conf.d; then
 		HTTPD_CONF="/etc/apache2/conf.d"
 	elif test -d /etc/apache/conf.d; then
@@ -300,6 +305,7 @@ if test x$HTTPD_CONF = xno; then
 	fi
 fi
 AC_SUBST(HTTPD_CONF)
+AC_SUBST(APACHE24_DEBIAN)
 
 dnl Location of check result path
 CHECKRESULTDIR=no
