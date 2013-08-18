@@ -5,7 +5,7 @@
 #--
 #-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 #--
-#-- current version: 2011-05-03 Thomas Dressler
+#-- current version: 2013-08-18 Thomas Dressler
 #-- -- --------------------------------------------------------
 
 
@@ -17,10 +17,16 @@ DBUSER=icinga
 DBPASS=icinga
 DBHOST=localhost
 DBADMIN=root
-
 WD=`dirname $0`
 cd $WD
 WD=`pwd`
+
+#logfile privacy #4565
+LOG=$WD/create_mysqldb.log
+rm -f $LOG
+UMASK=`umask`
+umask 0077
+
 cd ../mysql
 
 echo "Enter password for mysql user '$DBADMIN' or <enter> if none"
@@ -37,7 +43,7 @@ mysql -u $DBADMIN -h $DBHOST $P  mysql <<EOS1
 EOS1
 
 echo "create new DB $DB, user $DBUSER and objects..."
-mysql -u $DBADMIN -h $DBHOST $P --verbose >$WD/create_mysqldb.log mysql <<EOS2
+mysql -u $DBADMIN -h $DBHOST $P --verbose >$LOG mysql <<EOS2
  CREATE DATABASE $DB;
  CREATE USER '$DBUSER'@'$DBHOST'  IDENTIFIED BY '$DBPASS';
  GRANT USAGE ON $DB.* TO '$DBUSER'@'$DBHOST' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
@@ -51,7 +57,7 @@ select "END Schema Script";
 select now();
  \q
 EOS2
-
+umask $UMASK
 if [ $? == 0 ]; then
 				echo "Check icinga schema version with DB User $DBUSER..."
         mysql $DB -u $DBUSER -p$DBPASS -h $DBHOST -s <<EOS3

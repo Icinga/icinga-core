@@ -5,7 +5,7 @@
 #--
 #-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 #--
-#-- current version: 2011-06-10 Thomas Dressler
+#-- current version: 2013-08-18 Thomas Dressler
 #-- -- --------------------------------------------------------
 
 #where database to connect
@@ -25,6 +25,11 @@ WD=`dirname $0`
 cd $WD
 WD=`pwd`
 cd ../oracle
+
+#logfile privacy #4565
+rm -f $WD/create_*oracle*.log
+UMASK=`umask`
+umask 0077
 
 
 if [ ! -r icinga_defines.sql ]; then
@@ -75,7 +80,6 @@ if [ $RET == 0 ]; then
 connect ${DBUSER}/${DBPASS}@${DB}
 -- -----------------------------------------
 -- create icinga objects
--- CAUTION: THIS WILL DROP EXISTING USER AND TABLESPACE WITH SAME NAME
 -- -----------------------------------------
 @oracle.sql
 EOS2
@@ -112,6 +116,7 @@ fi
 
 mv -f *oracle*.log $WD/.
 cd $WD
+umask $UMASK
 echo "Logfiles:"
 ls -l *oracle*.log
 exit $RET
