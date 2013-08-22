@@ -9,6 +9,8 @@
 /*#define DEBUG_MEMORY 1*/
 /*#define DEBUG_IDO2DB2 1*/
 
+#include <stdint.h>
+
 #ifdef DEBUG_MEMORY
 #include <mcheck.h>
 #endif
@@ -1168,7 +1170,7 @@ static void *ido2db_proxy_thread_proc(void *pargs) {
 
 		time(&now);
 		if (ido2db_proxy_last_report < now && (size_left > 0 || size_right > 0)) {
-			syslog(LOG_INFO, "IDO2DB proxy stats (p=%p): left=%d, right=%d; iostats=%d\n", proxy, (int)size_left, (int)size_right, (int)(iostats + size_left + size_right) / 2);
+			syslog(LOG_INFO, "IDO2DB proxy stats (p=%p): left=%jd bytes, right=%jd bytes; iostats=%jd bytes\n", proxy, (intmax_t)size_left, (intmax_t)size_right, (intmax_t)(iostats + size_left + size_right) / 2);
 			ido2db_proxy_last_report = now;
 		}
 
