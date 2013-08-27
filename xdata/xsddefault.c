@@ -741,17 +741,22 @@ int xsddefault_read_status_data(char *config_file, int options) {
 	}
 
 	/* grab configuration data */
-	result = xsddefault_grab_config_info(config_file);
-	if (result == ERROR)
+	if (xsddefault_grab_config_info(config_file) == ERROR) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to read config file '%s': %s", config_file, strerror(errno));
 		return ERROR;
+	}
 
 	/* open the status file for reading */
 #ifdef NO_MMAP
-	if ((fp = fopen(xsddefault_status_log, "r")) == NULL)
+	if ((fp = fopen(xsddefault_status_log, "r")) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to read status data file '%s': %s", xsddefault_status_log, strerror(errno));
 		return ERROR;
+	}
 #else
-	if ((thefile = mmap_fopen(xsddefault_status_log)) == NULL)
+	if ((thefile = mmap_fopen(xsddefault_status_log)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Unable to read status data file '%s': %s", xsddefault_status_log, strerror(errno));
 		return ERROR;
+	}
 #endif
 
 	/* Big speedup when reading status.dat in bulk */

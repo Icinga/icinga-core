@@ -66,7 +66,6 @@ int group_style_type;
 int navbar_search;
 int CGI_ID;
 
-
 int main(int argc, char **argv) {
 	int result;
 	int c;
@@ -82,7 +81,7 @@ int main(int argc, char **argv) {
 	ok(system("cat var/status.dat > var/status-generated.dat") == 0, "New status.dat file");
 	ok(system("bin/generate_downtimes 10 >> var/status-generated.dat") == 0, "Generated 10 downtimes");
 
-	result = xsddefault_read_status_data("etc/cgi-with-generated-status.cfg", 0);
+	result = read_all_status_data("etc/cgi-with-generated-status.cfg", READ_ALL_STATUS_DATA);
 	ok(result == OK, "Read cgi status data okay");
 
 	temp_comment = comment_list;
@@ -91,6 +90,7 @@ int main(int argc, char **argv) {
 	result = OK;
 	while (temp_comment != NULL) {
 		c++;
+		printf("id: %id\n", temp_comment->comment_id);
 		if (temp_comment->comment_id <= last_id) {
 			result = ERROR;
 			break;
