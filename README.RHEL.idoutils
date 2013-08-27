@@ -67,7 +67,7 @@ mysql> quit
 Import database schema
 ----------------------
 
-# cd /usr/share/doc/icinga-idoutils/db/mysql
+# cd /usr/share/doc/icinga-idoutils-libdbi-mysql-*/db/mysql
 # mysql -u root -p icinga < mysql.sql
 
 
@@ -95,7 +95,7 @@ postgres=# \q
 Import database schema
 ----------------------
 
-postgres:~$ cd /usr/share/doc/icinga-idoutils/db/pgsql
+postgres:~$ cd /usr/share/doc/icinga-idoutils-libdbi-pgsql-*/db/pgsql
 postgres:~$ psql -U icinga -d icinga < pgsql.sql
 
 Setup trusted local icinga user
@@ -149,7 +149,7 @@ Make sure to stop ido2db before applying the db upgrade!
 
 # service ido2db stop
 
-# cd /usr/share/doc/icinga-idoutils/db/mysql/upgrade/
+# cd /usr/share/doc/icinga-idoutils-libdbi-mysql-*/db/mysql/upgrade/
 # mysql -u root -p icinga < mysql-upgrade-1.9.0.sql
 
 # service ido2db start
