@@ -7284,17 +7284,17 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
                 solaris2*|sysv4*)
                 ;;
                 aix4*|aix5*|aix6*|aix7*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
                 ;;
                 freebsd2*)
                 ;;
                 darwin*)
                 ;;
                 linux* | k*bsd*-gnu*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
 		;;
                 freebsd*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
                 ;;
                 *)
                 ;;

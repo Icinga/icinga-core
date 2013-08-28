@@ -1361,17 +1361,17 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
                 solaris2*|sysv4*)
                 ;;
                 aix4*|aix5*|aix6*|aix7*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
                 ;;
                 freebsd2*)
                 ;;
                 darwin*)
                 ;;
                 linux* | k*bsd*-gnu*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
 		;;
                 freebsd*)
-			CFLAGS="-Wall -Wno-unused-result $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
                 ;;
                 *)
                 ;;
