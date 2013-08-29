@@ -648,9 +648,9 @@ ido2db_name
 icingastats_name
 icinga_name
 LIBDBIDRIVERDIR
-CLASSICUI_STANDALONE_FLAG
 DBLIBS
 IDO_INSTANCE_NAME
+CLASSICUI_STANDALONE_FLAG
 BROKER_H
 BROKER_O
 MOD_LDFLAGS
@@ -816,6 +816,7 @@ with_htmurl
 with_mainurl
 enable_nanosleep
 enable_event_broker
+enable_classicui_standalone
 enable_idoutils
 with_ido_instance_name
 enable_oracle
@@ -827,7 +828,6 @@ with_pgsql_lib
 with_psql_inc
 with_dbi_lib
 with_dbi_inc
-enable_classicui_standalone
 with_libdbi_driver_dir
 enable_embedded_perl
 with_perlcache
@@ -1467,13 +1467,13 @@ Optional Features:
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
                           timing
   --enable-event-broker   enables integration of event broker routines
+  --enable-classicui-standalone
+                          enables standalone Classic UI (default: disabled)
   --enable-idoutils       enables database connectivity using idoutils
                           (default: enabled)
   --enable-oracle         enables idoutils with ocilib and oracle
   --enable-pgsql          !use libdbis pgsql support instead, libpq not yet
                           implemented! enables idoutils with libpq and pgsql
-  --enable-classicui-standalone
-                          enables standalone Classic UI (default: disabled)
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         this is deprecated, libtap is built with make test
@@ -6524,6 +6524,24 @@ if test x$SNPRINTF_BROKEN = xyes; then
 
 fi
 
+CLASSICUI_STANDALONE=no
+# Check whether --enable-classicui-standalone was given.
+if test "${enable_classicui_standalone+set}" = set; then :
+  enableval=$enable_classicui_standalone; CLASSICUI_STANDALONE=$enableval
+else
+  CLASSICUI_STANDALONE=no
+fi
+
+if test x$CLASSICUI_STANDALONE = xyes; then
+	CLASSICUI_STANDALONE_FLAG="1"
+fi
+if test x$CLASSICUI_STANDALONE = xno; then
+	CLASSICUI_STANDALONE_FLAG="0"
+fi
+
+
+
+if test x$CLASSICUI_STANDALONE = xno; then
 
 OCILIB_LIB=""
 
@@ -6855,20 +6873,6 @@ _ACEOF
 
 	fi
 fi
-
-CLASSICUI_STANDALONE=no
-# Check whether --enable-classicui-standalone was given.
-if test "${enable_classicui_standalone+set}" = set; then :
-  enableval=$enable_classicui_standalone; CLASSICUI_STANDALONE=$enableval
-else
-  CLASSICUI_STANDALONE=no
-fi
-
-if test x$CLASSICUI_STANDALONE = xyes; then
-	CLASSICUI_STANDALONE_FLAG="1"
-fi
-if test x$CLASSICUI_STANDALONE = xno; then
-	CLASSICUI_STANDALONE_FLAG="0"
 fi
 
 

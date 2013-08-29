@@ -908,6 +908,19 @@ if test x$SNPRINTF_BROKEN = xyes; then
 	AC_SUBST(SNPRINTF_O_IDO)
 fi
 
+dnl Classic UI Standalone
+CLASSICUI_STANDALONE=no
+AC_ARG_ENABLE(classicui-standalone,AC_HELP_STRING([--enable-classicui-standalone],[enables standalone Classic UI (default: disabled)]),CLASSICUI_STANDALONE=$enableval,CLASSICUI_STANDALONE=no)
+if test x$CLASSICUI_STANDALONE = xyes; then
+	CLASSICUI_STANDALONE_FLAG="1"
+fi
+if test x$CLASSICUI_STANDALONE = xno; then
+	CLASSICUI_STANDALONE_FLAG="0"
+fi
+AC_SUBST(CLASSICUI_STANDALONE_FLAG)
+
+
+if test x$CLASSICUI_STANDALONE = xno; then
 dnl Configure IDOUtils
 
 dnl set dummy for ocilib
@@ -1050,17 +1063,9 @@ if test x$USE_IDOUTILS = xyes; then
 
 	fi
 fi
+dnl classic ui standalone
+fi
 
-dnl Classic UI Standalone
-CLASSICUI_STANDALONE=no
-AC_ARG_ENABLE(classicui-standalone,AC_HELP_STRING([--enable-classicui-standalone],[enables standalone Classic UI (default: disabled)]),CLASSICUI_STANDALONE=$enableval,CLASSICUI_STANDALONE=no)
-if test x$CLASSICUI_STANDALONE = xyes; then
-	CLASSICUI_STANDALONE_FLAG="1"
-fi
-if test x$CLASSICUI_STANDALONE = xno; then
-	CLASSICUI_STANDALONE_FLAG="0"
-fi
-AC_SUBST(CLASSICUI_STANDALONE_FLAG)
 
 dnl Location of temp path
 LIBDBIDRIVERDIR=no
