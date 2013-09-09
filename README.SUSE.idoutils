@@ -1,0 +1,167 @@
+IDOUtils Notes for SUSE packages
+================================
+
+CHANGES for 1.7
+* bindir/idomod.o => libdir/idomod.so
+* /var/icinga => /var/spool/icinga
+* icinga-idoutils => icinga-idoutils-libdbi-mysql and icinga-idoutils-libdbi-pgsql
+
+
+* IDOMOD Setup
+
+
+DO NOT EDIT icinga.cfg for broker_module entry!!! Icinga RPMs will use the
+/etc/icinga/modules/idoutils.cfg with the module definition automatically.
+Defining that twice can lead into unwanted errors!
+
+Verify that by looking into the modules/idoutils.cfg file
+
+# vim /etc/icinga/modules/idoutils.cfg
+
+Other event broker modules can be defined using this module definition as well.
+
+
+* IDO2DB Setup
+
+Edit your database credentials in ido2db.cfg ...
+
+# vim /etc/icinga/ido2db.cfg
+
+db_servertype=mysql
+#db_servertype=pgsql
+db_host=localhost
+db_port=3306
+#db_port=5432
+db_name=icinga
+db_prefix=icinga_
+db_user=icinga
+db_pass=icinga
+
+... and create the database like described below.
+
+=========
+= MySQL
+=========
+
+Create Database, User, Grants
+-----------------------------
+
+# mysql -u root -p
+
+mysql> CREATE DATABASE icinga;
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
+          IDENTIFIED BY 'icinga'
+          WITH MAX_QUERIES_PER_HOUR 0
+          MAX_CONNECTIONS_PER_HOUR 0
+          MAX_UPDATES_PER_HOUR 0;
+
+mysql>  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
+          ON icinga.* TO 'icinga'@'localhost';
+
+mysql>  FLUSH PRIVILEGES;
+
+mysql> quit
+
+Import database schema
+----------------------
+
+# cd /usr/share/doc/icinga-idoutils-libdbi-mysql-*/db/mysql
+# mysql -u root -p icinga < mysql.sql
+
+
+=============
+= Postgresql
+=============
+
+Create Database, User, Grants
+-----------------------------
+
+# su - postgres
+
+postgres:~$ psql template1
+template1=# create database icinga;
+template1=# \q
+
+postgres:~$ createlang plpgsql icinga
+
+postgres:~$ psql
+postgres=# create role icinga;
+postgres=# alter role icinga login;
+postgres=# grant all on database icinga to icinga;
+postgres=# \q
+
+Import database schema
+----------------------
+
+postgres:~$ cd /usr/share/doc/icinga-idoutils-libdbi-pgsql-*/db/pgsql
+postgres:~$ psql -U icinga -d icinga < pgsql.sql
+
+Setup trusted local icinga user
+-------------------------------
+
+Now that Postgresql does use a local user to be trusted (insecure, but good as startup),
+edit pg_hba.conf accordingly. See Postgresql Manual for a more advanced setup on user
+auth and privilegues.
+
+# vim /var/lib/pgsql/data/pg_hba.conf
+
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+
+# "local" is for Unix domain socket connections only
+local   all         all                               trust
+# IPv4 local connections:
+host    all         all         127.0.0.1/32          trust
+# IPv6 local connections:
+host    all         all         ::1/128               trust
+
+#icinga
+local    icinga     icinga                            trust
+
+and reload the Postgresql server.
+
+
+==========
+= Upgrade
+==========
+
+There is no db upgrade script like in Debian, so you need to keep track of that yourself.
+
+First, get the schema version
+
+# mysql -u root -p icinga
+
+mysql> SELECT * from icinga_dbversion;
++--------------+----------+---------+
+| dbversion_id | name     | version |
++--------------+----------+---------+
+|            1 | idoutils | 1.6.0   |
++--------------+----------+---------+
+1 row in set (0.01 sec)
+
+and then decide, what to do - based on the official upgrade docs:
+http://docs.icinga.org/latest/en/upgrading_idoutils.html
+
+Remember - the upgrade steps need to be applied incremential, version by version.
+
+Make sure to stop ido2db before applying the db upgrade!
+
+# service ido2db stop
+
+# cd /usr/share/doc/icinga-idoutils-libdbi-mysql-*/db/mysql/upgrade/
+# mysql -u root -p icinga < mysql-upgrade-1.9.0.sql
+
+# service ido2db start
+# service icinga restart
+
+===========
+= Advanced
+===========
+
+Advanced guides and upgrade information can be found in the docs and wiki:
+
+http://docs.icinga.org/latest/en/quickstart-idoutils.html
+http://docs.icinga.org/latest/en/upgrading_idoutils.html
+
+https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+SUSE
