@@ -72,7 +72,6 @@ BuildRequires: gd-devel > 1.8
 BuildRequires: zlib-devel
 BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
-BuildRequires: libopenssl-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
@@ -81,6 +80,7 @@ BuildRequires: httpd
 %endif
 %if "%{_vendor}" == "suse"                                                    
 BuildRequires: apache2
+BuildRequires: libopenssl-devel
 %endif
 
 
