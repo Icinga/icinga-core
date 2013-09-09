@@ -14,9 +14,24 @@
 %define spooldir %{_localstatedir}/spool/%{name}
 %define plugindir %{_libdir}/nagios/plugins
 
-%define apacheconfdir  %{_sysconfdir}/httpd/conf.d
-%define apacheuser apache
-%define apachegroup apache
+%if "%{_vendor}" == "suse"                                                      
+%define apacheconfdir  %{_sysconfdir}/apache2/conf.d                            
+%define apacheuser wwwrun                                                       
+%define apachegroup www                                                         
+%define extcmdfile %{_localstatedir}/icinga/rw/icinga.cmd                       
+%define extcmdfiledir %{_localstatedir}/icinga/rw
+%define readme README.SUSE
+%define readmeido README.SUSE.idoutils
+%endif                                                                          
+%if "%{_vendor}" == "redhat"                                                    
+%define apacheconfdir %{_sysconfdir}/httpd/conf.d                               
+%define apacheuser apache                                                       
+%define apachegroup apache                                                      
+%define extcmdfile %{_localstatedir}/spool/icinga/cmd/icinga.cmd                
+%define extcmdfiledir %{_localstatedir}/icinga/cmd
+%define readme README.RHEL
+%define readmeido README.RHEL.idoutils
+%endif 
 
 # Systemd support for Fedora >= 15
 %if 0%{?fedora} >= 15
@@ -54,13 +69,21 @@ Requires(postun): systemd-units
 
 BuildRequires: gcc
 BuildRequires: gd-devel > 1.8
-BuildRequires: httpd
 BuildRequires: zlib-devel
 BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
+BuildRequires: libopenssl-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
+%if "%{_vendor}" == "redhat"                                                    
+BuildRequires: httpd
+%endif
+%if "%{_vendor}" == "suse"                                                    
+BuildRequires: apache2
+%endif
+
+
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -79,7 +102,12 @@ Icinga is a fork of the nagios project.
 Summary: Web content for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
+%if "%{_vendor}" == "redhat"                                                    
 Requires: httpd
+%endif
+%if "%{_vendor}" == "suse"                                                    
+Requires: apache2
+%endif
 Requires: %{name}-doc
 
 %description gui
@@ -181,7 +209,7 @@ EOF
     --with-eventhandler-dir="%{_libdir}/%{name}/eventhandlers" \
     --with-p1-file-dir="%{_libdir}/%{name}" \
     --with-checkresult-dir="%{spooldir}/checkresults" \
-    --with-ext-cmd-file-dir="%{spooldir}/cmd" \
+    --with-ext-cmd-file-dir="%{extcmdfiledir}" \
     --with-http-auth-file="%{_sysconfdir}/%{name}/passwd" \
     --with-icinga-chkfile="%{spooldir}/icinga.chk" \
     --with-ido2db-lockfile="%{_localstatedir}/run/ido2db.pid" \
@@ -296,7 +324,7 @@ fi
 	s|/var/icinga/objects.precache|%{spooldir}/objects.precache|;
 	s|/var/icinga/objects.cache|%{spooldir}/objects.cache|;
 	s|/var/icinga/status.dat|%{spooldir}/status.dat|;
-	s|/var/icinga/rw/icinga.cmd|%{spooldir}/cmd/icinga.cmd|;
+	s|/var/icinga/rw/icinga.cmd|%{extcmdfile}|;
 	s|/var/icinga/icinga.pid|/var/run/icinga.pid|;
 	s|/var/icinga/checkresults|%{spooldir}/checkresults|;
 	' /etc/icinga/icinga.cfg
@@ -357,7 +385,7 @@ then
     rm -f %{_bindir}/idomod.o
 fi
 
-%logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
+%logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check %{readmeido}"
 
 %preun idoutils-libdbi-mysql
 
@@ -422,7 +450,7 @@ then
 		' %{_sysconfdir}/icinga/ido2db.cfg
 fi
 
-%logmsg "idoutils-libdbi-pgsql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
+%logmsg "idoutils-libdbi-pgsql installed. don't forget to install/upgrade db schema, check %{readmeido}"
 
 
 %preun idoutils-libdbi-pgsql
@@ -452,7 +480,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING README.RHEL
+%doc README LICENSE Changelog UPGRADING %{readme}
 %if 0%{?using_systemd}
 %attr(755,-,-)  %{_unitdir}/icinga.service
 %attr(644,-,-)  %{_sysconfdir}/sysconfig/icinga
@@ -485,16 +513,16 @@ fi
 %dir %{_localstatedir}/spool/%{name}
 %dir %{_localstatedir}/spool/%{name}/perfdata
 %dir %{_localstatedir}/spool/%{name}/checkresults
-%attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/cmd
+%attr(2755,icinga,icingacmd) %{extcmdfiledir}
 
 %files doc
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING README.RHEL
+%doc README LICENSE Changelog UPGRADING %{readme}
 %{_datadir}/%{name}/docs
 
 %files gui
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING README.RHEL
+%doc README LICENSE Changelog UPGRADING %{readme}
 %config(noreplace) %{apacheconfdir}/icinga.conf
 %config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
@@ -539,7 +567,7 @@ fi
 
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%doc README LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
 %if 0%{?using_systemd}
 %attr(644,-,-)  %{_unitdir}/ido2db.service
 %else
@@ -555,7 +583,7 @@ fi
 
 %files idoutils-libdbi-pgsql
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%doc README LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
 %if 0%{?using_systemd}
 %attr(644,-,-)  %{_unitdir}/ido2db.service
 %else
