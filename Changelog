@@ -34,6 +34,7 @@ ENHANCEMENTS
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
 * install: detect /etc/apache2/conf-available on debian with apache2.4 #4509 - MF
+* install: add manpages from debian upstream #4055 - MF
 
 * contrib: add vim highlight script for Icinga syntax #4150 - LE
 

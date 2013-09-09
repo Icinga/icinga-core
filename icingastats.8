@@ -1,0 +1,51 @@
+.TH icingastats "8" "February 2006" "sean finney " "icinga"
+.SH NAME
+icingastats \- report statistics information from the Icinga system
+
+.SH SYNOPSIS
+.B icingastats [\-hVL] [\-c config] [\-m] [\-d]
+.br
+
+.SH DESCRIPTION
+.B icingastats
+Is a program designed to provide information on the running Icinga
+system.  It can provide a brief summary of information, or it can
+be used to export specific information about the nagios system
+into an MRTG-compatible format.
+For more information please consult the Icinga online documentation
+available at http://www.icinga.org or the documentation available
+with your icinga server's web page.
+
+.SH OPTIONS
+.TP
+\fB\-c\fR|\-\-config=FILE
+The main configuration file.  On debian systems this defaults to
+/etc/icinga/icinga.cfg
+.TP
+\fB\-m\fR|\-\-mrtg
+Print output in MRTG-compatible format.  For more details run
+icingastats with \-\-help
+.TP
+\fB\-d\fR|\-\-data=VARS
+Comma-seperated list of variables to output in MRTG format.  For
+more details run icingastats with \-\-help.
+.TP
+\fB\-h\fR|\-\-help
+A helpful usage message
+.TP
+\fB\-V\fR|\-\-version
+Print version information
+.TP
+\fB\-L\fR|\-\-license
+Print license details
+
+.SH FILES
+.TP
+.IP /etc/icinga
+Default configuration directory for icinga
+
+.SH AUTHOR
+Icinga was started as Nagios by Ethan Galstad <nagios@nagios.org>.  Icinga is
+maintained by the Icinga Project <info@icinga.org>.  This manual page was
+written by sean finney <seanius@debian.org> for the Debian GNU/Linux operating
+system (but it may be freely used, modified, and redistributed by others).

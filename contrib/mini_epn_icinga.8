@@ -1,0 +1,44 @@
+'\" t
+.\"     Title: mini_epn
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 09/19/2009
+.\"    Manual: mini_epn
+.\"    Source: Nagios/Icinga
+.\"  Language: English
+.\"
+.TH "MINI_EPN" "8" "09/19/2009" "Nagios/Icinga" "mini_epn"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+mini_epn \- too to nagios/icingaplugins inside of an embedded perl interpreter
+.SH "SYNOPSIS"
+.sp
+\fBmini_epn\fR
+.SH "DESCRIPTION"
+.sp
+After calling \fBmini_epn\fR an embedded perl interpreter gets started and asks for you a script to execute under the interpreter\&. To exit the interpreter loop press ^d at the prompt\&.
+.SH "EXAMPLES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# mini_epn
+Enter file name: /usr/lib/nagios/plugins/check_linux_raid
+embedded perl plugin return code and output was: 0 & \'OK md0 status=[UU]\&. md1 status=[UU]\&.
+.fi
+.if n \{\
+.RE
+.\}
+.SH "AUTHOR"
+.sp
+This manpage was written by Alexander Wirt <formorer@debian\&.org> for the Debian Distribution\&.
