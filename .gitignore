@@ -9,6 +9,9 @@ config.status
 daemon-init
 daemon-init-redhat
 rc.ido2db
+icinga-systemd
+ido2db-systemd
+sysconfig-env
 Makefile
 Debug
 p1.pl
