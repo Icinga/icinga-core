@@ -18,7 +18,7 @@ my $output = run_cgi('etc/cgi.cfg', 'GET', 'host=all', 'status.cgi');
 like( $output, '/status.cgi\?host=all/', "Host value should be set to all if host=all passed in" );
 
 # count the number of hosts included, we don't care about mouseovers
-$numhosts = grep /extinfo.cgi\?type=1&host=(?!.*onMouseOver)/, split("\n", $output);
+$numhosts = grep /extinfo.cgi\?type=1&amp;host=(?!.*onMouseOver)/, split("\n", $output);
 
 ok( $numhosts == $expected_hosts, "Expected 2 hosts, but we got $numhosts");
 
@@ -38,7 +38,7 @@ like( $output, '/0 of 0 Matching Services/', "Got no hosts because looking for a
 $output = run_cgi('etc/cgi.cfg', 'GET', '', 'status.cgi');
 like( $output, '/status.cgi\?host=all&/', "Host value should be set to all if nothing set initially" );
 
-my $hosts_found = grep /extinfo.cgi\?type=1&host=(?!.*onMouseOver)/, split("\n", $output);
+my $hosts_found = grep /extinfo.cgi\?type=1&amp;host=(?!.*onMouseOver)/, split("\n", $output);
 
 # we expect the same number of hosts as with hosts=all
 is( $hosts_found, $numhosts, "Same number of hosts as with hosts=all" );
