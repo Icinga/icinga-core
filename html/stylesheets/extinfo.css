@@ -112,3 +112,7 @@ th.queue { text-align: left; font-size: 10pt; background-color: #707677; color: 
 .queueDISABLED { text-align: center; color: #fff; background-color: #ff3300; }
 
 .dataVar, .dataVal { text-align: left; }
+
+.CustomVarLine { padding: 0.1em 0.5em; margin-left: 1em; background-color: #d9d9d9; }
+.CustomVarHead { padding-left: 0.5em; padding-bottom: 0.3em; }
+.CustomVarTable { background-color: #e9e9e9; padding:0.1em;}

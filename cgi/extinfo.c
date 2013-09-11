@@ -1296,6 +1296,7 @@ void show_process_info(void) {
 void show_host_info(void) {
 	hoststatus *temp_hoststatus;
 	host *temp_host;
+	customvariablesmember *temp_customvar;
 	char date_time[MAX_DATETIME_LENGTH];
 	char state_duration[48];
 	char status_age[48];
@@ -1578,21 +1579,6 @@ void show_host_info(void) {
 
 			printf("<tr><td class='dataVar'>Executed Command:</td><td class='dataVal'><a href='%s?type=command&amp;host=%s&amp;expand=%s'>Command Expander</a></td></tr>\n", CONFIG_CGI, url_encode(host_name), url_encode(temp_host->host_check_command));
 
-			/* Custom Variables */
-			if (temp_host->custom_variables) {
-				customvariablesmember *temp_customvar;
-
-				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
-				printf("<table>\n");
-				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
-				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
-					if (check_exclude_customvar(temp_customvar) == FALSE)
-						printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
-				}
-				printf("</table>\n");
-				printf("</td></tr>\n");
-			}
-
 			printf("</table>\n");
 			printf("</td></tr>\n");
 			printf("</table>\n");
@@ -1600,28 +1586,39 @@ void show_host_info(void) {
 			printf("</td></tr>\n");
 			printf("<tr><td>\n");
 
-			printf("<table border='1' cellspacing='0' cellpadding='0' align='left'>\n");
-			printf("<tr><td class='stateInfoTable2'>\n");
-			printf("<table border='0'>\n");
+			printf("<table border='1' cellspacing='0' cellpadding='0' align='left' width='100%%'>\n");
+			printf("<tr><td style='vertical-align: top; padding-right:0.5em;'>\n");
+			printf("<table border='0' class='stateInfoTable2'>\n");
 
 			if ((temp_host->host_check_command) && (*temp_host->host_check_command != '\0'))
-				printf("<tr><td class='dataVar'><a href='%s?type=command&amp;expand=%s'>Active Checks:</a></td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_host->host_check_command), (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED");
-			else printf("<tr><td class='dataVar'>Active Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED");
+				printf("<tr><td class='dataVar' nowrap><a href='%s?type=command&amp;expand=%s'>Active Checks:</a></td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_host->host_check_command), (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED");
+			else printf("<tr><td class='dataVar' nowrap>Active Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->checks_enabled == TRUE) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Passive Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->accept_passive_host_checks == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->accept_passive_host_checks) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Passive Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->accept_passive_host_checks == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->accept_passive_host_checks) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Obsessing:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->obsess_over_host == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->obsess_over_host) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Obsessing:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->obsess_over_host == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->obsess_over_host) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Notifications:</td><td class='dataVal'><div class='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->notifications_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->notifications_enabled) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Notifications:</td><td class='dataVal'><div class='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->notifications_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->notifications_enabled) ? "ENABLED" : "DISABLED");
 
 			if ((temp_host->event_handler) && (*temp_host->event_handler != '\0'))
-				printf("<tr><td class='dataVar'><a href='%s?type=command&amp;expand=%s'>Event Handler:</a></td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_host->event_handler), (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
-			else printf("<tr><td class='dataVar'>Event Handler:</td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
+				printf("<tr><td class='dataVar' nowrap><a href='%s?type=command&amp;expand=%s'>Event Handler:</a></td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_host->event_handler), (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
+			else printf("<tr><td class='dataVar' nowrap>Event Handler:</td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_hoststatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
 
+			printf("<tr><td class='dataVar' nowrap>Flap Detection:</td><td class='dataVal'><div class='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Flap Detection:</td><td class='dataVal'><div class='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_hoststatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_hoststatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED");
+			printf("</table></td><td width='100%%' style='vertical-align: top;'>\n");
 
-			printf("</table>\n");
+			/* Custom Variables */
+			if (temp_host->custom_variables) {
+				printf("<table border='0' cellspacing='3' class='CustomVarTable' width='100%%'>\n");
+				printf("<tr><td colspan='2' class='CustomVarHead' align='center' style='font-weight: bold; padding:0em'>Custom Variables</td></tr>\n");
+				printf("<tr><td class='CustomVarHead' width='50%%'>Name</td><td class='CustomVarHead'>Value</td></tr>\n");
+				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+					if (check_exclude_customvar(temp_customvar) == FALSE)
+						printf("<tr><td class='CustomVarLine'>%s</td><td class='CustomVarLine'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
+				}
+				printf("</table>\n");
+			}
 			printf("</td></tr>\n");
 			printf("</table>\n");
 
@@ -1747,6 +1744,7 @@ void show_host_info(void) {
 void show_service_info(void) {
 	service *temp_service;
 	host *temp_host;
+	customvariablesmember *temp_customvar;
 	char date_time[MAX_DATETIME_LENGTH];
 	char status_age[48];
 	char state_duration[48];
@@ -2002,7 +2000,7 @@ void show_service_info(void) {
 			printf("</td></tr>\n");
 
 			get_time_string(&temp_svcstatus->next_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-			printf("<tr><td class='dataVar'>Next Scheduled Check:&nbsp;&nbsp;</td><td class='dataVal'>%s</td></tr>\n", (temp_svcstatus->checks_enabled && temp_svcstatus->next_check != (time_t)0 && temp_svcstatus->should_be_scheduled == TRUE) ? date_time : "N/A");
+			printf("<tr><td class='dataVar'>Next Scheduled Active Check:&nbsp;&nbsp;</td><td class='dataVal'>%s</td></tr>\n", (temp_svcstatus->checks_enabled && temp_svcstatus->next_check != (time_t)0 && temp_svcstatus->should_be_scheduled == TRUE) ? date_time : "N/A");
 
 			get_time_string(&temp_svcstatus->last_state_change, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("<tr><td class='dataVar'>Last State Change:</td><td class='dataVal'>%s</td></tr>\n", (temp_svcstatus->last_state_change == (time_t)0) ? "N/A" : date_time);
@@ -2029,56 +2027,53 @@ void show_service_info(void) {
 
 			printf("<tr><td class='dataVar'>Executed Command:</td><td class='dataVal'><a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>Command Expander</a></td></tr>\n", CONFIG_CGI, url_encode(host_name), url_encode(service_desc), url_encode(temp_service->service_check_command));
 
-			/* Custom Variables */
-			if (temp_service->custom_variables) {
-				customvariablesmember *temp_customvar;
-
-				printf("<tr><td class='dataVar'>Custom Variables:</td><td class='dataVal'>\n");
-				printf("<table>\n");
-				printf("<tr><td class='dataCustomVar'>CV Name</td><td class='dataCustomVal'>CV Value</td></tr>\n");
-				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
-				if (check_exclude_customvar(temp_customvar) == FALSE)
-					printf("<tr><td class='dataCustomVar'>%s</td><td class='dataCustomVal'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
-				}
-				printf("</table>\n");
-				printf("</td></tr>\n");
-			}
-
 			printf("</table>\n");
 			printf("</td></tr>\n");
 			printf("</table>\n");
 
 			printf("</td></tr>\n");
-
 			printf("<tr><td>\n");
 
-			printf("<table border='1' cellspacing='0' cellpadding='0' align='left'>\n");
-			printf("<tr><td class='stateInfoTable2'>\n");
-			printf("<table border='0'>\n");
+
+			printf("<table border='1' cellspacing='0' cellpadding='0' align='left' width='100%%'>\n");
+			printf("<tr><td style='vertical-align: top; padding-right:0.5em;'>\n");
+			printf("<table border='0' class='stateInfoTable2'>\n");
 
 			if ((temp_service->service_check_command) && (*temp_service->service_check_command != '\0'))
-				printf("<tr><td class='dataVar'><a href='%s?type=command&amp;expand=%s'>Active Checks:</a></td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_service->service_check_command), (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED");
-			else printf("<tr><td class='dataVar'>Active Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED");
+				printf("<tr><td class='dataVar' nowrap><a href='%s?type=command&amp;expand=%s'>Active Checks:</a></td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_service->service_check_command), (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED");
+			else printf("<tr><td class='dataVar' nowrap>Active Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->checks_enabled) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Passive Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->accept_passive_service_checks == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->accept_passive_service_checks) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Passive Checks:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->accept_passive_service_checks == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->accept_passive_service_checks) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Obsessing:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->obsess_over_service == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->obsess_over_service) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Obsessing:</td><td class='dataVal'><div class='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->obsess_over_service == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->obsess_over_service) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Notifications:</td><td class='dataVal'><div class='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->notifications_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->notifications_enabled) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Notifications:</td><td class='dataVal'><div class='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->notifications_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->notifications_enabled) ? "ENABLED" : "DISABLED");
 
 			if ((temp_service->event_handler) && (*temp_service->event_handler != '\0'))
-				printf("<tr><td class='dataVar'><a href='%s?type=command&amp;expand=%s'>Event Handler:</a></td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_service->event_handler), (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
-			else printf("<tr><td class='dataVar'>Event Handler:</td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
+				printf("<tr><td class='dataVar' nowrap><a href='%s?type=command&amp;expand=%s'>Event Handler:</a></td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", CONFIG_CGI, url_encode(temp_service->event_handler), (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
+			else printf("<tr><td class='dataVar' nowrap>Event Handler:</td><td class='dataVal'><div class='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED", (temp_svcstatus->event_handler_enabled) ? "ENABLED" : "DISABLED");
 
-			printf("<tr><td class='dataVar'>Flap Detection:</td><td class='dataVal'><div class='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED");
+			printf("<tr><td class='dataVar' nowrap>Flap Detection:</td><td class='dataVal'><div class='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</div></td></tr>\n", (temp_svcstatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED", (temp_svcstatus->flap_detection_enabled == TRUE) ? "ENABLED" : "DISABLED");
 
 
-			printf("</table>\n");
+			printf("</table></td><td width='100&%%' style='vertical-align: top;'>\n");
+
+			/* Custom Variables */
+			if (temp_service->custom_variables) {
+				printf("<table border='0' cellspacing='3' class='CustomVarTable' width='100%%'>\n");
+				printf("<tr><td colspan='2' class='CustomVarHead' align='center' style='font-weight: bold; padding:0em'>Custom Variables</td></tr>\n");
+				printf("<tr><td class='CustomVarHead' width='50%%'>Name</td><td class='CustomVarHead'>Value</td></tr>\n");
+				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+					if (check_exclude_customvar(temp_customvar) == FALSE)
+						printf("<tr><td class='CustomVarLine'>%s</td><td class='CustomVarLine'>%s</td></tr>\n",temp_customvar->variable_name, temp_customvar->variable_value);
+				}
+				printf("</table>\n");
+			}
+
 			printf("</td></tr>\n");
 			printf("</table>\n");
 
 			printf("</td></tr>\n");
-
 			printf("</table>\n");
 		}
 
