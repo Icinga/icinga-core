@@ -814,7 +814,8 @@ int set_environment_var(char *name, char *value, int set) {
 
 /* Checks if the given time is in daylight time saving period */
 int is_dlst_time(time_t *time) {
-	struct tm *bt = localtime(time);
+	struct tm tm_s;
+	struct tm *bt = localtime_r(time, &tm_s);
 	return bt->tm_isdst;
 }
 

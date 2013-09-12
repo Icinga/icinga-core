@@ -43,6 +43,7 @@ FIXES
 * core: fix services with no host mappings are not accepted (Viranch Metha) #3961 - MF
 * core: remove event_profiling_enabled functionality causing core dumps #2244 - MF
 * core: fix init script status exit codes on not running daemon and present pid file #4243 - MF
+* core: replace localtime() with reentrant localtime_r() (Opsview Team) #4682 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
