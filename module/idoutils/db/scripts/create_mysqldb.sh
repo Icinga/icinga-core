@@ -1,15 +1,15 @@
 #!/bin/sh
+#set -x
 #-- --------------------------------------------------------
 #-- create_mysqldb.sh
 #-- DB definition for MySQL
 #--
 #-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 #--
-#-- current version: 2013-08-18 Thomas Dressler
+#-- current version: 2013-09-14 Thomas Dressler
 #-- -- --------------------------------------------------------
 
 
-#set -x
 #where to connect
 #edit this!
 DB=icinga
@@ -17,6 +17,9 @@ DBUSER=icinga
 DBPASS=icinga
 DBHOST=localhost
 DBADMIN=root
+PARAM1=$1 #user password
+PARAM2=$2 #mysql admin password
+
 WD=`dirname $0`
 cd $WD
 WD=`pwd`
@@ -29,11 +32,28 @@ umask 0077
 
 cd ../mysql
 
-echo "Enter password for mysql user '$DBADMIN' or <enter> if none"
-read ROOTPASS
+#options for user supplied passwords #4565
+if [ -z "$PARAM2" ]; then
+	echo "Enter password for mysql user '$DBADMIN' or <enter> if none"
+	read ROOTPASS
+else
+	ROOTPASS=$PARAM2
+fi
 if [ -n "$ROOTPASS" ];then
 	P=-p$ROOTPASS
 fi
+
+
+if [ -z "$PARAM1" ]; then
+	echo "Enter password for new mysql user '$DBUSER' or <enter> for default ($DBPASS)"
+	read INPUT
+	if [ -n "$INPUT" ];then
+		DBPASS=$INPUT
+	fi
+else
+	DBPASS=$PARAM1
+fi
+
 echo "drop existing DB $DB and user $DBUSER..."
 mysql -u $DBADMIN -h $DBHOST $P  mysql <<EOS1
  DROP DATABASE IF EXISTS $DB;
