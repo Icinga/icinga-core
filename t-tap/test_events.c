@@ -141,6 +141,7 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	/* vprintf( fmt, ap ); */
 	va_end(ap);
 }
+int log_level(int level, int verbosity) {}
 int update_host_status(host *hst, int aggregated_dump) {}
 
 /* Icinga special */
