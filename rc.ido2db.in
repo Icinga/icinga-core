@@ -147,7 +147,7 @@ case "$1" in
 			# check if pid can be found running
 			if status_ido2db > /dev/null; then
 				echo "$servicename is already running. PID: $Ido2dbPID"
-				exit 1
+				exit 0
 			else
 				echo "$servicename PID $Ido2dbPID not running. Removing lockfile."
 				rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile

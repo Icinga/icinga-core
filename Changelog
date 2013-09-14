@@ -52,6 +52,8 @@ FIXES
 * idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
 * idoutils: remove timedevent support and tables #4482 - MF
 
+* install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
+
 * icinga.spec: remove commandgrp/user flags for configure (INSTALL_OPTS useless on package build) #4394 - MF
 
 SUPPORT
