@@ -32,6 +32,7 @@ ENHANCEMENTS
 * classic ui: add make install-classicui-standalone-conf as seperated config installation #4664 - MF
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
+* idoutils: allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479 - MF
 
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
@@ -85,6 +86,8 @@ CHANGES
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
 * idoutils: remove timedevents functionality, drop tables #4482
 * idoutils: unique constraint on comments/commenthistory tables #4544
+* idoutils: customvariablestatus table not updated by default (dump_customvar_status=0) #4479
+* idoutils: dump_customvar_status=0|1 in idomod.cfg #4479
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 

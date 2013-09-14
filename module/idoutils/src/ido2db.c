@@ -2324,6 +2324,9 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf) {
 	case IDO_DATA_CONTACT:
 		ido2db_add_input_data_mbuf(idi, type, IDO2DB_MBUF_CONTACT, newbuf);
 		break;
+	case IDO_DATA_CUSTOMVARIABLESTATUS:
+		ido2db_add_input_data_mbuf(idi, type, IDO2DB_MBUF_CUSTOMVARIABLESTATUS, newbuf);
+		break;
 
 		/* NORMAL DATA */
 		/* normal data items appear only once per data type */
