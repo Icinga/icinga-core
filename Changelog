@@ -45,6 +45,7 @@ FIXES
 * core: fix init script status exit codes on not running daemon and present pid file #4243 - MF
 * core: replace localtime() with reentrant localtime_r() (Opsview Team) #4682 - MF
 * core: fix config parser ignores errors on non-existing templates used in multiple templates levels #4702 - MF
+* core: add colon to illegal_object_name_chars #4227 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
@@ -69,6 +70,8 @@ CHANGES
 	** trick dlopen() to register callbacks for every neb module with different instance_name
 	** no need to manually copy binaries around
 * core: drop event_profiling_enabled functionality #2244
+* core: add colon to illegal_object_name_chars #4227
+	** reason are on-demand macros not working in #4005
 
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
 	** patterns to be excluded, comma seperated list
