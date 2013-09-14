@@ -63,6 +63,18 @@ DROP SEQUENCE seq_timedevents;
 DROP TABLE timedevents;
 DROP TABLE timedeventqueue;
 
+-- -----------------------------------------
+-- #4544 icinga_comments table UK
+-- -----------------------------------------
+
+ALTER TABLE comments DROP CONSTRAINT comments_uq;
+ALTER TABLE commenthistory DROP CONSTRAINT commenthist_uq;
+
+ALTER TABLE comments ADD constraint comments_uq UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
+        using index tablespace &&IDXTBS;
+ALTER TABLE commenthistory ADD constraint commenthist_uq UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
+        using index tablespace &&IDXTBS;
+
 
 -- -----------------------------------------
 -- finally update dbversion
