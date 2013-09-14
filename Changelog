@@ -28,6 +28,7 @@ ENHANCEMENTS
 * classic ui: log errors into cgi log (use_logging=1) #4389 - MF
 * classic ui: show custom variables in extended info #4390 - MF
 * classic ui: allow to exclude custom variable name/value based on pattern #4390 - MF
+* classic ui: add make install-classicui-standalone-conf as seperated config installation #4664 - MF
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 
@@ -75,6 +76,8 @@ CHANGES
 
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
 	** patterns to be excluded, comma seperated list
+* classic ui: make install-classicui-standalone does not install configs anymore #4664
+	** use make install-classicui-standalone-conf instead
 
 * idoutils: add max_downtimhistory_age to ido2db.cfg #3989
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363

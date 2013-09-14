@@ -567,8 +567,13 @@ install-eventhandlers:
 	@echo "*** Sample Eventhandlers installed ***"
 	@echo ""
 
+install-classicui-standalone-conf: install-cgiconf install-webconf
 
-install-classicui-standalone: install-cgis install-html install-cgiconf install-webconf
+	@echo ""
+	@echo "*** Icinga Classic UI Standalone configuration installed. ***"
+	@echo ""
+
+install-classicui-standalone: install-cgis install-html
 
 	# make sure we keep all the needed dirs for data
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
@@ -577,7 +582,9 @@ install-classicui-standalone: install-cgis install-html install-cgiconf install-
 	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)
 
 	@echo ""
-	@echo "*** Icinga Classic UI Standalone installed ***"
+	@echo "*** Icinga Classic UI Standalone installed. ***"
+	@echo ""
+	@echo "*** Now use 'make install-classicui-standalone-conf to install the configuration ***"
 	@echo ""
 
 fullinstall:
