@@ -484,6 +484,7 @@ install-webconf:
 
 install-webconf-auth:
 
+	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
 	$(INSTALL) -b -m 644 $(INSTALL_OPTS) icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
 
 	@echo ""
