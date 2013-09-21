@@ -215,11 +215,10 @@ int main(void) {
 	/* check to see if the user is authorized to view the log file */
 	if (is_authorized_for_system_information(&current_authdata) == FALSE) {
 		print_generic_error_message("It appears as though you do not have permission to view the log file...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
-		return ERROR;
+	} else {
+		/* display the contents of the log file */
+		display_logentries();
 	}
-
-	/* display the contents of the log file */
-	display_logentries();
 
 	document_footer(CGI_ID);
 

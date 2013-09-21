@@ -45,17 +45,21 @@ like( $output, "/".$test_passed."/", $cgi_file." get all downtimes");
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=0', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." get process info");
 
-$output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=4', $cgi_file);
-like( $output, "/".$test_passed."/", $cgi_file." get performance info");
+# no json output available at the moment
+#$output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=4', $cgi_file);
+#like( $output, "/".$test_passed."/", $cgi_file." get performance info");
 
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=7', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." get scheduling queue");
 
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=1&host=smtp.web.de', $cgi_file);
-like( $output, "/".$test_passed."/", $cgi_file." get host info for \"smtp.we.de\"");
+like( $output, "/".$test_passed."/", $cgi_file." get host info for \"smtp.web.de\"");
 
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=2&host=smtp.gmail.com&service=NSClient%2B%2B', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." get service info for \"NSClient++\" on \"smtp.we.de\"");
+
+$output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=2&host=smtp.gmail.com&service=SMTP', $cgi_file);
+like( $output, "/".$test_passed."/", $cgi_file." get service info for \"SMTP\" on \"smtp.we.de\"");
 
 $output = run_cgi_json('', 'icingaadmin', 'GET', 'type=7', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." without config file");
