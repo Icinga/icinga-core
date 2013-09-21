@@ -58,6 +58,7 @@ SUPPORT
 * fixed gcc warnings about unused vars and unused return values #3984 - RB
 * fixed gcc errors in extinfo.c and ido2db.c #4392 - CF
 * fix warnings with CLANG compiler #4159 - MF
+* added cgi JSON output tests #3203 - RB
 
 * classic ui: javascript cleanup and common.lib added #4324 - RB
 

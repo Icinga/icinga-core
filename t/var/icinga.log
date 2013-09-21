@@ -1,8 +1,152 @@
-[1242341771] Icinga 1.2.1 starting... (PID=48448)
-[1242341771] Local time is Mon Oct 25 23:56:11 BST 2010
-[1242341771] LOG VERSION: 2.0
-[1242341771] Error: Could not create external command file 'var/rw/icinga.cmd' as named pipe: (2) -> No such file or directory.  If this file already exists and you are sure that another copy of Nagios is not running, you should delete this file.
-[1242341771] Bailing out due to errors encountered while trying to initialize the external command file... (PID=48448)
-[1242341791] Icinga 1.2.1 starting... (PID=48451)
-[1242341791] Local time is Mon Oct 25 23:56:11 BST 2010
-[1242341791] LOG VERSION: 2.0
+[1379368800] LOG ROTATION: DAILY
+[1379368800] LOG VERSION: 2.0
+[1379372017] Auto-save of retention data completed successfully.
+[1379372646] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;(Host Check Timed Out)
+[1379372836] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;(Host Check Timed Out)
+[1379372936] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379372936] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379372936] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379372936] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379426827] Warning: A system time change of 0d 10h 4m 19s (forwards in time) has been detected.  Compensating...
+[1379429468] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;(Host Check Timed Out)
+[1379429588] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;(Host Check Timed Out)
+[1379429588] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379429588] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379429588] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379429588] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379435478] Warning: A system time change of 0d 1h 37m 11s (forwards in time) has been detected.  Compensating...
+[1379435634] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;(Host Check Timed Out)
+[1379435707] Auto-save of retention data completed successfully.
+[1379619953] Caught SIGTERM, shutting down...
+[1379619954] Successfully shutdown... (PID=11968)
+[1379668041] Icinga 1.9.3 starting... (PID=14470)
+[1379668041] Local time is Fri Sep 20 11:07:21 CEST 2013
+[1379668041] LOG VERSION: 2.0
+[1379668041] Warning: Service 'Service Count Test Prod1 App1' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod1 App2' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod1 DB1' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod1 DB2' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod2 App1' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod2 App2' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod2 DB1' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Warning: Service 'Service Count Test Prod2 DB2' on host 'localhost'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+[1379668041] Finished daemonizing... (New PID=14475)
+[1379668041] HOST FLAPPING ALERT: smtp.gmail.com3;STARTED; Host appears to have started flapping (39.7% change > 20.0% threshold)
+[1379668041] SERVICE FLAPPING ALERT: localhost;Current Users;STARTED; Service appears to have started flapping (23.2% change >= 20.0% threshold)
+[1379668041] SERVICE FLAPPING ALERT: smtp.gmail.com;SMTP;STARTED; Service appears to have started flapping (24.2% change >= 20.0% threshold)
+[1379668041] Event loop started...
+[1379668261] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (217.72.192.157)
+[1379668301] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379668411] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668411] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668463] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.gmail.com;SMTP+Test;0;UP again|
+[1379668464] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.gmail.com;SMTP/Test;0;UP again|
+[1379668464] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP;0;UP again|
+[1379668464] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP+Test;0;UP again|
+[1379668464] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP/Test;0;UP again|
+[1379668471] PASSIVE SERVICE CHECK: smtp.gmail.com;SMTP+Test;0;UP again
+[1379668471] SERVICE ALERT: smtp.gmail.com;SMTP+Test;OK;SOFT;2;UP again
+[1379668471] PASSIVE SERVICE CHECK: smtp.gmail.com;SMTP/Test;0;UP again
+[1379668471] SERVICE ALERT: smtp.gmail.com;SMTP/Test;OK;SOFT;2;UP again
+[1379668471] PASSIVE SERVICE CHECK: smtp.web.de;SMTP;0;UP again
+[1379668471] SERVICE ALERT: smtp.web.de;SMTP;OK;SOFT;2;UP again
+[1379668471] PASSIVE SERVICE CHECK: smtp.web.de;SMTP+Test;0;UP again
+[1379668471] SERVICE ALERT: smtp.web.de;SMTP+Test;OK;SOFT;2;UP again
+[1379668471] PASSIVE SERVICE CHECK: smtp.web.de;SMTP/Test;0;UP again
+[1379668471] SERVICE ALERT: smtp.web.de;SMTP/Test;OK;SOFT;2;UP again
+[1379668487] EXTERNAL COMMAND: DISABLE_HOST_CHECK;smtp.web.de
+[1379668499] EXTERNAL COMMAND: PROCESS_HOST_CHECK_RESULT;smtp.web.de;0;UP Again|
+[1379668501] PASSIVE HOST CHECK: smtp.web.de;0;UP Again
+[1379668501] HOST ALERT: smtp.web.de;UP;HARD;1;UP Again
+[1379668501] HOST NOTIFICATION: icingaadmin;smtp.web.de;UP;notify-host-by-email;UP Again
+[1379668538] EXTERNAL COMMAND: SCHEDULE_SVC_DOWNTIME;smtp.gmail.com;SMTP Test auch;1379668526;1379714400;1;0;60;Ricardo;test
+[1379668538] EXTERNAL COMMAND: SCHEDULE_SVC_DOWNTIME;smtp.web.de;SMTP Test auch;1379668526;1379714400;1;0;60;Ricardo;test
+[1379668538] SERVICE DOWNTIME ALERT: smtp.gmail.com;SMTP Test auch;STARTED; Service has entered a period of scheduled downtime
+[1379668538] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;SMTP Test auch;DOWNTIMESTART (CRITICAL);notify-service-by-email-notworking;CRITICAL - Socket timeout after 10 seconds
+[1379668538] SERVICE NOTIFICATION: testuser;smtp.gmail.com;SMTP Test auch;DOWNTIMESTART (CRITICAL);notify-service-by-email-notworking;CRITICAL - Socket timeout after 10 seconds
+[1379668538] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP Test auch;STARTED; Service has entered a period of scheduled downtime
+[1379668580] EXTERNAL COMMAND: REMOVE_SVC_ACKNOWLEDGEMENT;smtp.gmail.com;SMTP Test auch
+[1379668611] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379668611] SERVICE NOTIFICATION: icingaadmin;localhost;ido2db Process;WARNING;notify-service-by-email-notworking;PROCS WARNING: 1 process with command name ido2db
+[1379668631] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668631] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668682] EXTERNAL COMMAND: PROCESS_HOST_CHECK_RESULT;smtp.web.de;1;doch down|
+[1379668691] PASSIVE HOST CHECK: smtp.web.de;1;doch down
+[1379668691] HOST ALERT: smtp.web.de;DOWN;HARD;1;doch down
+[1379668691] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379668711] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668711] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668769] EXTERNAL COMMAND: DISABLE_SVC_CHECK;smtp.gmail.com;SMTP Test auch
+[1379668778] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.gmail.com;SMTP Test auch;0;ok again|
+[1379668781] PASSIVE SERVICE CHECK: smtp.gmail.com;SMTP Test auch;0;ok again
+[1379668781] SERVICE ALERT: smtp.gmail.com;SMTP Test auch;OK;HARD;4;ok again
+[1379668781] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;SMTP Test auch;OK;notify-service-by-email-notworking;ok again
+[1379668781] SERVICE NOTIFICATION: testuser;smtp.gmail.com;SMTP Test auch;OK;notify-service-by-email-notworking;ok again
+[1379668802] EXTERNAL COMMAND: DEL_SVC_DOWNTIME;311
+[1379668802] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP Test auch;CANCELLED; Scheduled downtime for service has been cancelled.
+[1379668921] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379668931] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668931] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379668951] EXTERNAL COMMAND: SCHEDULE_SVC_DOWNTIME;smtp.web.de;SMTP Test auch;1379668942;1380060000;1;0;60;Ricardo;werwer
+[1379668952] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP Test auch;STARTED; Service has entered a period of scheduled downtime
+[1379669011] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379669011] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379670781] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379670811] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379670811] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379670838] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP;2;dead|
+[1379670841] PASSIVE SERVICE CHECK: smtp.web.de;SMTP;2;dead
+[1379670841] SERVICE ALERT: smtp.web.de;SMTP;CRITICAL;HARD;1;dead
+[1379670861] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379670970] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP;0;wieder gut|
+[1379670971] PASSIVE SERVICE CHECK: smtp.web.de;SMTP;0;wieder gut
+[1379670971] SERVICE ALERT: smtp.web.de;SMTP;OK;HARD;1;wieder gut
+[1379670971] SERVICE FLAPPING ALERT: smtp.web.de;SMTP;STARTED; Service appears to have started flapping (22.0% change >= 20.0% threshold)
+[1379671031] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671031] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671091] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379671111] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671111] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671161] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379671296] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;smtp.web.de;SMTP;2;dead again|
+[1379671301] PASSIVE SERVICE CHECK: smtp.web.de;SMTP;2;dead again
+[1379671301] SERVICE ALERT: smtp.web.de;SMTP;CRITICAL;HARD;1;dead again
+[1379671331] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671331] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671401] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379671411] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671411] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671461] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379671631] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671631] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671641] Auto-save of retention data completed successfully.
+[1379671711] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379671711] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671711] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379671761] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379673261] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379673261] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379673431] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379673431] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379673469] EXTERNAL COMMAND: SCHEDULE_HOST_DOWNTIME;monitor01.customer-name.local;1379673447;1601416800;1;0;60;Ricardo;ewf.nöweaf
+[1379673469] EXTERNAL COMMAND: SCHEDULE_HOST_DOWNTIME;monitor02.customer-name.local;1379673447;1601416800;1;0;60;Ricardo;ewf.nöweaf
+[1379673469] HOST DOWNTIME ALERT: monitor01.customer-name.local;STARTED; Host has entered a period of scheduled downtime
+[1379673469] HOST NOTIFICATION: icingaadmin;monitor01.customer-name.local;DOWNTIMESTART (DOWN);notify-host-by-email;(Host Check Timed Out)
+[1379673469] HOST DOWNTIME ALERT: monitor02.customer-name.local;STARTED; Host has entered a period of scheduled downtime
+[1379673469] HOST NOTIFICATION: icingaadmin;monitor02.customer-name.local;DOWNTIMESTART (DOWN);notify-host-by-email;(Host Check Timed Out)
+[1379673481] EXTERNAL COMMAND: DEL_SVC_DOWNTIME;310
+[1379673481] SERVICE DOWNTIME ALERT: smtp.gmail.com;SMTP Test auch;CANCELLED; Scheduled downtime for service has been cancelled.
+[1379673481] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;SMTP Test auch;DOWNTIMECANCELLED (OK);notify-service-by-email-notworking;ok again
+[1379673481] SERVICE NOTIFICATION: testuser;smtp.gmail.com;SMTP Test auch;DOWNTIMECANCELLED (OK);notify-service-by-email-notworking;ok again
+[1379673481] EXTERNAL COMMAND: DEL_SVC_DOWNTIME;312
+[1379673481] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP Test auch;CANCELLED; Scheduled downtime for service has been cancelled.
+[1379673511] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379673511] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NSClient++;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379673512] EXTERNAL COMMAND: SCHEDULE_SVC_DOWNTIME;smtp.web.de;SMTP;1379673494;1601416800;1;0;60;Ricardo;öäüö64375$&/%"&/%$(§!$%&378
+[1379673512] EXTERNAL COMMAND: SCHEDULE_SVC_DOWNTIME;smtp.web.de;SMTP Test auch;1379673494;1601416800;1;0;60;Ricardo;öäüö64375$&/%"&/%$(§!$%&378
+[1379673512] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP;STARTED; Service has entered a period of scheduled downtime
+[1379673512] SERVICE DOWNTIME ALERT: smtp.web.de;SMTP Test auch;STARTED; Service has entered a period of scheduled downtime
+[1379673561] HOST NOTIFICATION: icingaadmin;smtp.web.de;DOWN;notify-host-by-email;doch down
+[1379673571] HOST NOTIFICATION: icingaadmin;vpn.customer-name.local;DOWN;notify-host-by-email;CRITICAL - Host Unreachable (74.125.39.1)
+[1379673731] SERVICE NOTIFICATION: icingaadmin;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
+[1379673731] SERVICE NOTIFICATION: testuser;smtp.gmail.com;NT Test;UNKNOWN;notify-service-by-email-notworking;check_nt: Could not parse arguments
