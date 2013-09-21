@@ -36,6 +36,16 @@ DROP TABLE icinga_timedevents;
 DROP TABLE icinga_timedeventqueue;
 
 -- -----------------------------------------
+-- #4544 icinga_comments table UK
+-- -----------------------------------------
+
+ALTER TABLE icinga_comments DROP INDEX instance_id;
+ALTER TABLE icinga_commenthistory DROP INDEX instance_id;
+
+CREATE UNIQUE INDEX instance_id ON icinga_comments(instance_id,object_id,comment_time,internal_comment_id);
+CREATE UNIQUE INDEX instance_id ON icinga_commenthistory(instance_id,object_id,comment_time,internal_comment_id);
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

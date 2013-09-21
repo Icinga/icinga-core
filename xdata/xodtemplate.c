@@ -6169,7 +6169,10 @@ int xodtemplate_resolve_timeperiod(xodtemplate_timeperiod *this_timeperiod) {
 		}
 
 		/* resolve the template timeperiod... */
-		xodtemplate_resolve_timeperiod(template_timeperiod);
+		if (xodtemplate_resolve_timeperiod(template_timeperiod) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template timeperiod... */
 		if (this_timeperiod->timeperiod_name == NULL && template_timeperiod->timeperiod_name != NULL)
@@ -6267,7 +6270,10 @@ int xodtemplate_resolve_command(xodtemplate_command *this_command) {
 		}
 
 		/* resolve the template command... */
-		xodtemplate_resolve_command(template_command);
+		if (xodtemplate_resolve_command(template_command) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template command... */
 		if (this_command->command_name == NULL && template_command->command_name != NULL)
@@ -6320,7 +6326,10 @@ int xodtemplate_resolve_contactgroup(xodtemplate_contactgroup *this_contactgroup
 		}
 
 		/* resolve the template contactgroup... */
-		xodtemplate_resolve_contactgroup(template_contactgroup);
+		if (xodtemplate_resolve_contactgroup(template_contactgroup) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template contactgroup... */
 		if (this_contactgroup->contactgroup_name == NULL && template_contactgroup->contactgroup_name != NULL)
@@ -6377,7 +6386,10 @@ int xodtemplate_resolve_hostgroup(xodtemplate_hostgroup *this_hostgroup) {
 		}
 
 		/* resolve the template hostgroup... */
-		xodtemplate_resolve_hostgroup(template_hostgroup);
+		if (xodtemplate_resolve_hostgroup(template_hostgroup) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template hostgroup... */
 		if (this_hostgroup->hostgroup_name == NULL && template_hostgroup->hostgroup_name != NULL)
@@ -6449,7 +6461,10 @@ int xodtemplate_resolve_servicegroup(xodtemplate_servicegroup *this_servicegroup
 		}
 
 		/* resolve the template servicegroup... */
-		xodtemplate_resolve_servicegroup(template_servicegroup);
+		if (xodtemplate_resolve_servicegroup(template_servicegroup) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template servicegroup... */
 		if (this_servicegroup->servicegroup_name == NULL && template_servicegroup->servicegroup_name != NULL)
@@ -6519,7 +6534,10 @@ int xodtemplate_resolve_servicedependency(xodtemplate_servicedependency *this_se
 		}
 
 		/* resolve the template servicedependency... */
-		xodtemplate_resolve_servicedependency(template_servicedependency);
+		if (xodtemplate_resolve_servicedependency(template_servicedependency) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template servicedependency... */
 		xodtemplate_get_inherited_string(&template_servicedependency->have_servicegroup_name, &template_servicedependency->servicegroup_name, &this_servicedependency->have_servicegroup_name, &this_servicedependency->servicegroup_name);
@@ -6600,7 +6618,10 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 		}
 
 		/* resolve the template serviceescalation... */
-		xodtemplate_resolve_serviceescalation(template_serviceescalation);
+		if (xodtemplate_resolve_serviceescalation(template_serviceescalation) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template serviceescalation... */
 		xodtemplate_get_inherited_string(&template_serviceescalation->have_servicegroup_name, &template_serviceescalation->servicegroup_name, &this_serviceescalation->have_servicegroup_name, &this_serviceescalation->servicegroup_name);
@@ -6708,7 +6729,10 @@ int xodtemplate_resolve_contact(xodtemplate_contact *this_contact) {
 		}
 
 		/* resolve the template contact... */
-		xodtemplate_resolve_contact(template_contact);
+		if (xodtemplate_resolve_contact(template_contact) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template contact... */
 		if (this_contact->contact_name == NULL && template_contact->contact_name != NULL)
@@ -6846,7 +6870,10 @@ int xodtemplate_resolve_host(xodtemplate_host *this_host) {
 		}
 
 		/* resolve the template host... */
-		xodtemplate_resolve_host(template_host);
+		if (xodtemplate_resolve_host(template_host) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template host... */
 		if (this_host->host_name == NULL && template_host->host_name != NULL)
@@ -7100,7 +7127,10 @@ int xodtemplate_resolve_service(xodtemplate_service *this_service) {
 		}
 
 		/* resolve the template service... */
-		xodtemplate_resolve_service(template_service);
+		if (xodtemplate_resolve_service(template_service) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template service... */
 		if (this_service->have_service_description == FALSE && template_service->have_service_description == TRUE) {
@@ -7345,7 +7375,10 @@ int xodtemplate_resolve_hostdependency(xodtemplate_hostdependency *this_hostdepe
 		}
 
 		/* resolve the template hostdependency... */
-		xodtemplate_resolve_hostdependency(template_hostdependency);
+		if (xodtemplate_resolve_hostdependency(template_hostdependency) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template hostdependency... */
 
@@ -7421,7 +7454,10 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 		}
 
 		/* resolve the template hostescalation... */
-		xodtemplate_resolve_hostescalation(template_hostescalation);
+		if (xodtemplate_resolve_hostescalation(template_hostescalation) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template hostescalation... */
 		xodtemplate_get_inherited_string(&template_hostescalation->have_host_name, &template_hostescalation->host_name, &this_hostescalation->have_host_name, &this_hostescalation->host_name);
@@ -7515,7 +7551,10 @@ int xodtemplate_resolve_hostextinfo(xodtemplate_hostextinfo *this_hostextinfo) {
 		}
 
 		/* resolve the template hostextinfo... */
-		xodtemplate_resolve_hostextinfo(template_hostextinfo);
+		if (xodtemplate_resolve_hostextinfo(template_hostextinfo) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template hostextinfo... */
 		if (this_hostextinfo->have_host_name == FALSE && template_hostextinfo->have_host_name == TRUE) {
@@ -7619,7 +7658,10 @@ int xodtemplate_resolve_serviceextinfo(xodtemplate_serviceextinfo *this_servicee
 		}
 
 		/* resolve the template serviceextinfo... */
-		xodtemplate_resolve_serviceextinfo(template_serviceextinfo);
+		if (xodtemplate_resolve_serviceextinfo(template_serviceextinfo) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template serviceextinfo... */
 		if (this_serviceextinfo->have_host_name == FALSE && template_serviceextinfo->have_host_name == TRUE) {
@@ -7706,7 +7748,10 @@ int xodtemplate_resolve_module(xodtemplate_module *this_module) {
 		}
 
 		/* resolve the template module... */
-		xodtemplate_resolve_module(template_module);
+		if (xodtemplate_resolve_module(template_module) == ERROR) {
+			my_free(template_names);
+			return ERROR;
+		}
 
 		/* apply missing properties from template module... */
 		if (this_module->module_name == NULL && template_module->module_name != NULL)

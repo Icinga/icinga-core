@@ -112,7 +112,7 @@ CREATE TABLE  icinga_commenthistory (
   deletion_time timestamp with time zone default '1970-01-01 00:00:00',
   deletion_time_usec INTEGER  default 0,
   CONSTRAINT PK_commenthistory_id PRIMARY KEY (commenthistory_id) ,
-  CONSTRAINT UQ_commenthistory UNIQUE (instance_id,comment_time,internal_comment_id)
+  CONSTRAINT UQ_commenthistory UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 );
 
 -- --------------------------------------------------------
@@ -138,7 +138,7 @@ CREATE TABLE  icinga_comments (
   expires INTEGER  default 0,
   expiration_time timestamp with time zone default '1970-01-01 00:00:00',
   CONSTRAINT PK_comment_id PRIMARY KEY (comment_id) ,
-  CONSTRAINT UQ_comments UNIQUE (instance_id,comment_time,internal_comment_id)
+  CONSTRAINT UQ_comments UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 )  ;
 
 -- --------------------------------------------------------
