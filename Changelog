@@ -52,6 +52,7 @@ CHANGES
 	** no need to manually copy binaries around
 * core: drop event_profiling_enabled functionality #2244
 
+* classic ui: added custom vars to json_output in extinfo.cgi #4390
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
 	** patterns to be excluded, comma seperated list
 
