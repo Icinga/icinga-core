@@ -775,7 +775,9 @@ int main(void) {
 				show_downtime(SERVICE_DOWNTIME);
 			}
 		}
-	} else if (display_type == DISPLAY_PERFORMANCE)
+
+	// no json output for performance data available at the moment #FIXME PLEASE
+	} else if (display_type == DISPLAY_PERFORMANCE && content_type == HTML_CONTENT)
 		show_performance_data();
 	else if (display_type == DISPLAY_HOSTGROUP_INFO)
 		show_hostgroup_info();
