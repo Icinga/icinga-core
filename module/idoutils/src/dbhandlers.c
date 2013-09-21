@@ -7441,7 +7441,11 @@ int ido2db_save_custom_variables(ido2db_idi *idi, int table_idx, unsigned long o
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_save_custom_variables() start\n");
 
 	/* save custom variables to db */
-	mbuf = idi->mbuf[IDO2DB_MBUF_CUSTOMVARIABLE];
+	if (table_idx == IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS)
+		mbuf = idi->mbuf[IDO2DB_MBUF_CUSTOMVARIABLESTATUS];
+	else
+		mbuf = idi->mbuf[IDO2DB_MBUF_CUSTOMVARIABLE];
+
 	for (x = 0; x < mbuf.used_lines; x++) {
 
 		if (mbuf.buffer[x] == NULL)

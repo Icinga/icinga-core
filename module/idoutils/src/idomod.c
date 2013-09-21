@@ -56,6 +56,8 @@ int idomod_config_output_options = IDOMOD_CONFIG_DUMP_ALL;
 unsigned long idomod_sink_buffer_slots = 5000;
 idomod_sink_buffer sinkbuf;
 
+int dump_customvar_status = IDO_FALSE;
+
 char *idomod_debug_file = NULL;
 int idomod_debug_level = IDOMOD_DEBUGL_NONE;
 int idomod_debug_verbosity = IDOMOD_DEBUGV_BASIC;
@@ -482,6 +484,10 @@ int idomod_process_config_var(char *arg) {
 			else
 				use_ssl = 0;
 		}
+	}
+
+	else if (!strcmp(var, "dump_customvar_status")) {
+		dump_customvar_status = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
 
 	else {
@@ -2206,27 +2212,29 @@ int idomod_broker_data(int event_type, void *data) {
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		/* dump customvars */
-		for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+		/* dump customvars status */
+		if (dump_customvar_status == IDO_TRUE) {
+			for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
+				for (x = 0; x < 2; x++) {
+					free(es[x]);
+					es[x] = NULL;
+				}
+
+				es[0] = ido_escape_buffer(temp_customvar->variable_name);
+				es[1] = ido_escape_buffer(temp_customvar->variable_value);
+
+				snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
+				         , "%d=%s:%d:%s\n"
+				         , IDO_DATA_CUSTOMVARIABLESTATUS
+				         , (es[0] == NULL) ? "" : es[0]
+				         , temp_customvar->has_been_modified
+				         , (es[1] == NULL) ? "" : es[1]
+				        );
+
+				temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
+				ido_dbuf_strcat(&dbuf, temp_buffer);
 			}
-
-			es[0] = ido_escape_buffer(temp_customvar->variable_name);
-			es[1] = ido_escape_buffer(temp_customvar->variable_value);
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "%d=%s:%d:%s\n"
-			         , IDO_DATA_CUSTOMVARIABLE
-			         , (es[0] == NULL) ? "" : es[0]
-			         , temp_customvar->has_been_modified
-			         , (es[1] == NULL) ? "" : es[1]
-			        );
-
-			temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
-			ido_dbuf_strcat(&dbuf, temp_buffer);
 		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
@@ -2379,27 +2387,29 @@ int idomod_broker_data(int event_type, void *data) {
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		/* dump customvars */
-		for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+		/* dump customvars status */
+		if (dump_customvar_status == IDO_TRUE) {
+			for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
+				for (x = 0; x < 2; x++) {
+					free(es[x]);
+					es[x] = NULL;
+				}
+
+				es[0] = ido_escape_buffer(temp_customvar->variable_name);
+				es[1] = ido_escape_buffer(temp_customvar->variable_value);
+
+				snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
+				         , "%d=%s:%d:%s\n"
+				         , IDO_DATA_CUSTOMVARIABLESTATUS
+				         , (es[0] == NULL) ? "" : es[0]
+			        	 , temp_customvar->has_been_modified
+				         , (es[1] == NULL) ? "" : es[1]
+				        );
+
+				temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
+				ido_dbuf_strcat(&dbuf, temp_buffer);
 			}
-
-			es[0] = ido_escape_buffer(temp_customvar->variable_name);
-			es[1] = ido_escape_buffer(temp_customvar->variable_value);
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "%d=%s:%d:%s\n"
-			         , IDO_DATA_CUSTOMVARIABLE
-			         , (es[0] == NULL) ? "" : es[0]
-			         , temp_customvar->has_been_modified
-			         , (es[1] == NULL) ? "" : es[1]
-			        );
-
-			temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
-			ido_dbuf_strcat(&dbuf, temp_buffer);
 		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
@@ -2457,27 +2467,29 @@ int idomod_broker_data(int event_type, void *data) {
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		/* dump customvars */
-		for (temp_customvar = temp_contact->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+		/* dump customvars status */
+		if (dump_customvar_status == IDO_TRUE) {
+			for (temp_customvar = temp_contact->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
+				for (x = 0; x < 2; x++) {
+					free(es[x]);
+					es[x] = NULL;
+				}
+
+				es[0] = ido_escape_buffer(temp_customvar->variable_name);
+				es[1] = ido_escape_buffer(temp_customvar->variable_value);
+
+				snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
+				         , "%d=%s:%d:%s\n"
+				         , IDO_DATA_CUSTOMVARIABLESTATUS
+				         , (es[0] == NULL) ? "" : es[0]
+				         , temp_customvar->has_been_modified
+				         , (es[1] == NULL) ? "" : es[1]
+				        );
+
+				temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
+				ido_dbuf_strcat(&dbuf, temp_buffer);
 			}
-
-			es[0] = ido_escape_buffer(temp_customvar->variable_name);
-			es[1] = ido_escape_buffer(temp_customvar->variable_value);
-
-			snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-			         , "%d=%s:%d:%s\n"
-			         , IDO_DATA_CUSTOMVARIABLE
-			         , (es[0] == NULL) ? "" : es[0]
-			         , temp_customvar->has_been_modified
-			         , (es[1] == NULL) ? "" : es[1]
-			        );
-
-			temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
-			ido_dbuf_strcat(&dbuf, temp_buffer);
 		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1

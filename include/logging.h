@@ -115,6 +115,7 @@ int close_debug_log(void);
 FILE *open_log_file(void);
 int close_log_file(void);
 int fix_log_file_owner(uid_t, gid_t);
+int log_level(int, int);
 
 #endif /* !NSCGI */
 

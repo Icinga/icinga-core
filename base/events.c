@@ -349,7 +349,8 @@ void init_timing_loop(void) {
 
 			/* skip services that are already scheduled for the future (from retention data), but reschedule ones that were supposed to happen while we weren't running... */
 			if (temp_service->next_check > current_time) {
-				log_debug_info(DEBUGL_EVENTS, 2, "Service is already scheduled to be checked in the future: %s\n", ctime(&temp_service->next_check));
+				if (log_level(DEBUGL_EVENTS, 2))
+					log_debug_info(DEBUGL_EVENTS, 2, "Service is already scheduled to be checked in the future: %s\n", ctime(&temp_service->next_check));
 				continue;
 			}
 
@@ -366,18 +367,21 @@ void init_timing_loop(void) {
 			/* set the preferred next check time for the service */
 			temp_service->next_check = (time_t)(current_time + (mult_factor * scheduling_info.service_inter_check_delay));
 
-			log_debug_info(DEBUGL_EVENTS, 2, "Preferred Check Time: %lu --> %s", (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
+			if (log_level(DEBUGL_EVENTS, 2))
+				log_debug_info(DEBUGL_EVENTS, 2, "Preferred Check Time: %lu --> %s", (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
 
 
 			/* make sure the service can actually be scheduled when we want */
 			is_valid_time = check_time_against_period(temp_service->next_check, temp_service->check_period_ptr);
 			if (is_valid_time == ERROR) {
-				log_debug_info(DEBUGL_EVENTS, 2, "Preferred Time is Invalid In Timeperiod '%s': %lu --> %s", temp_service->check_period_ptr->name, (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
+				if (log_level(DEBUGL_EVENTS, 2))
+					log_debug_info(DEBUGL_EVENTS, 2, "Preferred Time is Invalid In Timeperiod '%s': %lu --> %s", temp_service->check_period_ptr->name, (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
 				get_next_valid_time(temp_service->next_check, &next_valid_time, temp_service->check_period_ptr);
 				temp_service->next_check = next_valid_time;
 			}
 
-			log_debug_info(DEBUGL_EVENTS, 2, "Actual Check Time: %lu --> %s", (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
+			if (log_level(DEBUGL_EVENTS, 2))
+				log_debug_info(DEBUGL_EVENTS, 2, "Actual Check Time: %lu --> %s", (unsigned long)temp_service->next_check, ctime(&temp_service->next_check));
 
 			if (scheduling_info.first_service_check == (time_t)0 || (temp_service->next_check < scheduling_info.first_service_check))
 				scheduling_info.first_service_check = temp_service->next_check;
@@ -498,14 +502,16 @@ void init_timing_loop(void) {
 
 		/* skip hosts that are already scheduled for the future (from retention data), but reschedule ones that were supposed to be checked before we started */
 		if (temp_host->next_check > current_time) {
-			log_debug_info(DEBUGL_EVENTS, 2, "Host is already scheduled to be checked in the future: %s\n", ctime(&temp_host->next_check));
+			if (log_level(DEBUGL_EVENTS, 2))
+				log_debug_info(DEBUGL_EVENTS, 2, "Host is already scheduled to be checked in the future: %s\n", ctime(&temp_host->next_check));
 			continue;
 		}
 
 		/* calculate preferred host check time */
 		temp_host->next_check = (time_t)(current_time + (mult_factor * scheduling_info.host_inter_check_delay));
 
-		log_debug_info(DEBUGL_EVENTS, 2, "Preferred Check Time: %lu --> %s", (unsigned long)temp_host->next_check, ctime(&temp_host->next_check));
+		if (log_level(DEBUGL_EVENTS, 2))
+			log_debug_info(DEBUGL_EVENTS, 2, "Preferred Check Time: %lu --> %s", (unsigned long)temp_host->next_check, ctime(&temp_host->next_check));
 
 		/* make sure the host can actually be scheduled at this time */
 		is_valid_time = check_time_against_period(temp_host->next_check, temp_host->check_period_ptr);
@@ -514,7 +520,8 @@ void init_timing_loop(void) {
 			temp_host->next_check = next_valid_time;
 		}
 
-		log_debug_info(DEBUGL_EVENTS, 2, "Actual Check Time: %lu --> %s", (unsigned long)temp_host->next_check, ctime(&temp_host->next_check));
+		if (log_level(DEBUGL_EVENTS, 2))
+			log_debug_info(DEBUGL_EVENTS, 2, "Actual Check Time: %lu --> %s", (unsigned long)temp_host->next_check, ctime(&temp_host->next_check));
 
 		if (scheduling_info.first_host_check == (time_t)0 || (temp_host->next_check < scheduling_info.first_host_check))
 			scheduling_info.first_host_check = temp_host->next_check;
@@ -979,7 +986,8 @@ int delete_scheduled_event(int event_type, int high_priority, time_t run_time, i
 
 		if (temp_event->event_type == event_type && temp_event->event_options == event_options && temp_event->event_data == event_data) {
 
-			log_debug_info(DEBUGL_EVENTS, 1, "Removing event type %d @ %s", event_type, ctime(&run_time));
+			if (log_level(DEBUGL_EVENTS, 1))
+				log_debug_info(DEBUGL_EVENTS, 1, "Removing event type %d @ %s", event_type, ctime(&run_time));
 
 			/* remove the event from the event list */
 			remove_event(temp_event, event_list, event_list_tail);
@@ -1196,14 +1204,21 @@ int event_execution_loop(void) {
 		last_time = current_time;
 
 		log_debug_info(DEBUGL_EVENTS, 1, "** Event Check Loop\n");
-		if (event_list_high != NULL)
-			log_debug_info(DEBUGL_EVENTS, 1, "Next High Priority Event Time: %s", ctime(&event_list_high->run_time));
-		else
+
+		if (event_list_high != NULL) {
+			if (log_level(DEBUGL_EVENTS, 1))
+				log_debug_info(DEBUGL_EVENTS, 1, "Next High Priority Event Time: %s", ctime(&event_list_high->run_time));
+		} else {
 			log_debug_info(DEBUGL_EVENTS, 1, "No high priority events are scheduled...\n");
-		if (event_list_low != NULL)
+		}
+
+		if (event_list_low != NULL) {
+			if (log_level(DEBUGL_EVENTS, 1))
 			log_debug_info(DEBUGL_EVENTS, 1, "Next Low Priority Event Time:  %s", ctime(&event_list_low->run_time));
-		else
+		} else {
 			log_debug_info(DEBUGL_EVENTS, 1, "No low priority events are scheduled...\n");
+		}
+
 		log_debug_info(DEBUGL_EVENTS, 1, "Current/Max Service Checks: %d/%d\n", currently_running_service_checks, max_parallel_service_checks);
 
 		/* get rid of terminated child processes (zombies) */
@@ -1461,7 +1476,8 @@ int handle_timed_event(timed_event *event) {
 	broker_timed_event(NEBTYPE_TIMEDEVENT_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, event, NULL);
 #endif
 
-	log_debug_info(DEBUGL_EVENTS, 0, "** Timed Event ** Type: %d, Run Time: %s", event->event_type, ctime(&event->run_time));
+	if (log_level(DEBUGL_EVENTS, 0))
+		log_debug_info(DEBUGL_EVENTS, 0, "** Timed Event ** Type: %d, Run Time: %s", event->event_type, ctime(&event->run_time));
 
 	/* how should we handle the event? */
 	switch (event->event_type) {

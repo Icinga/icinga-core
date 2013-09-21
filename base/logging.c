@@ -631,6 +631,18 @@ int close_debug_log(void) {
 	return OK;
 }
 
+/* returns TRUE if logging applies
+ * TRUE=1 so can do 'if(log_level(...)) {' for conditional debugging
+ */
+int log_level(int level, int verbosity) {
+	if (!(debug_level == DEBUGL_ALL || (level & debug_level)))
+		return FALSE;
+
+	if (verbosity > debug_verbosity)
+		return FALSE;
+
+	return TRUE;
+}
 
 /* write to the debug log */
 int log_debug_info(int level, int verbosity, const char *fmt, ...) {
@@ -638,10 +650,8 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	char *temp_path = NULL;
 	struct timeval current_time;
 
-	if (!(debug_level == DEBUGL_ALL || (level & debug_level)))
-		return OK;
-
-	if (verbosity > debug_verbosity)
+	/* ignore if logging is not appropriate */
+	if (log_level(level, verbosity) != TRUE)
 		return OK;
 
 	if (debug_file_fp == NULL)

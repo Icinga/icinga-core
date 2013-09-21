@@ -1,0 +1,38 @@
+#############################################################################################
+# ICINGA TEST CONFIG BY ISSUES
+# (c) 2009-2013 Icinga Development Team and Community Contributors
+#
+# #4702 (breaks with faulty config)
+# config parser ignores errors on non-existing templates used in multiple templates levels
+#############################################################################################
+
+
+define command {
+        command_name                    4702check_wappler
+        command_line                    $USER1$/check_http -H nagios.org
+}
+
+define host{
+        name                            4702linux-server
+        use                             test-generic-host-i-do-not-exist-because-my-name-is-so-funny
+        check_period                    testconfig-24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              10
+        check_command                   testconfig-check-host-alive
+        notification_period             testconfig-workhours
+        notification_interval           120
+        notification_options            d,u,r
+        contact_groups                 	testconfig-group-admin
+        register                        0
+}
+
+define host{
+        use                             4702linux-server            ; Name of host template to use
+        host_name                       4702localhost
+        alias                           4702localhost
+        address                         127.0.0.1
+        address6                        ::1
+        check_command                   4702check_wappler
+}
+

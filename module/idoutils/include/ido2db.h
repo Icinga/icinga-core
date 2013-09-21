@@ -53,8 +53,9 @@
 #define IDO2DB_MBUF_RUNTIMEVARIABLE                     11
 #define IDO2DB_MBUF_CUSTOMVARIABLE                      12
 #define IDO2DB_MBUF_CONTACT                             13
+#define IDO2DB_MBUF_CUSTOMVARIABLESTATUS                14
 
-#define IDO2DB_MAX_MBUF_ITEMS                           14
+#define IDO2DB_MAX_MBUF_ITEMS                           15
 
 #define IDO2DB_MAX_BUFLEN				16384
 #define IDO2DB_MYSQL_MAX_TEXT_LEN		32768

@@ -296,6 +296,7 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	va_end(ap);
 }
 int close_log_file(void) {}
+int log_level(int level, int verbosity) {}
 int chown_debug_log(uid_t uid, gid_t gid) {}
 int fix_log_file_owner(uid_t uid, gid_t gid) {}
 
