@@ -1485,7 +1485,7 @@ void show_host_info(void) {
 				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 					if (check_exclude_customvar(temp_customvar) == FALSE) {
 						if (json_start == FALSE) printf(",");
-						printf(" { \"%s\": \"%s\" }\n", temp_customvar->variable_name, temp_customvar->variable_value);
+						printf(" { \"%s\": \"%s\" }\n", json_encode(temp_customvar->variable_name), json_encode(temp_customvar->variable_value));
 						json_start = FALSE;
 					}
 				}
@@ -1945,7 +1945,7 @@ void show_service_info(void) {
 				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
 					if (check_exclude_customvar(temp_customvar) == FALSE) {
 						if (json_start == FALSE) printf(",");
-						printf(" { \"%s\": \"%s\" }\n", temp_customvar->variable_name, temp_customvar->variable_value);
+						printf(" { \"%s\": \"%s\" }\n", json_encode(temp_customvar->variable_name), json_encode(temp_customvar->variable_value));
 						json_start = FALSE;
 					}
 				}
