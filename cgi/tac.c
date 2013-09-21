@@ -2292,13 +2292,13 @@ void display_tac_overview(void) {
 		printf("</td></tr>\n");
 	}
 
-	if (services_critical_unacknowledged_host_down + services_critical_acknowledged_host_down + services_critical_disabled_host_down > 0) {
+	if (services_critical_unacknowledged_host_down + services_critical_acknowledged_host_down + services_critical_scheduled_host_down > 0) {
 
+		problem_found = FALSE;
 		printf("<tr><td width='100%%' class='serviceUnimportantProblem'><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d'>on Problem Hosts</a><br>\n", STATUS_CGI, SERVICE_CRITICAL, HOST_DOWN | HOST_UNREACHABLE);
 
 		if (services_critical_unacknowledged_host_down > 0) {
 
-			problem_found = FALSE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Unacknowledged</a><br>\n", STATUS_CGI, SERVICE_CRITICAL, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_UNACKNOWLEDGED);
 
 			if (services_critical_active_unacknowledged_host_down > 0) {
@@ -2320,7 +2320,6 @@ void display_tac_overview(void) {
 		if (services_critical_acknowledged_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Acknowledged</a><br>\n", STATUS_CGI, SERVICE_CRITICAL, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_ACKNOWLEDGED);
 			problem_found = FALSE;
 
@@ -2343,7 +2342,6 @@ void display_tac_overview(void) {
 		if (services_critical_scheduled_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Scheduled Downtime</a><br>\n", STATUS_CGI, SERVICE_CRITICAL, HOST_DOWN | HOST_UNREACHABLE, SERVICE_SCHEDULED_DOWNTIME);
 			problem_found = FALSE;
 
@@ -2447,13 +2445,13 @@ void display_tac_overview(void) {
 		printf("</td></tr>\n");
 	}
 
-	if (services_warning_unacknowledged_host_down + services_warning_acknowledged_host_down + services_warning_disabled_host_down > 0) {
+	if (services_warning_unacknowledged_host_down + services_warning_acknowledged_host_down + services_warning_scheduled_host_down > 0) {
 
+		problem_found = FALSE;
 		printf("<tr><td width='100%%' class='serviceUnimportantProblem'><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d'>on Problem Hosts</a><br>\n", STATUS_CGI, SERVICE_WARNING, HOST_DOWN | HOST_UNREACHABLE);
 
 		if (services_warning_unacknowledged_host_down > 0) {
 
-			problem_found = FALSE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Unacknowledged</a><br>\n", STATUS_CGI, SERVICE_WARNING, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_UNACKNOWLEDGED);
 
 			if (services_warning_active_unacknowledged_host_down > 0) {
@@ -2475,7 +2473,6 @@ void display_tac_overview(void) {
 		if (services_warning_acknowledged_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Acknowledged</a><br>\n", STATUS_CGI, SERVICE_WARNING, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_ACKNOWLEDGED);
 			problem_found = FALSE;
 
@@ -2498,7 +2495,6 @@ void display_tac_overview(void) {
 		if (services_warning_scheduled_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Scheduled Downtime</a><br>\n", STATUS_CGI, SERVICE_WARNING, HOST_DOWN | HOST_UNREACHABLE, SERVICE_SCHEDULED_DOWNTIME);
 			problem_found = FALSE;
 
@@ -2602,13 +2598,13 @@ void display_tac_overview(void) {
 		printf("</td></tr>\n");
 	}
 
-	if (services_unknown_unacknowledged_host_down + services_unknown_acknowledged_host_down + services_unknown_disabled_host_down > 0) {
+	if (services_unknown_unacknowledged_host_down + services_unknown_acknowledged_host_down + services_unknown_scheduled_host_down > 0) {
 
+		problem_found = FALSE;
 		printf("<tr><td width='100%%' class='serviceUnimportantProblem'><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d'>on Problem Hosts</a><br>\n", STATUS_CGI, SERVICE_UNKNOWN, HOST_DOWN | HOST_UNREACHABLE);
 
 		if (services_unknown_unacknowledged_host_down > 0) {
 
-			problem_found = FALSE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Unacknowledged</a><br>\n", STATUS_CGI, SERVICE_UNKNOWN, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_UNACKNOWLEDGED);
 
 			if (services_unknown_active_unacknowledged_host_down > 0) {
@@ -2630,7 +2626,6 @@ void display_tac_overview(void) {
 		if (services_unknown_acknowledged_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Acknowledged</a><br>\n", STATUS_CGI, SERVICE_UNKNOWN, HOST_DOWN | HOST_UNREACHABLE, SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_STATE_ACKNOWLEDGED);
 			problem_found = FALSE;
 
@@ -2653,7 +2648,6 @@ void display_tac_overview(void) {
 		if (services_unknown_scheduled_host_down > 0) {
 
 			if (problem_found == TRUE) printf("<br>");
-			else problem_found = TRUE;
 			printf("<div class='tac_break'></div><a href='%s?host=all&amp;type=detail&amp;servicestatustypes=%d&amp;hoststatustypes=%d&amp;serviceprops=%d'>Scheduled Downtime</a><br>\n", STATUS_CGI, SERVICE_UNKNOWN, HOST_DOWN | HOST_UNREACHABLE, SERVICE_SCHEDULED_DOWNTIME);
 			problem_found = FALSE;
 
