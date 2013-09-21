@@ -77,6 +77,7 @@ CHANGES
 * core: add colon to illegal_object_name_chars #4227
 	** reason are on-demand macros not working in #4005
 
+* classic ui: added custom vars to json_output in extinfo.cgi #4390
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
 	** patterns to be excluded, comma seperated list
 * classic ui: make install-classicui-standalone does not install configs anymore #4664

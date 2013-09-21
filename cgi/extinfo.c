@@ -1311,6 +1311,7 @@ void show_host_info(void) {
 	time_t ts_state_duration;
 	time_t ts_state_age;
 	int duration_error = FALSE;
+	int json_start = TRUE;
 
 
 	/* get host info */
@@ -1475,6 +1476,19 @@ void show_host_info(void) {
 			printf("\"modified_attributes\": \"");
 			print_modified_attributes(JSON_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
 			printf("\",\n");
+
+			/* Custom Variables */
+			if (temp_host->custom_variables) {
+				printf("\"custom_variables\": [\n");
+				for (temp_customvar = temp_host->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+					if (check_exclude_customvar(temp_customvar) == FALSE) {
+						if (json_start == FALSE) printf(",");
+						printf(" { \"%s\": \"%s\" }\n", temp_customvar->variable_name, temp_customvar->variable_value);
+						json_start = FALSE;
+					}
+				}
+				printf("],\n");
+			}
 
 			printf("\"active_checks_enabled\": %s,\n", (temp_hoststatus->checks_enabled == TRUE) ? "true" : "false");
 			printf("\"passive_checks_enabled\": %s,\n", (temp_hoststatus->accept_passive_host_checks == TRUE) ? "true" : "false");
@@ -1756,6 +1770,7 @@ void show_service_info(void) {
 	int hours;
 	int minutes;
 	int seconds;
+	int json_start = TRUE;
 	time_t ts_state_duration = 0L;
 	time_t ts_state_age = 0L;
 	time_t current_time;
@@ -1921,6 +1936,19 @@ void show_service_info(void) {
 			printf("\"modified_attributes\": \"");
 			print_modified_attributes(JSON_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
 			printf("\",\n");
+
+			/* Custom Variables */
+			if (temp_service->custom_variables) {
+				printf("\"custom_variables\": [\n");
+				for (temp_customvar = temp_service->custom_variables; temp_customvar != NULL; temp_customvar = temp_customvar->next) {
+					if (check_exclude_customvar(temp_customvar) == FALSE) {
+						if (json_start == FALSE) printf(",");
+						printf(" { \"%s\": \"%s\" }\n", temp_customvar->variable_name, temp_customvar->variable_value);
+						json_start = FALSE;
+					}
+				}
+				printf("],\n");
+			}
 
 			printf("\"active_checks_enabled\": %s,\n", (temp_svcstatus->checks_enabled == TRUE) ? "true" : "false");
 			printf("\"passive_checks_enabled\": %s,\n", (temp_svcstatus->accept_passive_service_checks == TRUE) ? "true" : "false");
