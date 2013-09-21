@@ -212,6 +212,21 @@ config_output_options=2
 
 
 
+# DUMP CUSTOMVAR STATUS
+# Custom variables are dumped as required configuration on core startup,
+# but also during runtime (there may be modifications via external commands).
+# Since these updates happen on each host/service/contact status update without
+# any possibility to filter via data_processing_options, this is made a seperate
+# config option. In most scenarios, those updates are not required, therefore
+# the default option is disabled.
+#
+# Values: 0 = disabled (default)
+# 	  1 = enabled
+
+dump_customvar_status=0
+
+
+
 # DEBUG LEVEL
 # This option determines how much (if any) debugging information will
 # be written to the debug file.  OR values together to log multiple

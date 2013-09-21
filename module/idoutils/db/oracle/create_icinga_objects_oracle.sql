@@ -302,7 +302,7 @@ CREATE TABLE commenthistory (
 
 alter table commenthistory add constraint commenthist_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table commenthistory add constraint commenthist_uq  UNIQUE (instance_id,comment_time,internal_comment_id)
+alter table commenthistory add constraint commenthist_uq  UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 	using index tablespace &&IDXTBS;
 -- --------------------------------------------------------
 
@@ -330,7 +330,7 @@ CREATE TABLE comments (
 
 alter table comments add constraint comments_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table comments add constraint comments_uq  UNIQUE (instance_id,comment_time,internal_comment_id)
+alter table comments add constraint comments_uq  UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 	using index tablespace &&IDXTBS;
 	
 

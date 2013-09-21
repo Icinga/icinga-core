@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS icinga_commenthistory (
   deletion_time timestamp  default '0000-00-00 00:00:00',
   deletion_time_usec  int default 0,
   PRIMARY KEY  (commenthistory_id),
-  UNIQUE KEY instance_id (instance_id,comment_time,internal_comment_id)
+  UNIQUE KEY instance_id (instance_id,object_id,comment_time,internal_comment_id)
 ) ENGINE=InnoDB  COMMENT='Historical host and service comments';
 
 -- --------------------------------------------------------
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS icinga_comments (
   expires smallint default 0,
   expiration_time timestamp  default '0000-00-00 00:00:00',
   PRIMARY KEY  (comment_id),
-  UNIQUE KEY instance_id (instance_id,comment_time,internal_comment_id)
+  UNIQUE KEY instance_id (instance_id,object_id,comment_time,internal_comment_id)
 ) ENGINE=InnoDB  COMMENT='Usercomments on Icinga objects';
 
 -- --------------------------------------------------------
