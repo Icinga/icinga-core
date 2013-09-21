@@ -238,6 +238,7 @@ unsigned long service_properties = 0L;			/**< bitmask of service property filter
 int sort_type = SORT_NONE;				/**< defines sort order  */
 int sort_option = SORT_HOSTNAME;			/**< defines after which column is sorted */
 int sort_object = SERVICE_STATUS;			/**< defines if service or hoststatus is sorted */
+int hosts_need_to_be_sorted_again = FALSE;		/**< if we have hosts with no services and no sort option is given, then we need to sort the hosts alphabetically again */
 
 /** @name status data counters vars
     @{ **/
@@ -1180,6 +1181,8 @@ int main(void) {
 				continue;
 
 			add_status_data(HOST_STATUS, temp_hoststatus);
+
+			hosts_need_to_be_sorted_again = TRUE;
 		}
 	}
 
@@ -2752,8 +2755,8 @@ void show_host_detail(void) {
 	int json_start = TRUE;
 
 	/* sort status data if necessary */
-	if (sort_type != SORT_NONE && sort_object == HOST_STATUS) {
-		result = sort_status_data(HOST_STATUS, sort_type, sort_option);
+	if ((sort_type != SORT_NONE && sort_object == HOST_STATUS) || hosts_need_to_be_sorted_again == TRUE) {
+		result = sort_status_data(HOST_STATUS, (hosts_need_to_be_sorted_again == TRUE) ? SORT_ASCENDING : sort_type, sort_option);
 		if (result == ERROR)
 			use_sort = FALSE;
 		else
@@ -2795,7 +2798,7 @@ void show_host_detail(void) {
 		print_displayed_names(display_type);
 		printf("</div>\n");
 
-		if (use_sort == TRUE) {
+		if (use_sort == TRUE && hosts_need_to_be_sorted_again == FALSE) {
 			printf("<div align='center' class='statusSort'>Entries sorted by <b>");
 			if (sort_option == SORT_HOSTNAME)
 				printf("host name");
@@ -4659,9 +4662,9 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 		printf("<table border='0' width=100%% cellpadding='0' cellspacing='0'>\n");
 		printf("<tr class='status%s'>\n", status_bg_class);
 		if (!strcmp(temp_host->address6, temp_host->name))
-			printf("<td class='status%s' align='left'><a href='%s?host=%s&amp;style=detail' title='%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 		else
-			printf("<td class='status%s' align='left'><a href='%s?host=%s&amp;style=detail' title='%s,%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s,%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 
 		if (temp_host->icon_image != NULL) {
 			printf("<td class='status%s' width=5></td>\n", status_bg_class);
