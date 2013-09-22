@@ -86,3 +86,21 @@ ul {
 	text-decoration: none;
 	padding-left: 20px;
 }
+
+/* Styles for autocomplete */
+
+li.ui-autocomplete-category {
+        padding: 0 5px;
+        height: 26px;
+        color: #ef9f1b;
+        background: #ededed url(../images/menu_bar.gif) top left repeat-x;
+        border-bottom: 1px solid #fff;
+        line-height: 26px;
+        font-size: 11px;
+}
+
+li.ui-menu-item {
+        text-align: left;
+        font-size: 11px;
+        border-bottom: 1px solid white;
+}

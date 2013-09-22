@@ -8535,6 +8535,7 @@ perl subst $srcdir/contrib/eventhandlers/enable_notifications
 
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
+perl subst $srcdir/html/js/autocomplete.js
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."

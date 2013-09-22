@@ -1,0 +1,77 @@
+// Written by Kepi (kepi.cz)
+
+$(document).ready(function() {
+  'use strict';
+
+  // extension for category support in autocomplete result
+  $.widget("custom.catcomplete", $.ui.autocomplete, {
+    _renderMenu: function( ul, items ) {
+      var that = this;
+      var currentCategory = "";
+      $.each( items, function( index, item ) {
+        if (item.category != currentCategory) {
+          $('<li/>').addClass('ui-autocomplete-category').html(item.category).appendTo(ul);
+          currentCategory = item.category;
+        }
+        that._renderItemData( ul, item );
+      });
+    }
+  });
+
+  // extend renderItem so we can add custom class
+  $.extend( $.ui.autocomplete.prototype, {
+    _renderItem: function( ul, item ) {
+    return $( '<li class="status' + item.status + '">' )
+      .append( $( "<a>" ).text( item.label ) )
+      .appendTo( ul );
+    }
+  });
+
+  // autocomplete function
+  $("#autocomplete").catcomplete({
+    // select function is used to open url for selected item
+    select: function( event, ui ) { top.frames['main'].location.href = ui.item.url },
+    // get results from icinga API
+    source: function(request, response) {
+      $.ajax({
+        url: '@cgiurl@/status.cgi?style=hostservicedetail&jsonoutput=yes',
+        dataType: 'json',
+        data: {
+          search_string: request.term // parameter for API search
+        },
+        success: function(data) {
+          var output = [];
+
+          // prepare hosts data
+          if ( data.status.host_status ) {
+            data.status.host_status.forEach( function(item) {
+              output.push( {
+                category: 'Hosts:',
+                url: '@cgiurl@/extinfo.cgi?type=1&host=' + item.host_name,
+                label: item.host_display_name,
+                status: 'HOST' + item.status
+              });
+            });
+          }
+
+          // prepare services data
+          if ( data.status.service_status ) {
+            data.status.service_status.forEach( function(item) {
+              output.push( {
+                category: 'Host ' + item.host_name + ':',
+                url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_display_name,
+                label: item.service_display_name,
+                value: item.host_display_name + ' ' + item.service_display_name,
+                status: item.status
+              });
+            });
+          }
+
+          response(output);
+        }
+      })
+    }
+  })
+});
+
+// vim: syntax=javascript ts=2 sw=2 sts=2 sr et
