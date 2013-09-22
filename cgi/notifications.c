@@ -49,6 +49,7 @@ extern int 	daemon_check;
 extern int 	content_type;
 extern int	result_limit;
 extern int	show_partial_hostgroups;
+extern int	show_partial_servicegroups;
 /** @} */
 
 /** @name Internal vars
@@ -682,7 +683,7 @@ void display_notifications(void) {
 			return;
 		}
 		/* make sure the user is authorized to view this servicegroup */
-		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE) {
+		if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE) {
 			print_generic_error_message("It appears as though you do not have permission to view information for the service group you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
 			return;
 		}

@@ -31,6 +31,7 @@ ENHANCEMENTS
 * classic ui: allow to exclude custom variable name/value based on pattern #4390 - MF
 * classic ui: add make install-classicui-standalone-conf as seperated config installation #4664 - MF
 * classic ui: added performance data to extinfo json output #4728 - RB
+* classic ui: added option for partial servicegroups #2740 - RB
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 * idoutils: allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479 - MF

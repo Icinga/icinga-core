@@ -81,6 +81,7 @@ extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
 extern int show_partial_hostgroups;			/**< show any hosts in hostgroups the user is authorized for */
+extern int show_partial_servicegroups;
 
 extern int add_notif_num_hard;
 extern int add_notif_num_soft;
@@ -404,10 +405,13 @@ void show_servicegroup_overviews(void);
 
 /** @brief Display's a overview entry of a specific servicegroup
  *  @param [in] temp_servicegroup element to display
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether something got displayed or not
  *
  *  Checks if servicegroup members pass all filters and calls @ref show_servicegroup_hostgroup_member_overview to display every member.
 **/
-void show_servicegroup_overview(servicegroup *);
+int show_servicegroup_overview(servicegroup *);
 
 
 /** @brief Display's a summary of some/all servicegroups
@@ -447,10 +451,13 @@ void show_servicegroup_grids(void);
 
 /** @brief Display's a overview entry of a specific servicegroup
  *  @param [in] temp_servicegroup element to display
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether something got displayed or not
  *
  *  Checks if servicegroup members pass all filters and displays an entry of every member for host and servicestatus.
 **/
-void show_servicegroup_grid(servicegroup *);
+int show_servicegroup_grid(servicegroup *);
 
 
 /** @brief Display's a overview of some/all hostgroups
@@ -924,7 +931,7 @@ int main(void) {
 		if (show_all_servicegroups == FALSE) {
 			for (i = 0; req_servicegroups[i].entry != NULL; i++) {
 				temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
-				if (temp_servicegroup != NULL && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+				if (temp_servicegroup != NULL && ( show_partial_servicegroups == TRUE || is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE)) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
 						if (temp_hoststatus != NULL)
@@ -937,7 +944,7 @@ int main(void) {
 			}
 		} else {
 			for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-				if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+				if (show_partial_servicegroups == TRUE || is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
 						if (temp_hoststatus != NULL)
@@ -1003,31 +1010,55 @@ int main(void) {
 			continue;
 
 		/* find the service  */
-		temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-		/* if we couldn't find the service, go to the next service */
-		if (temp_service == NULL)
+		if ((temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description)) == NULL) {
+			/* see if we should display a servicegroup */
+			if (display_type == DISPLAY_SERVICEGROUPS &&temp_servicestatus->added & STATUS_BELONGS_TO_SG)
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
 			continue;
+		}
+
 
 		/* make sure user has rights to see this... */
-		if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+		if (is_authorized_for_service(temp_service, &current_authdata) == FALSE) {
+			/* see if we should display a servicegroup */
+			if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG)
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
 			continue;
+		}
 
 		user_is_authorized_for_statusdata = TRUE;
 
 		/* get the host status information */
-		temp_hoststatus = find_hoststatus(temp_service->host_name);
-
-		if (temp_hoststatus == NULL)
+		if ((temp_hoststatus = find_hoststatus(temp_service->host_name)) == NULL) {
+			/* see if we should display a hostgroup */
+			if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+				temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+			/* see if we should display a servicegroup */
+			} else if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG) {
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
+			}
 			continue;
+		}
 
 		/* check host properties filter */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+		if (passes_host_properties_filter(temp_hoststatus) == FALSE) {
+			/* see if we should display a hostgroup */
+			if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+				temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+			/* see if we should display a servicegroup */
+			} else if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG) {
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
+			}
 			continue;
+		}
 
 		/* check service properties filter */
-		if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+		if (passes_service_properties_filter(temp_servicestatus) == FALSE) {
+			/* see if we should display a servicegroup */
+			if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG)
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
 			continue;
+		}
 
 		/* find the host */
 		temp_host = find_host(temp_service->host_name);
@@ -1072,8 +1103,16 @@ int main(void) {
 		}
 
 		/* see if we should display services for hosts with this type of status */
-		if (!(host_status_types & temp_hoststatus->status))
+		if (!(host_status_types & temp_hoststatus->status)) {
+			/* see if we should display a hostgroup */
+			if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+				temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+			/* see if we should display a servicegroup */
+			} else if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG) {
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
+			}
 			continue;
+		}
 
 
 		if (!(temp_servicestatus->added & STATUS_COUNTED_UNFILTERED)) {
@@ -1092,8 +1131,15 @@ int main(void) {
 		}
 
 		/* see if we should display this type of service status */
-		if (!(service_status_types & temp_servicestatus->status))
+		if (!(service_status_types & temp_servicestatus->status)) {
+			/* see if we should display a servicegroup */
+			if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG)
+				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
 			continue;
+		}
+
+		if (display_type == DISPLAY_HOSTGROUPS)
+			temp_servicestatus->added |= STATUS_BELONGS_TO_HG;
 
 		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE)
 			add_status_data(HOST_STATUS, temp_hoststatus);
@@ -1122,21 +1168,42 @@ int main(void) {
 				continue;
 
 			/* find the host  */
-			temp_host = find_host(temp_hoststatus->host_name);
-
-			/* if we couldn't find the host, go to the next status entry */
-			if (temp_host == NULL)
+			if ((temp_host = find_host(temp_hoststatus->host_name)) == NULL ) {
+				/* see if we should display a hostgroup */
+				if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+				/* see if we should display a servicegroup */
+				} else if (display_type == DISPLAY_SERVICEGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_SG) {
+						temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_SG;
+				}
 				continue;
+			}
 
 			/* make sure user has rights to see this... */
-			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE) {
+				/* see if we should display a hostgroup */
+				if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+				/* see if we should display a servicegroup */
+				} else if (display_type == DISPLAY_SERVICEGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_SG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_SG;
+				}
 				continue;
+			}
 
 			user_is_authorized_for_statusdata = TRUE;
 
 			/* check host properties filter */
-			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+			if (passes_host_properties_filter(temp_hoststatus) == FALSE) {
+				/* see if we should display a hostgroup */
+				if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+				/* see if we should display a servicegroup */
+				} else if (display_type == DISPLAY_SERVICEGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_SG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_SG;
+				}
 				continue;
+			}
 
 			/* see if only one host should be shown */
 			if (display_type == DISPLAY_HOSTS && show_all_hosts == FALSE && search_string == NULL) {
@@ -1156,7 +1223,7 @@ int main(void) {
 				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
 
-				/* see if we should display a servicegroup */
+			/* see if we should display a servicegroup */
 			} else if (display_type == DISPLAY_SERVICEGROUPS) {
 				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 					continue;
@@ -1177,8 +1244,16 @@ int main(void) {
 			}
 
 			/* see if we should display services for hosts with this type of status */
-			if (!(host_status_types & temp_hoststatus->status))
+			if (!(host_status_types & temp_hoststatus->status)) {
+				/* see if we should display a hostgroup */
+				if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
+				/* see if we should display a servicegroup */
+				} else if (display_type == DISPLAY_SERVICEGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_SG) {
+					temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_SG;
+				}
 				continue;
+			}
 
 			add_status_data(HOST_STATUS, temp_hoststatus);
 
@@ -3185,10 +3260,13 @@ void show_host_detail(void) {
 
 /* show an overview of servicegroup(s)... */
 void show_servicegroup_overviews(void) {
+	servicesmember *temp_member = NULL;
+	servicestatus *temp_servicestatus = NULL;
 	servicegroup *temp_servicegroup = NULL;
 	int current_column;
 	int user_has_seen_something = FALSE;
 	int json_start = TRUE;
+	int partial_services = FALSE;
 	int i = 0, found = FALSE;
 
 	if (content_type == JSON_CONTENT) {
@@ -3217,21 +3295,45 @@ void show_servicegroup_overviews(void) {
 		}
 
 		/* make sure the user is authorized to view at least one host in this servicegroup */
-		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+		if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+			continue;
+
+		/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
+		if (show_partial_servicegroups == TRUE) {
+			for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
+
+				/* find servicestatus */
+				if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
+					continue;
+
+				/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+				if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
+					continue;
+
+				partial_services = TRUE;
+
+				break;
+			}
+		}
+
+		/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+		if (show_partial_servicegroups == TRUE && partial_services == FALSE)
 			continue;
 
 		if (content_type == JSON_CONTENT) {
 			/* always add a comma, except for the first line */
 			if (json_start == FALSE)
 				printf(",\n");
-			json_start = FALSE;
 		} else {
 			if (current_column == 1)
 				printf("<tr>\n");
 			printf("<td valign='top' align='center'>\n");
 		}
 
-		show_servicegroup_overview(temp_servicegroup);
+		if (show_servicegroup_overview(temp_servicegroup) == FALSE)
+			continue;
+
+		json_start = FALSE;
 
 		user_has_seen_something = TRUE;
 
@@ -3277,20 +3379,40 @@ void show_servicegroup_overviews(void) {
 
 
 /* shows an overview of a specific servicegroup... */
-void show_servicegroup_overview(servicegroup *temp_servicegroup) {
+int show_servicegroup_overview(servicegroup *temp_servicegroup) {
 	servicesmember *temp_member;
-	servicesmember *temp_member2;
-	host *temp_host;
-	host *last_host;
+	hoststatus *last_hoststatus = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
 	int odd = 0;
 	int json_start = TRUE;
-	int service_found = FALSE;
+	int partial_services = FALSE;
 
-	/* make sure the user is authorized to view this servicegroup */
-	if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
-		return;
+	/* make sure the user is authorized to view at least one service in this servicegroup */
+	if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+		return FALSE;
+
+	/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
+	if (show_partial_servicegroups == TRUE) {
+		for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
+
+			/* find servicestatus */
+			if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
+				continue;
+
+			/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+			if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
+				continue;
+
+			partial_services = TRUE;
+
+			break;
+		}
+	}
+
+	/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+	if (show_partial_servicegroups == TRUE && partial_services == FALSE)
+		return FALSE;
 
 	/* print json format */
 	if (content_type == JSON_CONTENT) {
@@ -3310,63 +3432,30 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 	}
 
 	/* find all hosts that have services that are members of the servicegroup */
-	last_host = NULL;
 	for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		/* find the host */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
+		/* find the host status */
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
+			continue;
+
+		/* check if this hoststatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 			continue;
 
 		/* skip this if it isn't a new host... */
-		if (temp_host == last_host)
+		if (temp_hoststatus == last_hoststatus)
 			continue;
 
-		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
+		/* get the status of the service */
+		if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 			continue;
 
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
+		/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 			continue;
 
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-			continue;
-
-		/* check if there are any services to display */
-		if (service_status_types != all_service_status_types) {
-			service_found = FALSE;
-
-			/* check members if there is anything to display for this host */
-			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
-
-				if (strcmp(temp_member2->host_name, temp_host->name))
-					break;
-
-				/* get the status of the service */
-				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
-
-				/* make sure we only display services of the specified status levels */
-				if (!(service_status_types & temp_servicestatus->status))
-					continue;
-
-				/* make sure we only display services that have the desired properties */
-				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-					continue;
-
-				service_found = TRUE;
-				break;
-			}
-			if (service_found == FALSE)
-				continue;
-		}
-
-		if (odd)
-			odd = 0;
-		else
-			odd = 1;
+		if (odd) odd = 0;
+		else     odd = 1;
 
 		if (content_type == JSON_CONTENT) {
 			if (json_start == FALSE)
@@ -3376,7 +3465,7 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 
 		show_servicegroup_hostgroup_member_overview(temp_hoststatus, odd, temp_servicegroup);
 
-		last_host = temp_host;
+		last_hoststatus = temp_hoststatus;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -3384,7 +3473,7 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 	else
 		printf("</table>\n");
 
-	return;
+	return TRUE;
 }
 
 
@@ -3397,6 +3486,7 @@ void show_servicegroup_summaries(void) {
 	int user_has_seen_something = FALSE;
 	int odd = 0;
 	int json_start = TRUE;
+	int partial_services = FALSE;
 	int i = 0, found = FALSE;
 
 	if (content_type == JSON_CONTENT) {
@@ -3424,43 +3514,53 @@ void show_servicegroup_summaries(void) {
 				continue;
 		}
 
-		/* make sure the user is authorized to view at least one host in this servicegroup */
-		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+		/* make sure the user is authorized to view at least one service in this servicegroup */
+		if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+			continue;
+
+		/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
+		if (show_partial_servicegroups == TRUE) {
+			for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
+
+				/* find servicestatus */
+				if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
+					continue;
+
+				/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+				if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
+					continue;
+
+				partial_services = TRUE;
+
+				break;
+			}
+		}
+
+		/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+		if (show_partial_servicegroups == TRUE && partial_services == FALSE)
 			continue;
 
 		user_has_seen_something = TRUE;
 
-		/* find all the hosts that belong to the servicegroup */
+		/* check if we have to display anything */
 		if (host_status_types != all_host_status_types || service_status_types != all_service_status_types) {
 			found = FALSE;
 			for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 				if (host_status_types != all_host_status_types) {
 					/* find the host status */
-					temp_hoststatus = find_hoststatus(temp_member->host_name);
-					if (temp_hoststatus == NULL)
+					if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 						continue;
 
-					/* make sure we will only be displaying hosts of the specified status levels */
-					if (!(host_status_types & temp_hoststatus->status))
-						continue;
-
-					/* make sure we will only be displaying hosts that have the desired properties */
-					if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+					if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 						continue;
 				}
 				if (service_status_types != all_service_status_types) {
 					/* find the service status */
-					temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description);
-					if (temp_servicestatus == NULL)
+					if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 						continue;
 
-					/* make sure we only display services of the specified status levels */
-					if (!(service_status_types & temp_servicestatus->status))
-						continue;
-
-					/* make sure we only display services that have the desired properties */
-					if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 						continue;
 				}
 
@@ -3560,33 +3660,22 @@ void show_servicegroup_host_totals_summary(servicegroup *temp_servicegroup) {
 	int hosts_unreachable_disabled = 0;
 	int hosts_unreachable_unacknowledged = 0;
 	hoststatus *temp_hoststatus = NULL;
-	host *temp_host = NULL;
-	host *last_host = NULL;
+	hoststatus *last_hoststatus = NULL;
 	int problem = FALSE;
 
 	/* find all the hosts that belong to the servicegroup */
 	for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		/* find the host... */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
+		/* find the host status */
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
 		/* skip this if it isn't a new host... */
-		if (temp_host == last_host)
+		if (temp_hoststatus == last_hoststatus)
 			continue;
 
-		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
-			continue;
-
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+		/* check if this hoststatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 			continue;
 
 		problem = TRUE;
@@ -3631,7 +3720,7 @@ void show_servicegroup_host_totals_summary(servicegroup *temp_servicegroup) {
 		} else
 			hosts_pending++;
 
-		last_host = temp_host;
+		last_hoststatus = temp_hoststatus;
 	}
 
 	if (content_type == JSON_CONTENT) {
@@ -3758,34 +3847,21 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 	for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 		/* find the service status */
-		temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description);
-		if (temp_servicestatus == NULL)
+		if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 			continue;
 
 		/* skip this if it isn't a new service... */
 		if (temp_servicestatus == last_servicestatus)
 			continue;
 
+		/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
+			continue;
+
 		/* find the status of the associated host */
-		temp_hoststatus = find_hoststatus(temp_servicestatus->host_name);
-		if (temp_hoststatus == NULL)
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-			continue;
-
-		/* make sure we only display services of the specified status levels */
-		if (!(service_status_types & temp_servicestatus->status))
-			continue;
-
-		/* make sure we only display services that have the desired properties */
-		if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-			continue;
 
 		problem = TRUE;
 
@@ -4024,19 +4100,21 @@ void show_servicegroup_grids(void) {
 				continue;
 		}
 
-		/* make sure the user is authorized to view at least one host in this servicegroup */
-		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+		/* make sure the user is authorized to view at least one service in this servicegroup */
+		if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
 			continue;
 
 		if (content_type == JSON_CONTENT) {
 			/* always add a comma, except for the first line */
 			if (json_start == FALSE)
 				printf(",\n");
-			json_start = FALSE;
 		}
 
 		/* show grid for this servicegroup */
-		show_servicegroup_grid(temp_servicegroup);
+		if (show_servicegroup_grid(temp_servicegroup) == FALSE)
+			continue;
+
+		json_start = FALSE;
 
 		user_has_seen_something = TRUE;
 	}
@@ -4061,7 +4139,7 @@ void show_servicegroup_grids(void) {
 
 
 /* displays status grid for a specific servicegroup */
-void show_servicegroup_grid(servicegroup *temp_servicegroup) {
+int show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	char *status_bg_class = "";
 	char *status = "";
 	char *host_status_class = "";
@@ -4070,15 +4148,41 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	servicesmember *temp_member;
 	servicesmember *temp_member2;
 	host *temp_host;
-	host *last_host;
+	hoststatus *last_hoststatus = NULL;
 	service *temp_service;
-	hoststatus *temp_hoststatus;
+	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus;
 	int odd = 0;
 	int current_item;
 	int json_start = TRUE;
 	int json_start2 = TRUE;
-	int service_found = FALSE;
+	int partial_services = FALSE;
+
+	/* make sure the user is authorized to view at least one service in this servicegroup */
+	if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+		return FALSE;
+
+	/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
+	if (show_partial_servicegroups == TRUE) {
+		for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
+
+			/* find servicestatus */
+			if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
+				continue;
+
+			/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+			if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
+				continue;
+
+			partial_services = TRUE;
+
+			break;
+		}
+	}
+
+	/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+	if (show_partial_servicegroups == TRUE && partial_services == FALSE)
+		return FALSE;
 
 	if (content_type == JSON_CONTENT) {
 		printf("{ \"servicegroup_name\": \"%s\",\n", json_encode(temp_servicegroup->group_name));
@@ -4092,61 +4196,30 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	}
 
 	/* find all hosts that have services that are members of the servicegroup */
-	last_host = NULL;
 	for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		/* find the host... */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
+		/* find the host status */
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
-		/* only show if user is authorized to view this host */
-		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+		/* skip this if it isn't a new host... */
+		if (temp_hoststatus == last_hoststatus)
+			continue;
+
+		/* check if this hoststatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
+			continue;
+
+		/* get the status of the service */
+		if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
+			continue;
+
+		/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+		if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 			continue;
 
 		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
-			continue;
-
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-			continue;
-
-		/* check if there are any services to display */
-		if (service_status_types != all_service_status_types) {
-			service_found = FALSE;
-
-			/* check members if there is anything to display for this host */
-			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
-
-				if (strcmp(temp_member2->host_name, temp_host->name))
-					break;
-
-				/* get the status of the service */
-				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
-
-				/* make sure we only display services of the specified status levels */
-				if (!(service_status_types & temp_servicestatus->status))
-					continue;
-
-				/* make sure we only display services that have the desired properties */
-				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-					continue;
-
-				service_found = TRUE;
-				break;
-			}
-			if (service_found == FALSE)
-				continue;
-		}
-
-		/* skip this if it isn't a new host... */
-		if (temp_host == last_host)
+		if ((temp_host = find_host(temp_member->host_name)) == NULL)
 			continue;
 
 		if (odd == 1) {
@@ -4231,14 +4304,11 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 				break;
 
 			/* get the status of the service */
-			temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
-
-			/* make sure we only display services of the specified status levels */
-			if (!(service_status_types & temp_servicestatus->status))
+			if ((temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description)) == NULL)
 				continue;
 
-			/* make sure we only display services that have the desired properties */
-			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+			/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+			if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 				continue;
 
 			if (temp_servicestatus == NULL)
@@ -4330,7 +4400,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 			printf("</tr>\n");
 		}
 
-		last_host = temp_host;
+		last_hoststatus = temp_hoststatus;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -4338,7 +4408,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	else
 		printf("</table>\n");
 
-	return;
+	return TRUE;
 }
 
 
@@ -4346,7 +4416,6 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 void show_hostgroup_overviews(void) {
 	hostgroup *temp_hostgroup = NULL;
 	hostsmember *temp_member = NULL;
-	host *temp_host = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	int current_column;
 	int user_has_seen_something = FALSE;
@@ -4386,31 +4455,13 @@ void show_hostgroup_overviews(void) {
 		if (show_partial_hostgroups == TRUE) {
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-				/* find the host... */
-				temp_host = find_host(temp_member->host_name);
-				if (temp_host == NULL)
-					continue;
-
-				/* only shown in partial hostgroups if user is authorized to view this host */
-				if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-					continue;
-
 				/* find the host status */
-				temp_hoststatus = find_hoststatus(temp_host->name);
-				if (temp_hoststatus == NULL)
+				if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 					continue;
 
-				/* make sure we will only be displaying hosts of the specified status levels */
-				if (!(host_status_types & temp_hoststatus->status))
+				/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
-
-				/* make sure we will only be displaying hosts that have the desired properties */
-				if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-					continue;
-
-				partial_hosts = TRUE;
-
-				break;
 			}
 		}
 
@@ -4422,7 +4473,6 @@ void show_hostgroup_overviews(void) {
 			/* always add a comma, except for the first line */
 			if (json_start == FALSE)
 				printf(",\n");
-			json_start = FALSE;
 		} else {
 			if (current_column == 1)
 				printf("<tr>\n");
@@ -4430,6 +4480,8 @@ void show_hostgroup_overviews(void) {
 
 		if (show_hostgroup_overview(temp_hostgroup) == FALSE)
 			continue;
+
+		json_start = FALSE;
 
 		user_has_seen_something = TRUE;
 
@@ -4474,44 +4526,27 @@ void show_hostgroup_overviews(void) {
 
 
 /* shows an overview of a specific hostgroup... */
-int show_hostgroup_overview(hostgroup *hstgrp) {
+int show_hostgroup_overview(hostgroup *temp_hostgroup) {
 	hostsmember *temp_member = NULL;
-	host *temp_host = NULL;
 	hoststatus *temp_hoststatus = NULL;
-	statusdata *temp_status = NULL;
 	int odd = 0;
 	int json_start = TRUE;
 	int partial_hosts = FALSE;
-	int service_found = FALSE;
 
 	/* make sure the user is authorized to view this hostgroup */
-	if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(hstgrp, &current_authdata) == FALSE)
+	if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE)
 		return FALSE;
 
 	/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
 	if (show_partial_hostgroups == TRUE) {
-		for (temp_member = hstgrp->members; temp_member != NULL; temp_member = temp_member->next) {
-
-			/* find the host... */
-			temp_host = find_host(temp_member->host_name);
-			if (temp_host == NULL)
-				continue;
-
-			/* only shown in partial hostgroups if user is authorized to view this host */
-			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-				continue;
+		for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 			/* find the host status */
-			temp_hoststatus = find_hoststatus(temp_host->name);
-			if (temp_hoststatus == NULL)
+			if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 				continue;
 
-			/* make sure we will only be displaying hosts of the specified status levels */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
-
-			/* make sure we will only be displaying hosts that have the desired properties */
-			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+			/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+			if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 				continue;
 
 			partial_hosts = TRUE;
@@ -4526,13 +4561,13 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 
 	/* print json format */
 	if (content_type == JSON_CONTENT) {
-		printf("{ \"hostgroup_name\": \"%s\",\n", json_encode(hstgrp->group_name));
+		printf("{ \"hostgroup_name\": \"%s\",\n", json_encode(temp_hostgroup->group_name));
 		printf("\"members\": [ \n");
 	} else {
 		printf("<td valign='top' align='center'>\n");
 		printf("<div class='status'>\n");
-		printf("<a href='%s?hostgroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(hstgrp->group_name), html_encode(hstgrp->alias, TRUE));
-		printf(" (<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(hstgrp->group_name), html_encode(hstgrp->group_name, TRUE));
+		printf("<a href='%s?hostgroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->alias, TRUE));
+		printf(" (<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
 		printf("</div>\n");
 
 		printf("<table border='1' class='status' align='center'>\n");
@@ -4543,54 +4578,18 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 	}
 
 	/* find all the hosts that belong to the hostgroup */
-	for (temp_member = hstgrp->members; temp_member != NULL; temp_member = temp_member->next) {
-
-		/* find the host... */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
-			continue;
-
-		/* only show in partial hostgroups if user is authorized to view this host */
-		if (show_partial_hostgroups == TRUE && is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-			continue;
+	for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
+		/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 			continue;
 
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-			continue;
-
-		/* check if there are any services to display */
-		if (service_status_types != all_service_status_types) {
-			service_found = FALSE;
-
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
-
-				if (temp_status->type != SERVICE_STATUS)
-					continue;
-
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
-			}
-
-			if (service_found == FALSE)
-				continue;
-		}
-
-		if (odd)
-			odd = 0;
-		else
-			odd = 1;
+		if (odd) odd = 0;
+		else     odd = 1;
 
 		if (content_type == JSON_CONTENT) {
 			if (json_start == FALSE)
@@ -4620,9 +4619,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 	host *temp_host = NULL;
 	char *processed_string = NULL;
 
-	temp_host = find_host(hststatus->host_name);
-
-	if (temp_host == NULL)
+	if ((temp_host = find_host(hststatus->host_name)) == NULL )
 		return;
 
 	/* grab macros */
@@ -4725,6 +4722,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 	return;
 }
 
+
 /* shows services to a host status overview... */
 void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, void *data) {
 	int total_ok = 0;
@@ -4732,7 +4730,8 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 	int total_unknown = 0;
 	int total_critical = 0;
 	int total_pending = 0;
-	servicestatus *temp_servicestatus;
+	servicestatus *temp_servicestatus = NULL;
+	servicestatus *last_servicestatus = NULL;
 	statusdata *temp_status = NULL;
 	servicegroup *temp_servicegroup = NULL;
 	servicesmember *temp_member = NULL;
@@ -4747,15 +4746,16 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 
 			if (!strcmp(host_name, temp_member->host_name)) {
 
+				/* find service status */
 				if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 					continue;
 
-				/* make sure we only display services of the specified status levels */
-				if (!(service_status_types & temp_servicestatus->status))
+				/* skip this if it isn't a new service... */
+				if (temp_servicestatus == last_servicestatus)
 					continue;
 
-				/* make sure we only display services that have the desired properties */
-				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+				/* check if this servicestatus belongs to any servicegroup and has passed through all filters */
+				if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 					continue;
 
 				if (temp_servicestatus->status == SERVICE_CRITICAL)
@@ -4770,6 +4770,8 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 					total_pending++;
 				else
 					total_ok++;
+
+				last_servicestatus = temp_servicestatus;
 			}
 		}
 	} else {
@@ -4780,6 +4782,14 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 				continue;
 
 			if (!strcmp(host_name, temp_status->host_name)) {
+
+				/* find service status */
+				if ((temp_servicestatus = find_servicestatus(temp_status->host_name, temp_status->svc_description)) == NULL)
+					continue;
+
+				/* check if this servicestatus belongs to any hostgroup and has passed through all filters */
+				if (!(temp_servicestatus->added & STATUS_BELONGS_TO_HG))
+					continue;
 
 				service_found = TRUE;
 
@@ -4845,9 +4855,7 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 void show_hostgroup_summaries(void) {
 	hostgroup *temp_hostgroup = NULL;
 	hostsmember *temp_member = NULL;
-	host *temp_host = NULL;
 	hoststatus *temp_hoststatus = NULL;
-	statusdata *temp_status = NULL;
 	int user_has_seen_something = FALSE;
 	int odd = 0;
 	int json_start = TRUE;
@@ -4885,48 +4893,16 @@ void show_hostgroup_summaries(void) {
 			continue;
 
 		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
-		/* or if we have to filter for service status types*/
-		if (show_partial_hostgroups == TRUE || service_status_types != all_service_status_types) {
-			found = FALSE;
+		if (show_partial_hostgroups == TRUE) {
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-				/* find the host... */
-				temp_host = find_host(temp_member->host_name);
-				if (temp_host == NULL)
-					continue;
-
-				/* only shown in partial hostgroups if user is authorized to view this host */
-				if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-					continue;
-
 				/* find the host status */
-				temp_hoststatus = find_hoststatus(temp_host->name);
-				if (temp_hoststatus == NULL)
+				if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 					continue;
 
-				/* make sure we will only be displaying hosts of the specified status levels */
-				if (!(host_status_types & temp_hoststatus->status))
+				/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
-
-				/* make sure we will only be displaying hosts that have the desired properties */
-				if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-					continue;
-
-				/* check if there are any services to display */
-				if (service_status_types != all_service_status_types && found == FALSE) {
-
-					/* check all services... */
-					for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
-
-						if (temp_status->type != SERVICE_STATUS)
-							continue;
-
-						if (!strcmp(temp_host->name, temp_status->host_name)) {
-							found = TRUE;
-							break;
-						}
-					}
-				}
 
 				partial_hosts = TRUE;
 
@@ -4940,14 +4916,8 @@ void show_hostgroup_summaries(void) {
 
 		user_has_seen_something = TRUE;
 
-		/* if there are no services to display try next hostgroup */
-		if (service_status_types != all_service_status_types && found == FALSE)
-			continue;
-
-		if (odd == 0)
-			odd = 1;
-		else
-			odd = 0;
+		if (odd) odd = 0;
+		else     odd = 1;
 
 		if (content_type == JSON_CONTENT) {
 			/* always add a comma, except for the first line */
@@ -5032,32 +5002,17 @@ void show_hostgroup_host_totals_summary(hostgroup *temp_hostgroup) {
 	int hosts_unreachable_disabled = 0;
 	int hosts_unreachable_unacknowledged = 0;
 	hoststatus *temp_hoststatus;
-	host *temp_host;
 	int problem = FALSE;
 
 	/* find all the hosts that belong to the hostgroup */
 	for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		/* find the host... */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
-			continue;
-
-		/* only shown in partial hostgroups if user is authorized to view this host */
-		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-			continue;
-
 		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+		/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 			continue;
 
 		problem = TRUE;
@@ -5229,30 +5184,20 @@ void show_hostgroup_service_totals_summary(hostgroup *temp_hostgroup) {
 		if (temp_status->type != SERVICE_STATUS)
 			continue;
 
-		/* find the host this service is associated with */
-		temp_host = find_host(temp_status->host_name);
-		if (temp_host == NULL)
+		/* find the host status */
+		if ((temp_hoststatus = find_hoststatus(temp_status->host_name)) == NULL)
 			continue;
 
-		/* only shown if user is authorized to view this host */
-		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+		/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
+			continue;
+
+		/* find the host this service is associated with */
+		if ((temp_host = find_host(temp_status->host_name)) == NULL)
 			continue;
 
 		/* see if this service is associated with a host in the specified hostgroup */
 		if (is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
-			continue;
-
-		/* find the status of the associated host */
-		temp_hoststatus = find_hoststatus(temp_status->host_name);
-		if (temp_hoststatus == NULL)
-			continue;
-
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
 			continue;
 
 		problem = TRUE;
@@ -5538,6 +5483,7 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 	host *temp_host;
 	service *temp_service;
 	hoststatus *temp_hoststatus;
+	servicestatus *temp_servicestatus = NULL;
 	statusdata *temp_status = NULL;
 	char *processed_string = NULL;
 	int odd = 0;
@@ -5555,26 +5501,12 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 	if (show_partial_hostgroups == TRUE) {
 		for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-			/* find the host... */
-			temp_host = find_host(temp_member->host_name);
-			if (temp_host == NULL)
-				continue;
-
-			/* only shown in partial hostgroups if user is authorized to view this host */
-			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-				continue;
-
 			/* find the host status */
-			temp_hoststatus = find_hoststatus(temp_host->name);
-			if (temp_hoststatus == NULL)
+			if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 				continue;
 
-			/* make sure we will only be displaying hosts of the specified status levels */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
-
-			/* make sure we will only be displaying hosts that have the desired properties */
-			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+			/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+			if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 				continue;
 
 			partial_hosts = TRUE;
@@ -5601,47 +5533,17 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 	/* find all the hosts that belong to the hostgroup */
 	for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		/* find the host... */
-		temp_host = find_host(temp_member->host_name);
-		if (temp_host == NULL)
-			continue;
-
-		/* only show in partial hostgroups if user is authorized to view this host */
-		if (show_partial_hostgroups == TRUE && is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-			continue;
-
 		/* find the host status */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (temp_hoststatus == NULL)
+		if ((temp_hoststatus = find_hoststatus(temp_member->host_name)) == NULL)
 			continue;
 
-		/* make sure we only display hosts of the specified status levels */
-		if (!(host_status_types & temp_hoststatus->status))
+		/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
+		if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 			continue;
 
-		/* make sure we only display hosts that have the desired properties */
-		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+		/* find the host... */
+		if ((temp_host = find_host(temp_member->host_name)) == NULL)
 			continue;
-
-		/* check if there is any service to display */
-		if (service_status_types != all_service_status_types) {
-			service_found = FALSE;
-
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
-
-				if (temp_status->type != SERVICE_STATUS)
-					continue;
-
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
-			}
-
-			if (service_found == FALSE)
-				continue;
-		}
 
 		/* grab macros */
 		grab_host_macros_r(mac, temp_host);
@@ -5730,6 +5632,14 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 				continue;
 
 			if (!strcmp(temp_host->name, temp_status->host_name)) {
+
+				/* find servicestatus */
+				if ((temp_servicestatus = find_servicestatus(temp_status->host_name, temp_status->svc_description)) == NULL)
+					continue;
+
+				/* check if this servicetatus belongs to any hostgroup and has passed through all filters */
+				if (!(temp_servicestatus->added & STATUS_BELONGS_TO_HG))
+					continue;
 
 				service_found = TRUE;
 
@@ -6839,6 +6749,8 @@ void print_displayed_names(int style) {
 	} else if (style == DISPLAY_SERVICEGROUPS) {
 		if (show_all_servicegroups == TRUE)
 			printf("All Service Groups");
+			if (show_partial_servicegroups == TRUE)
+				printf("<br>(Partial Servicegroups Enabled)");
 		else {
 			if (num_req_servicegroups == 1)
 				printf("Service Group '%s'", html_encode(req_servicegroups[0].entry, TRUE));

@@ -417,16 +417,29 @@ show_all_services_host_is_authorized_for=1
 # is in use or not. However for privacy reasons, hostgroups that are only showing
 # a partial listing are not specifically indicated.
 # 
-# COMPATIBILITY NOTICE: As with any tweak made to the output of the CGIs, enabling
-# this option may adversely impact third party programs that rely on 'screen scraping'
-# to get their information. If you encounter such a problem, turn this option back
-# to its default of off and encourage the developer(s) of the program to use JSON
-# for their data needs instead.
-# 
 # Values: 0 - disabled, user only sees full hostgroups (default)
 #         1 - enabled, user sees partial hostgroups
 
 show_partial_hostgroups=0
+
+
+
+# SHOW PARTIAL SERVICEROUPS
+# By default (meaning the directive is not present or disabled), a user
+# only sees a servicegroup and the hosts and services within it if they are an
+# authorised contact for all of the hosts and services of the group.
+# The behaviour can be changed using the directive show_partial_servicegroups=1.
+# When enabled, the serviceroups overview will show a partial listing of hosts
+# and services that the user is an authorised contact for within each servicegroup.
+# It will also add the string "(Partial Servicegroups Enabled)" to the top of
+# the Servicegroup Overview to help prevent any confusion over whether the option
+# is in use or not. However for privacy reasons, servicegroups that are only showing
+# a partial listing are not specifically indicated.
+#
+# Values: 0 - disabled, user only sees full servicegroups (default)
+#         1 - enabled, user sees partial servicegroups
+
+show_partial_servicegroups=0
 
 
 
