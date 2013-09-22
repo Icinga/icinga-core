@@ -7,7 +7,7 @@ use strict;
 use Test::More;
 use Icinga::Test qw ( run_cgi run_cgi_json );
 
-plan tests => 36;
+plan tests => 37;
 
 my $config = "etc/cgi-json-check.cfg";
 my $test_passed = "OK: Test passed.";
@@ -45,9 +45,8 @@ like( $output, "/".$test_passed."/", $cgi_file." get all downtimes");
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=0', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." get process info");
 
-# no json output available at the moment
-#$output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=4', $cgi_file);
-#like( $output, "/".$test_passed."/", $cgi_file." get performance info");
+$output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=4', $cgi_file);
+like( $output, "/".$test_passed."/", $cgi_file." get performance info");
 
 $output = run_cgi_json($config, 'icingaadmin', 'GET', 'type=7', $cgi_file);
 like( $output, "/".$test_passed."/", $cgi_file." get scheduling queue");

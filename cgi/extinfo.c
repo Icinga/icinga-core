@@ -775,9 +775,7 @@ int main(void) {
 				show_downtime(SERVICE_DOWNTIME);
 			}
 		}
-
-	// no json output for performance data available at the moment #FIXME PLEASE
-	} else if (display_type == DISPLAY_PERFORMANCE && content_type == HTML_CONTENT)
+	} else if (display_type == DISPLAY_PERFORMANCE && (content_type == HTML_CONTENT || content_type == JSON_CONTENT))
 		show_performance_data();
 	else if (display_type == DISPLAY_HOSTGROUP_INFO)
 		show_hostgroup_info();
@@ -2593,6 +2591,130 @@ void show_performance_data(void) {
 		}
 	}
 
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"performance_data\": {\n");
+
+		printf("\"active_service_checks_1min_num\": %d,\n", active_service_checks_1min);
+		printf("\"active_service_checks_1min_percent\": \"%.1f%%\",\n", (double)(((double)active_service_checks_1min * 100.0) / (double)total_active_service_checks));
+		printf("\"active_service_checks_15min_num\": %d,\n", active_service_checks_15min);
+		printf("\"active_service_checks_15min_percent\": \"%.1f%%\",\n", (double)(((double)active_service_checks_15min * 100.0) / (double)total_active_service_checks));
+		printf("\"active_service_checks_1hour_num\": %d,\n", active_service_checks_1hour);
+		printf("\"active_service_checks_1hour_percent\": \"%.1f%%\",\n", (double)(((double)active_service_checks_1hour * 100.0) / (double)total_active_service_checks));
+		printf("\"active_service_checks_since_start_num\": %d,\n", active_service_checks_start);
+		printf("\"active_service_checks_since_start_percent\": \"%.1f%%\",\n", (double)(((double)active_service_checks_start * 100.0) / (double)total_active_service_checks));
+
+		printf("\"active_service_min_execution_time\": \"%.2f sec\",\n", min_service_execution_time);
+		printf("\"active_service_max_execution_time\": \"%.2f sec\",\n", max_service_execution_time);
+		printf("\"active_service_average_execution_time\": \"%.3f sec\",\n", (double)((double)total_service_execution_time / (double)total_active_service_checks));
+
+		printf("\"active_service_min_latency\": \"%.2f sec\",\n", min_service_latency);
+		printf("\"active_service_max_latency\": \"%.2f sec\",\n", max_service_latency);
+		printf("\"active_service_average_latency\": \"%.3f sec\",\n", (double)((double)total_service_latency / (double)total_active_service_checks));
+
+		printf("\"active_service_min_percent_change\": \"%.2f sec\",\n", min_service_percent_change_a);
+		printf("\"active_service_max_percent_change\": \"%.2f sec\",\n", max_service_percent_change_a);
+		printf("\"active_service_average_percent_change\": \"%.2f sec\",\n", (double)((double)total_service_percent_change_a / (double)total_active_service_checks));
+
+		printf("\"passive_service_checks_1min_num\": %d,\n", passive_service_checks_1min);
+		printf("\"passive_service_checks_1min_percent\": \"%.1f%%\",\n", (double)(((double)passive_service_checks_1min * 100.0) / (double)total_passive_service_checks));
+		printf("\"passive_service_checks_15min_num\": %d,\n", passive_service_checks_15min);
+		printf("\"passive_service_checks_15min_percent\": \"%.1f%%\",\n", (double)(((double)passive_service_checks_15min * 100.0) / (double)total_passive_service_checks));
+		printf("\"passive_service_checks_1hour_num\": %d,\n", passive_service_checks_1hour);
+		printf("\"passive_service_checks_1hour_percent\": \"%.1f%%\",\n", (double)(((double)passive_service_checks_1hour * 100.0) / (double)total_passive_service_checks));
+		printf("\"passive_service_checks_since_start_num\": %d,\n", passive_service_checks_start);
+		printf("\"passive_service_checks_since_start_percent\": \"%.1f%%\",\n", (double)(((double)passive_service_checks_start * 100.0) / (double)total_passive_service_checks));
+
+		printf("\"passive_service_min_percent_change\": \"%.2f sec\",\n", min_service_percent_change_b);
+		printf("\"passive_service_max_percent_change\": \"%.2f sec\",\n", max_service_percent_change_b);
+		printf("\"passive_service_average_percent_change\": \"%.2f sec\",\n", (double)((double)total_service_percent_change_b / (double)total_passive_service_checks));
+
+		printf("\"active_host_checks_1min_num\": %d,\n", active_host_checks_1min);
+		printf("\"active_host_checks_1min_percent\": \"%.1f%%\",\n", (double)(((double)active_host_checks_1min * 100.0) / (double)total_active_host_checks));
+		printf("\"active_host_checks_15min_num\": %d,\n", active_host_checks_15min);
+		printf("\"active_host_checks_15min_percent\": \"%.1f%%\",\n", (double)(((double)active_host_checks_15min * 100.0) / (double)total_active_host_checks));
+		printf("\"active_host_checks_1hour_num\": %d,\n", active_host_checks_1hour);
+		printf("\"active_host_checks_1hour_percent\": \"%.1f%%\",\n", (double)(((double)active_host_checks_1hour * 100.0) / (double)total_active_host_checks));
+		printf("\"active_host_checks_since_start_num\": %d,\n", active_host_checks_start);
+		printf("\"active_host_checks_since_start_percent\": \"%.1f%%\",\n", (double)(((double)active_host_checks_start * 100.0) / (double)total_active_host_checks));
+
+		printf("\"active_host_min_execution_time\": \"%.2f sec\",\n", min_host_execution_time);
+		printf("\"active_host_max_execution_time\": \"%.2f sec\",\n", max_host_execution_time);
+		printf("\"active_host_average_execution_time\": \"%.3f sec\",\n", (double)((double)total_host_execution_time / (double)total_active_host_checks));
+
+		printf("\"active_host_min_latency\": \"%.2f sec\",\n", min_host_latency);
+		printf("\"active_host_max_latency\": \"%.2f sec\",\n", max_host_latency);
+		printf("\"active_host_average_latency\": \"%.3f sec\",\n", (double)((double)total_host_latency / (double)total_active_host_checks));
+
+		printf("\"active_host_min_percent_change\": \"%.2f sec\",\n", min_host_percent_change_a);
+		printf("\"active_host_max_percent_change\": \"%.2f sec\",\n", max_host_percent_change_a);
+		printf("\"active_host_average_percent_change\": \"%.2f sec\",\n", (double)((double)total_host_percent_change_a / (double)total_active_host_checks));
+
+		printf("\"passive_host_checks_1min_num\": %d,\n", passive_host_checks_1min);
+		printf("\"passive_host_checks_1min_percent\": \"%.1f%%\",\n", (double)(((double)passive_host_checks_1min * 100.0) / (double)total_passive_host_checks));
+		printf("\"passive_host_checks_15min_num\": %d,\n", passive_host_checks_15min);
+		printf("\"passive_host_checks_15min_percent\": \"%.1f%%\",\n", (double)(((double)passive_host_checks_15min * 100.0) / (double)total_passive_host_checks));
+		printf("\"passive_host_checks_1hour_num\": %d,\n", passive_host_checks_1hour);
+		printf("\"passive_host_checks_1hour_percent\": \"%.1f%%\",\n", (double)(((double)passive_host_checks_1hour * 100.0) / (double)total_passive_host_checks));
+		printf("\"passive_host_checks_since_start_num\": %d,\n", passive_host_checks_start);
+		printf("\"passive_host_checks_since_start_percent\": \"%.1f%%\",\n", (double)(((double)passive_host_checks_start * 100.0) / (double)total_passive_host_checks));
+
+		printf("\"passive_host_min_percent_change\": \"%.2f sec\",\n", min_host_percent_change_b);
+		printf("\"passive_host_max_percent_change\": \"%.2f sec\",\n", max_host_percent_change_b);
+		printf("\"passive_host_average_percent_change\": \"%.2f sec\",\n", (double)((double)total_host_percent_change_b / (double)total_passive_host_checks));
+
+		printf("\"active_scheduled_host_checks_1min\": %d,\n", program_stats[ACTIVE_SCHEDULED_HOST_CHECK_STATS][0]);
+		printf("\"active_scheduled_host_checks_5min\": %d,\n", program_stats[ACTIVE_SCHEDULED_HOST_CHECK_STATS][1]);
+		printf("\"active_scheduled_host_checks_15min\": %d,\n", program_stats[ACTIVE_SCHEDULED_HOST_CHECK_STATS][2]);
+
+		printf("\"active_on_demand_host_checks_1min\": %d,\n", program_stats[ACTIVE_ONDEMAND_HOST_CHECK_STATS][0]);
+		printf("\"active_on_demand_host_checks_5min\": %d,\n", program_stats[ACTIVE_ONDEMAND_HOST_CHECK_STATS][1]);
+		printf("\"active_on_demand_host_checks_15min\": %d,\n", program_stats[ACTIVE_ONDEMAND_HOST_CHECK_STATS][2]);
+
+		printf("\"parallel_host_checks_1min\": %d,\n", program_stats[PARALLEL_HOST_CHECK_STATS][0]);
+		printf("\"parallel_host_checks_5min\": %d,\n", program_stats[PARALLEL_HOST_CHECK_STATS][1]);
+		printf("\"parallel_host_checks_15min\": %d,\n", program_stats[PARALLEL_HOST_CHECK_STATS][2]);
+
+		printf("\"serial_host_checks_1min\": %d,\n", program_stats[SERIAL_HOST_CHECK_STATS][0]);
+		printf("\"serial_host_checks_5min\": %d,\n", program_stats[SERIAL_HOST_CHECK_STATS][1]);
+		printf("\"serial_host_checks_15min\": %d,\n", program_stats[SERIAL_HOST_CHECK_STATS][2]);
+
+		printf("\"cached_host_checks_1min\": %d,\n", program_stats[ACTIVE_CACHED_HOST_CHECK_STATS][0]);
+		printf("\"cached_host_checks_5min\": %d,\n", program_stats[ACTIVE_CACHED_HOST_CHECK_STATS][1]);
+		printf("\"cached_host_checks_15min\": %d,\n", program_stats[ACTIVE_CACHED_HOST_CHECK_STATS][2]);
+
+		printf("\"passive_host_checks_1min\": %d,\n", program_stats[PASSIVE_HOST_CHECK_STATS][0]);
+		printf("\"passive_host_checks_5min\": %d,\n", program_stats[PASSIVE_HOST_CHECK_STATS][1]);
+		printf("\"passive_host_checks_15min\": %d,\n", program_stats[PASSIVE_HOST_CHECK_STATS][2]);
+
+		printf("\"active_scheduled_service_checks_1min\": %d,\n", program_stats[ACTIVE_SCHEDULED_SERVICE_CHECK_STATS][0]);
+		printf("\"active_scheduled_service_checks_5min\": %d,\n", program_stats[ACTIVE_SCHEDULED_SERVICE_CHECK_STATS][1]);
+		printf("\"active_scheduled_service_checks_15min\": %d,\n", program_stats[ACTIVE_SCHEDULED_SERVICE_CHECK_STATS][2]);
+
+		printf("\"active_on_demand_service_checks_1min\": %d,\n", program_stats[ACTIVE_ONDEMAND_SERVICE_CHECK_STATS][0]);
+		printf("\"active_on_demand_service_checks_5min\": %d,\n", program_stats[ACTIVE_ONDEMAND_SERVICE_CHECK_STATS][1]);
+		printf("\"active_on_demand_service_checks_15min\": %d,\n", program_stats[ACTIVE_ONDEMAND_SERVICE_CHECK_STATS][2]);
+
+		printf("\"cached_service_checks_1min\": %d,\n", program_stats[ACTIVE_CACHED_SERVICE_CHECK_STATS][0]);
+		printf("\"cached_service_checks_5min\": %d,\n", program_stats[ACTIVE_CACHED_SERVICE_CHECK_STATS][1]);
+		printf("\"cached_service_checks_15min\": %d,\n", program_stats[ACTIVE_CACHED_SERVICE_CHECK_STATS][2]);
+
+		printf("\"passive_service_checks_1min\": %d,\n", program_stats[PASSIVE_SERVICE_CHECK_STATS][0]);
+		printf("\"passive_service_checks_5min\": %d,\n", program_stats[PASSIVE_SERVICE_CHECK_STATS][1]);
+		printf("\"passive_service_checks_15min\": %d,\n", program_stats[PASSIVE_SERVICE_CHECK_STATS][2]);
+
+		printf("\"external_commands_1min\": %d,\n", program_stats[EXTERNAL_COMMAND_STATS][0]);
+		printf("\"external_commands_5min\": %d,\n", program_stats[EXTERNAL_COMMAND_STATS][1]);
+		printf("\"external_commands_15min\": %d,\n", program_stats[EXTERNAL_COMMAND_STATS][2]);
+
+		printf("\"external_command_buffer_in_use\": %d,\n", buffer_stats[0][1]);
+		printf("\"external_command_buffer_max_used\": %d,\n", buffer_stats[0][2]);
+		printf("\"external_command_buffer_total_available\": %d\n", buffer_stats[0][0]);
+
+		printf("}\n");
+
+		return;
+	}
 
 	printf("<div align='center'>\n");
 
