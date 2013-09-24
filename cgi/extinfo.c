@@ -58,6 +58,7 @@ extern int              enable_failure_prediction;
 extern int              process_performance_data;
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
+extern char		*status_file_icinga_version;
 
 extern int              suppress_maintenance_downtime;
 extern int		extinfo_show_child_hosts;
@@ -1036,7 +1037,7 @@ void show_process_info(void) {
 
 	if (content_type == JSON_CONTENT) {
 		printf("\"process_info\": {\n");
-		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
+		printf("\"program_version\": \"%s\",\n", status_file_icinga_version);
 		printf("\"program_start_time\": \"%s\",\n", start_time);
 		printf("\"total_running_time\": \"%s\",\n", run_time_string);
 		if (last_command_check == (time_t)0)
@@ -1098,7 +1099,7 @@ void show_process_info(void) {
 		printf("\n");
 
 		/* csv data line */
-		printf("%s%s%s%s", csv_data_enclosure, PROGRAM_VERSION, csv_data_enclosure, csv_delimiter);
+		printf("%s%s%s%s", csv_data_enclosure, status_file_icinga_version, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, start_time, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, run_time_string, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (last_command_check == (time_t)0) ? "N/A" : last_external_check_time, csv_data_enclosure, csv_delimiter);
@@ -1142,7 +1143,7 @@ void show_process_info(void) {
 		printf("<table border='0'>\n");
 
 		/* program version */
-		printf("<tr><td class='dataVar'>Program Version:</td><td class='dataVal'>%s</td></tr>\n", PROGRAM_VERSION);
+		printf("<tr><td class='dataVar'>Program Version:</td><td class='dataVal'>%s</td></tr>\n", status_file_icinga_version);
 
 		/* program start time */
 		printf("<tr><td class='dataVar'>Program Start Time:</td><td class='dataVal'>%s</td></tr>\n", start_time);

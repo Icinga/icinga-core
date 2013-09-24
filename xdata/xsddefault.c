@@ -55,6 +55,7 @@ int daemon_mode;
 time_t last_command_check;
 time_t last_log_rotation;
 time_t status_file_creation_time;
+char *status_file_icinga_version;
 int enable_notifications;
 time_t disable_notifications_expire_time;
 int execute_service_checks;
@@ -903,6 +904,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 #ifdef NSCGI
 				if (!strcmp(var, "created"))
 					status_file_creation_time = strtoul(val, NULL, 10);
+				else if (!strcmp(var, "version"))
+					status_file_icinga_version = (char *)strdup(val);
 #endif
 				break;
 
@@ -1297,6 +1300,9 @@ int xsddefault_read_status_data(char *config_file, int options) {
 		return ERROR;
 	if (sort_comments() != OK)
 		return ERROR;
+
+	if (status_file_icinga_version == NULL)
+		status_file_icinga_version = PROGRAM_VERSION;
 
 	return OK;
 }

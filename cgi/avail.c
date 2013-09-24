@@ -47,6 +47,7 @@ extern timeperiod *timeperiod_list;
 
 extern int       log_rotation_method;
 
+extern char	 *status_file_icinga_version;
 #ifndef max
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
@@ -4670,7 +4671,7 @@ void display_host_availability(void) {
 
 				/* indeterminate times */
 				printf("<tr class='dataOdd'><td class='dataOdd' rowspan=3>Undetermined</td>");
-				printf("<td class='dataOdd'>%s Not Running</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
+				printf("<td class='dataOdd'>%s Not Running</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", status_file_icinga_version, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
 				printf("<tr class='dataOdd'><td class='dataOdd'>Insufficient Data</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
 				printf("<tr class='dataOdd'><td class='dataOdd'>Total</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
 
@@ -5563,7 +5564,7 @@ void display_service_availability(void) {
 			printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n",time_indeterminate_unscheduled_string,percent_time_indeterminate_unscheduled);
 			printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n",time_indeterminate_scheduled_string,percent_time_indeterminate_scheduled);
 			*/
-			printf("<td class='dataEven'>%s Not Running</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
+			printf("<td class='dataEven'>%s Not Running</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", status_file_icinga_version, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
 			printf("<tr class='dataEven'><td class='dataEven'>Insufficient Data</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
 			printf("<tr class='dataEven'><td class='dataEven'>Total</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
 

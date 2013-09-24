@@ -125,6 +125,7 @@ extern time_t   disable_notifications_expire_time;
 extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 extern time_t	status_file_creation_time;
+extern char	*status_file_icinga_version;
 
 /* resource file */
 char		resource_file[MAX_INPUT_BUFFER];
@@ -1240,7 +1241,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\"status_data_age\": %lu,\n", current_time - status_file_creation_time);
 		printf("\"status_update_interval\": %d,\n", status_update_interval);
 		printf("\"reading_status_data_ok\": %s,\n", (result == ERROR && daemon_check == TRUE) ? "false" : "true");
-		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
+		printf("\"program_version\": \"%s\",\n", status_file_icinga_version);
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
 #ifdef USE_OLDCRUD
 		printf(",\"running_as_a_daemon\": %s\n", (daemon_mode == TRUE) ? "true" : "false");
@@ -2118,7 +2119,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 			printf("Update every %d seconds\n", refresh_rate);
 	}
 
-	printf("<br><a href='http://www.icinga.org' target='_new' class='homepageURL'>%s %s</a> -\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<br><a href='http://www.icinga.org' target='_new' class='homepageURL'>%s Classic UI <b>%s</b> (Backend <b>%s</b>)</a> -\n", PROGRAM_NAME, PROGRAM_VERSION, status_file_icinga_version);
 
 	if (current_authdata != NULL)
 		printf("Logged in as <i>%s</i>\n", (!strcmp(current_authdata->username, "")) ? "?" : current_authdata->username);
