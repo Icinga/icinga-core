@@ -29,12 +29,13 @@ $(document).ready(function() {
 
   // autocomplete function
   $("#autocomplete").catcomplete({
+    minLength: 3 }, {
     // select function is used to open url for selected item
     select: function( event, ui ) { top.frames['main'].location.href = ui.item.url },
     // get results from icinga API
     source: function(request, response) {
       $.ajax({
-        url: '@cgiurl@/status.cgi?style=hostservicedetail&jsonoutput=yes',
+        url: '@cgiurl@/status.cgi?style=hostservicedetail&jsonoutput',
         dataType: 'json',
         data: {
           search_string: request.term // parameter for API search
@@ -47,7 +48,7 @@ $(document).ready(function() {
             data.status.host_status.forEach( function(item) {
               output.push( {
                 category: 'Hosts:',
-                url: '@cgiurl@/extinfo.cgi?type=1&host=' + item.host_name,
+                url: '@cgiurl@/status.cgi?search_string=' + item.host_name,
                 label: item.host_display_name,
                 status: 'HOST' + item.status
               });
@@ -59,9 +60,9 @@ $(document).ready(function() {
             data.status.service_status.forEach( function(item) {
               output.push( {
                 category: 'Host ' + item.host_name + ':',
-                url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_display_name,
+                url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
                 label: item.service_display_name,
-                value: item.host_display_name + ' ' + item.service_display_name,
+                value: item.host_name + '*' + item.service_description,
                 status: item.status
               });
             });
