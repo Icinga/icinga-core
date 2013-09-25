@@ -269,6 +269,15 @@ static void log_deprecation_warning(char *var) {
 	logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: config setting '%s' ignored. This has been deprecated. Remove it from your configuration!", var);
 }
 
+/* log generic removed warning on variables */
+static void log_removed_warning(char *var) {
+
+	if (!var)
+		return;
+
+	logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: config setting '%s' unknown. Remove it from your configuration!", var);
+}
+
 /* process the main configuration file */
 int read_main_config_file(char *main_config_file) {
 	char *input = NULL;
@@ -1519,11 +1528,8 @@ int read_main_config_file(char *main_config_file) {
 			continue;
 
 		/* DEPRECATED variables */
-		else if (!strcmp(variable, "log_external_commands_user")) {
-			log_deprecation_warning(variable);
-		}
 		else if (!strcmp(variable, "event_profiling_enabled")) {
-			log_deprecation_warning(variable);
+			log_removed_warning(variable);
 		}
 
 		/* we don't know what this variable is... */
