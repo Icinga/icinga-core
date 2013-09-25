@@ -186,6 +186,7 @@ int		enforce_comments_on_actions = FALSE;
 int		week_starts_on_monday = FALSE;
 
 int		show_partial_hostgroups = FALSE;
+int		show_partial_servicegroups = FALSE;
 int		default_downtime_duration = 7200;
 int		default_expiring_acknowledgement_duration = 86400;
 int		set_expire_ack_by_default = FALSE;
@@ -450,6 +451,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "show_partial_hostgroups"))
 			show_partial_hostgroups = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "show_partial_servicegroups"))
+			show_partial_servicegroups = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "use_pending_states"))
 			use_pending_states = (atoi(val) > 0) ? TRUE : FALSE;
