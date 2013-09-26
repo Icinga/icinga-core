@@ -472,6 +472,7 @@ void free_status_data(void) {
 		my_free(this_hoststatus->plugin_output);
 		my_free(this_hoststatus->long_plugin_output);
 		my_free(this_hoststatus->perf_data);
+		my_free(this_hoststatus->check_source);
 		my_free(this_hoststatus);
 	}
 
@@ -483,6 +484,7 @@ void free_status_data(void) {
 		my_free(this_svcstatus->plugin_output);
 		my_free(this_svcstatus->long_plugin_output);
 		my_free(this_svcstatus->perf_data);
+		my_free(this_svcstatus->check_source);
 		my_free(this_svcstatus);
 	}
 

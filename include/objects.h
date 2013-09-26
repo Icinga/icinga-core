@@ -421,6 +421,7 @@ struct host_struct{
 	   $HOSTADDRESS6$ macro  */
 	char    *address6;
 	time_t	acknowledgement_end_time;
+	char	*check_source;
 #ifdef NSCORE
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
@@ -565,6 +566,7 @@ struct service_struct{
 	   PROCESSED state on host|service checks  */
 	char	*processed_command;
 	time_t	acknowledgement_end_time;
+	char	*check_source;
 #ifdef NSCORE
 	int     current_warning_notification_number;
 	int     current_critical_notification_number;

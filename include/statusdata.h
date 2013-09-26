@@ -106,6 +106,7 @@ typedef struct hoststatus_struct{
          * we'll use compiler tricks again, putting this at the end,
          * invisible, in order to stay compatible with neb modules
          */
+	char	*check_source;
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
         }hoststatus;
@@ -165,6 +166,7 @@ typedef struct servicestatus_struct{
          * we'll use compiler tricks again, putting this at the end,
          * invisible, in order to stay compatible with neb modules
          */
+	char	*check_source;
 	int     current_warning_notification_number;
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;

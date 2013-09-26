@@ -331,6 +331,7 @@ typedef struct check_result_struct{
 	int return_code;				/* plugin return code */
 	char *output;	                                /* plugin output */
 	struct check_result_struct *next;
+	char *source;
 	}check_result;
 
 
@@ -371,6 +372,7 @@ typedef struct passive_check_result_struct{
 	time_t check_time;
 	double latency;
 	struct passive_check_result_struct *next;
+	char *source;
 	}passive_check_result;
 
 

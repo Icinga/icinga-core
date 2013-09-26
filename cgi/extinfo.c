@@ -1558,6 +1558,13 @@ void show_host_info(void) {
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
+			printf("<tr><td class='dataVar' nowrap>Check Source:</td><td class='dataVal'>");
+			if (temp_hoststatus->check_source != NULL)
+				printf("%s", temp_hoststatus->check_source);
+			else
+				printf("N/A");
+			printf("</td></tr>\n");
+
 			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");
 			if (temp_hoststatus->checks_enabled == TRUE)
 				printf("%.3f", temp_hoststatus->latency);
@@ -2019,6 +2026,13 @@ void show_service_info(void) {
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>PASSIVE</td></tr>\n");
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
+
+			printf("<tr><td class='dataVar' nowrap>Check Source:</td><td class='dataVal'>");
+			if (temp_svcstatus->check_source != NULL)
+				printf("%s", temp_svcstatus->check_source);
+			else
+				printf("N/A");
+			printf("</td></tr>\n");
 
 			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");
 			if (temp_svcstatus->checks_enabled == TRUE)
