@@ -35,7 +35,7 @@ $(document).ready(function() {
     // get results from icinga API
     source: function(request, response) {
       $.ajax({
-        url: '@cgiurl@/status.cgi?style=hostservicedetail&jsonoutput',
+        url: '@cgiurl@/status.cgi?livesearchdata',
         dataType: 'json',
         data: {
           search_string: request.term // parameter for API search
@@ -44,8 +44,8 @@ $(document).ready(function() {
           var output = [];
 
           // prepare hosts data
-          if ( data.status.host_status ) {
-            data.status.host_status.forEach( function(item) {
+          if ( data.status.hosts ) {
+            data.status.hosts.forEach( function(item) {
               output.push( {
                 category: 'Hosts:',
                 url: '@cgiurl@/status.cgi?search_string=' + item.host_name,
@@ -56,8 +56,8 @@ $(document).ready(function() {
           }
 
           // prepare services data
-          if ( data.status.service_status ) {
-            data.status.service_status.forEach( function(item) {
+          if ( data.status.services ) {
+            data.status.services.forEach( function(item) {
               output.push( {
                 category: 'Host ' + item.host_name + ':',
                 url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
