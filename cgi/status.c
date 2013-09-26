@@ -3300,6 +3300,7 @@ void show_servicegroup_overviews(void) {
 
 		/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
 		if (show_partial_servicegroups == TRUE) {
+			partial_services = FALSE;
 			for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 				/* find servicestatus */
@@ -3314,11 +3315,11 @@ void show_servicegroup_overviews(void) {
 
 				break;
 			}
-		}
 
-		/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
-		if (show_partial_servicegroups == TRUE && partial_services == FALSE)
-			continue;
+			/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+			if (partial_services == FALSE)
+				continue;
+		}
 
 		if (content_type == JSON_CONTENT) {
 			/* always add a comma, except for the first line */
@@ -3520,6 +3521,7 @@ void show_servicegroup_summaries(void) {
 
 		/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
 		if (show_partial_servicegroups == TRUE) {
+			partial_services = FALSE;
 			for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 				/* find servicestatus */
@@ -3534,11 +3536,11 @@ void show_servicegroup_summaries(void) {
 
 				break;
 			}
-		}
 
-		/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
-		if (show_partial_servicegroups == TRUE && partial_services == FALSE)
-			continue;
+			/* if we're showing partial servicegroups, but there are no services to display, there's nothing to see here */
+			if (partial_services == FALSE)
+				continue;
+		}
 
 		user_has_seen_something = TRUE;
 
@@ -4453,6 +4455,7 @@ void show_hostgroup_overviews(void) {
 
 		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
 		if (show_partial_hostgroups == TRUE) {
+			partial_hosts = FALSE;
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 				/* find the host status */
@@ -4462,12 +4465,14 @@ void show_hostgroup_overviews(void) {
 				/* check if this hoststatus belongs to any hostgroup and has passed through all filters */
 				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
-			}
-		}
 
-		/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
-		if (show_partial_hostgroups == TRUE && partial_hosts == FALSE)
-			continue;
+				partial_hosts = TRUE;
+				break;
+			}
+			/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
+			if (partial_hosts == FALSE)
+				continue;
+		}
 
 		if (content_type == JSON_CONTENT) {
 			/* always add a comma, except for the first line */
@@ -4894,6 +4899,7 @@ void show_hostgroup_summaries(void) {
 
 		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
 		if (show_partial_hostgroups == TRUE) {
+			partial_hosts = FALSE;
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
 				/* find the host status */
@@ -4905,14 +4911,12 @@ void show_hostgroup_summaries(void) {
 					continue;
 
 				partial_hosts = TRUE;
-
 				break;
 			}
+			/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
+			if (partial_hosts == FALSE)
+				continue;
 		}
-
-		/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
-		if (show_partial_hostgroups == TRUE && partial_hosts == FALSE)
-			continue;
 
 		user_has_seen_something = TRUE;
 
