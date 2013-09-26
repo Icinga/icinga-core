@@ -24,6 +24,7 @@ ENHANCEMENTS
 * core: allow exclude (!) to work for regexp matches as well (Matthias Kerk) #3720 - MF
 * core: make logging of external command errors more verbose (Anton Lofgren, op5 team) #4402 - MF
 * core: avoid unnecessary ctime() calls when debugging is disabled, increase performance (Opsview Team) #4681 - MF
+* core: add check source to checkresult/status data #4709 - MF
 
 * classic ui: add display filter modification for status.cgi #852 - RB
 * classic ui: log errors into cgi log (use_logging=1) #4389 - MF
@@ -33,9 +34,11 @@ ENHANCEMENTS
 * classic ui: added performance data to extinfo json output #4728 - RB
 * classic ui: show backend version info from status file (1.x or 2.x) #4737 - MF
 * classic ui: added option for partial servicegroups #2740 - RB
+* classic ui: show check source in extinfo #4709 - MF
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 * idoutils: allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479 - MF
+* idoutils: add check_source to status tables #4709 - MF
 
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
@@ -82,6 +85,7 @@ CHANGES
 * core: drop event_profiling_enabled functionality #2244
 * core: add colon to illegal_object_name_chars #4227
 	** reason are on-demand macros not working in #4005
+* core: broker_{host,service}_data accept check_source parameter #4709
 
 * classic ui: added custom vars to json_output in extinfo.cgi #4390
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
@@ -95,6 +99,7 @@ CHANGES
 * idoutils: unique constraint on comments/commenthistory tables #4544
 * idoutils: customvariablestatus table not updated by default (dump_customvar_status=0) #4479
 * idoutils: dump_customvar_status=0|1 in idomod.cfg #4479
+* idoutils: add 'check_source' column to {host,service}_status tables #4709
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
