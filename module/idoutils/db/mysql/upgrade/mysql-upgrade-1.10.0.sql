@@ -46,6 +46,13 @@ CREATE UNIQUE INDEX instance_id ON icinga_comments(instance_id,object_id,comment
 CREATE UNIQUE INDEX instance_id ON icinga_commenthistory(instance_id,object_id,comment_time,internal_comment_id);
 
 -- -----------------------------------------
+-- #4709 add check source
+-- -----------------------------------------
+
+ALTER TABLE icinga_hoststatus ADD check_source TEXT character set latin1  default ''; 
+ALTER TABLE icinga_servicestatus ADD check_source TEXT character set latin1  default ''; 
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

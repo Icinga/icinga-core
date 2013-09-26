@@ -57,6 +57,13 @@ ALTER TABLE icinga_comments ADD CONSTRAINT uq_comments UNIQUE (instance_id,objec
 ALTER TABLE icinga_commenthistory ADD CONSTRAINT uq_commenthistory UNIQUE (instance_id,object_id,comment_time,internal_comment_id);
 
 -- -----------------------------------------
+-- #4709 add check source
+-- -----------------------------------------
+
+ALTER TABLE icinga_hoststatus ADD check_source TEXT default '';
+ALTER TABLE icinga_servicestatus ADD check_source TEXT default '';
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

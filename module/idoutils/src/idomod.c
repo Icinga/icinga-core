@@ -2091,6 +2091,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[4] = ido_escape_buffer(temp_host->event_handler);
 		es[5] = ido_escape_buffer(temp_host->host_check_command);
 		es[6] = ido_escape_buffer(temp_host->check_period);
+		es[7] = ido_escape_buffer(temp_host->check_source);
 
 		if(es[2] != NULL) {
 			if(strlen(es[2]) > IDOMOD_MAX_TEXT_LEN) {
@@ -2107,7 +2108,7 @@ int idomod_broker_data(int event_type, void *data) {
 		retry_interval = temp_host->retry_interval;
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n%d=%s\n"
 		         , IDO_API_HOSTSTATUSDATA
 		         , IDO_DATA_TYPE
 		         , hsdata->type
@@ -2207,6 +2208,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (double)retry_interval
 		         , IDO_DATA_HOSTCHECKPERIOD
 		         , (es[6] == NULL) ? "" : es[6]
+			 , IDO_DATA_CHECKSOURCE
+		         , (es[7] == NULL) ? "" : es[7]
 		        );
 
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';
@@ -2264,6 +2267,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[5] = ido_escape_buffer(temp_service->event_handler);
 		es[6] = ido_escape_buffer(temp_service->service_check_command);
 		es[7] = ido_escape_buffer(temp_service->check_period);
+		es[8] = ido_escape_buffer(temp_service->check_source);
 
 		if(es[3] != NULL) {
 			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
@@ -2278,7 +2282,7 @@ int idomod_broker_data(int event_type, void *data) {
 		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n%d=%s\n"
 		         , IDO_API_SERVICESTATUSDATA
 		         , IDO_DATA_TYPE
 		         , ssdata->type
@@ -2382,6 +2386,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (double)temp_service->retry_interval
 		         , IDO_DATA_SERVICECHECKPERIOD
 		         , (es[7] == NULL) ? "" : es[7]
+			 , IDO_DATA_CHECKSOURCE
+		         , (es[8] == NULL) ? "" : es[8]
 		        );
 
 		temp_buffer[IDOMOD_MAX_BUFLEN-1] = '\x0';

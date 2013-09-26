@@ -2249,6 +2249,8 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf) {
 	case IDO_DATA_CUSTOMVARIABLE:
 	case IDO_DATA_CONTACT:
 
+	case IDO_DATA_CHECKSOURCE:
+
 		/* strings are escaped when they arrive */
 		if (buf == NULL)
 			newbuf = strdup("");

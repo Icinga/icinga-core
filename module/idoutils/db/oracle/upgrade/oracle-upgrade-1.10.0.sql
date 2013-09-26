@@ -75,6 +75,13 @@ ALTER TABLE comments ADD constraint comments_uq UNIQUE (instance_id,object_id,co
 ALTER TABLE commenthistory ADD constraint commenthist_uq UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
         using index tablespace &&IDXTBS;
 
+-- -----------------------------------------
+-- #4709 add check source
+-- -----------------------------------------
+
+ALTER TABLE icinga_hoststatus ADD check_source VARCHAR2(255) default '';
+ALTER TABLE icinga_servicestatus ADD check_source VARCHAR2(255) default '';
+
 
 -- -----------------------------------------
 -- finally update dbversion
