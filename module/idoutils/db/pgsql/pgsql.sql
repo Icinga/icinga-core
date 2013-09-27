@@ -848,6 +848,7 @@ CREATE TABLE  icinga_logentries (
   logentry_data TEXT  default '',
   realtime_data INTEGER  default 0,
   inferred_data_extracted INTEGER  default 0,
+  object_id bigint default 0,
   CONSTRAINT PK_logentry_id PRIMARY KEY (logentry_id) 
 ) ;
 

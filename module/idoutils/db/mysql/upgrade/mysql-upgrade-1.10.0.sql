@@ -53,6 +53,12 @@ ALTER TABLE icinga_hoststatus ADD check_source TEXT character set latin1  defaul
 ALTER TABLE icinga_servicestatus ADD check_source TEXT character set latin1  default ''; 
 
 -- -----------------------------------------
+-- #4754 add logentries object_id
+-- -----------------------------------------
+
+ALTER TABLE icinga_logentries ADD object_id bigint unsigned default 0;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

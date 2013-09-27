@@ -1470,8 +1470,11 @@ int idomod_broker_data(int event_type, void *data) {
 
 		logdata = (nebstruct_log_data *)data;
 
+		es[0] = ido_escape_buffer(logdata->host_name);
+		es[1] = ido_escape_buffer(logdata->service_description);
+
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%lu\n%d=%d\n%d=%s\n%d\n\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%lu\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 		         , IDO_API_LOGDATA
 		         , IDO_DATA_TYPE
 		         , logdata->type
@@ -1488,6 +1491,10 @@ int idomod_broker_data(int event_type, void *data) {
 		         , logdata->data_type
 		         , IDO_DATA_LOGENTRY
 		         , logdata->data
+		         , IDO_DATA_HOST
+		         , (es[0] == NULL) ? "" : es[0]
+		         , IDO_DATA_SERVICE
+		         , (es[1] == NULL) ? "" : es[1]
 		         , IDO_API_ENDDATA
 		        );
 

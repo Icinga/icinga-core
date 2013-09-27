@@ -3616,9 +3616,9 @@ int ido2db_oci_prepared_statement_logentries_insert(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "INSERT INTO %s (id, instance_id, logentry_time, "
 	             "entry_time, entry_time_usec, logentry_type, "
-	             "logentry_data,realtime_data, inferred_data_extracted) "
+	             "logentry_data,realtime_data, inferred_data_extracted, object_id) "
 	             "VALUES (seq_logentries.nextval, :X1, unixts2localts(:X2), unixts2localts(:X3), "
-	             ":X4, :X5, :X6, :X7, :X8)",
+	             ":X4, :X5, :X6, :X7, :X8, :X9)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES]) == -1) {
 		buf = NULL;
 	}

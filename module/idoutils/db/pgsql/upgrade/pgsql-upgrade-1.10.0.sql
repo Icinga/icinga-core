@@ -64,6 +64,12 @@ ALTER TABLE icinga_hoststatus ADD check_source TEXT default '';
 ALTER TABLE icinga_servicestatus ADD check_source TEXT default '';
 
 -- -----------------------------------------
+-- #4754 add logentries object_id
+-- -----------------------------------------
+
+ALTER TABLE icinga_logentries ADD object_id bigint unsigned default 0;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
