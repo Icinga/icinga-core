@@ -1556,5 +1556,5 @@ CREATE INDEX sla_idx_obj ON icinga_objects (objecttype_id, is_active, name1);
 -- set dbversion
 -- -----------------------------------------
 
-SELECT updatedbversion('1.9.0');
+SELECT updatedbversion('1.10.0');
 
