@@ -119,6 +119,10 @@ void broker_timed_event(int type, int flags, int attr, timed_event *event, struc
 
 /* send log data to broker */
 void broker_log_data(int type, int flags, int attr, char *data, unsigned long data_type, time_t entry_time, struct timeval *timestamp) {
+	broker_log_data_obj(type, flags, attr, data, data_type, entry_time, timestamp, NULL, NULL);
+}
+
+void broker_log_data_obj(int type, int flags, int attr, char *data, unsigned long data_type, time_t entry_time, struct timeval *timestamp, host *hst, service *svc) {
 	nebstruct_log_data ds;
 
 	if (!(event_broker_options & BROKER_LOGGED_DATA))
@@ -133,6 +137,19 @@ void broker_log_data(int type, int flags, int attr, char *data, unsigned long da
 	ds.entry_time = entry_time;
 	ds.data_type = data_type;
 	ds.data = data;
+
+	if (hst != NULL && svc == NULL) {
+		ds.host_name = hst->name;
+		ds.service_description = NULL;
+	}
+	else if (hst != NULL && svc != NULL) {
+		ds.host_name = svc->host_name;
+		ds.service_description = svc->description;
+	}
+	else {
+		ds.host_name = NULL;
+		ds.service_description = NULL;
+	}
 
 	/* make callbacks */
 	neb_make_callbacks(NEBCALLBACK_LOG_DATA, (void *)&ds);

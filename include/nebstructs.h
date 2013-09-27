@@ -71,6 +71,8 @@ typedef struct nebstruct_log_struct{
 	time_t          entry_time;
 	int             data_type;
 	char            *data;
+	char		*host_name;
+	char		*service_description;
         }nebstruct_log_data;
 
 
