@@ -45,7 +45,7 @@ my $dbh = DBI->connect("DBI:mysql:database=$database;host=$hostname",
 		or die "Cannot connect to database";
 
 # Current database version
-my $thisversion="1.9.0";
+my $thisversion="1.10.0";
 
 # Create version table if it doesn't exist
 eval { $dbh->do("SELECT * FROM icinga_dbversion LIMIT 1") };
