@@ -79,8 +79,8 @@ ALTER TABLE commenthistory ADD constraint commenthist_uq UNIQUE (instance_id,obj
 -- #4709 add check source
 -- -----------------------------------------
 
-ALTER TABLE icinga_hoststatus ADD check_source VARCHAR2(255) default '';
-ALTER TABLE icinga_servicestatus ADD check_source VARCHAR2(255) default '';
+ALTER TABLE hoststatus ADD check_source VARCHAR2(255) default '';
+ALTER TABLE servicestatus ADD check_source VARCHAR2(255) default '';
 
 
 -- -----------------------------------------
