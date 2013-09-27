@@ -3128,7 +3128,7 @@ int open_command_file(void) {
 		return OK;
 
 	/* reset umask (group needs write permissions) */
-	umask(S_IWOTH);
+	mode_t old_mask = umask(S_IWOTH);
 
 	/* use existing FIFO if possible */
 	if (!(stat(command_file, &st) != -1 && (st.st_mode & S_IFIFO))) {
@@ -3140,6 +3140,9 @@ int open_command_file(void) {
 			return ERROR;
 		}
 	}
+
+	/* restore umask after mkfifo */
+	umask(old_mask);
 
 	/* open the command file for reading (non-blocked) - O_TRUNC flag cannot be used due to errors on some systems */
 	/* NOTE: file must be opened read-write for poll() to work */

@@ -55,6 +55,7 @@ FIXES
 * core: replace localtime() with reentrant localtime_r() (Opsview Team) #4682 - MF
 * core: fix config parser ignores errors on non-existing templates used in multiple templates levels #4702 - MF
 * core: add colon to illegal_object_name_chars #4227 - MF
+* core: fix umask after reset for cmd pipe #4771 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
