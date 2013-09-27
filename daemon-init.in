@@ -31,6 +31,9 @@ IcingaChkFile=@ICINGACHKFILE@
 if [ -f /etc/sysconfig/icinga ]; then
         . /etc/sysconfig/icinga
 fi
+if [ -f /etc/default/icinga ]; then
+        . /etc/default/icinga
+fi
 
 
 # Source function library
