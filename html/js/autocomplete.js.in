@@ -2,6 +2,17 @@
 
 $(document).ready(function() {
   'use strict';
+      
+  window.icingaAC = {
+    // This is number of miliseconds to cache partial result
+    // so we don't query server again and again for same terms
+    expireMsecs: 90000,
+
+    // internal variables
+    term: undefined,
+    shorten: undefined,
+    results: {}
+  }
 
   // extension for category support in autocomplete result
   $.widget("custom.catcomplete", $.ui.autocomplete, {
@@ -28,49 +39,92 @@ $(document).ready(function() {
   });
 
   // autocomplete function
-  $("#autocomplete").catcomplete({
-    minLength: 3 }, {
+  $("#autocomplete").catcomplete( { minLength: 3 }, {
     // select function is used to open url for selected item
     select: function( event, ui ) { top.frames['main'].location.href = ui.item.url },
     // get results from icinga API
     source: function(request, response) {
-      $.ajax({
-        url: '@cgiurl@/status.cgi?livesearchdata',
-        dataType: 'json',
-        data: {
-          search_string: request.term // parameter for API search
-        },
-        success: function(data) {
-          var output = [];
+      window.icingaAC.term = request.term;
+      var shorten = request.term.substring(0,3);
 
-          // prepare hosts data
-          if ( data.status.hosts ) {
-            data.status.hosts.forEach( function(item) {
-              output.push( {
-                category: 'Hosts:',
-                url: '@cgiurl@/status.cgi?search_string=' + item.host_name,
-                label: item.host_display_name,
-                status: 'HOST' + item.status
+      // shortterm is same, we use local cache
+      if ( window.icingaAC.shorten !== undefined 
+            && shorten == window.icingaAC.shorten 
+            && window.icingaAC.results[window.icingaAC.shorten].expire > (new Date).getTime() ) {
+
+        var output = [];
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+        response( $.grep( window.icingaAC.results[window.icingaAC.shorten].data, function( item ){
+          return matcher.test( item.label );
+        }) );
+
+      // shortterm is different or undefined, ask again
+      } else {
+        $.ajax({
+          url: '@cgiurl@/status.cgi?livesearchdata',
+          dataType: 'json',
+          data: {
+            search_string: request.term // parameter for API search
+          },
+          success: function(data) {
+            var output = [];
+
+            // prepare hosts data
+            if ( data.status.hosts ) {
+              data.status.hosts.forEach( function(item) {
+                output.push( {
+                  category: 'Hosts:',
+                  url: '@cgiurl@/extinfo.cgi?type=1&host=' + item.host_name,
+                  label: item.host_display_name,
+                  status: 'HOST' + item.status
+                });
               });
-            });
-          }
+            }
 
-          // prepare services data
-          if ( data.status.services ) {
-            data.status.services.forEach( function(item) {
-              output.push( {
-                category: 'Host ' + item.host_name + ':',
-                url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
-                label: item.service_display_name,
-                value: item.host_name + '*' + item.service_description,
-                status: item.status
+            // prepare host groups data
+            if ( data.status.hostgroups ) {
+              data.status.hostgroups.forEach( function(item) {
+                output.push( {
+                  category: 'Hostgroups:',
+                  url: '@cgiurl@/status.cgi?hostgroup=' + item.hostgroup_name,
+                  label: item.hostgroup_alias
+                });
               });
-            });
-          }
+            }
 
-          response(output);
-        }
-      })
+            // prepare service groups data
+            if ( data.status.servicegroups ) {
+              data.status.servicegroups.forEach( function(item) {
+                output.push( {
+                  category: 'Servicegroups:',
+                  url: '@cgiurl@/status.cgi?servicegroup=' + item.servicegroup_name,
+                  label: item.servicegroup_alias
+                });
+              });
+            }
+            
+            // prepare services data
+            if ( data.status.services ) {
+              data.status.services.forEach( function(item) {
+                output.push( {
+                  category: 'Host ' + item.host_name + ':',
+                  url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
+                  label: item.service_display_name,
+                  value: item.host_name + '*' + item.service_description,
+                  status: item.status
+                });
+              });
+            }
+
+            window.icingaAC.shorten = shorten;
+            window.icingaAC.results[window.icingaAC.shorten] = {
+              expire: (new Date).getTime() + window.icingaAC.expireMsecs,
+              data: output
+            }
+            response(output);
+          }
+        })
+      }
     }
   })
 });
