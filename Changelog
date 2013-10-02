@@ -56,6 +56,7 @@ FIXES
 * core: fix config parser ignores errors on non-existing templates used in multiple templates levels #4702 - MF
 * core: add colon to illegal_object_name_chars #4227 - MF
 * core: fix umask after reset for cmd pipe #4771 - MF
+* core: dump host/service initial states on event loop initialization again #3838 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
@@ -88,6 +89,7 @@ CHANGES
 * core: add colon to illegal_object_name_chars #4227
 	** reason are on-demand macros not working in #4005
 * core: broker_{host,service}_data accept check_source parameter #4709
+* core: dump_retained_host_service_states_to_neb is now disabled (re-enabled timing loop updates instead) #3838
 
 * classic ui: added custom vars to json_output in extinfo.cgi #4390
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
