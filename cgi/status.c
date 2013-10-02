@@ -748,24 +748,64 @@ int main(void) {
 				temp_servicestatus->search_matched = FALSE;
 
 				/* find the service  */
-				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-				if (temp_service == NULL)
+				if ((temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description)) == NULL)
 					continue;
-
-				/* try to match on combination of host name and service description */
-				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
-				host_service_name[sizeof(host_service_name) - 1] = '\x0';
 
 				/* try to find a match */
 				if (regexec(&preg, temp_service->description, 0, NULL, 0) == 0 || \
 				        regexec(&preg, temp_service->display_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0) {
 
 					temp_servicestatus->search_matched = TRUE;
 					service_items_found = TRUE;
 				}
+
+				/* try to match on combination of */
+				/* host_name + service_description */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->description);
+				host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+				if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
+				}
+
+				/* try to match on combination of */
+				/* host_name + service_display_name */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
+				host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+				if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
+				}
+
+				if (temp_servicestatus->search_matched == FALSE) {
+					if ((temp_host = find_host(temp_service->host_name)) == NULL)
+						continue;
+
+					/* try to match on combination of */
+					/* host_display_name + service_description */
+					snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_host->display_name, temp_service->description);
+					host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+					if (regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+						temp_servicestatus->search_matched = TRUE;
+						service_items_found = TRUE;
+					}
+
+					/* try to match on combination of */
+					/* host_display_name + service_display_name */
+					snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_host->display_name, temp_service->display_name);
+					host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+					if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+						temp_servicestatus->search_matched = TRUE;
+						service_items_found = TRUE;
+					}
+
+				}
+
 			}
 
 
@@ -5814,6 +5854,9 @@ void show_live_search_data(void) {
 		json_start = FALSE;
 		printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
 		printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+		printf("\"host_alias\": \"%s\", ", (temp_host->alias != NULL) ? json_encode(temp_host->alias) : "");
+		printf("\"host_address\": \"%s\", ", (temp_host->address != NULL) ? json_encode(temp_host->address) : "");
+		printf("\"host_address6\": \"%s\", ", (temp_host->address6 != NULL) ? json_encode(temp_host->address6) : "");
 		if (temp_hoststatus->status == HOST_PENDING)
 			printf("\"status\": \"PENDING\"}");
 		else if (temp_hoststatus->status == HOST_UP)
