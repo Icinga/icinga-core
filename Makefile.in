@@ -10,6 +10,7 @@ SRC_BASE=@srcdir@/base
 SRC_CGI=@srcdir@/cgi
 SRC_HTM=@srcdir@/html
 SRC_DOCS=@srcdir@/html/docs
+SRC_DOCS_IMAGES=@srcdir@/html/docs/images
 SRC_MODULE=@srcdir@/module
 SRC_INCLUDE=@srcdir@/include
 SRC_COMMON=@srcdir@/common
@@ -20,6 +21,7 @@ SRC_TTAP=@srcdir@/t-tap
 SRC_TAP=@srcdir@/tools/libtap
 SRC_T=@srcdir@/t
 SRC_DOCBOOK=@srcdir@/docbook
+SRC_DOCBOOK_IMAGES=@srcdir@/docbook/images
 SRC_DOCBOOK_DE=@srcdir@/docbook/de
 SRC_DOCBOOK_EN=@srcdir@/docbook/en
 
@@ -327,6 +329,7 @@ create-docs: copy-docs-style
 	#${MAKE} submodule-update-latest
 	cd ${SRC_DOCBOOK_EN} && make en
 	cd ${SRC_DOCBOOK_DE} && make de
+	cp ${SRC_DOCBOOK_IMAGES}/*.png ${SRC_DOCS_IMAGES}/
 	@echo "updated docs :)"
 
 create-tarball:
