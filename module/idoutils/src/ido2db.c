@@ -602,16 +602,6 @@ int ido2db_process_config_var(char *arg) {
 			else
 				use_ssl = 0;
 		}
-	} else if (!strcmp(var, "clean_realtime_tables_on_core_startup")) {
-		if (strlen(val) != 1 || val[0] < '0' || val[0] > '1') {
-			return IDO_ERROR;
-		}
-		ido2db_db_settings.clean_realtime_tables_on_core_startup = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-	} else if (!strcmp(var, "clean_config_tables_on_core_startup")) {
-		if (strlen(val) != 1 || val[0] < '0' || val[0] > '1') {
-			return IDO_ERROR;
-		}
-		ido2db_db_settings.clean_config_tables_on_core_startup = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
 
 	else if (!strcmp(var, "oci_errors_to_syslog")) {
@@ -628,6 +618,20 @@ int ido2db_process_config_var(char *arg) {
 	/* DEPRECATED variables */
 	else if (!strcmp(var, "enable_sla")) {
 		log_deprecation_warning(var);
+	}
+	else if (!strcmp(var, "clean_realtime_tables_on_core_startup")) {
+		log_deprecation_warning(var);
+		if (strlen(val) != 1 || val[0] < '0' || val[0] > '1') {
+			return IDO_ERROR;
+		}
+		ido2db_db_settings.clean_realtime_tables_on_core_startup = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
+	}
+	else if (!strcmp(var, "clean_config_tables_on_core_startup")) {
+		log_deprecation_warning(var);
+		if (strlen(val) != 1 || val[0] < '0' || val[0] > '1') {
+			return IDO_ERROR;
+		}
+		ido2db_db_settings.clean_config_tables_on_core_startup = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
 
 	//syslog(LOG_ERR,"ido2db_process_config_var(%s) end\n",var);

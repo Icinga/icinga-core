@@ -68,6 +68,7 @@ FIXES
 * idoutils: remove timedevent support and tables #4482 - MF
 * idoutils: fix comments(history) UK misses object_id, not allowing the same comment on host AND service #4544 - MF
 * idoutils: fix contact_notificationcommands contain garbage and insert faulty command object ids (thx mhein/mjentsch) #4799 - MF
+* idoutils: deprecate clean_{config,realtime}_tables_on_core_startup #4791 - MF
 
 * install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
 
@@ -104,6 +105,7 @@ CHANGES
 * idoutils: customvariablestatus table not updated by default (dump_customvar_status=0) #4479
 * idoutils: dump_customvar_status=0|1 in idomod.cfg #4479
 * idoutils: add 'check_source' column to {host,service}_status tables #4709
+* idoutils: clean_{config,realtime}_tables_on_core_startup are now DEPRECATED #4791
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
