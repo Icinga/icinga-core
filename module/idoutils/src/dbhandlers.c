@@ -7362,7 +7362,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	}
 
 	/* save host notification commands to db */
-	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTADDRESS];
+	mbuf = idi->mbuf[IDO2DB_MBUF_HOSTNOTIFICATIONCOMMAND];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
 		if (mbuf.buffer[x] == NULL)
@@ -7371,8 +7371,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		cmdptr = strtok(mbuf.buffer[x], "!");
 		argptr = strtok(NULL, "\x0");
 
-		if (numptr == NULL)
-			//if (cmdptr == NULL || argptr == NULL)
+		if (cmdptr == NULL)
 			continue;
 
 		/* find the command */
@@ -7393,7 +7392,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	}
 
 	/* save service notification commands to db */
-	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTADDRESS];
+	mbuf = idi->mbuf[IDO2DB_MBUF_SERVICENOTIFICATIONCOMMAND];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
 		if (mbuf.buffer[x] == NULL)
@@ -7402,8 +7401,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		cmdptr = strtok(mbuf.buffer[x], "!");
 		argptr = strtok(NULL, "\x0");
 
-		if (numptr == NULL)
-			//if (cmdptr == NULL || argptr == NULL)
+		if (cmdptr == NULL)
 			continue;
 
 		/* find the command */
