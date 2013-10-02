@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgicmd.html" title="6.3. Ausführen von CGIs auf der Kommandozeile">
 <link rel="next" href="icinga-web-config.html" title="6.5. Konfigurationsübersicht Icinga-Web">
@@ -69,18 +69,8 @@
 <li class="listitem">
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
-            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-soap php5-gd php5-mysql</pre>
+            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-mysql php5-ldap php-soap php5-gd php5-mysql</pre>
 
-            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-              <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-mysql
-              enthalten!</p>
-            </td></tr>
-</table></div>
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -134,18 +124,8 @@
 <li class="listitem">
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
-            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd php5-pgsql</pre>
+            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-ldap php5-soap php5-gd php5-pgsql</pre>
 
-            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-              <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-pgsql
-              enthalten!</p>
-            </td></tr>
-</table></div>
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -208,11 +188,11 @@
 
         <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-        <pre class="screen"> #&gt; tar xzvf icinga-web-1.9.0.tar.gz</pre>
+        <pre class="screen"> #&gt; tar xzvf icinga-web-1.10.0.tar.gz</pre>
 
         <p>Wechseln Sie in das Verzeichnis:</p>
 
-        <pre class="screen"> #&gt; cd icinga-web-1.9.0</pre>
+        <pre class="screen"> #&gt; cd icinga-web-1.10.0</pre>
 
         <p>Icinga-Web stellt verschiedene configure-Optionen zur Verfügung z.B.</p>
 
@@ -229,7 +209,7 @@
                --with-db-user=icinga_web
                --with-db-pass=icinga_web
                --with-conf-dir=etc/conf.d
-               --with-log-folder=log
+               --with-log-dir=log
                --with-api-subtype=TYPE DB driver or network connection
                --with-api-host=HOST Host to connect (DB or other) (default localhost)
                --with-api-port=PORT Port for connection (default 3306)
@@ -935,9 +915,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp12554160"></a>
+    <a class="indexterm" name="idp188653392"></a>
 
-    <a class="indexterm" name="idp12556608"></a>
+    <a class="indexterm" name="idp188654704"></a>
   </div>
 </div>
 <div class="navfooter">

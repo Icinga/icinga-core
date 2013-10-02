@@ -1,0 +1,168 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>13.11. switch.cfg</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
+<link rel="up" href="ch13.html" title="Chapter 13. Icinga sample files">
+<link rel="prev" href="sample-printer.html" title="13.10. printer.cfg">
+<link rel="next" href="sample-templates.html" title="13.12. templates.cfg">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">13.11. switch.cfg</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="sample-printer.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 13. Icinga sample files</th>
+<td width="20%" align="right"> <a accesskey="n" href="sample-templates.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="13.11. switch.cfg">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="sample-switch"></a>13.11. <a name="sample_switch"></a>switch.cfg</h2></div></div></div>
+
+  
+
+<pre class="programlisting">
+###############################################################################
+# SWITCH.CFG - SAMPLE CONFIG FILE FOR MONITORING A SWITCH
+#
+# NOTES: This config file assumes that you are using the sample configuration
+#    files that get installed with the Icinga quickstart guide.
+#
+###############################################################################
+
+
+
+
+###############################################################################
+###############################################################################
+#
+# HOST DEFINITIONS
+#
+###############################################################################
+###############################################################################
+
+# Define the switch that we'll be monitoring
+
+define host{
+   use      generic-switch      ; Inherit default values from a template
+   host_name   linksys-srw224p      ; The name we're giving to this switch
+   alias      Linksys SRW224P Switch   ; A longer name associated with the switch
+   address      192.168.1.253      ; IP address of the switch
+   hostgroups   switches      ; Host groups this switch is associated with
+   }
+
+
+
+
+###############################################################################
+###############################################################################
+#
+# HOST GROUP DEFINITIONS
+#
+###############################################################################
+###############################################################################
+
+# Create a new hostgroup for switches
+
+define hostgroup{
+   hostgroup_name   switches      ; The name of the hostgroup
+   alias      Network Switches   ; Long name of the group
+   }
+
+
+
+
+###############################################################################
+###############################################################################
+#
+# SERVICE DEFINITIONS
+#
+###############################################################################
+###############################################################################
+
+# Create a service to PING to switch
+
+define service{
+   use         generic-service   ; Inherit values from a template
+   host_name      linksys-srw224p   ; The name of the host the service is associated with
+   service_description   PING      ; The service description
+   check_command      check_ping!200.0,20%!600.0,60%   ; The command used to monitor the service
+   normal_check_interval   5      ; Check the service every 5 minutes under normal conditions
+   retry_check_interval   1      ; Re-check the service every minute until its final/hard state is determined
+   }
+
+
+# Monitor uptime via SNMP
+
+define service{
+   use         generic-service   ; Inherit values from a template
+   host_name      linksys-srw224p
+   service_description   Uptime   
+   check_command      check_snmp!-C public -o sysUpTime.0
+   }
+
+
+
+# Monitor Port 1 status via SNMP
+
+define service{
+   use         generic-service   ; Inherit values from a template
+   host_name      linksys-srw224p
+   service_description   Port 1 Link Status
+   check_command      check_snmp!-C public -o ifOperStatus.1 -r 1 -m RFC1213-MIB
+   }
+
+
+
+# Monitor bandwidth via MRTG logs
+
+define service{
+   use         generic-service   ; Inherit values from a template
+   host_name      linksys-srw224p
+   service_description   Port 1 Bandwidth Usage
+   check_command      check_local_mrtgtraf!/var/lib/mrtg/192.168.1.253_1.log!AVG!1000000,1000000!5000000,5000000!10
+   }
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="sample-printer.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch13.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="sample-templates.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">13.10. printer.cfg </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 13.12. templates.cfg</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
