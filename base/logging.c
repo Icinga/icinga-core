@@ -202,14 +202,19 @@ int write_to_all_logs_obj(char *buffer, unsigned long data_type, host *hst, serv
 
 
 /* write something to the log file and syslog facility */
-static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp) {
+static void write_to_all_logs_with_timestamp_obj(char *buffer, unsigned long data_type, time_t *timestamp, host *hst, service *svc) {
 
 	/* write to syslog */
 	write_to_syslog(buffer, data_type);
 
 	/* write to main log */
-	write_to_log(buffer, data_type, timestamp);
+	write_to_log_obj(buffer, data_type, timestamp, hst, svc);
 }
+
+static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp) {
+	write_to_all_logs_with_timestamp_obj(buffer, data_type, timestamp, NULL, NULL);
+}
+
 
 FILE *open_log_file(void) {
 
@@ -480,7 +485,7 @@ int log_host_states(int type, time_t *timestamp) {
 				(temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output
 				);
 
-		write_to_all_logs_with_timestamp(temp_buffer, NSLOG_INFO_MESSAGE, timestamp);
+		write_to_all_logs_with_timestamp_obj(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, NULL);
 
 		my_free(temp_buffer);
 	}
@@ -515,7 +520,7 @@ int log_service_states(int type, time_t *timestamp) {
 				temp_service->plugin_output
 				);
 
-		write_to_all_logs_with_timestamp(temp_buffer, NSLOG_INFO_MESSAGE, timestamp);
+		write_to_all_logs_with_timestamp_obj(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, temp_service);
 
 		my_free(temp_buffer);
 	}
