@@ -319,6 +319,9 @@
 /* for disabled notifications expiry */
 #define CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME		176
 
+/* Acknowledge host and its services */
+#define CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM		177
+
 /* custom command introduced in Nagios 3.x */
 #define CMD_CUSTOM_COMMAND                              999
 
