@@ -186,33 +186,33 @@ void logit(int data_type, int display, const char *fmt, ...) {
 
 /* write something to the log file and syslog facility */
 int write_to_all_logs(char *buffer, unsigned long data_type) {
-	write_to_all_logs_obj(buffer, data_type, NULL, NULL);
+	return write_to_all_logs_with_host_service(buffer, data_type, NULL, NULL);
 }
 
-int write_to_all_logs_obj(char *buffer, unsigned long data_type, host *hst, service *svc) {
+int write_to_all_logs_with_host_service(char *buffer, unsigned long data_type, host *hst, service *svc) {
 
 	/* write to syslog */
 	write_to_syslog(buffer, data_type);
 
 	/* write to main log */
-	write_to_log_obj(buffer, data_type, NULL, hst, svc);
+	write_to_log_with_host_service(buffer, data_type, NULL, hst, svc);
 
 	return OK;
 }
 
 
 /* write something to the log file and syslog facility */
-static void write_to_all_logs_with_timestamp_obj(char *buffer, unsigned long data_type, time_t *timestamp, host *hst, service *svc) {
+static void write_to_all_logs_with_timestamp_with_host_service(char *buffer, unsigned long data_type, time_t *timestamp, host *hst, service *svc) {
 
 	/* write to syslog */
 	write_to_syslog(buffer, data_type);
 
 	/* write to main log */
-	write_to_log_obj(buffer, data_type, timestamp, hst, svc);
+	write_to_log_with_host_service(buffer, data_type, timestamp, hst, svc);
 }
 
 static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp) {
-	write_to_all_logs_with_timestamp_obj(buffer, data_type, timestamp, NULL, NULL);
+	write_to_all_logs_with_timestamp_with_host_service(buffer, data_type, timestamp, NULL, NULL);
 }
 
 
@@ -269,10 +269,10 @@ int close_log_file(void) {
 
 /* write something to the icinga log file */
 int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {
-	write_to_log_obj(buffer, data_type, timestamp, NULL, NULL);
+	return write_to_log_with_host_service(buffer, data_type, timestamp, NULL, NULL);
 }
 
-int write_to_log_obj(char *buffer, unsigned long data_type, time_t *timestamp, host *hst, service *svc) {
+int write_to_log_with_host_service(char *buffer, unsigned long data_type, time_t *timestamp, host *hst, service *svc) {
 	FILE *fp;
 	time_t log_time = 0L;
 
@@ -311,7 +311,7 @@ int write_to_log_obj(char *buffer, unsigned long data_type, time_t *timestamp, h
 
 #ifdef USE_EVENT_BROKER
 	/* send data to the event broker */
-	broker_log_data_obj(NEBTYPE_LOG_DATA, NEBFLAG_NONE, NEBATTR_NONE, buffer, data_type, log_time, NULL, hst, svc);
+	broker_log_data_with_host_service(NEBTYPE_LOG_DATA, NEBFLAG_NONE, NEBATTR_NONE, buffer, data_type, log_time, NULL, hst, svc);
 #endif
 
 	return OK;
@@ -418,7 +418,7 @@ int log_service_event(service *svc) {
 				);
 	}
 
-	write_to_all_logs_obj(temp_buffer, log_options, temp_host, svc);
+	write_to_all_logs_with_host_service(temp_buffer, log_options, temp_host, svc);
 	my_free(temp_buffer);
 
 	return OK;
@@ -458,7 +458,7 @@ int log_host_event(host *hst) {
 				);
 	}
 
-	write_to_all_logs_obj(temp_buffer, log_options, hst, NULL);
+	write_to_all_logs_with_host_service(temp_buffer, log_options, hst, NULL);
 	my_free(temp_buffer);
 
 	return OK;
@@ -485,7 +485,7 @@ int log_host_states(int type, time_t *timestamp) {
 				(temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output
 				);
 
-		write_to_all_logs_with_timestamp_obj(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, NULL);
+		write_to_all_logs_with_timestamp_with_host_service(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, NULL);
 
 		my_free(temp_buffer);
 	}
@@ -520,7 +520,7 @@ int log_service_states(int type, time_t *timestamp) {
 				temp_service->plugin_output
 				);
 
-		write_to_all_logs_with_timestamp_obj(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, temp_service);
+		write_to_all_logs_with_timestamp_with_host_service(temp_buffer, NSLOG_INFO_MESSAGE, timestamp, temp_host, temp_service);
 
 		my_free(temp_buffer);
 	}

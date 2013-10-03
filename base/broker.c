@@ -119,10 +119,10 @@ void broker_timed_event(int type, int flags, int attr, timed_event *event, struc
 
 /* send log data to broker */
 void broker_log_data(int type, int flags, int attr, char *data, unsigned long data_type, time_t entry_time, struct timeval *timestamp) {
-	broker_log_data_obj(type, flags, attr, data, data_type, entry_time, timestamp, NULL, NULL);
+	broker_log_data_with_host_service(type, flags, attr, data, data_type, entry_time, timestamp, NULL, NULL);
 }
 
-void broker_log_data_obj(int type, int flags, int attr, char *data, unsigned long data_type, time_t entry_time, struct timeval *timestamp, host *hst, service *svc) {
+void broker_log_data_with_host_service(int type, int flags, int attr, char *data, unsigned long data_type, time_t entry_time, struct timeval *timestamp, host *hst, service *svc) {
 	nebstruct_log_data ds;
 
 	if (!(event_broker_options & BROKER_LOGGED_DATA))
