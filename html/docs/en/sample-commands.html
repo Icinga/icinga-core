@@ -1,0 +1,302 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>13.6. commands.cfg</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
+<link rel="up" href="ch13.html" title="Chapter 13. Icinga sample files">
+<link rel="prev" href="sample-httpd.html" title="13.5. httpd.conf">
+<link rel="next" href="sample-contacts.html" title="13.7. commands.cfg">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">13.6. commands.cfg</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="sample-httpd.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 13. Icinga sample files</th>
+<td width="20%" align="right"> <a accesskey="n" href="sample-contacts.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="13.6. commands.cfg">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="sample-commands"></a>13.6. <a name="sample_commands"></a>commands.cfg</h2></div></div></div>
+
+
+  <pre class="programlisting">###############################################################################
+# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR ICINGA
+#
+# NOTES: This config file provides you with some example command definitions
+#        that you can reference in host, service, and contact definitions.
+#       
+#        You don't need to keep commands in a separate file from your other
+#        object definitions.  This has been done just to make things easier to
+#        understand.
+#
+###############################################################################
+
+
+################################################################################
+#
+# SAMPLE NOTIFICATION COMMANDS
+#
+# These are some example notification commands.  They may or may not work on
+# your system without modification.  As an example, some systems will require 
+# you to use "/usr/bin/mailx" instead of "/usr/bin/mail" in the commands below.
+#
+################################################################################
+
+
+# 'notify-host-by-email' command definition
+define command{
+   command_name   notify-host-by-email
+   command_line   /usr/bin/printf "%b" "***** Icinga *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$
+   }
+
+# 'notify-service-by-email' command definition
+define command{
+   command_name   notify-service-by-email
+   command_line   /usr/bin/printf "%b" "***** Icinga *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$\n" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+   }
+
+
+
+
+
+################################################################################
+#
+# SAMPLE HOST CHECK COMMANDS
+#
+################################################################################
+
+
+# This command checks to see if a host is "alive" by pinging it
+# The check must result in a 100% packet loss or 5 second (5000ms) round trip 
+# average time to produce a critical error.
+# Note: Five ICMP echo packets are sent (determined by the '-p 5' argument)
+
+# 'check-host-alive' command definition
+define command{
+    command_name    check-host-alive
+    command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 5
+    }
+
+
+
+
+################################################################################
+#
+# SAMPLE SERVICE CHECK COMMANDS
+#
+# These are some example service check commands.  They may or may not work on
+# your system, as they must be modified for your plugins.  See the HTML 
+# documentation on the plugins for examples of how to configure command definitions.
+#
+# NOTE:  The following 'check_local_...' functions are designed to monitor
+#        various metrics on the host that Icinga is running on (i.e. this one).
+################################################################################
+
+# 'check_local_disk' command definition
+define command{
+    command_name    check_local_disk
+    command_line    $USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$
+    }
+
+
+# 'check_local_load' command definition
+define command{
+    command_name    check_local_load
+    command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
+    }
+
+
+# 'check_local_procs' command definition
+define command{
+    command_name    check_local_procs
+    command_line    $USER1$/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$
+    }
+
+
+# 'check_local_users' command definition
+define command{
+    command_name    check_local_users
+    command_line    $USER1$/check_users -w $ARG1$ -c $ARG2$
+    }
+
+
+# 'check_local_swap' command definition
+define command{
+   command_name   check_local_swap
+   command_line   $USER1$/check_swap -w $ARG1$ -c $ARG2$
+   }
+
+
+# 'check_local_mrtgtraf' command definition
+define command{
+   command_name   check_local_mrtgtraf
+   command_line   $USER1$/check_mrtgtraf -F $ARG1$ -a $ARG2$ -w $ARG3$ -c $ARG4$ -e $ARG5$
+   }
+
+
+################################################################################
+# NOTE:  The following 'check_...' commands are used to monitor services on
+#        both local and remote hosts.
+################################################################################
+
+# 'check_ftp' command definition
+define command{
+    command_name    check_ftp
+    command_line    $USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_hpjd' command definition
+define command{
+    command_name    check_hpjd
+    command_line    $USER1$/check_hpjd -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_snmp' command definition
+define command{
+    command_name    check_snmp
+    command_line    $USER1$/check_snmp -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_http' command definition
+define command{
+    command_name    check_http
+    command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_ssh' command definition
+define command{
+   command_name   check_ssh
+   command_line   $USER1$/check_ssh $ARG1$ $HOSTADDRESS$
+   }
+
+
+# 'check_dhcp' command definition
+define command{
+   command_name   check_dhcp
+   command_line   $USER1$/check_dhcp $ARG1$
+   }
+
+
+# 'check_ping' command definition
+define command{
+    command_name    check_ping
+    command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -p 5
+    }
+
+
+# 'check_pop' command definition
+define command{
+    command_name    check_pop
+    command_line    $USER1$/check_pop -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_imap' command definition
+define command{
+    command_name    check_imap
+    command_line    $USER1$/check_imap -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_smtp' command definition
+define command{
+    command_name    check_smtp
+    command_line    $USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$
+    }
+
+
+# 'check_tcp' command definition
+define command{
+   command_name   check_tcp
+   command_line   $USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$
+   }
+
+
+# 'check_udp' command definition
+define command{
+   command_name   check_udp
+   command_line   $USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$
+   }
+
+
+# 'check_nt' command definition
+define command{
+   command_name   check_nt
+   command_line   $USER1$/check_nt -H $HOSTADDRESS$ -p 12489 -v $ARG1$ $ARG2$
+   }
+
+
+# 'check_dummy' command definition
+define command{
+    command_name    check_dummy
+    command_line    $USER1$/check_dummy $ARG1$
+    }
+
+# 'check_icinga_startup_delay' command definition
+define command {
+   command_name    check_icinga_startup_delay
+   command_line    $USER1$/check_dummy 0 "Icinga started with $$(($EVENTSTARTTIME$-$PROCESSSTARTTIME$)) seconds delay | delay=$$(($EVENTSTARTTIME$-$PROCESSSTARTTIME$))"
+}
+
+
+################################################################################
+#
+# SAMPLE PERFORMANCE DATA COMMANDS
+#
+# These are sample performance data commands that can be used to send performance
+# data output to two text files (one for hosts, another for services).  If you
+# plan on simply writing performance data out to a file, consider using the 
+# host_perfdata_file and service_perfdata_file options in the main config file.
+#
+################################################################################
+
+
+# 'process-host-perfdata' command definition
+define command{
+   command_name   process-host-perfdata
+   command_line   /usr/bin/printf "%b" "$LASTHOSTCHECK$\t$HOSTNAME$\t$HOSTSTATE$\t$HOSTATTEMPT$\t$HOSTSTATETYPE$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$\n" &gt;&gt; @STATEDIR@/host-perfdata.out
+   }
+
+
+# 'process-service-perfdata' command definition
+define command{
+   command_name   process-service-perfdata
+   command_line   /usr/bin/printf "%b" "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$\n" &gt;&gt; @STATEDIR@/service-perfdata.out
+   }</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="sample-httpd.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch13.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="sample-contacts.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">13.5. httpd.conf </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 13.7. commands.cfg</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

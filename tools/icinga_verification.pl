@@ -320,9 +320,6 @@ chomp($icingacfguser);
 my $icingacfggroup = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_group');
 
 ### ido2db.cfg parsing ###
-# ido2db SLA#
-my $ido2dbsla = get_key_from_ini("$ido2db_cfg", 'enable_sla');
-if(!$ido2dbsla){$ido2dbsla = "no 'enable_sla' option found"};
 
 # ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$ido2db_cfg", 'socket_type');
@@ -532,7 +529,6 @@ ido2db information:
  Socket Type: $ido2dbsocket
  Socket Name: $ido2dbsocketname
  TCP Port: $ido2dbtcpport
- SLA Status(1=on,0=off): $ido2dbsla
 
 idomod information:
  idomod.o check: $idomod_o

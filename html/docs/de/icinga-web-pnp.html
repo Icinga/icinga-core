@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-introduction.html" title="6.7. Einführung in Icinga-Web">
 <link rel="next" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
@@ -34,7 +34,7 @@
 <dt><span class="section">6.8.2. <a href="icinga-web-pnp.html#templateextension">Template-Extensions</a></span></dt>
 <dt><span class="section">6.8.3. <a href="icinga-web-pnp.html#confighostpages">Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu integrieren</a></span></dt>
 <dt><span class="section">6.8.4. <a href="icinga-web-pnp.html#configservicepages">Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten</a></span></dt>
-<dt><span class="section">6.8.5. <a href="icinga-web-pnp.html#idp13070896">Löschen des Cache</a></span></dt>
+<dt><span class="section">6.8.5. <a href="icinga-web-pnp.html#idp189203664">Löschen des Cache</a></span></dt>
 </dl></div>
   
 
@@ -42,11 +42,63 @@
   integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="idp13026736"></a><p class="title"><b>Abbildung 6.36. PNP4Nagios integriert in Icinga-Web</b></p>
+<a name="idp189144192"></a><p class="title"><b>Abbildung 6.41. Expander-Icon</b></p>
 <div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/MyServiceStatus.png" alt="PNP4Nagios integriert in Icinga-Web"></div>
+      <div class="mediaobject"><img src="../images/icinga-web-exp_1.png" alt="Expander-Icon"></div>
+    </div>
+</div>
+<p><br class="figure-break"></p>
+
+  <p>Links sehen Sie das "Expander"-Icon. Nach dem Klicken öffnet sich ein Balken (unterhalb des OK-Zeichens).</p>
+
+  <div class="figure">
+<a name="idp189147904"></a><p class="title"><b>Abbildung 6.42. Icon-Balken</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/icinga-web-exp_2.png" alt="Icon-Balken"></div>
+    </div>
+</div>
+<p><br class="figure-break"></p>
+
+  <p>Rechts im "PNP4Nagios"-Abschnitt gibt es zwei Buttons.</p>
+
+  <div class="figure">
+<a name="idp189151360"></a><p class="title"><b>Abbildung 6.43. PNP4Nagios-Icons</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/icinga-web-exp_3.png" alt="PNP4Nagios-Icons"></div>
+    </div>
+</div>
+<p><br class="figure-break"></p>
+
+  <p>Nach Rechts-Klick auf einen der beiden und auswählen von "Move into grid" wird das entsprechende Icon ins Raster verschoben.</p>
+
+  <div class="figure">
+<a name="idp189155024"></a><p class="title"><b>Abbildung 6.44. Icon verschieben in Raster</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/icinga-web-exp_4.png" alt="Icon verschieben in Raster"></div>
+    </div>
+</div>
+<p><br class="figure-break"></p>
+
+  <p>Auswählen des neuen Icons öffnet den PNP-Graphen in einem kleinen Fenster, das lediglich einen Zeitabschnitt anzeigt oder es wird
+  ein neuer Reiter erstellt, in dem die übliche PNP-Ansicht zu sehen ist.</p>
+
+  <p>Klicken auf"Setting" und auswählen von "Reset grid action icons" entfernt die eingefügten Icons und stellt die Standardansicht
+  wieder her.</p>
+
+  <div class="figure">
+<a name="idp189159072"></a><p class="title"><b>Abbildung 6.45. Zurücksetzen von Icon-Einstellungen</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/icinga-web-exp_5.png" alt="Zurücksetzen von Icon-Einstellungen"></div>
     </div>
 </div>
 <p><br class="figure-break"></p>
@@ -114,9 +166,9 @@
     * to your icinga-webs app/modules/Cronks/data/xml/extensions folder
     * and clear the app/cache/CronkTemplates folder
     * To remove it, just delete the extension files and clear the cache folder again</pre>
-<p><span class="emphasis"><em>Install Script</em></span> </p>
-<pre class="screen"> $&gt; cd etc/contrib/PNP_Integration
- $&gt; sh install.sh</pre>
+<p><span class="emphasis"><em>Install Script</em></span></p>
+
+    <p>Nachdem es sich lediglich um das Kopieren der beiden genannten Daten handelt, gibt es kein Skript. Sorry.</p>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -127,12 +179,12 @@
         <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren müssen.</p>
       </td></tr>
 </table></div>
+  </div>
 
-    </div>
-    <div class="section" title="6.8.3. Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu integrieren">
+  <div class="section" title="6.8.3. Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu integrieren">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="confighostpages"></a>6.8.3. Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu integrieren</h3></div></div></div>
-	    
+    
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -347,7 +399,7 @@
 
   <div class="section" title="6.8.5. Löschen des Cache">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13070896"></a>6.8.5. Löschen des Cache</h3></div></div></div>
+<a name="idp189203664"></a>6.8.5. Löschen des Cache</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -368,7 +420,7 @@
 
     <p>Das war es auch schon, Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp13074640"></a>
+    <a class="indexterm" name="idp189207488"></a>
   </div>
 </div>
 <div class="navfooter">

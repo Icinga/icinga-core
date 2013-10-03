@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.9 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="upgrading_icingaweb.html" title="6.5. Upgrading Icinga-Web and Icinga-Web Database">
 <link rel="next" href="icinga-web-introduction.html" title="6.7. Introduction to Icinga-Web">
@@ -72,7 +72,7 @@ app/modules/AppKit/
 <a name="confogfileindex"></a>6.6.2. Index</h3></div></div></div>
     
 
-    <table border="1" id="idp12429344">
+    <table border="1" id="idp188749024">
       <caption>Table 6.1. Configuration files</caption>
 
       <tr>
@@ -833,6 +833,22 @@ app/modules/AppKit/
 <li class="listitem">
         <p><a name="configweb-translation"></a><code class="filename">translation.xml</code> - Default language, date and time formats and
         settings</p>
+
+        <p>If your time zone differs from GMT you may have to change the appropriate settings in <code class="filename">php.ini</code> (or in
+        <code class="filename">translation.xml</code> if you are not able to change that one). Not adjusting the value might result in the following
+        message:</p>
+
+        <div class="figure">
+<a name="idp188926528"></a><p class="title"><b>Figure 6.1. Icinga-Web instance down</b></p>
+<div class="figure-contents">
+          
+
+          <div class="mediaobject"><img src="../images/icinga-web-instance-down.png" alt="Icinga-Web instance down"></div>
+        </div>
+</div>
+<br class="figure-break">
+
+        <p>Set the directive to a valid value (e.g. 'Europe/Berlin').</p>
       </li>
 </ul></div>
   </div>
@@ -847,19 +863,16 @@ app/modules/AppKit/
 
         <p>Make sure your webservers user has write access to the icinga pipe and make sure the icinga_pipe symbol is located in the
         readwrite or write section of your host (or defaults). Make sure the path is correct</p>
-
-        <p></p>
       </li></ul></div>
 
     <p><a name="configweb-timezone"></a> <span class="bold"><strong>Change Icinga-Web timezone</strong></span></p>
 
-    <p>Example: Change the default timezone for Icinga-Web</p>
-
-    <p>If the time(zone) in Icinga-Web differs from your system time(zone), please check the date.timezone entry in
-    <code class="filename">app/modules/AppKit/config/module.xml</code> (e.g. 'Europe/Berlin')</p>
+    <p>If the time(zone) in Icinga-Web differs from your system time(zone), please check the date.timezone entry in your
+    <code class="filename">php.ini</code>. Alternatively check the entry in <code class="filename">app/modules/AppKit/config/module.xml</code> (e.g.
+    'Europe/Berlin'):</p>
 
     <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
-&lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
+&lt;ae:parameter name="date.timezone"&gt;Europe/Berlin&lt;/ae:parameter&gt;</pre>
 
     <p><a name="configweb-userprefs"></a> <span class="bold"><strong>Change user preferences</strong></span></p>
 
@@ -985,17 +998,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
     <p>You need more information? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
 
-    <a class="indexterm" name="idp12645856"></a>
+    <a class="indexterm" name="idp188969328"></a>
 
-    <a class="indexterm" name="idp12647488"></a>
+    <a class="indexterm" name="idp188970960"></a>
 
-    <a class="indexterm" name="idp12648960"></a>
+    <a class="indexterm" name="idp188972608"></a>
 
-    <a class="indexterm" name="idp12650832"></a>
+    <a class="indexterm" name="idp188974000"></a>
 
-    <a class="indexterm" name="idp12652416"></a>
+    <a class="indexterm" name="idp188975792"></a>
 
-    <a class="indexterm" name="idp12654000"></a>
+    <a class="indexterm" name="idp188977312"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>13.7. contacts.cfg</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
+<link rel="up" href="ch13.html" title="Kapitel 13. Icinga Beispieldateien">
+<link rel="prev" href="sample-commands.html" title="13.6. commands.cfg">
+<link rel="next" href="sample-localhost.html" title="13.8. localhost.cfg">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">13.7. contacts.cfg</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="sample-commands.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 13. Icinga Beispieldateien</th>
+<td width="20%" align="right"> <a accesskey="n" href="sample-localhost.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="13.7. contacts.cfg">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="sample-contacts"></a>13.7. <a name="sample_contacts"></a>contacts.cfg</h2></div></div></div>
+
+  
+
+  <pre class="programlisting">###############################################################################
+# CONTACTS.CFG - SAMPLE CONTACT/CONTACTGROUP DEFINITIONS
+#
+# NOTES: This config file provides you with some example contact and contact
+#        group definitions that you can reference in host and service
+#        definitions.
+#       
+#        You don't need to keep these definitions in a separate file from your
+#        other object definitions.  This has been done just to make things
+#        easier to understand.
+#
+###############################################################################
+
+
+
+###############################################################################
+###############################################################################
+#
+# CONTACTS
+#
+###############################################################################
+###############################################################################
+
+# Just one contact defined by default - the Icinga admin (that's you)
+# This contact definition inherits a lot of default values from the 'generic-contact' 
+# template which is defined elsewhere.
+
+define contact{
+   contact_name                    icingaadmin      ; Short name of user
+   use            generic-contact      ; Inherit default values from generic-contact template (defined above)
+   alias                           Icinga Admin      ; Full name of user
+
+   email                           @icinga_user@@localhost   ; &lt;&lt;***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+   }
+
+
+
+###############################################################################
+###############################################################################
+#
+# CONTACT GROUPS
+#
+###############################################################################
+###############################################################################
+
+# We only have one contact in this simple configuration file, so there is
+# no need to create more than one contact group.
+
+define contactgroup{
+   contactgroup_name       admins
+   alias                   Icinga Administrators
+   members                 icingaadmin
+   }
+</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="sample-commands.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch13.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="sample-localhost.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">13.6. commands.cfg </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 13.8. 
+      localhost.cfg</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

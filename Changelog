@@ -56,6 +56,7 @@ FIXES
 * core: fix config parser ignores errors on non-existing templates used in multiple templates levels #4702 - MF
 * core: add colon to illegal_object_name_chars #4227 - MF
 * core: fix umask after reset for cmd pipe #4771 - MF
+* core: dump host/service initial states on event loop initialization again #3838 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
@@ -66,6 +67,8 @@ FIXES
 * idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
 * idoutils: remove timedevent support and tables #4482 - MF
 * idoutils: fix comments(history) UK misses object_id, not allowing the same comment on host AND service #4544 - MF
+* idoutils: fix contact_notificationcommands contain garbage and insert faulty command object ids (thx mhein/mjentsch) #4799 - MF
+* idoutils: deprecate clean_{config,realtime}_tables_on_core_startup #4791 - MF
 
 * install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
 
@@ -87,6 +90,7 @@ CHANGES
 * core: add colon to illegal_object_name_chars #4227
 	** reason are on-demand macros not working in #4005
 * core: broker_{host,service}_data accept check_source parameter #4709
+* core: dump_retained_host_service_states_to_neb is now disabled (re-enabled timing loop updates instead) #3838
 
 * classic ui: added custom vars to json_output in extinfo.cgi #4390
 * classic ui: add exclude_customvar_name and exclude_customvar_value to cfg.cfg #4390
@@ -101,6 +105,7 @@ CHANGES
 * idoutils: customvariablestatus table not updated by default (dump_customvar_status=0) #4479
 * idoutils: dump_customvar_status=0|1 in idomod.cfg #4479
 * idoutils: add 'check_source' column to {host,service}_status tables #4709
+* idoutils: clean_{config,realtime}_tables_on_core_startup are now DEPRECATED #4791
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 

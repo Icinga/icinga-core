@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="next" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">
@@ -50,9 +50,8 @@
 <li class="listitem">
       <p><span class="bold"><strong>Verwenden Sie Pakete.</strong></span> Inzwischen gibt es für viele Distributionen passende Pakete. Denken Sie
       über die Verwendung nach anstatt aus Sourcen zu installieren. Es spart Ihnen ein bisschen Zeit. Bitte beachten Sie dabei, dass sich
-      die Pfade von denen unterscheiden, die in der Dokumentation beschrieben sind. Eine detailierte Liste finden Sie auf dieser 
-      <a class="link" href="https://wiki.icinga.org/display/howtos/Package+Specific+Locations" target="_top">Wiki Seite</a>.
-      Informationen zu Paketen finden Sie <a class="link" href="icinga_packages.html" title="2.7. Icinga Pakete für Linux-Distributionen">hier</a>.</p>
+      die Pfade von denen unterscheiden, die in der Dokumentation beschrieben sind. Eine detaillierte Liste finden Sie auf dieser <a class="link" href="https://wiki.icinga.org/display/howtos/Package+Specific+Locations" target="_top">Wiki Seite</a>. Informationen zu Paketen finden Sie
+      <a class="link" href="icinga_packages.html" title="2.7. Icinga Pakete für Linux-Distributionen">hier</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Nutzen Sie die Schnellstartanleitungen</strong></span> (wenn Sie kein Paket verwenden möchten oder können). Die
@@ -67,15 +66,10 @@
       Verständnis der Grundlagen haben.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Verstehen Sie die Architektur.</strong></span> Icinga Core wird mit 2 GUIs ausgeliefert, Icinga Classic UI und Icinga-Web Icinga Classic UI verwendet
-      die nativen Status und Log Dateien, während Icinga-Web IDOUtils mit Datenbankbackend benötigt. Beide GUIs können am
-      am selben Host installiert sein, unterhalb von /icinga und /icinga-web.
-      Die IDOUtils Datenbank wird ebenso von Icinga-Reporting auf Basis von JasperReports Server verwendet, welches als Cronk in Icinga-Web
-      integriert werden kann. Lesen Sie im <a class="link" href="ch12.html" title="Kapitel 12. IDOUtils">IDOUtils Kapitel</a> weiter, um weitere Information zu den
-      IDOUtils Komponenten zu erhalten.
-      <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> sind für Ihre Checks essenziell, ebenso sollten Sie sich Gedanken über <a class="link" href="ch10.html" title="Kapitel 10. weitere Software">Addons</a>
-      in Ihrem Setup machen.
-      </p>
+      <p><span class="bold"><strong>Verstehen Sie die Architektur.</strong></span> Icinga Core wird mit 2 GUIs ausgeliefert, Icinga Classic UI und
+      Icinga-Web Icinga Classic UI verwendet die nativen Status und Log Dateien, während Icinga-Web IDOUtils mit Datenbankbackend benötigt.
+      Beide GUIs können am am selben Host installiert sein, unterhalb von /icinga und /icinga-web. Die IDOUtils Datenbank wird ebenso
+      von Icinga-Reporting auf Basis von JasperReports Server verwendet, welches als Cronk in Icinga-Web integriert werden kann. Lesen Sie im <a class="link" href="ch12.html" title="Kapitel 12. IDOUtils">IDOUtils Kapitel</a> weiter, um weitere Information zu den IDOUtils Komponenten zu erhalten. <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> sind für Ihre Checks essenziell, ebenso sollten Sie sich Gedanken über <a class="link" href="ch10.html" title="Kapitel 10. weitere Software">Addons</a> in Ihrem Setup machen.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Suchen Sie die Hilfe von anderen.</strong></span> Wenn Sie die Dokumentation gelesen haben, sich die
@@ -87,6 +81,8 @@
       durchsuchen können, finden Sie unter <a class="link" href="http://www.Icinga.org/support/" target="_top">http://www.Icinga.org/support/</a>.
       Das deutsche Icinga-Portal finden Sie unter <a class="link" href="http://www.Icinga-portal.de" target="_top">http://www.Icinga-portal.de</a>. Eine weitere Quelle für Informationen ist der
       <a class="link" href="https://wiki.icinga.org/display/howtos/Home" target="_top">Howto-Wiki-Bereich</a>.</p>
+
+      <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
     </li>
 </ol></div>
 
@@ -145,8 +141,8 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="icinga_gui_comparison"></a>2.1.2. <a name="icinga-gui-comparison"></a>Icinga Web-GUI-Vergleich</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.1.2.1. <a href="beginners.html#idp183648">Icinga-Classic-Web</a></span></dt>
-<dt><span class="section">2.1.2.2. <a href="beginners.html#idp230464">Icinga-New-Web</a></span></dt>
+<dt><span class="section">2.1.2.1. <a href="beginners.html#idp176635408">Icinga-Classic-Web</a></span></dt>
+<dt><span class="section">2.1.2.2. <a href="beginners.html#idp176683072">Icinga-New-Web</a></span></dt>
 </dl></div>
   
 
@@ -156,7 +152,7 @@
 
   <div class="section" title="2.1.2.1. Icinga-Classic-Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp183648"></a>2.1.2.1. Icinga-Classic-Web</h4></div></div></div>
+<a name="idp176635408"></a>2.1.2.1. Icinga-Classic-Web</h4></div></div></div>
     <a name="icinga_gui_classic"></a>
 
     
@@ -201,7 +197,7 @@
     <p>Weil das Icinga-Classic-Web ständig weiter entwickelt wird, können Sie sicher sein, dass jedes Addon, das Sie mit Nagios nutzen,
     auch mit Icinga funktionieren wird.</p>
 
-    <table border="1" id="idp196336">
+    <table border="1" id="idp176648656">
       <caption>Tabelle 2.1. Screenshots Icinga-Classic-Web</caption>
 
       <tr>
@@ -295,7 +291,7 @@
 
   <div class="section" title="2.1.2.2. Icinga-New-Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp230464"></a>2.1.2.2. Icinga-New-Web</h4></div></div></div>
+<a name="idp176683072"></a>2.1.2.2. Icinga-New-Web</h4></div></div></div>
     <a name="icinga_gui_new_web"></a>
 
     
@@ -368,7 +364,7 @@
       </li>
 </ul></div>
 
-    <table border="1" id="idp247440">
+    <table border="1" id="idp176700384">
       <caption>Tabelle 2.2. Screenshots Icinga-New-Web</caption>
 
       <tr>
@@ -518,14 +514,14 @@
     </table>
   </div>
 
-  <a class="indexterm" name="idp304016"></a>
+  <a class="indexterm" name="idp176757200"></a>
 
-  <a class="indexterm" name="idp305152"></a>
+  <a class="indexterm" name="idp176758544"></a>
 
-  <a class="indexterm" name="idp306752"></a>
+  <a class="indexterm" name="idp176760208"></a>
 </div>
 
-  <a class="indexterm" name="idp181936"></a>
+  <a class="indexterm" name="idp176762000"></a>
 </div>
 <div class="navfooter">
 <hr>

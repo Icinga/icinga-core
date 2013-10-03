@@ -225,28 +225,6 @@ max_contactnotificationmethods_age=44640
 max_downtimehistory_age=44640
 
 
-## CLEAN REALTIME TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
-# If you don't want to clean all those tables, set this option to 0.
-# This can be useful if the deletes slow down the normal data
-# processing.
-# Values: 0 - don't clean
-#         1 - clean (default)
-
-clean_realtime_tables_on_core_startup=1
-
-
-## CLEAN CONFIG TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
-# If you don't want to clean all those tables, set this option to 0.
-# This can be useful if the deletes slow down the normal data
-# processing.
-# Furthermore if you need to keep e.g. the state of customvariables
-# or any other tables not directly linked to the objects table.
-# Values: 0 - don't clean
-#         1 - clean (default)
-
-clean_config_tables_on_core_startup=1
-
-
 # ***EXPERIMENTAL*** DB TRIMMING INTERVAL
 # ido2db default db trimming interval is set to 3600 SECONDS.
 # Some environments will require higher or lower values. This setting is
@@ -340,14 +318,3 @@ oci_errors_to_syslog=1
 # 12 – Bind Variables and Wait Events
 
 oracle_trace_level=0
-
-
-
-# ENABLE SLA - DEPRECATED!
-# This setting enables collection of SLA data in the slahistory table
-# Values: 0 = disabled, 1 = enabled
-#
-# WARNING: This setting will be deprecated in 1.9 and not developed
-# anymore, as it has never been used by any Icinga application.
-
-enable_sla=0
