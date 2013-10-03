@@ -69,7 +69,7 @@ $(document).ready(function() {
             if ( data.status.hosts ) {
               $.each( data.status.hosts, function(index, item) {
                 output.push( {
-                  category: 'Hosts:',
+                  category: 'Hosts',
                   url: '@cgiurl@/status.cgi?search_string=' + item.host_name,
                   label: item.host_display_name,
 		  local_match: new Array( item.host_name, item.host_display_name, item.host_alias, item.host_address, item.host_address6 ),
@@ -82,7 +82,7 @@ $(document).ready(function() {
             if ( data.status.services && display_services) {
               $.each( data.status.services, function(index, item) {
                 output.push( {
-                  category: 'Services ' + item.host_name + ':',
+                  category: 'Services ' + item.host_name,
                   url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
                   label: item.service_display_name,
                   local_match: new Array( item.service_description, item.service_display_name,
@@ -100,7 +100,7 @@ $(document).ready(function() {
             if ( data.status.hostgroups ) {
               $.each( data.status.hostgroups, function(index, item) {
                 output.push( {
-                  category: 'Hostgroups:',
+                  category: 'Hostgroups',
                   url: '@cgiurl@/status.cgi?style=overview&hostgroup=' + item.hostgroup_name,
                   local_match: new Array( item.hostgroup_name, item.hostgroup_alias ),
                   label: item.hostgroup_alias,
@@ -113,7 +113,7 @@ $(document).ready(function() {
             if ( data.status.servicegroups ) {
               $.each( data.status.servicegroups, function(index, item) {
                 output.push( {
-                  category: 'Servicegroups:',
+                  category: 'Servicegroups',
                   url: '@cgiurl@/status.cgi?style=overview&servicegroup=' + item.servicegroup_name,
                   local_match: new Array( item.servicegroup_name, item.servicegroup_alias ),
                   label: item.servicegroup_alias,
@@ -131,7 +131,7 @@ $(document).ready(function() {
         })
       }
 
-      var matcher = new RegExp( request.term.replace("*", ".*"), "i" );
+      var matcher = new RegExp( request.term.replace(/\*/g, ".*"), "i" );
       response( $.grep( window.icingaAC.results[window.icingaAC.shorten].data, function( item ){
         var match_result = false;
         $.each( item.local_match, function( index, match_item ) {
@@ -145,7 +145,7 @@ $(document).ready(function() {
       }) );
 
     }
-  })
+  }).bind('focus', function(){ $(this).catcomplete("search"); } );
 });
 
 // vim: syntax=javascript ts=2 sw=2 sts=2 sr et

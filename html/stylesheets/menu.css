@@ -90,81 +90,83 @@ ul {
 /* Styles for autocomplete */
 
 li.ui-autocomplete-category {
-  padding: 3px 0px 0px 5px;
-  height: 18px;
-  background: #ededed url(../images/menu_cat_gray.png) top left repeat-x;
-  border-bottom: 1px solid #fff;
-  font-size: 11px;
+	padding: 3px 0px 0px 5px;
+	height: 18px;
+	background: #ededed url(../images/menu_cat_gray.png) top left repeat-x;
+	font-size: 11px;
+	/* font-weight: bold; */
 }
 
 /* IE hack (as usual) */
 html>body li.ui-autocomplete-category {
-  vertical-align: center;
-  height: auto;
-  min-height: 18px;
+	vertical-align: center;
+	height: auto;
+	min-height: 18px;
 }
 
 li.ui-menu-item {
-  text-align: left;
-  font-size: 10px;
-  border-bottom: 1px solid white;
-  padding: 0 0 0 2px;
-  color: #000;
+	text-align: left;
+	font-size: 10px;
+	border-bottom: 1px solid white;
+	padding: 0 0 0 2px;
+	color: #000;
 }
 
 ul.ui-autocomplete {
-  width: 150px;
-  position: absolute;
-  box-shadow: 0px 8px 16px 0px #666666;
-  -webkit-box-shadow: 0px 8px 16px 0px #666666;
-  -moz-box-shadow: 0px 8px 16px 0px #666666;
+	width: 150px;
+	position: absolute;
+	/* disabled shadow
+	box-shadow: 0px 8px 16px 0px #666666;
+	-webkit-box-shadow: 0px 8px 16px 0px #666666;
+	-moz-box-shadow: 0px 8px 16px 0px #666666;
+	*/
 }
 
 .statusgroup {
-  background: #e8e8e8;
+	background: #e8e8e8;
 }
 
 .statusOK, .statusUP, .statusRECOVERY {
 	background: #00cc33;
-	background-image: -webkit-linear-gradient(top, #00cc33, #8feaa6); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #00cc33, #8feaa6); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #00cc33, #8feaa6); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #00cc33, #8feaa6); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #00cc33, #8feaa6); /* Standard syntax; must be last */
+	background-image: -webkit-linear-gradient(top, #8feaa6, #00cc33); /* For Chrome and Safari */
+	background-image:    -moz-linear-gradient(top, #8feaa6, #00cc33); /* For old Fx (3.6 to 15) */
+	background-image:     -ms-linear-gradient(top, #8feaa6, #00cc33); /* For pre-releases of IE 10*/
+	background-image:      -o-linear-gradient(top, #8feaa6, #00cc33); /* For old Opera (11.1 to 12.0) */
+	background-image:         linear-gradient(to bottom, #8feaa6, #00cc33); /* Standard syntax; must be last */
 }
 
 .statusCRITICAL, .statusDOWN {
 	background: #ff5252;
-	background-image: -webkit-linear-gradient(top, #ff5252, #fda9a9); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #ff5252, #fda9a9); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #ff5252, #fda9a9); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #ff5252, #fda9a9); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #ff5252, #fda9a9); /* Standard syntax; must be last */
+	background-image: -webkit-linear-gradient(top, #fda9a9, #ff5252); /* For Chrome and Safari */
+	background-image:    -moz-linear-gradient(top, #fda9a9, #ff5252); /* For old Fx (3.6 to 15) */
+	background-image:     -ms-linear-gradient(top, #fda9a9, #ff5252); /* For pre-releases of IE 10*/
+	background-image:      -o-linear-gradient(top, #fda9a9, #ff5252); /* For old Opera (11.1 to 12.0) */
+	background-image:         linear-gradient(to bottom, #fda9a9, #ff5252); /* Standard syntax; must be last */
 }
 
 .statusWARNING {
 	background: #ffb533;
-	background-image: -webkit-linear-gradient(top, #ffb533, #ffd894); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #ffb533, #ffd894); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #ffb533, #ffd894); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #ffb533, #ffd894); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #ffb533, #ffd894); /* Standard syntax; must be last */
+	background-image: -webkit-linear-gradient(top, #ffd894, #ffb533); /* For Chrome and Safari */
+	background-image:    -moz-linear-gradient(top, #ffd894, #ffb533); /* For old Fx (3.6 to 15) */
+	background-image:     -ms-linear-gradient(top, #ffd894, #ffb533); /* For pre-releases of IE 10*/
+	background-image:      -o-linear-gradient(top, #ffd894, #ffb533); /* For old Opera (11.1 to 12.0) */
+	background-image:         linear-gradient(to bottom, #ffd894, #ffb533); /* Standard syntax; must be last */
 }
 
 .statusUNKNOWN, .statusUNREACHABLE {
 	background: #db54fd;
-	background-image: -webkit-linear-gradient(top, #db54fd, #eea9ff); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #db54fd, #eea9ff); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #db54fd, #eea9ff); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #db54fd, #eea9ff); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #db54fd, #eea9ff); /* Standard syntax; must be last */
+	background-image: -webkit-linear-gradient(top, #eea9ff, #db54fd); /* For Chrome and Safari */
+	background-image:    -moz-linear-gradient(top, #eea9ff, #db54fd); /* For old Fx (3.6 to 15) */
+	background-image:     -ms-linear-gradient(top, #eea9ff, #db54fd); /* For pre-releases of IE 10*/
+	background-image:      -o-linear-gradient(top, #eea9ff, #db54fd); /* For old Opera (11.1 to 12.0) */
+	background-image:         linear-gradient(to bottom, #eea9ff, #db54fd); /* Standard syntax; must be last */
 }
 
 .statusPENDING {
 	background: #73cce3;
-	background-image: -webkit-linear-gradient(top, #73cce3, #c7f2fd); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #73cce3, #c7f2fd); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #73cce3, #c7f2fd); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #73cce3, #c7f2fd); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #73cce3, #c7f2fd); /* Standard syntax; must be last */
+	background-image: -webkit-linear-gradient(top, #c7f2fd, #73cce3); /* For Chrome and Safari */
+	background-image:    -moz-linear-gradient(top, #c7f2fd, #73cce3); /* For old Fx (3.6 to 15) */
+	background-image:     -ms-linear-gradient(top, #c7f2fd, #73cce3); /* For pre-releases of IE 10*/
+	background-image:      -o-linear-gradient(top, #c7f2fd, #73cce3); /* For old Opera (11.1 to 12.0) */
+	background-image:         linear-gradient(to bottom, #c7f2fd, #73cce3); /* Standard syntax; must be last */
 }
