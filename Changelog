@@ -39,6 +39,7 @@ ENHANCEMENTS
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 * idoutils: allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479 - MF
 * idoutils: add check_source to status tables #4709 - MF
+* idoutils: add object_id (host, service) to logentries status updates/state changes #4754 - MF
 
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
@@ -107,6 +108,7 @@ CHANGES
 * idoutils: dump_customvar_status=0|1 in idomod.cfg #4479
 * idoutils: add 'check_source' column to {host,service}_status tables #4709
 * idoutils: clean_{config,realtime}_tables_on_core_startup are now DEPRECATED #4791
+* idoutils: add 'object_id' to logentries table (NULL if not provided) #4754
 
 * install: configure --enable-perfdata sets icinga.cfg:process_performance_data #3996
 
