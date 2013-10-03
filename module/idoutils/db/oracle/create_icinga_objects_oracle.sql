@@ -1157,7 +1157,7 @@ CREATE TABLE logentries (
   logentry_data clob,
   realtime_data integer default 0 ,
   inferred_data_extracted integer default 0 ,
-  object_id integer default 0
+  object_id integer default NULL
 )
 lob (logentry_data) store as logentries_data_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;

@@ -86,7 +86,7 @@ ALTER TABLE servicestatus ADD check_source VARCHAR2(255) default '';
 -- #4754 add logentries object_id
 -- -----------------------------------------
 
-ALTER TABLE logentries ADD object_id integer default 0;
+ALTER TABLE logentries ADD object_id integer default NULL;
 
 -- -----------------------------------------
 -- finally update dbversion
