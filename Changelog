@@ -71,6 +71,7 @@ FIXES
 * idoutils: deprecate clean_{config,realtime}_tables_on_core_startup #4791 - MF
 
 * install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
+* install: fix ido2db initscript: kill fails on stop() on debian wheezy #4504 - MF
 
 * icinga.spec: remove commandgrp/user flags for configure (INSTALL_OPTS useless on package build) #4394 - MF
 

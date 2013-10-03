@@ -114,7 +114,9 @@ printstatus_ido2db()
 
 killproc_ido2db ()
 {
-	kill $2 $Ido2dbPID
+	if status_ido2db $1 $2; then
+		kill $Ido2dbPID
+	fi
 
 }
 
@@ -168,7 +170,7 @@ case "$1" in
 		printf "Stopping $servicename: "
 
 		pid_ido2db
-		killproc_ido2db ido2db
+		killproc_ido2db
 
  		# now we have to wait for ido2db to exit and remove its
  		# own Ido2dbRunFile, otherwise a following "start" could
