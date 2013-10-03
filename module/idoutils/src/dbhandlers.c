@@ -1184,7 +1184,12 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	if (idi == NULL)
 		return IDO_ERROR;
 
-	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+	if (idi->buffered_input[IDO_DATA_HOST] != NULL && idi->buffered_input[IDO_DATA_SERVICE] == NULL)
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+	else if (idi->buffered_input[IDO_DATA_HOST] != NULL && idi->buffered_input[IDO_DATA_SERVICE] != NULL)
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+	else
+		object_id = 0L;
 
 	/* break log entry in pieces */
 	if ((ptr = strtok(idi->buffered_input[IDO_DATA_LOGENTRY], "]")) == NULL)
@@ -1297,22 +1302,42 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	/* save entry to db */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_PGSQL:
-	        if (asprintf(
-	                    &buf,
-	                    "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, E'%s', '0', '0', %lu)",
-	                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
-	                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
-	                    : es[0], object_id) == -1)
-	                buf = NULL;
+		if (object_id != 0) {
+		        if (asprintf(
+		                    &buf,
+	        	            "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, E'%s', '0', '0', %lu)",
+	                	    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+		                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+		                    : es[0], object_id) == -1)
+	        	        buf = NULL;
+		} else {
+		        if (asprintf(
+		                    &buf,
+	        	            "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, '0', %lu, E'%s', '0', '0')",
+	                	    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+		                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+		                    : es[0]) == -1)
+	        	        buf = NULL;
+		}
 		break;
 	default:
-	        if (asprintf(
-	                    &buf,
-        	            "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, '%s', '0', '0', %lu)",
-	                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
-	                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
-	                    : es[0], object_id) == -1)
-	                buf = NULL;
+		if (object_id != 0) {
+		        if (asprintf(
+		                    &buf,
+        		            "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, '%s', '0', '0', %lu)",
+	                	    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+		                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+		                    : es[0], object_id) == -1)
+	        	        buf = NULL;
+		} else {
+		        if (asprintf(
+		                    &buf,
+        		            "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, '0', %lu, '%s', '0', '0')",
+	                	    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+		                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+		                    : es[0]) == -1)
+	        	        buf = NULL;
+		}
 		break;
 	}
 
@@ -1377,7 +1402,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (uint *) data[7])) {
 		return IDO_ERROR;
 	}
-	if (object_id == NULL) {
+	if (object_id == 0) {
 		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X9") == IDO_ERROR) {
 			return IDO_ERROR;
 		}
@@ -1742,7 +1767,12 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LOGENTRY]);
 
-	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+        if (idi->buffered_input[IDO_DATA_HOST] != NULL && idi->buffered_input[IDO_DATA_SERVICE] == NULL)
+                ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+        else if (idi->buffered_input[IDO_DATA_HOST] != NULL && idi->buffered_input[IDO_DATA_SERVICE] != NULL)
+                ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+        else
+                object_id = 0L;
 
 	/* strip newline chars from end */
 	len = strlen(es[0]);
@@ -1754,23 +1784,48 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 	}
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	/* save entry to db */
+        /* save entry to db */
         switch (idi->dbinfo.server_type) {
         case IDO2DB_DBSERVER_PGSQL:
-	        if (asprintf(&buf, "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, %lu, %lu, E'%s', '1', '1', %lu)",
-	                     ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
-	                     idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
-	                     es[0], object_id) == -1)
-	                buf = NULL;
+                if (object_id != 0) {
+                        if (asprintf(
+                                    &buf,
+                                    "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, E'%s', '1', '1', %lu)",
+                                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+                                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+                                    : es[0], object_id) == -1)
+                                buf = NULL;
+                } else {
+                        if (asprintf(
+                                    &buf,
+                                    "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, '0', %lu, E'%s', '1', '1')",
+                                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+                                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+                                    : es[0]) == -1)
+                                buf = NULL;
+                }
                 break;
         default:
-	        if (asprintf(&buf, "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, %lu, %lu, '%s', '1', '1', %lu)",
-	                     ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
-	                     idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
-	                     es[0], object_id) == -1)
-	                buf = NULL;
+                if (object_id != 0) {
+                        if (asprintf(
+                                    &buf,
+                                    "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted, object_id) VALUES (%lu, %s, %s, '0', %lu, '%s', '1', '1', %lu)",
+                                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+                                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+                                    : es[0], object_id) == -1)
+                                buf = NULL;
+                } else {
+                        if (asprintf(
+                                    &buf,
+                                    "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, '0', %lu, '%s', '1', '1')",
+                                    ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
+                                    idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
+                                    : es[0]) == -1)
+                                buf = NULL;
+                }
                 break;
         }
+
 
 	result = ido2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -1822,9 +1877,16 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (uint *) data[7])) {
 		return IDO_ERROR;
 	}
-	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X9"), (uint *) data[8])) {
-		return IDO_ERROR;
-	}
+        if (object_id == 0) {
+                if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X9") == IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        else {
+                if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X9"), (uint *) data[8])) {
+                        return IDO_ERROR;
+                }
+        }
+
 
 	//bind clob
 	lob_i = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
