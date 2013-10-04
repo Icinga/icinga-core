@@ -159,9 +159,6 @@ extinfo.cgi: extinfo.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS)
 history.cgi: history.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ history.c $(CGILIBS) $(LIBS)
 
-ministatus.cgi: ministatus.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ ministatus.c $(CGILIBS) $(LIBS)
-
 notifications.cgi: notifications.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ notifications.c $(CGILIBS) $(LIBS)
 
