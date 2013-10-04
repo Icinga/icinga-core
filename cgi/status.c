@@ -6751,11 +6751,11 @@ void print_displayed_names(int style) {
 			}
 		}
 	} else if (style == DISPLAY_SERVICEGROUPS) {
-		if (show_all_servicegroups == TRUE)
+		if (show_all_servicegroups == TRUE) {
 			printf("All Service Groups");
 			if (show_partial_servicegroups == TRUE)
 				printf("<br>(Partial Servicegroups Enabled)");
-		else {
+		} else {
 			if (num_req_servicegroups == 1)
 				printf("Service Group '%s'", html_encode(req_servicegroups[0].entry, TRUE));
 			else {
