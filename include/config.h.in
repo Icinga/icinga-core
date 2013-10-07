@@ -63,7 +63,6 @@
 #undef USE_XRDDEFAULT
 #undef USE_XODTEMPLATE
 #undef USE_XPDDEFAULT
-#undef USE_XDDDEFAULT
 
 /***** CGI COMPILE OPTIONS *****/
 /* should we compile and use the statusmap CGI? */

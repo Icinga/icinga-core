@@ -660,8 +660,6 @@ BROKER_LDFLAGS
 mainurl
 htmurl
 cgiurl
-XDDH
-XDDC
 XPDH
 XPDC
 XODH
@@ -5818,18 +5816,6 @@ XPDH="xpddefault.h"
 XPDCOMMENT="Default (external commands)"
 echo "We'll use default routines (in xdata/xpddefault.*) for performance data I/O..."
 
-
-
-
-
-cat >>confdefs.h <<_ACEOF
-#define USE_XDDDEFAULT /**/
-_ACEOF
-
-XDDC="xdddefault.c"
-XDDH="xdddefault.h"
-XDDCOMMENT="Default (text file)"
-echo "We'll use default routines (in xdata/xdddefault.*) for scheduled downtime data I/O..."
 
 
 

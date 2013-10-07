@@ -63,8 +63,6 @@ XCDC=@XCDC@
 XCDH=@XCDH@
 XODC=@XODC@
 XODH=@XODH@
-XDDC=@XDDC@
-XDDH=@XDDH@
 
 # Generated automatically from configure script
 SNPRINTF_O=@SNPRINTF_O@
@@ -132,9 +130,6 @@ xcomments-cgi.o: $(SRC_XDATA)/$(XCDC) $(SRC_XDATA)/$(XCDH)
 
 downtime-cgi.o: $(SRC_COMMON)/downtime.c $(SRC_INCLUDE)/downtime.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/downtime.c
-
-xdowntime-cgi.o: $(SRC_XDATA)/$(XDDC) $(SRC_XDATA)/$(XDDH)
-	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XDDC)
 
 $(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
 	$(CC) $(CFLAGS) -c -o $@ $<

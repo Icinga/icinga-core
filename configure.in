@@ -593,15 +593,6 @@ AC_SUBST(XPDC)
 AC_SUBST(XPDH)
 
 
-dnl Downtime data
-AC_DEFINE_UNQUOTED(USE_XDDDEFAULT,,[use default routines (in xdata/xdddefault.*) for scheduled downtime data I/O...])
-XDDC="xdddefault.c"
-XDDH="xdddefault.h"
-XDDCOMMENT="Default (text file)"
-echo "We'll use default routines (in xdata/xdddefault.*) for scheduled downtime data I/O..."
-AC_SUBST(XDDC)
-AC_SUBST(XDDH)
-
 
 dnl Optional GD library and include paths
 AC_ARG_WITH(gd-lib,AC_HELP_STRING([--with-gd-lib=DIR],[sets location of the gd library]),[
