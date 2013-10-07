@@ -128,9 +128,6 @@ int add_new_host_comment(int entry_type, char *host_name, time_t entry_time, cha
         /* add comment to list in memory */
         result = add_host_comment(entry_type, host_name, entry_time, author_name, comment_data, next_comment_id, persistent, expires, expire_time, source);
 
-        /* increment the comment id */
-        next_comment_id++;
-
 	/* save comment id */
 	if (comment_id != NULL)
 		*comment_id = next_comment_id;
@@ -139,6 +136,9 @@ int add_new_host_comment(int entry_type, char *host_name, time_t entry_time, cha
 	/* send data to event broker */
 	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_COMMENT, entry_type, host_name, NULL, entry_time, author_name, comment_data, persistent, source, expires, expire_time, next_comment_id, NULL);
 #endif
+
+        /* increment the comment id */
+        next_comment_id++;
 
 	return result;
 }
@@ -155,9 +155,6 @@ int add_new_service_comment(int entry_type, char *host_name, char *svc_descripti
         /* add comment to list in memory */
         result = add_service_comment(entry_type, host_name, svc_description, entry_time, author_name, comment_data, next_comment_id, persistent, expires, expire_time, source);
 
-        /* increment the comment id */
-        next_comment_id++;
-
 	/* save comment id */
 	if (comment_id != NULL)
 		*comment_id = next_comment_id;
@@ -166,6 +163,9 @@ int add_new_service_comment(int entry_type, char *host_name, char *svc_descripti
 	/* send data to event broker */
 	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_COMMENT, entry_type, host_name, svc_description, entry_time, author_name, comment_data, persistent, source, expires, expire_time, next_comment_id, NULL);
 #endif
+
+        /* increment the downtime id */
+        next_comment_id++;
 
 	return result;
 }

@@ -807,9 +807,6 @@ int add_new_host_downtime(char *host_name, time_t entry_time, char *author, char
 			author, comment_data, start_time, end_time, fixed, triggered_by,
 			duration, next_downtime_id, is_in_effect, trigger_time);
 
-        /* increment the downtime id */
-        next_downtime_id++;
-
 	/* save downtime id */
 	if (downtime_id != NULL)
 		*downtime_id = next_downtime_id;
@@ -818,6 +815,9 @@ int add_new_host_downtime(char *host_name, time_t entry_time, char *author, char
 	/* send data to event broker */
 	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_DOWNTIME, host_name, NULL, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, next_downtime_id, NULL, is_in_effect, trigger_time);
 #endif
+
+        /* increment the downtime id */
+        next_downtime_id++;
 
 	return result;
 }
@@ -839,9 +839,6 @@ int add_new_service_downtime(char *host_name, char *service_description, time_t 
 			author, comment_data, start_time, end_time, fixed, triggered_by,
 			duration, next_downtime_id, is_in_effect, trigger_time);
 
-        /* increment the downtime id */
-        next_downtime_id++;
-
 	/* save downtime id */
 	if (downtime_id != NULL)
 		*downtime_id = next_downtime_id;
@@ -850,6 +847,9 @@ int add_new_service_downtime(char *host_name, char *service_description, time_t 
 	/* send data to event broker */
 	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_DOWNTIME, host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, next_downtime_id, NULL, is_in_effect, trigger_time);
 #endif
+
+        /* increment the downtime id */
+        next_downtime_id++;
 
 	return result;
 }
