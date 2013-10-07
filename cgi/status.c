@@ -208,6 +208,7 @@ int displayed_host_entries = 0;				/**< number of displayed host entries */
 int displayed_service_entries = 0;			/**< number of displayed service entries */
 int total_host_entries = 0;				/**< number of all host entries found */
 int total_service_entries = 0;				/**< number of all service entries found */
+int return_live_search_data = FALSE;			/**< return data for live search in menu */
 
 /** bitmask of all service status types which are used to filter services, changed via GET/POST */
 int service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
@@ -540,6 +541,9 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *, int, void *);
 void show_servicegroup_hostgroup_member_service_status_totals(char *, void *);
 /** @} */
 
+/** @brief return a list of hosts/services/hostgroups/servicegroups for live search **/
+void show_live_search_data(void);
+
 /** @name command drop down menus
     @{ **/
 
@@ -744,48 +748,94 @@ int main(void) {
 				temp_servicestatus->search_matched = FALSE;
 
 				/* find the service  */
-				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-				if (temp_service == NULL)
+				if ((temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description)) == NULL)
 					continue;
-
-				/* try to match on combination of host name and service description */
-				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
-				host_service_name[sizeof(host_service_name) - 1] = '\x0';
 
 				/* try to find a match */
 				if (regexec(&preg, temp_service->description, 0, NULL, 0) == 0 || \
 				        regexec(&preg, temp_service->display_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0) {
 
 					temp_servicestatus->search_matched = TRUE;
 					service_items_found = TRUE;
 				}
+
+				/* try to match on combination of */
+				/* host_name + service_description */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->description);
+				host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+				if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
+				}
+
+				/* try to match on combination of */
+				/* host_name + service_display_name */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
+				host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+				if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
+				}
+
+				if (temp_servicestatus->search_matched == FALSE) {
+					if ((temp_host = find_host(temp_service->host_name)) == NULL)
+						continue;
+
+					/* try to match on combination of */
+					/* host_display_name + service_description */
+					snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_host->display_name, temp_service->description);
+					host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+					if (regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+						temp_servicestatus->search_matched = TRUE;
+						service_items_found = TRUE;
+					}
+
+					/* try to match on combination of */
+					/* host_display_name + service_display_name */
+					snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_host->display_name, temp_service->display_name);
+					host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+					if (temp_servicestatus->search_matched == FALSE && regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+						temp_servicestatus->search_matched = TRUE;
+						service_items_found = TRUE;
+					}
+
+				}
+
 			}
 
 
 			/* if we didn't found anything until now we start looking for hostgroups and servicegroups */
-			if (host_items_found == FALSE && service_items_found == FALSE) {
+			/* or if user used live search*/
+			if (return_live_search_data == TRUE || (host_items_found == FALSE && service_items_found == FALSE)) {
 
 				/* try to find hostgroup */
 				found = FALSE;
 				for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-					if (regexec(&preg, temp_hostgroup->group_name, 0, NULL, 0) == 0) {
+					if (regexec(&preg, temp_hostgroup->group_name, 0, NULL, 0) == 0 || regexec(&preg, temp_hostgroup->alias, 0, NULL, 0) == 0) {
+						/* simply add to requested hostgroups if user usese live search */
 						req_hostgroups[num_req_hostgroups++].entry = strdup(temp_hostgroup->group_name);
-						display_type = DISPLAY_HOSTGROUPS;
 						show_all_hostgroups = FALSE;
-						found = TRUE;
+						if (return_live_search_data == FALSE) {
+							display_type = DISPLAY_HOSTGROUPS;
+							found = TRUE;
+						}
 					}
 				}
 
 				/* if no hostgroup matched, try to find a serviegroup */
-				if (found == FALSE) {
+				if (return_live_search_data == TRUE || found == FALSE) {
 					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-						if (regexec(&preg, temp_servicegroup->group_name, 0, NULL, 0) == 0) {
+						if (regexec(&preg, temp_servicegroup->group_name, 0, NULL, 0) == 0 || regexec(&preg, temp_servicegroup->alias, 0, NULL, 0) == 0) {
 							req_servicegroups[num_req_servicegroups++].entry = strdup(temp_servicegroup->group_name);
-							display_type = DISPLAY_SERVICEGROUPS;
 							show_all_servicegroups = FALSE;
+							if (return_live_search_data == FALSE) {
+								display_type = DISPLAY_SERVICEGROUPS;
+							}
 						}
 					}
 				}
@@ -927,7 +977,7 @@ int main(void) {
 	   otherwise we would have to check every service if it belongs to a servicegroup we want to see
 	   and this is very expensive
 	*/
-	if (display_type == DISPLAY_SERVICEGROUPS) {
+	if (display_type == DISPLAY_SERVICEGROUPS || return_live_search_data == TRUE) {
 		if (show_all_servicegroups == FALSE) {
 			for (i = 0; req_servicegroups[i].entry != NULL; i++) {
 				temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
@@ -959,7 +1009,7 @@ int main(void) {
 	}
 
 	/* pre filter for all host groups as well */
-	if (display_type == DISPLAY_HOSTGROUPS) {
+	if (display_type == DISPLAY_HOSTGROUPS || return_live_search_data == TRUE) {
 		if (show_all_hostgroups == FALSE) {
 			for (i = 0; req_hostgroups[i].entry != NULL; i++) {
 				temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
@@ -1000,6 +1050,10 @@ int main(void) {
 	}
 
 	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+
+		/* this is not needed if we do a live search */
+		if (return_live_search_data == TRUE)
+			continue;
 
 		/* if user is doing a search and service didn't match try next one */
 		if (search_string != NULL && temp_servicestatus->search_matched == FALSE && \
@@ -1156,7 +1210,8 @@ int main(void) {
 
 
 	/* this is only for hosts with no services attached */
-	if (group_style_type != STYLE_SERVICE_DETAIL) {
+	/* skip this part for live search */
+	if (group_style_type != STYLE_SERVICE_DETAIL && return_live_search_data == FALSE) {
 		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
 
 			/* see if hoststatus is already recorded */
@@ -1541,7 +1596,9 @@ int main(void) {
 	 *	This of course depends on the chosen style
 	**/
 
-	if (group_style_type == STYLE_OVERVIEW) {
+	if (return_live_search_data == TRUE)
+		show_live_search_data();
+	else if (group_style_type == STYLE_OVERVIEW) {
 		if (display_type == DISPLAY_SERVICEGROUPS)
 			show_servicegroup_overviews();
 		else
@@ -1853,6 +1910,13 @@ int process_cgivars(void) {
 
 		/* we found the JSON output option */
 		else if (!strcmp(variables[x], "jsonoutput")) {
+			display_header = FALSE;
+			content_type = JSON_CONTENT;
+		}
+
+		/* we found the pause option */
+		else if (!strcmp(variables[x], "livesearchdata")) {
+			return_live_search_data = TRUE;
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
@@ -5749,6 +5813,211 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		printf("</table>\n");
 
 	return TRUE;
+}
+
+/* return a list of hosts/services/hostgroups/servicegroups for live search */
+void show_live_search_data(void) {
+	host *temp_host = NULL;
+	service *temp_service = NULL;
+	hoststatus *temp_hoststatus = NULL;
+	servicestatus *temp_servicestatus = NULL;
+	hostgroup *temp_hostgroup = NULL;
+	servicegroup *temp_servicegroup = NULL;
+	hostsmember *temp_hostmember = NULL;
+	servicesmember *temp_servicemember = NULL;
+	int json_start = TRUE;
+	int i = 0, found = FALSE;
+
+
+	/* Add a warning */
+	printf("\"WARNING\": \"THIS IS AN %s INTERNAL JSON API. IT MIGHT CHANGE WITHOUT NOTICE!\", \n", PROGRAM_NAME);
+
+	printf("\"hosts\": [\n");
+
+	for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
+
+		/* did the user search for something */
+		if (search_string != NULL && temp_hoststatus->search_matched == FALSE)
+			continue;
+
+		/* find host */
+		if ((temp_host = find_host(temp_hoststatus->host_name)) == NULL)
+			continue;
+
+		/* make sure user has rights to see this... */
+		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+			continue;
+
+		/* always add a comma, except for the first line */
+		if (json_start == FALSE)
+			printf(",\n");
+		json_start = FALSE;
+		printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
+		printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+		printf("\"host_alias\": \"%s\", ", (temp_host->alias != NULL) ? json_encode(temp_host->alias) : "");
+		printf("\"host_address\": \"%s\", ", (temp_host->address != NULL) ? json_encode(temp_host->address) : "");
+		printf("\"host_address6\": \"%s\", ", (temp_host->address6 != NULL) ? json_encode(temp_host->address6) : "");
+		if (temp_hoststatus->status == HOST_PENDING)
+			printf("\"status\": \"PENDING\"}");
+		else if (temp_hoststatus->status == HOST_UP)
+			printf("\"status\": \"UP\"}");
+		else if (temp_hoststatus->status == HOST_DOWN)
+			printf("\"status\": \"DOWN\"}");
+		else if (temp_hoststatus->status == HOST_UNREACHABLE)
+			printf("\"status\": \"UNREACHABLE\"}");
+	}
+
+	printf("\n],\n");
+
+	json_start = TRUE;
+	printf("\"services\": [\n");
+
+	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+
+		if (search_string != NULL && temp_servicestatus->search_matched == FALSE)
+			continue;
+
+		if ((temp_host = find_host(temp_servicestatus->host_name)) == NULL)
+			continue;
+
+		if ((temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description)) == NULL)
+			continue;
+
+		if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+			continue;
+
+		/* always add a comma, except for the first line */
+		if (json_start == FALSE)
+			printf(",\n");
+		json_start = FALSE;
+
+		printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
+		printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+		printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+		printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+		if (temp_servicestatus->status == SERVICE_PENDING)
+			printf("\"status\": \"PENDING\"}");
+		else if (temp_servicestatus->status == SERVICE_OK)
+			printf("\"status\": \"OK\"}");
+		else if (temp_servicestatus->status == SERVICE_WARNING)
+			printf("\"status\": \"WARNING\"}");
+		else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+			printf("\"status\": \"UNKNOWN\"}");
+		else if (temp_servicestatus->status == SERVICE_CRITICAL)
+			printf("\"status\": \"CRITICAL\"}");
+	}
+
+	printf("\n],\n");
+
+	json_start = TRUE;
+	printf("\"hostgroups\": [\n");
+
+	/* loop through all hostgroups... */
+	for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
+
+		/* view only selected hostgroups */
+		if (search_string != NULL) {
+			found = FALSE;
+			for (i = 0; req_hostgroups[i].entry != NULL; i++) {
+				if (!strcmp(req_hostgroups[i].entry, temp_hostgroup->group_name)) {
+					found = TRUE;
+					break;
+				}
+			}
+			if (found == FALSE)
+				continue;
+		}
+
+		/* make sure the user is authorized to view this hostgroup */
+		if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE)
+			continue;
+
+		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+		if (show_partial_hostgroups == TRUE) {
+			found = FALSE;
+			for (temp_hostmember = temp_hostgroup->members; temp_hostmember != NULL; temp_hostmember = temp_hostmember->next) {
+
+				/* find host */
+				if ((temp_host = find_host(temp_hostmember->host_name)) == NULL)
+					continue;
+
+				/* make sure user has rights to see this... */
+				if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+					continue;
+
+				found = TRUE;
+				break;
+			}
+			if (found == FALSE)
+				continue;
+		}
+
+		/* always add a comma, except for the first line */
+		if (json_start == FALSE)
+			printf(",\n");
+		json_start = FALSE;
+
+		printf("{ \"hostgroup_name\": \"%s\", \n", json_encode(temp_hostgroup->group_name));
+		printf("\"hostgroup_alias\": \"%s\"}\n", json_encode(temp_hostgroup->alias));
+
+	}
+
+	printf("\n],\n");
+
+	json_start = TRUE;
+	printf("\"servicegroups\": [\n");
+
+	/* loop through all servicegroups... */
+	for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
+
+		/* view only selected servicegroups */
+		if (search_string != NULL) {
+			found = FALSE;
+			for (i = 0; req_servicegroups[i].entry != NULL; i++) {
+				if (!strcmp(req_servicegroups[i].entry, temp_servicegroup->group_name)) {
+					found = TRUE;
+					break;
+				}
+			}
+			if (found == FALSE)
+				continue;
+		}
+
+		/* make sure the user is authorized to view at least one host in this servicegroup */
+		if (show_partial_servicegroups == FALSE && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
+			continue;
+
+		/* if we're showing partial servicegroups, find out if there will be any services that belong to the servicegroup */
+		if (show_partial_servicegroups == TRUE) {
+			found = FALSE;
+			for (temp_servicemember = temp_servicegroup->members; temp_servicemember != NULL; temp_servicemember = temp_servicemember->next) {
+
+				if ((temp_service = find_service(temp_servicemember->host_name, temp_servicemember->service_description)) == NULL)
+					continue;
+
+				if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+					continue;
+
+				found = TRUE;
+				break;
+			}
+			if (found == FALSE)
+				continue;
+		}
+
+		/* always add a comma, except for the first line */
+		if (json_start == FALSE)
+			printf(",\n");
+		json_start = FALSE;
+
+		printf("{ \"servicegroup_name\": \"%s\", \n", json_encode(temp_servicegroup->group_name));
+		printf("\"servicegroup_alias\": \"%s\"}\n", json_encode(temp_servicegroup->alias));
+
+	}
+
+	printf("\n]\n");
+
+	return;
 }
 
 

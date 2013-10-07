@@ -30,7 +30,7 @@ clean:
 
 distclean: clean
 	rm -f Makefile
-	rm -f menu.html index.html search.html
+	rm -f menu.html index.html search.html js/autocomplete.js
 
 devclean: distclean
 

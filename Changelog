@@ -35,6 +35,7 @@ ENHANCEMENTS
 * classic ui: show backend version info from status file (1.x or 2.x) #4737 - MF
 * classic ui: added option for partial servicegroups #2740 - RB
 * classic ui: show check source in extinfo #4709 - MF
+* classic ui: added live search #1657 - Kepi/RB
 
 * idoutils: add a table trimming option for 'downtime history' #3989 - MF
 * idoutils: allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479 - MF

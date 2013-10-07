@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W4C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<title>Web Interface Monitoring</title>
@@ -6,9 +6,15 @@
 	<meta http-equiv="Content-Language" content="en" />
 	<meta name="robots" content="noindex, nofollow" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/menu.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="jquery-ui/themes/base/jquery.ui.all.css" media="screen, projection" />
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.menu.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.autocomplete.js"></script>
 </head>
 <body>
 	<div id="menu">
@@ -26,7 +32,7 @@
 			<li class="menuli_style2">
 			<div class="navbarsearch">
 			<form method="get" action="@cgiurl@/status.cgi" target="main">
-			<input type='text' name='search_string' style="width: 150px; padding: 2px; margin-left: 10px; border: 1px solid grey">
+			<input type='text' name='search_string' id="autocomplete" style="width: 150px; padding: 2px; margin-left: 10px; border: 1px solid grey">
 			</form>
 			</div>
 			</li>
@@ -75,5 +81,6 @@
 			<li class="menuli_style1"><a href="@cgiurl@/config.cgi" target="main">View Config</a></li>
 		</ul>
 	</div>
+  <script type="text/javascript" src="js/autocomplete.js"></script>
 </body>
 </html>
