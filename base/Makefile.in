@@ -112,7 +112,7 @@ PDATAHDRS=
 PDATADEPS=$(PDATALIBS)
 
 
-OBJS=$(BROKER_O) $(SRC_COMMON)/shared.o $(SRC_COMMON)/downtime.o $(SRC_COMMON)/comments.o checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
+OBJS=$(BROKER_O) $(SRC_COMMON)/shared.o comments-base.o downtime-base.o checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
 OBJDEPS=$(ODATADEPS) $(ODATADEPS) $(RDATADEPS) $(SDATADEPS) $(PDATADEPS) $(BROKER_H)
 
 all: icinga icingastats
