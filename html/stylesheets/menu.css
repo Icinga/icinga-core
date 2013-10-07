@@ -110,11 +110,13 @@ li.ui-menu-item {
 	border-bottom: 1px solid white;
 	padding: 0 0 0 2px;
 	color: #000;
+	background: #e8e8e8;
 }
 
 ul.ui-autocomplete {
 	width: 150px;
 	position: absolute;
+	border-width: 2px;
 	/* disabled shadow
 	box-shadow: 0px 8px 16px 0px #666666;
 	-webkit-box-shadow: 0px 8px 16px 0px #666666;
@@ -123,50 +125,25 @@ ul.ui-autocomplete {
 }
 
 .statusgroup {
-	background: #e8e8e8;
+	border-left: 8px solid #8A8A8A;
 }
 
 .statusOK, .statusUP, .statusRECOVERY {
-	background: #00cc33;
-	background-image: -webkit-linear-gradient(top, #8feaa6, #00cc33); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #8feaa6, #00cc33); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #8feaa6, #00cc33); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #8feaa6, #00cc33); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #8feaa6, #00cc33); /* Standard syntax; must be last */
+	border-left: 8px solid #00cc33;
 }
 
 .statusCRITICAL, .statusDOWN {
-	background: #ff5252;
-	background-image: -webkit-linear-gradient(top, #fda9a9, #ff5252); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #fda9a9, #ff5252); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #fda9a9, #ff5252); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #fda9a9, #ff5252); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #fda9a9, #ff5252); /* Standard syntax; must be last */
+	border-left: 8px solid #ff5252;
 }
 
 .statusWARNING {
-	background: #ffb533;
-	background-image: -webkit-linear-gradient(top, #ffd894, #ffb533); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #ffd894, #ffb533); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #ffd894, #ffb533); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #ffd894, #ffb533); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #ffd894, #ffb533); /* Standard syntax; must be last */
+	border-left: 8px solid #ffb533;
 }
 
 .statusUNKNOWN, .statusUNREACHABLE {
-	background: #db54fd;
-	background-image: -webkit-linear-gradient(top, #eea9ff, #db54fd); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #eea9ff, #db54fd); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #eea9ff, #db54fd); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #eea9ff, #db54fd); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #eea9ff, #db54fd); /* Standard syntax; must be last */
+	border-left: 8px solid #db54fd;
 }
 
 .statusPENDING {
-	background: #73cce3;
-	background-image: -webkit-linear-gradient(top, #c7f2fd, #73cce3); /* For Chrome and Safari */
-	background-image:    -moz-linear-gradient(top, #c7f2fd, #73cce3); /* For old Fx (3.6 to 15) */
-	background-image:     -ms-linear-gradient(top, #c7f2fd, #73cce3); /* For pre-releases of IE 10*/
-	background-image:      -o-linear-gradient(top, #c7f2fd, #73cce3); /* For old Opera (11.1 to 12.0) */
-	background-image:         linear-gradient(to bottom, #c7f2fd, #73cce3); /* Standard syntax; must be last */
+	border-left: 8px solid #73cce3;
 }

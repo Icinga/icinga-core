@@ -70,7 +70,7 @@ $(document).ready(function() {
               $.each( data.status.hosts, function(index, item) {
                 output.push( {
                   category: 'Hosts',
-                  url: '@cgiurl@/status.cgi?search_string=' + item.host_name,
+                  url: '@cgiurl@/status.cgi?search_string=' + encodeURIComponent(item.host_name),
                   label: item.host_display_name,
 		  local_match: new Array( item.host_name, item.host_display_name, item.host_alias, item.host_address, item.host_address6 ),
                   status: item.status
@@ -83,7 +83,7 @@ $(document).ready(function() {
               $.each( data.status.services, function(index, item) {
                 output.push( {
                   category: 'Services ' + item.host_name,
-                  url: '@cgiurl@/extinfo.cgi?type=2&host=' + item.host_name + '&service=' + item.service_description,
+                  url: '@cgiurl@/extinfo.cgi?type=2&host=' + encodeURIComponent(item.host_name) + '&service=' + encodeURIComponent(item.service_description),
                   label: item.service_display_name,
                   local_match: new Array( item.service_description, item.service_display_name,
                                           item.host_name + ' ' + item.service_description,
@@ -101,7 +101,7 @@ $(document).ready(function() {
               $.each( data.status.hostgroups, function(index, item) {
                 output.push( {
                   category: 'Hostgroups',
-                  url: '@cgiurl@/status.cgi?style=overview&hostgroup=' + item.hostgroup_name,
+                  url: '@cgiurl@/status.cgi?style=overview&hostgroup=' + encodeURIComponent(item.hostgroup_name),
                   local_match: new Array( item.hostgroup_name, item.hostgroup_alias ),
                   label: item.hostgroup_alias,
                   status: "group"
@@ -114,7 +114,7 @@ $(document).ready(function() {
               $.each( data.status.servicegroups, function(index, item) {
                 output.push( {
                   category: 'Servicegroups',
-                  url: '@cgiurl@/status.cgi?style=overview&servicegroup=' + item.servicegroup_name,
+                  url: '@cgiurl@/status.cgi?style=overview&servicegroup=' + encodeURIComponent(item.servicegroup_name),
                   local_match: new Array( item.servicegroup_name, item.servicegroup_alias ),
                   label: item.servicegroup_alias,
                   status: "group"
