@@ -70,6 +70,7 @@ FIXES
 * idoutils: fix comments(history) UK misses object_id, not allowing the same comment on host AND service #4544 - MF
 * idoutils: fix contact_notificationcommands contain garbage and insert faulty command object ids (thx mhein/mjentsch) #4799 - MF
 * idoutils: deprecate clean_{config,realtime}_tables_on_core_startup #4791 - MF
+* idoutils: fix ido2db does not clear scheduleddowntime table on instance startup #4808 - MF
 
 * install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
 * install: fix ido2db initscript: kill fails on stop() on debian wheezy #4504 - MF
