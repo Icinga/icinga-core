@@ -68,8 +68,6 @@ CP=@CP@
 # External data I/O code and headers
 XSDC=@XSDC@
 XSDH=@XSDH@
-XCDC=@XCDC@
-XCDH=@XCDH@
 XRDC=@XRDC@
 XRDH=@XRDH@
 XODC=@XODC@
@@ -99,13 +97,6 @@ RDATALIBS=retention-base.o xretention-base.o
 RDATAHDRS=
 RDATADEPS=$(RDATALIBS)
 
-# Comment data
-#CDATALIBS=$(SRC_COMMON)/comments.c $(SRC_XDATA)/$(XCDC)
-#CDATAHDRS=$(SRC_INCLUDE)/comments.h $(SRC_XDATA)/$(XCDH)
-CDATALIBS=comments-base.o xcomments-base.o
-CDATAHDRS=
-CDATADEPS=$(CDATALIBS)
-
 # Status data
 #SDATALIBS=$(SRC_COMMON)/statusdata.c $(SRC_XDATA)/$(XSDC)
 #SDATAHDRS=$(SRC_INCLUDE)/statusdata.h $(SRC_XDATA)/$(XSDH)
@@ -121,8 +112,8 @@ PDATAHDRS=
 PDATADEPS=$(PDATALIBS)
 
 
-OBJS=$(BROKER_O) $(SRC_COMMON)/shared.o $(SRC_COMMON)/downtime.o checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
-OBJDEPS=$(ODATADEPS) $(ODATADEPS) $(RDATADEPS) $(CDATADEPS) $(SDATADEPS) $(PDATADEPS) $(BROKER_H)
+OBJS=$(BROKER_O) $(SRC_COMMON)/shared.o $(SRC_COMMON)/downtime.o $(SRC_COMMON)/comments.o checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
+OBJDEPS=$(ODATADEPS) $(ODATADEPS) $(RDATADEPS) $(SDATADEPS) $(PDATADEPS) $(BROKER_H)
 
 all: icinga icingastats
 
@@ -149,9 +140,6 @@ xstatusdata-base.o: $(SRC_XDATA)/$(XSDC) $(SRC_XDATA)/$(XSDH)
 
 comments-base.o: $(SRC_COMMON)/comments.c $(SRC_INCLUDE)/comments.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/comments.c
-
-xcomments-base.o: $(SRC_XDATA)/$(XCDC) $(SRC_XDATA)/$(XCDH)
-	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XCDC)
 
 downtime-base.o: $(SRC_COMMON)/downtime.c $(SRC_INCLUDE)/downtime.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/downtime.c

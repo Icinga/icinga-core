@@ -59,8 +59,6 @@ CGIS=avail.cgi cmd.cgi config.cgi extinfo.cgi history.cgi notifications.cgi outa
 # External data I/O code and headers
 XSDC=@XSDC@
 XSDH=@XSDH@
-XCDC=@XCDC@
-XCDH=@XCDH@
 XODC=@XODC@
 XODH=@XODH@
 

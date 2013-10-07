@@ -64,8 +64,6 @@ CP=@CP@
 # External data I/O code and headers
 XSDC=@XSDC@
 XSDH=@XSDH@
-XCDC=@XCDC@
-XCDH=@XCDH@
 XRDC=@XRDC@
 XRDH=@XRDH@
 XODC=@XODC@
