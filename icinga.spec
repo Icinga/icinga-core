@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 2
+%define revision 0.dev
 
 %define logmsg logger -t %{name}/rpm
 
@@ -52,7 +52,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.9.3
+Version: 1.10.0
 Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
