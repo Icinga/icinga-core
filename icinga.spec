@@ -99,19 +99,31 @@ which return the status of the checks to Icinga.
 Icinga is a fork of the nagios project.
 
 %package gui
-Summary: Web content for %{name}
+Summary: Classic UI for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
-%if "%{_vendor}" == "redhat"                                                    
+%if "%{_vendor}" == "redhat"
 Requires: httpd
 %endif
-%if "%{_vendor}" == "suse"                                                    
+%if "%{_vendor}" == "suse"
 Requires: apache2
 %endif
 Requires: %{name}-doc
+Requires: %{name}-classicui-config
 
 %description gui
-This package contains the webgui (html,css,cgi etc.) for %{name}
+This package contains the Classic UI for %{name}. Requires %{name}-doc
+for the documentation module.
+
+%package gui-config
+Summary: Classic UI configuration for %{name}
+Group: Applications/System
+Provides: %{name}-classicui-config
+Conflicts: icinga2-classicui-config
+
+%description gui-config
+This packages contains the classic ui configuration for %{name}.
+
 
 %package devel
 Summary: Provides include files that Icinga-related applications may compile against
@@ -523,10 +535,6 @@ fi
 %files gui
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING %{readme}
-%config(noreplace) %{apacheconfdir}/icinga.conf
-%config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
-%attr(0640,root,apache) %config(noreplace) %{_sysconfdir}/%{name}/passwd
 %{_libdir}/%{name}/cgi/avail.cgi
 %{_libdir}/%{name}/cgi/cmd.cgi
 %{_libdir}/%{name}/cgi/config.cgi
@@ -556,6 +564,15 @@ fi
 %attr(2775,icinga,icingacmd) %dir %{logdir}/gui
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
+
+%files gui-config
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING %{readme}
+%config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
+%config(noreplace) %{apacheconfdir}/icinga.conf
+%attr(0640,root,apache) %config(noreplace) %{_sysconfdir}/%{name}/passwd
+
 
 %files devel
 %defattr(-,root,root)
