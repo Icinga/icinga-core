@@ -101,7 +101,6 @@ Icinga is a fork of the nagios project.
 %package gui
 Summary: Classic UI for %{name}
 Group: Applications/System
-Requires: %{name} = %{version}-%{release}
 %if "%{_vendor}" == "redhat"
 Requires: httpd
 %endif
