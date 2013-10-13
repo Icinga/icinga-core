@@ -570,7 +570,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
 %config(noreplace) %{apacheconfdir}/icinga.conf
-%attr(0640,root,apache) %config(noreplace) %{_sysconfdir}/%{name}/passwd
+%attr(0640,root,%{apachegroup}) %config(noreplace) %{_sysconfdir}/%{name}/passwd
 
 
 %files devel
