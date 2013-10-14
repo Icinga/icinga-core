@@ -14,24 +14,26 @@
 %define spooldir %{_localstatedir}/spool/%{name}
 %define plugindir %{_libdir}/nagios/plugins
 
-%if "%{_vendor}" == "suse"                                                      
-%define apacheconfdir  %{_sysconfdir}/apache2/conf.d                            
-%define apacheuser wwwrun                                                       
-%define apachegroup www                                                         
-%define extcmdfile %{_localstatedir}/icinga/rw/icinga.cmd                       
+%if "%{_vendor}" == "suse"
+%define apacheuser wwwrun
+%define apachegroup www
+%define apachename apache2
+%define apacheconfdir  %{_sysconfdir}/%{apachename}/conf.d
+%define extcmdfile %{_localstatedir}/icinga/rw/icinga.cmd
 %define extcmdfiledir %{_localstatedir}/icinga/rw
 %define readme README.SUSE
 %define readmeido README.SUSE.idoutils
-%endif                                                                          
-%if "%{_vendor}" == "redhat"                                                    
-%define apacheconfdir %{_sysconfdir}/httpd/conf.d                               
-%define apacheuser apache                                                       
-%define apachegroup apache                                                      
-%define extcmdfile %{_localstatedir}/spool/icinga/cmd/icinga.cmd                
+%endif
+%if "%{_vendor}" == "redhat"
+%define apachename httpd
+%define apacheconfdir %{_sysconfdir}/%{apachename}/conf.d
+%define apacheuser apache
+%define apachegroup apache
+%define extcmdfile %{_localstatedir}/spool/icinga/cmd/icinga.cmd
 %define extcmdfiledir %{_localstatedir}/icinga/cmd
 %define readme README.RHEL
 %define readmeido README.RHEL.idoutils
-%endif 
+%endif
 
 # Systemd support for Fedora >= 15
 %if 0%{?fedora} >= 15
@@ -75,11 +77,8 @@ BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
-%if "%{_vendor}" == "redhat"                                                    
-BuildRequires: httpd
-%endif
-%if "%{_vendor}" == "suse"                                                    
-BuildRequires: apache2
+BuildRequires: %{apachename}
+%if "%{_vendor}" == "suse"
 BuildRequires: libopenssl-devel
 %endif
 
@@ -101,12 +100,7 @@ Icinga is a fork of the nagios project.
 %package gui
 Summary: Classic UI for %{name}
 Group: Applications/System
-%if "%{_vendor}" == "redhat"
-Requires: httpd
-%endif
-%if "%{_vendor}" == "suse"
-Requires: apache2
-%endif
+Requires: %{apachename}
 Requires: %{name}-doc
 Requires: %{name}-classicui-config
 
@@ -117,6 +111,7 @@ for the documentation module.
 %package gui-config
 Summary: Classic UI configuration for %{name}
 Group: Applications/System
+Requires: %{apachename}
 Provides: %{name}-classicui-config
 Conflicts: icinga2-classicui-config
 
@@ -135,7 +130,7 @@ may compile against.
 
 %package idoutils
 Summary: transitional package, use idoutils-libdbi-* instead
-Group: Applications/System 
+Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-idoutils-libdbi-mysql
 
@@ -307,7 +302,7 @@ fi
 %endif
 
 # restart httpd for auth change
-/sbin/service httpd condrestart > /dev/null 2>&1 || :
+/sbin/service %{apachename} condrestart > /dev/null 2>&1 || :
 
 # if this is an upgrade, and we found an old retention.dat, copy it to new location before starting icinga
 if [ $1 -eq 2 ]
@@ -366,7 +361,7 @@ fi
 %endif
 
 %postun
-/sbin/service httpd condrestart > /dev/null 2>&1 || :
+/sbin/service %{apachename} condrestart > /dev/null 2>&1 || :
 
 %pre gui
 # Add apacheuser in the icingacmd group
