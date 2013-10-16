@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>6.5. Upgrading Icinga-Web and Icinga-Web Database</title>
+<title>6.5. Upgrading Icinga Web and Icinga Web Database</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga-Web Frontend">
-<link rel="next" href="icinga-web-config.html" title="6.6. Configuration Overview of Icinga-Web">
+<link rel="prev" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga Web Frontend">
+<link rel="next" href="icinga-web-config.html" title="6.6. Configuration Overview of Icinga Web">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">6.5. Upgrading Icinga-Web and Icinga-Web Database</th></tr>
+<tr><th colspan="3" align="center">6.5. Upgrading Icinga Web and Icinga Web Database</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="icinga-web-scratch.html">Prev</a> </td>
@@ -26,30 +26,30 @@
 </table>
 <hr>
 </div>
-<div class="section" title="6.5. Upgrading Icinga-Web and Icinga-Web Database">
+<div class="section" title="6.5. Upgrading Icinga Web and Icinga Web Database">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="upgrading_icingaweb"></a>6.5. Upgrading Icinga-Web and Icinga-Web Database</h2></div></div></div>
+<a name="upgrading_icingaweb"></a>6.5. Upgrading Icinga Web and Icinga Web Database</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">6.5.1. <a href="upgrading_icingaweb.html#upgradingicingaweb">Upgrading Icinga-Web</a></span></dt>
+<dt><span class="section">6.5.1. <a href="upgrading_icingaweb.html#upgradingicingaweb">Upgrading Icinga Web</a></span></dt>
 <dt><span class="section">6.5.2. <a href="upgrading_icingaweb.html#upgrade">The Upgrade</a></span></dt>
-<dt><span class="section">6.5.3. <a href="upgrading_icingaweb.html#upgradedatabase">Upgrading the Icinga-Web Database</a></span></dt>
+<dt><span class="section">6.5.3. <a href="upgrading_icingaweb.html#upgradedatabase">Upgrading the Icinga Web Database</a></span></dt>
 </dl></div>
   
 
-  <div class="section" title="6.5.1. Upgrading Icinga-Web">
+  <div class="section" title="6.5.1. Upgrading Icinga Web">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgradingicingaweb"></a>6.5.1. Upgrading Icinga-Web</h3></div></div></div>
+<a name="upgradingicingaweb"></a>6.5.1. Upgrading Icinga Web</h3></div></div></div>
     
 
-    <p>If there's a new Icinga-Web version available on http://www.icinga.org/ you should consider updating. Newer versions contain bugfixes, minor
-    or major, which makes it even more important to get the latest and the greatest. If you already installed Icinga-Web; using the
+    <p>If there's a new Icinga Web version available on https://www.icinga.org/ you should consider updating. Newer versions contain bugfixes, minor
+    or major, which makes it even more important to get the latest and the greatest. If you already installed Icinga Web; using the
     installing guide it should be rather easy to install newer version.</p>
 
-    <p>Make sure you'll have a safe backup of your Icinga-Web installation and your configs (if you stored your customised configuration
+    <p>Make sure you'll have a safe backup of your Icinga Web installation and your configs (if you stored your customised configuration
     in *.site.xml- Files, they won't be overwritten during the upgrade process!). If anything goes wrong you can restore your old setup
     rather easy.</p>
 
-    <p>Regular updates of Icinga-Web are possible by just by re-installing Icinga-Web. Please keep in mind that <code class="code">configure</code>
+    <p>Regular updates of Icinga Web are possible by just by re-installing Icinga Web. Please keep in mind that <code class="code">configure</code>
     requires the same parameters as before - look it up in <code class="code">config.log</code> and save that in a safe location.</p>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -58,7 +58,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Starting with 1.9, the tackle cronk in Icinga-Web is deprecated.</p>
+      <p>Starting with 1.9, the tackle cronk in Icinga Web is deprecated.</p>
     </td></tr>
 </table></div>
 
@@ -73,7 +73,7 @@
       <p>Please update your Apache configuration <code class="code">icinga-web.conf</code> (etc/conf.d/icinga-web.conf in the source tarball) or
       run <code class="code">make install-apache-config</code>.</p>
       <p>When updating an existing installation the old <code class="code">.htaccess</code> files in <code class="code">/usr/local/icinga-web/pub/</code>
-      and <code class="code">/usr/local/icinga-web/pub/soap/</code> (or where you installed Icinga-Web) should be removed.</p>
+      and <code class="code">/usr/local/icinga-web/pub/soap/</code> (or where you installed Icinga Web) should be removed.</p>
     </td></tr>
 </table></div>
 
@@ -165,7 +165,7 @@
 
     <pre class="screen"> #&gt; cd icinga-web-1.10.0</pre>
 
-    <p>Icinga-Web provides several configure options e.g.</p>
+    <p>Icinga Web provides several configure options e.g.</p>
 
     <pre class="screen"> #&gt; ./configure 
                 --prefix=/usr/local/icinga-web 
@@ -209,11 +209,11 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Using no options the installer expects the Icinga-API to be found at /usr/local/icinga/share/icinga-api.</p>
+      <p>Using no options the installer expects the Icinga API to be found at /usr/local/icinga/share/icinga-api.</p>
     </td></tr>
 </table></div>
 
-    <p>Per default the Icinga-Web will be updated to <code class="filename">/usr/local/icinga-web</code> using:</p>
+    <p>Per default the Icinga Web will be updated to <code class="filename">/usr/local/icinga-web</code> using:</p>
 
     <pre class="screen"> #&gt; ./configure
  #&gt; make upgrade</pre>
@@ -237,13 +237,13 @@
     <p>Any errors? Take a look <a class="link" href="icinga-web-scratch.html#webtroubleshooting" title="6.4.6. Test &amp; Errors?"> here.</a></p>
   </div>
 
-  <div class="section" title="6.5.3. Upgrading the Icinga-Web Database">
+  <div class="section" title="6.5.3. Upgrading the Icinga Web Database">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgradedatabase"></a>6.5.3. Upgrading the Icinga-Web Database</h3></div></div></div>
+<a name="upgradedatabase"></a>6.5.3. Upgrading the Icinga Web Database</h3></div></div></div>
     
 
     <p>This is mandatory if there were upgrades to the schema. If there are no schema upgrade sqls to the current released version
-    shipped, there's nothing more to do. If you are upgrading from an older Icinga-Web database version you also need to apply those fixes
+    shipped, there's nothing more to do. If you are upgrading from an older Icinga Web database version you also need to apply those fixes
     manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added those modifications to the
     install routine.</p>
 
@@ -281,7 +281,7 @@
         <p>Backup your current database before upgrading!</p>
       </li>
 <li class="listitem">
-        <p>Check current Icinga-Web database version and the target version. Check if there are any version in between and upgrade
+        <p>Check current Icinga Web database version and the target version. Check if there are any version in between and upgrade
         incremental if necessary.</p>
       </li>
 <li class="listitem">
@@ -308,13 +308,13 @@
 
     <p>That's all.</p>
 
-    <a class="indexterm" name="idp188733504"></a>
+    <a class="indexterm" name="idp189141856"></a>
 
-    <a class="indexterm" name="idp188736544"></a>
+    <a class="indexterm" name="idp189144896"></a>
 
-    <a class="indexterm" name="idp188738160"></a>
+    <a class="indexterm" name="idp189146512"></a>
 
-    <a class="indexterm" name="idp188739328"></a>
+    <a class="indexterm" name="idp189147680"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -328,12 +328,12 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.4. Installation of the Icinga-Web Frontend </td>
+<td width="40%" align="left" valign="top">6.4. Installation of the Icinga Web Frontend </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 6.6. Configuration Overview of Icinga-Web</td>
+<td width="40%" align="right" valign="top"> 6.6. Configuration Overview of Icinga Web</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

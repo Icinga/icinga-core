@@ -44,7 +44,7 @@
   <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.8. More information">Changelog</a> as well if you are
   missing something.</p>
 
-  <a class="indexterm" name="idp176435328"></a>
+  <a class="indexterm" name="idp176740672"></a>
 
   <div class="section" title="1.2.1. CHANGES">
 <div class="titlepage"><div><div><h3 class="title">
@@ -53,10 +53,28 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>IDOUtils: ido2db.cfg enable_sla is now deprecated! #3450</p>
+        <p>Icinga Classic UI adds on-demand filter popup and livesearch for better usability #852 #1657</p>
       </li>
 <li class="listitem">
-        <p>Icinga-Web: tackle cronk is now deprecated</p>
+        <p>custom vars are now visible in Icinga Classic UI. Filter them using 'exclude_customvar_{name,value}' #4390</p>
+      </li>
+<li class="listitem">
+        <p>remove slahistory, timedevents functionality #4363 #4482 </p>
+      </li>
+<li class="listitem">
+        <p>IDOUtils clean_{config,realtime}_tables_on_core_startup config options DEPRECATED #4791 </p>
+      </li>
+<li class="listitem">
+        <p>External Business Process Cronk removed from Icinga Web tarball #4818</p>
+      </li>
+<li class="listitem">
+        <p>All Flash components removed from the Icinga Web tarball. (#3474 #4806)</p>
+      </li>
+<li class="listitem">
+        <p>Icinga Web 1.10 requires an IDOUtils schema version of &gt;= 1.10</p>
+      </li>
+<li class="listitem">
+        <p>Icinga Web and IDOUtils schema upgrades to 1.10 required.</p>
       </li>
 </ul></div>
   </div>
@@ -68,25 +86,19 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>increase core performance on config read with hash compare #3722 </p>
+        <p>allow exclude (!) to work for regexp matches as well #3720 </p>
       </li>
 <li class="listitem">
-	      <p>keep logfile open, reduce open/close performance decreases #3390 </p>
+	      <p>add check source to checkresult/status data #4709  </p>
       </li>
 <li class="listitem">
-        <p>enhance performance on illegal macro and host-service relation processing #3389 #3820 </p>
+        <p>multiple idomod modules: only first gets data from registered callback functions #4199  </p>
       </li>
 <li class="listitem">
-	      <p>add skipping of status.dat/objects.cache write by setting to /dev/null #3819 </p>
+        <p>add manpages from debian upstream #4055  </p>
       </li>
 <li class="listitem">
-        <p>fix host_check last_check == next_check wrong in scheduling queue #2195 </p>
-      </li>
-<li class="listitem">
-        <p>fix triggered downtimes for child hosts are missing after restart #3390 </p>
-      </li>
-<li class="listitem">
-        <p>fix unable to exclude hostgroups when using nested hostgroups #2619 </p>
+        <p>add vim highlight script for Icinga syntax #4150  </p>
       </li>
 </ul></div>
   </div>
@@ -98,25 +110,22 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-	      <p>increase performance with hash compare on host/service show/filter #3722 </p>
+        <p>add display filter modification for status.cgi #852  </p>
       </li>
 <li class="listitem">
-	      <p>add date/time selector to logfile navigation #3168 </p>
+        <p>added live search #1657  </p>
       </li>
 <li class="listitem">
-        <p>classicui can be installed standalone (icinga2 compat) #3869 </p>
+        <p>show custom variables in extended info #4390  </p>
       </li>
 <li class="listitem">
-        <p>add config options for acknowledgement notifications and expiry #3467 #3476 </p>
+	      <p>allow to exclude custom variable name/value based on pattern #4390  </p>
       </li>
 <li class="listitem">
-        <p>add 'executed command' to extinfo.cfg linking to command expander #3901 </p>
+        <p>added option for partial servicegroups #2740  </p>
       </li>
 <li class="listitem">
-        <p>add process status to json response #3172 </p>
-      </li>
-<li class="listitem">
-        <p>add lighttp config examples #2253 </p>
+        <p>show check source in extinfo #4709  </p>
       </li>
 </ul></div>
   </div>
@@ -128,19 +137,16 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>use transactions for large object dumps #3527 </p>
+        <p>add a table trimming option for 'downtime history' #3989  </p>
       </li>
 <li class="listitem">
-        <p>add socket queue proxy (reduce core reload time significanlty) #3533 </p>
+        <p>allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479  </p>
       </li>
 <li class="listitem">
-        <p>oracle: change output columns to clob #3412 </p>
+	      <p>add object_id (host, service) to logentries status updates/state changes #4754  </p>
       </li>
 <li class="listitem">
-	      <p>fix memory leaks in idomod/ido2db #3749 </p>
-      </li>
-<li class="listitem">
-	      <p>add workaround fix for num_rows_affected broken in libdbi/mariadb, returned ids are 0 #3728 </p>
+        <p>remove slahistory, timedevents functionality #4363 #4482  </p>
       </li>
 </ul></div>
   </div>
@@ -152,25 +158,20 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Revamped credential system, better grouping of permissions and performance #3715</p>
+        <p>menu categories split and layout changed #4807 #4691 </p>
       </li>
 <li class="listitem">
-        <p>New and smaller Cronk menu design, showing the cronks as a list #3396</p>
+        <p>all problem cronks for hosts, services and split view #4167</p>
       </li>
 <li class="listitem">
-        <p>New filtering window which allows detailed and combined filters #3268</p>
+	      <p>instance cronk is more useful and disable all notifications
+	        with expire time #3956 #3888</p>
       </li>
 <li class="listitem">
-        <p>Many small interface improvements #3511 #3430 #3896</p>
+	      <p>delete all comments of a host/service #2636 </p>
       </li>
 <li class="listitem">
-        <p>New Apache configuration, making the .htaccess files obsolete #2759</p>
-      </li>
-<li class="listitem">
-	      <p>Search in admin user- / group dialog #3909</p>
-      </li>
-<li class="listitem">
-        <p>PENDING are now shown for any new host or service in the database #2602 #3844</p>
+	      <p>add state_type shown in problems to all grids #3529 </p>
       </li>
 </ul></div>
   </div>
@@ -180,23 +181,9 @@
 <a name="reporting"></a>1.2.6. Icinga-Reporting</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-	      <p>add AvailReportParser into contrib/ (standalone) #3978 </p>
-      </li>
-<li class="listitem">
-        <p>reorganize directory structure #3742 </p>
-      </li>
-<li class="listitem">
-        <p>fixed image expression in pnp4nagios template #3693 </p>
-      </li>
-<li class="listitem">
-        <p>fixed state replacement in morning report #3752 </p>
-      </li>
-<li class="listitem">
-        <p>fixed rounding error with small numbers #3942 </p>
-      </li>
-</ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>minor sql fixes for templates in postgresql #1880</p>
+      </li></ul></div>
   </div>
 
   <div class="section" title="1.2.7. Docs">
@@ -206,25 +193,25 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-	      <p>add upgrade/troubleshooting notes about invisible icinga web cronks/modules after upgrade #3939 </p>
+        <p>add samples files for reference #4422 </p>
       </li>
 <li class="listitem">
-        <p>make install-webconf-auth installs htpasswd.user with icingaadmin credentials #3964 </p>
+        <p>update pnp screenshots, explain icinga web expander icon #4527 #4288 </p>
       </li>
 <li class="listitem">
-        <p>icinga web 1.9: new menu style (smaller icons) #3944 </p>
+        <p>add hint to views.xml config file #4690 </p>
       </li>
 <li class="listitem">
-        <p>icinga web 1.9: new filtering methods #3947 </p>
+        <p>add "show_partial_servicegroups" to cgi.cfg #4730 </p>
       </li>
 <li class="listitem">
-        <p>add userpreferences.xml to icinga web configs #3991 </p>
+        <p>add "dump_customvar_status" to idomod.cfg #4705 </p>
       </li>
 <li class="listitem">
-        <p>add web gui comparison to beginners #3907</p>
+        <p>remove enable_sla, timedevent* from idoutils docs #4487 </p>
       </li>
 <li class="listitem">
-        <p>middle-clicking on TOC links doesn't open pages in new tab #3561 </p>
+        <p>update icinga web troubleshooting for timezones #4554 </p>
       </li>
 </ul></div>
   </div>
@@ -238,13 +225,13 @@
 
     <p>Should you find any issues, please report them to one of the following links:</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga Reporting</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
   </div>
 </div>
 <div class="navfooter">
@@ -264,6 +251,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

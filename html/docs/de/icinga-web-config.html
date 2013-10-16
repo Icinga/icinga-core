@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>6.5. Konfigurationsübersicht Icinga-Web</title>
+<title>6.5. Konfigurationsübersicht Icinga Web</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="icinga-web-scratch.html" title="6.4. Installation des Icinga-Web Frontend">
-<link rel="next" href="upgrading_icingaweb.html" title="6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank">
+<link rel="prev" href="icinga-web-scratch.html" title="6.4. Installation des Icinga Web Frontend">
+<link rel="next" href="upgrading_icingaweb.html" title="6.6. Aktualisierung von Icinga Web und Icinga Web Datenbank">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">6.5. Konfigurationsübersicht Icinga-Web</th></tr>
+<tr><th colspan="3" align="center">6.5. Konfigurationsübersicht Icinga Web</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="icinga-web-scratch.html">Zurück</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="6.5. Konfigurationsübersicht Icinga-Web">
+<div class="section" title="6.5. Konfigurationsübersicht Icinga Web">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-config"></a>6.5. Konfigurationsübersicht Icinga-Web</h2></div></div></div>
+<a name="icinga-web-config"></a>6.5. Konfigurationsübersicht Icinga Web</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">6.5.1. <a href="icinga-web-config.html#configfilelocation">Wo sind meine Konfigurationsdateien?</a></span></dt>
 <dt><span class="section">6.5.2. <a href="icinga-web-config.html#configfileindex">Index</a></span></dt>
@@ -45,18 +45,18 @@
     
 
     <p>Mit Icinga 1.7 hat sich der Platz von einigen Konfigurationsdateien erneut geändert, um die Pflege für Benutzer,
-    Packetierer und Entwickler gleichermaßen zu vereinfachen. Die von Icinga-Web bereitgestellten Konfigurationsdateien stehen weiterhin
+    Packetierer und Entwickler gleichermaßen zu vereinfachen. Die von Icinga Web bereitgestellten Konfigurationsdateien stehen weiterhin
     unter <code class="filename">app/config</code>, aber Site-spezifische, die vorher im gleichen Ordner zu finden waren, sind nun in den
     Web-Konfigurationsordner gewandert (per Default <code class="filename">etc/conf.d</code>), der bei Aktualisierungen nicht überschrieben wird. Der
     Ordner kann während der Installation mit Hilfe von --with-conf-dir (bzw. --with-conf-folder Icinga &lt;= 1.6.x) geändert werden.
     Bitte beachten Sie, dass sich - bedingt durch den neuen Ablageort - der Dateiname geändert hat. Die Kennzeichnung "site." ist entfallen,
     so dass die Namen nun identisch zu denen in <code class="filename">app/config</code> sind.</p>
 
-    <p>Icinga-Web arbeitet mit Modulen und jedes Modul hat seine eigene Konfiguration. Das gilt ebenfalls für die Libraries. Wenn Sie
+    <p>Icinga Web arbeitet mit Modulen und jedes Modul hat seine eigene Konfiguration. Das gilt ebenfalls für die Libraries. Wenn Sie
     weitere Informationen zu den Cronk-Libraries benötigen, schauen Sie in <code class="filename">app/modules/Cronks/lib</code> (für js in
     <code class="filename">app/modules/Cronks/lib/js</code>).</p>
 
-    <p>Ein Modul von Icinga-Web ist wie folgt aufgebaut:</p>
+    <p>Ein Modul von Icinga Web ist wie folgt aufgebaut:</p>
 <pre class="programlisting"> tree -d -L 1 app/modules/AppKit/
  app/modules/AppKit/
  |-- actions
@@ -73,7 +73,7 @@
 <a name="configfileindex"></a>6.5.2. Index</h3></div></div></div>
     
 
-    <table border="1" id="idp188663776">
+    <table border="1" id="idp188604624">
       <caption>Tabelle 6.1. Konfigurationsdateien</caption>
 
       <tr>
@@ -239,6 +239,9 @@
           </li>
 <li class="listitem">
             <p><a class="link" href="icinga-web-config.html#configweb-translation">translation.xml</a></p>
+          </li>
+<li class="listitem">
+            <p><a class="link" href="icinga-web-config.html#configweb-views">views.xml</a></p>
           </li>
 </ul></div>
       </li>
@@ -484,13 +487,13 @@
       </li>
 <li class="listitem">
         <p><a name="configweb-databases"></a><code class="filename">databases.xml</code> - enthält die Verbindungseinstellungen für Ihre
-        Icinga-Web-Datenbank</p>
+        Icinga Web-Datenbank</p>
 
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
             <p><a name="configweb-general"></a> <span class="emphasis"><em>Allgemeine Einstellungen</em></span></p>
 
-            <p>Die folgenden Einstellungen gelten für jede in Icinga-Web definierte Datenbank.</p>
+            <p>Die folgenden Einstellungen gelten für jede in Icinga Web definierte Datenbank.</p>
 
             <p>Wenn Sie sich die Standarddefinition der icinga_web-Datenbank ansehen, dann finden Sie dort die meisten Einstellungen
             einer generischen Datenbankverbindung:</p>
@@ -525,7 +528,7 @@
    ...
 &lt;/db:database&gt;</pre>
 
-                <p>Mit dem db:database-Tag informieren Sie Icinga-Web, dass es sich um eine Datenbankdefinition handelt. Dieses Tag muss
+                <p>Mit dem db:database-Tag informieren Sie Icinga Web, dass es sich um eine Datenbankdefinition handelt. Dieses Tag muss
                 zwei Attribute haben:</p>
 
                 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -826,7 +829,7 @@
 
         <p>Beispiel: Ändern von session_cookie_lifetime</p>
 
-        <p>Die Session Lifetime ist die Zeit in Sekunden, bis die Icinga-Web-Session abläuft. Sie kann auf globaler Ebene in der Datei
+        <p>Die Session Lifetime ist die Zeit in Sekunden, bis die Icinga Web-Session abläuft. Sie kann auf globaler Ebene in der Datei
         <code class="filename">app/config/factories.xml</code> konfiguriert werden.</p>
 
         <pre class="programlisting">&lt;ae:parameter name="session_cookie_lifetime"&gt;3600&lt;ae:parameter&gt;</pre>
@@ -836,13 +839,13 @@
       </li>
 <li class="listitem">
         <p><a name="configweb-logging"></a><code class="filename">logging.xml</code> - enthält die Verbindungsinformationen für Ihr
-        Icinga-Web</p>
+        Icinga Web</p>
       </li>
 <li class="listitem">
         <p><a name="configweb-settings"></a><code class="filename">settings.xml</code> - Icinga-Einstellungen, z.B. Version und Präfixe /
         Versionsname</p>
 
-        <p>enthält auch <code class="filename">icinga.xml</code> (enthält die Konfiguration für Ihr Icinga-Web ROOT-Verzeichnis und den Icinga-Web
+        <p>enthält auch <code class="filename">icinga.xml</code> (enthält die Konfiguration für Ihr Icinga Web ROOT-Verzeichnis und den Icinga-Web
         Pfad)</p>
       </li>
 <li class="listitem">
@@ -854,16 +857,20 @@
         Fehlermeldung ähnlich der folgenden:</p>
 
         <div class="figure">
-<a name="idp188843104"></a><p class="title"><b>Abbildung 6.1. Icinga-Web instance down</b></p>
+<a name="idp188785248"></a><p class="title"><b>Abbildung 6.1. Icinga Web instance down</b></p>
 <div class="figure-contents">
           
 
-          <div class="mediaobject"><img src="../images/icinga-web-instance-down.png" alt="Icinga-Web instance down"></div>
+          <div class="mediaobject"><img src="../images/icinga-web-instance-down.png" alt="Icinga Web instance down"></div>
         </div>
 </div>
 <br class="figure-break">
 
         <p>Setzen Sie die Direktive auf einen gültigen Wert (z.B. 'Europe/Berlin').</p>
+      </li>
+<li class="listitem">
+        <p><a name="configweb-views"></a><code class="filename">views.xml</code> - erlaubt dem Benutzer das Hinzufügen/Ändern von
+        API-Ansichten.</p>
       </li>
 </ul></div>
   </div>
@@ -881,9 +888,9 @@
         sicher, dass der Pfad korrekt ist.</p>
       </li></ul></div>
 
-    <p><a name="configweb-timezone"></a> <span class="bold"><strong>Icinga-Web-Zeitzone</strong></span></p>
+    <p><a name="configweb-timezone"></a> <span class="bold"><strong>Icinga Web-Zeitzone</strong></span></p>
 
-    <p>Wenn die Zeitzone von Icinga-Web von Ihrer lokalen Zeitzone abweicht, überprüfen Sie bitte den Parameter "date.timezone" in Ihrer
+    <p>Wenn die Zeitzone von Icinga Web von Ihrer lokalen Zeitzone abweicht, überprüfen Sie bitte den Parameter "date.timezone" in Ihrer
     <code class="filename">php.ini</code>. Alternativ überprüfen Sie den Eintrag in <code class="filename">app/modules/AppKit/config/module.xml</code> (z.B.
     'Europe/Berlin')</p>
 
@@ -1012,17 +1019,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
     <p>Benötigen Sie weitere Informationen? Schauen Sie bitte in unserem<a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top"> Development Wiki.</a></p>
 
-    <a class="indexterm" name="idp188886288"></a>
+    <a class="indexterm" name="idp188830144"></a>
 
-    <a class="indexterm" name="idp188885008"></a>
+    <a class="indexterm" name="idp188829168"></a>
 
-    <a class="indexterm" name="idp188888528"></a>
+    <a class="indexterm" name="idp188832304"></a>
 
-    <a class="indexterm" name="idp188889808"></a>
+    <a class="indexterm" name="idp188833712"></a>
 
-    <a class="indexterm" name="idp188891056"></a>
+    <a class="indexterm" name="idp188834928"></a>
 
-    <a class="indexterm" name="idp188892784"></a>
+    <a class="indexterm" name="idp188829296"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1036,12 +1043,12 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.4. Installation des Icinga-Web Frontend </td>
+<td width="40%" align="left" valign="top">6.4. Installation des Icinga Web Frontend </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank</td>
+<td width="40%" align="right" valign="top"> 6.6. Aktualisierung von Icinga Web und Icinga Web Datenbank</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

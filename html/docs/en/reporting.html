@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>9.5. Installation of the Icinga-Reporting with JasperReports Server</title>
+<title>9.5. Installation of the Icinga Reporting with JasperReports Server</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">9.5. Installation of the Icinga-Reporting with JasperReports Server</th></tr>
+<tr><th colspan="3" align="center">9.5. Installation of the Icinga Reporting with JasperReports Server</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="9.5. Installation of the Icinga-Reporting with JasperReports Server">
+<div class="section" title="9.5. Installation of the Icinga Reporting with JasperReports Server">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="reporting"></a>9.5. Installation of the Icinga-Reporting with JasperReports Server</h2></div></div></div>
+<a name="reporting"></a>9.5. Installation of the Icinga Reporting with JasperReports Server</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">9.5.1. <a href="reporting.html#introduction">Introduction</a></span></dt>
 <dt><span class="section">9.5.2. <a href="reporting.html#officialdocs">Official Docs</a></span></dt>
@@ -45,10 +45,10 @@
 <a name="introduction"></a>9.5.1. Introduction</h3></div></div></div>
     
 
-    <p>The Icinga-Reporting is based on the IDOUtils backend and just like the Icinga-Core, it will support all major database
+    <p>The Icinga Reporting is based on the IDOUtils backend and just like the Icinga Core, it will support all major database
     platforms.</p>
 
-    <p>Here we'll give you some instructions on how to install the Icinga-Reporting with JasperReports Server.</p>
+    <p>Here we'll give you some instructions on how to install the Icinga Reporting with JasperReports Server.</p>
   </div>
 
   <div class="section" title="9.5.2. Official Docs">
@@ -77,13 +77,13 @@
 </tr>
 <tr><td align="left" valign="top">
           <p>Starting with Icinga 1.8 there is a database function providing all needed sla-informations. This function needs to
-          be imported into your existing IDOUtils database  additional to the Icinga-Reporting package.</p>
+          be imported into your existing IDOUtils database  additional to the Icinga Reporting package.</p>
         </td></tr>
 </table></div>
 
         <p>MySQL</p>
 
-        <pre class="screen">#&gt; /usr/bin/mysql icinga &lt; icinga-reports-1.9.0/db/icinga/mysql/availability.sql</pre>
+        <pre class="screen">#&gt; /usr/bin/mysql icinga &lt; icinga-reports-1.10.0/db/icinga/mysql/availability.sql</pre>
 
         <p>Please make sure your database user (here icinga@localhost) has the correct GRANT for EXECUTE. </p>
 <pre class="screen">#&gt; /usr/bin/mysql -u root -p &lt;password&gt; icinga
@@ -124,8 +124,8 @@ quit</pre>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>The new JasperReports Server 5.0.0 is only supported starting with Icinga-Reporting 1.9. If you want to use an older version of the
-          Icinga-Reporting- package, please use at least JasperReports Server 4.5.0.</p>
+          <p>The new JasperReports Server 5.0.0 is only supported starting with Icinga Reporting 1.9. If you want to use an older version of the
+          Icinga Reporting- package, please use at least JasperReports Server 4.5.0.</p>
         </td></tr>
 </table></div>
 
@@ -191,9 +191,9 @@ quit</pre>
 
         <p>Download from sourceforge and extract. If you have an issue which might be solved in the developer version then get the latest
         developer snapshot from git </p>
-<pre class="screen"> $&gt; wget http://sourceforge.net/projects/icinga/files/icinga-reporting/1.9.0/icinga-reports-1.9.0.tar.gz; \
-    tar xzf icinga-reports-1.9.0.tar.gz; \
-    cd icinga-reports-1.9.0</pre>
+<pre class="screen"> $&gt; wget http://sourceforge.net/projects/icinga/files/icinga-reporting/1.10.0/icinga-reports-1.10.0.tar.gz; \
+    tar xzf icinga-reports-1.10.0.tar.gz; \
+    cd icinga-reports-1.10.0</pre>
 <p>or </p>
 <pre class="screen"> $&gt; git clone git://git.icinga.org/icinga-reports.git ; \
     cd icinga-reports</pre>
@@ -219,7 +219,7 @@ quit</pre>
 <li class="listitem">
             <p>MySQL Connector</p>
 
-            <p>JasperReports Server natively ships with the PostgreSQL Connector, but if you require MySQL, the Icinga-Reporting package
+            <p>JasperReports Server natively ships with the PostgreSQL Connector, but if you require MySQL, the Icinga Reporting package
             provides one for install.</p>
 <pre class="screen"> #&gt; make install-mysql-connector</pre>
 <p>Restart the Tomcat server</p>
@@ -257,7 +257,7 @@ quit</pre>
         <p>Go to <code class="uri">/root/Icinga/datasource</code> (be sure that Refine contains "changed by anyone").</p>
 
     <div class="figure">
-<a name="idp192347536"></a><p class="title"><b>Figure 9.1. Icinga reporting datasource IDO</b></p>
+<a name="idp192758624"></a><p class="title"><b>Figure 9.1. Icinga reporting datasource IDO</b></p>
 <div class="figure-contents">
       
 
@@ -271,7 +271,7 @@ quit</pre>
 
         <div class="itemizedlist">
 <div class="figure">
-<a name="idp192351840"></a><p class="title"><b>Figure 9.2. Icinga reporting datasource ido mysql</b></p>
+<a name="idp192762960"></a><p class="title"><b>Figure 9.2. Icinga reporting datasource ido mysql</b></p>
 <div class="figure-contents">
       
 
@@ -307,7 +307,7 @@ quit</pre>
     <p>Verify that the reports are available and working.</p>
 
     <div class="figure">
-<a name="idp192358688"></a><p class="title"><b>Figure 9.3. Icinga reporting</b></p>
+<a name="idp192769744"></a><p class="title"><b>Figure 9.3. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
@@ -346,7 +346,7 @@ quit</pre>
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp192367808"></a>
+    <a class="indexterm" name="idp192778928"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -366,6 +366,6 @@ quit</pre>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

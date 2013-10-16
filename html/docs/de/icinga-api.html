@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>11.3. Keine Icinga-API mehr zu installieren</title>
+<title>11.3. Keine Icinga API mehr zu installieren</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
 <link rel="prev" href="epnplugins.html" title="11.2. Entwickeln von Plugins für die Nutzung mit Embedded Perl">
-<link rel="next" href="icinga-web-api.html" title="11.4. Die Icinga-Web REST API">
+<link rel="next" href="icinga-web-api.html" title="11.4. Die Icinga Web REST API">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">11.3. Keine Icinga-API mehr zu installieren</th></tr>
+<tr><th colspan="3" align="center">11.3. Keine Icinga API mehr zu installieren</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="epnplugins.html">Zurück</a> </td>
@@ -26,13 +26,13 @@
 </table>
 <hr>
 </div>
-<div class="section" title="11.3. Keine Icinga-API mehr zu installieren">
+<div class="section" title="11.3. Keine Icinga API mehr zu installieren">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-api"></a>11.3. Keine Icinga-API mehr zu installieren</h2></div></div></div>
+<a name="icinga-api"></a>11.3. Keine Icinga API mehr zu installieren</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">11.3.1. <a href="icinga-api.html#idp192962512">Installation und Benutzung der Icinga API</a></span></dt>
-<dt><span class="section">11.3.2. <a href="icinga-api.html#idp192995328">Konfiguration</a></span></dt>
-<dt><span class="section">11.3.3. <a href="icinga-api.html#idp192997984">Unterstützte Backends</a></span></dt>
+<dt><span class="section">11.3.1. <a href="icinga-api.html#idp192906208">Installation und Benutzung der Icinga API</a></span></dt>
+<dt><span class="section">11.3.2. <a href="icinga-api.html#idp192939024">Konfiguration</a></span></dt>
+<dt><span class="section">11.3.3. <a href="icinga-api.html#idp192941680">Unterstützte Backends</a></span></dt>
 </dl></div>
   
 
@@ -42,7 +42,7 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>In der Zeit vor dem Release der Version 1.5 sagten wir unserer Icinga-API "Tschüss" und führten ein neues API- und Web-Konzept
+    <p>In der Zeit vor dem Release der Version 1.5 sagten wir unserer Icinga API "Tschüss" und führten ein neues API- und Web-Konzept
     ein.</p>
 
     <p>Sie fragen sich vielleicht, was war diese API überhaupt? In der Tat, wenn Sie keine Erweiterungen oder Anpassungen für das neue
@@ -52,12 +52,12 @@
     überflüssigen Code zu schreiben.</p>
 
     <p>Alles war in Ordnung, bis wir uns entschieden, etwas mehr zusätzliche Datenbankflexibilität anzubieten. Als wir neben MySQL
-    Unterstützung für Oracle and PostgreSQL hinzufügten, gaben wir auch dem Icinga-API-Team etwas zusätzliche Arbeit. Mit jeder
+    Unterstützung für Oracle and PostgreSQL hinzufügten, gaben wir auch dem Icinga API-Team etwas zusätzliche Arbeit. Mit jeder
     Änderung, jedem Bugfix oder neuer Funktionalität mussten Marius, Michael L und Jannis die Abfragen für jedes Datenbank-Backend separat
     anpassen. Dieser Prozess war nicht nur kompliziert und fehlerbehaftet, sondern auch ein Zeichen dafür, dass wir eine neue flexiblere
     Architektur benötigten.</p>
 
-    <p>Mit Icinga 1.5 wurde die externe Icinga-API durch eine interne Datenbankschicht namens Doctrine ersetzt und mit Icinga-Web
+    <p>Mit Icinga 1.5 wurde die externe Icinga API durch eine interne Datenbankschicht namens Doctrine ersetzt und mit Icinga Web
     verschmolzen. Ähnlich wie vorher laufen Abfragen durch diese Schicht zwischen der Datenbank (IDOUtils) und dem Web-Interface.
     Trotzdem können wir dank Doctrine mehrere Datenbank-Backends benutzen und das Abfragen der Datenbank ist nun viel einfacher. Im
     Gegensatz zu SQL nutzt der "object relational mapper" (ORM) die Doctrine Query Language, so dass wir nun die Flexibilität ohne die
@@ -67,7 +67,7 @@
 
     <p>Allerdings funktionieren Abfragen mit der alten API nach wie vor, dank des 'Legacy Layer', der alte API-Abfragen in diesen neuen
     ORM-Typ umwandelt. Auf diese Weise erhalten wir die Kompatibilität mit Addons, die für ältere Icinga-Versionen erstellt wurden.
-    Das Rest-API ist also weiterhin vorhanden als ein Teil von Icinga-Web, und erweitert unsere Doctrine-Schicht mit HTTP für Addons, die
+    Das Rest-API ist also weiterhin vorhanden als ein Teil von Icinga Web, und erweitert unsere Doctrine-Schicht mit HTTP für Addons, die
     nur bestimmte Teile der Überwachungsinformationen benötigen.</p>
 
     <p>Durch den Wegfall einer eigenständigen API wird der durchschnittliche Icinga-Benutzer kaum einen Unterschied bemerken,
@@ -79,13 +79,13 @@
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
           <p><a class="link" href="https://wiki.icinga.org/display/Dev/Development+guide+for+Icinga-Web" target="_top">Development Guide for
-          Icinga-Web</a></p>
+          Icinga Web</a></p>
         </li>
 <li class="listitem">
           <p><a class="link" href="https://wiki.icinga.org/display/Dev/Icinga+Database+essentials" target="_top">Icinga Database Essentials</a></p>
         </li>
 <li class="listitem">
-          <p><a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga-Web REST API</a></p>
+          <p><a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga Web REST API</a></p>
         </li>
 </ul></div>
   </td></tr>
@@ -103,14 +103,14 @@
 
   <div class="section" title="11.3.1. Installation und Benutzung der Icinga API">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp192962512"></a>11.3.1. Installation und Benutzung der Icinga API</h3></div></div></div>
+<a name="idp192906208"></a>11.3.1. Installation und Benutzung der Icinga API</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
         <p>Sie benötigen installierte und lauffähige Versionen von Icinga und IDOUtils oder MKLiveStatus, um die
-        Icinga-API nutzen zu können. </p>
+        Icinga API nutzen zu können. </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -164,7 +164,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-              <p>Die Icinga-API ist innerhalb des Pakets von Icinga Core, IDOUtils und Docs enthalten und wird während
+              <p>Die Icinga API ist innerhalb des Pakets von Icinga Core, IDOUtils und Docs enthalten und wird während
               'make install' mit installiert. Sofern Sie das schon durchgeführt haben, befindet sich die API standardmäßig in
               /usr/local/icinga/share/icinga-api/ und Sie können diesen Abschnitt überspringen.</p>
             </td></tr>
@@ -176,15 +176,15 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-              <p>Wenn Sie die Icinga-API für das neue Icinga-Web benötigen und schon Icinga Core mit den IDOUtils
-              installiert haben, können Sie diesen Guide verlassen und direkt <a class="link" href="icinga-web-scratch.html" title="6.4. Installation des Icinga-Web Frontend">Icinga-Web</a>
+              <p>Wenn Sie die Icinga API für das neue Icinga Web benötigen und schon Icinga Core mit den IDOUtils
+              installiert haben, können Sie diesen Guide verlassen und direkt <a class="link" href="icinga-web-scratch.html" title="6.4. Installation des Icinga Web Frontend">Icinga Web</a>
               installieren.</p>
             </td></tr>
 </table></div>
 
             <p><span class="bold"><strong>Download</strong></span></p>
 
-            <p>Sie können die Icinga-API direkt aus dem GIT Repository beziehen, für einen frischen Clone führen Sie folgenden Befehl
+            <p>Sie können die Icinga API direkt aus dem GIT Repository beziehen, für einen frischen Clone führen Sie folgenden Befehl
             aus:</p>
 
             <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
@@ -197,13 +197,13 @@
 
             <p><span class="bold"><strong>Installation</strong></span></p>
 
-            <p>Entpacken Sie die Icinga-API, führen Sie configure aus und installieren Sie die Icinga-API </p>
+            <p>Entpacken Sie die Icinga API, führen Sie configure aus und installieren Sie die Icinga API </p>
 <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz</pre>
 <p>
             </p>
 <pre class="programlisting"> # ./configure</pre>
 
-            <p>Sie können den Präfix definieren, wohin die Icinga-API installiert wird, sowie den Ort der Systemkonfiguration für
+            <p>Sie können den Präfix definieren, wohin die Icinga API installiert wird, sowie den Ort der Systemkonfiguration für
             Icinga Core und IDOUtils und die ausführenden Benutzer. All diese Informationen werden bei einer Installation
             durch das Core Paket direkt gesetzt. </p>
 <pre class="programlisting"> # ./configure --datarootdir=/usr/local/icinga/share \
@@ -235,10 +235,10 @@
 
   <div class="section" title="11.3.2. Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp192995328"></a>11.3.2. Konfiguration</h3></div></div></div>
+<a name="idp192939024"></a>11.3.2. Konfiguration</h3></div></div></div>
     
 
-    <p>Wenn Sie Ihr eigenes Addon auf Basis der Icinga-API entwickeln möchten, benötigen Sie das folgende assoziative
+    <p>Wenn Sie Ihr eigenes Addon auf Basis der Icinga API entwickeln möchten, benötigen Sie das folgende assoziative
     Array:</p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
@@ -264,7 +264,7 @@
 
   <div class="section" title="11.3.3. Unterstützte Backends">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp192997984"></a>11.3.3. Unterstützte Backends</h3></div></div></div>
+<a name="idp192941680"></a>11.3.3. Unterstützte Backends</h3></div></div></div>
     
 
     <p>Aktuell sind folgende Backend Typen verfügbar. Mehr Information finden Sie unter doc/icinga-api-types.txt.</p>
@@ -372,9 +372,9 @@
       </li>
 </ol></div>
 
-    <a class="indexterm" name="idp193017552"></a>
+    <a class="indexterm" name="idp192961248"></a>
 
-    <a class="indexterm" name="idp193018720"></a>
+    <a class="indexterm" name="idp192962416"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -390,10 +390,10 @@
 <tr>
 <td width="40%" align="left" valign="top">11.2. Entwickeln von Plugins für die Nutzung mit Embedded Perl </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 11.4. Die Icinga-Web REST API</td>
+<td width="40%" align="right" valign="top"> 11.4. Die Icinga Web REST API</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

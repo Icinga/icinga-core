@@ -231,13 +231,13 @@
       restart" ist, bei dem weder Speicher noch Werte verworfen (bzw. neu geladen) werden. Intern wird das IDOMOD auf die gleiche Weise
       handeln, indem die Daten durch die NEB-API geholt werden.</p>
 
-      <p>Wenn Sie Icinga-Web benutzen, dann ist der Standard momentan "2" ("aufbewahrte Konfigurationsdaten"), so dass Datenaufbewahrung
+      <p>Wenn Sie Icinga Web benutzen, dann ist der Standard momentan "2" ("aufbewahrte Konfigurationsdaten"), so dass Datenaufbewahrung
       (retention data) aktiviert sein muss (Standard) und die Werte mindestens einmal gelesen werden mussten (also starten Sie und führen
       Sie "reload" durch, um die Konfigurationsdaten zu diesem Zeitpunkt auszugeben). Dies wird nicht so lange dauern wie die ursprüngliche
       Ausgabe der Konfiguration, weil die Konfiguration bereits kompiliert/zusammengestellt wurde in die resultierenden Objektdaten.</p>
 
       <p>Ausgehend von der originalen Konfiguration wird dies einen "Hook" an den Core-Config-Parser anhängen und jede einzelne Direktive
-      auch zu IDOMOD hinzufügen und dadurch zusätzliche CPU-Zyklen benötigen und viele Daten während des (Neu-)Starts erzeugen. Icinga-Web
+      auch zu IDOMOD hinzufügen und dadurch zusätzliche CPU-Zyklen benötigen und viele Daten während des (Neu-)Starts erzeugen. Icinga Web
       kann angewiesen werden, diese Daten ebenfalls zu nutzen.</p>
 
       <p>Innerhalb der Datenbank gibt es in den Tabellen icinga_hosts und icinga_services die Spalte config_type, wobei</p>
@@ -251,7 +251,7 @@
         </li>
 </ul></div>
 
-      <p>config_type selbst kann für die Icinga-Web-Konfiguration als XML-Attribut genutzt werden.</p>
+      <p>config_type selbst kann für die Icinga Web-Konfiguration als XML-Attribut genutzt werden.</p>
 
       <p>Für Einzelheiten werfen Sie einen Blick auf die <a class="link" href="configido.html#configido-config_output_options">"config_output_options"</a>-Direktive.</p>
     </li>
@@ -930,6 +930,35 @@
     <p>Diese Option legt die maximale Größe (in Bytes) der Debug-Protokolldatei fest. Falls die Datei diese Größe überschreitet, wird sie
     in eine Datei mit der Endung <code class="filename">.old</code> umbenannt. Eine bereits bestehende Datei mit dieser Endung wird automatisch
     gelöscht. Dies soll dazu beitragen, dass die Dateisystemauslastung während des Debugging nicht außer Kontrolle gerät.</p>
+
+    <p><a name="configido-dump_customvar_status"></a> <span class="bold"><strong>Ausgeben des Zustands von benutzerdefinierten
+    Variablen</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>dump_customvar_status=0|1</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>dump_customvar_status=1</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>Benutzerdefinierte Variablen werden als benötigte Informationen sowohl beim Core-Start als auch während der Laufzeit (weil es
+    Änderungen durch externe Befehle geben könnte) ausgegeben. Weil diese Änderungen bei jeder Host/Service/Kontakt-Statusaktualisierung
+    passieren können, ohne dass es eine Möglichkeit gibt, diese durch "data_processing_options"-Einstellungen zu filtern, wurde diese
+    Konfigurationsoption hinzugefügt. In den meisten Situationen werden diese Informationen nicht benötigt, so dass die Option standardmäßig
+    deaktiviert ist.</p>
   </div>
 
   <div class="section" title="12.3.2. IDO2DB Konfigurationsoptionen">
@@ -1653,193 +1682,195 @@
         </li>
 </ul></div>
 
-    <a class="indexterm" name="idp193738144"></a>
+    <a class="indexterm" name="idp193692672"></a>
 
-    <a class="indexterm" name="idp193739872"></a>
+    <a class="indexterm" name="idp193694400"></a>
 
-    <a class="indexterm" name="idp193740000"></a>
+    <a class="indexterm" name="idp193694528"></a>
 
-    <a class="indexterm" name="idp193743168"></a>
+    <a class="indexterm" name="idp193697696"></a>
 
-    <a class="indexterm" name="idp193743296"></a>
+    <a class="indexterm" name="idp193697824"></a>
 
-    <a class="indexterm" name="idp193746400"></a>
+    <a class="indexterm" name="idp193700928"></a>
 
-    <a class="indexterm" name="idp193746528"></a>
+    <a class="indexterm" name="idp193701056"></a>
 
-    <a class="indexterm" name="idp193749728"></a>
+    <a class="indexterm" name="idp193704256"></a>
 
-    <a class="indexterm" name="idp193749856"></a>
+    <a class="indexterm" name="idp193704384"></a>
 
-    <a class="indexterm" name="idp193752896"></a>
+    <a class="indexterm" name="idp193707424"></a>
 
-    <a class="indexterm" name="idp193754720"></a>
+    <a class="indexterm" name="idp193709248"></a>
 
-    <a class="indexterm" name="idp193756208"></a>
+    <a class="indexterm" name="idp193710736"></a>
 
-    <a class="indexterm" name="idp193757872"></a>
+    <a class="indexterm" name="idp193712400"></a>
 
-    <a class="indexterm" name="idp193759552"></a>
+    <a class="indexterm" name="idp193714080"></a>
 
-    <a class="indexterm" name="idp193761168"></a>
+    <a class="indexterm" name="idp193715696"></a>
+
+    <a class="indexterm" name="idp193717088"></a>
+
+    <a class="indexterm" name="idp193718880"></a>
+
+    <a class="indexterm" name="idp193720496"></a>
+
+    <a class="indexterm" name="idp193722112"></a>
+
+    <a class="indexterm" name="idp193723728"></a>
+
+    <a class="indexterm" name="idp193725120"></a>
+
+    <a class="indexterm" name="idp193726784"></a>
+
+    <a class="indexterm" name="idp193728432"></a>
+
+    <a class="indexterm" name="idp193730064"></a>
+
+    <a class="indexterm" name="idp193731824"></a>
+
+    <a class="indexterm" name="idp193733376"></a>
+
+    <a class="indexterm" name="idp193734960"></a>
+
+    <a class="indexterm" name="idp193736608"></a>
+
+    <a class="indexterm" name="idp193738256"></a>
+
+    <a class="indexterm" name="idp193740016"></a>
+
+    <a class="indexterm" name="idp193741536"></a>
+
+    <a class="indexterm" name="idp193743152"></a>
+
+    <a class="indexterm" name="idp193744768"></a>
+
+    <a class="indexterm" name="idp193746384"></a>
+
+    <a class="indexterm" name="idp193748000"></a>
+
+    <a class="indexterm" name="idp193749616"></a>
+
+    <a class="indexterm" name="idp193751200"></a>
+
+    <a class="indexterm" name="idp193752960"></a>
+
+    <a class="indexterm" name="idp193754480"></a>
+
+    <a class="indexterm" name="idp193756096"></a>
+
+    <a class="indexterm" name="idp193757712"></a>
+
+    <a class="indexterm" name="idp193759328"></a>
+
+    <a class="indexterm" name="idp193760944"></a>
 
     <a class="indexterm" name="idp193762560"></a>
 
-    <a class="indexterm" name="idp193764352"></a>
+    <a class="indexterm" name="idp193764176"></a>
 
-    <a class="indexterm" name="idp193765968"></a>
+    <a class="indexterm" name="idp193765824"></a>
 
-    <a class="indexterm" name="idp193767584"></a>
+    <a class="indexterm" name="idp193767440"></a>
 
-    <a class="indexterm" name="idp193769200"></a>
+    <a class="indexterm" name="idp193769088"></a>
 
-    <a class="indexterm" name="idp193770592"></a>
+    <a class="indexterm" name="idp193770736"></a>
 
-    <a class="indexterm" name="idp193772256"></a>
+    <a class="indexterm" name="idp193772384"></a>
 
-    <a class="indexterm" name="idp193773904"></a>
+    <a class="indexterm" name="idp193773968"></a>
 
-    <a class="indexterm" name="idp193775536"></a>
+    <a class="indexterm" name="idp193775728"></a>
 
-    <a class="indexterm" name="idp193777296"></a>
+    <a class="indexterm" name="idp193777248"></a>
 
-    <a class="indexterm" name="idp193778848"></a>
+    <a class="indexterm" name="idp193778864"></a>
 
-    <a class="indexterm" name="idp193780432"></a>
+    <a class="indexterm" name="idp193780480"></a>
 
-    <a class="indexterm" name="idp193782080"></a>
+    <a class="indexterm" name="idp193782096"></a>
 
-    <a class="indexterm" name="idp193783728"></a>
+    <a class="indexterm" name="idp193783680"></a>
 
-    <a class="indexterm" name="idp193785488"></a>
+    <a class="indexterm" name="idp193785440"></a>
 
-    <a class="indexterm" name="idp193787008"></a>
+    <a class="indexterm" name="idp193786928"></a>
 
-    <a class="indexterm" name="idp193788624"></a>
+    <a class="indexterm" name="idp193788560"></a>
 
-    <a class="indexterm" name="idp193790240"></a>
+    <a class="indexterm" name="idp193790192"></a>
 
-    <a class="indexterm" name="idp193791856"></a>
+    <a class="indexterm" name="idp193791824"></a>
 
-    <a class="indexterm" name="idp193793472"></a>
+    <a class="indexterm" name="idp193793456"></a>
 
-    <a class="indexterm" name="idp193795088"></a>
+    <a class="indexterm" name="idp193795104"></a>
 
-    <a class="indexterm" name="idp193796672"></a>
+    <a class="indexterm" name="idp193796752"></a>
 
-    <a class="indexterm" name="idp193798432"></a>
+    <a class="indexterm" name="idp193798512"></a>
 
-    <a class="indexterm" name="idp193799952"></a>
+    <a class="indexterm" name="idp193800000"></a>
 
-    <a class="indexterm" name="idp193801568"></a>
+    <a class="indexterm" name="idp193801760"></a>
 
-    <a class="indexterm" name="idp193803184"></a>
+    <a class="indexterm" name="idp193803248"></a>
 
-    <a class="indexterm" name="idp193804800"></a>
+    <a class="indexterm" name="idp193804880"></a>
 
-    <a class="indexterm" name="idp193806416"></a>
+    <a class="indexterm" name="idp193806640"></a>
 
-    <a class="indexterm" name="idp193808032"></a>
+    <a class="indexterm" name="idp193808160"></a>
 
-    <a class="indexterm" name="idp193809648"></a>
+    <a class="indexterm" name="idp193809776"></a>
 
-    <a class="indexterm" name="idp193811296"></a>
+    <a class="indexterm" name="idp193811392"></a>
 
-    <a class="indexterm" name="idp193812912"></a>
+    <a class="indexterm" name="idp193813008"></a>
 
-    <a class="indexterm" name="idp193814560"></a>
+    <a class="indexterm" name="idp193814624"></a>
 
-    <a class="indexterm" name="idp193816208"></a>
+    <a class="indexterm" name="idp193816240"></a>
 
     <a class="indexterm" name="idp193817856"></a>
 
     <a class="indexterm" name="idp193819440"></a>
 
-    <a class="indexterm" name="idp193821200"></a>
+    <a class="indexterm" name="idp193821072"></a>
 
-    <a class="indexterm" name="idp193822720"></a>
+    <a class="indexterm" name="idp193822832"></a>
 
-    <a class="indexterm" name="idp193824336"></a>
+    <a class="indexterm" name="idp193824352"></a>
 
-    <a class="indexterm" name="idp193825952"></a>
+    <a class="indexterm" name="idp193825968"></a>
 
-    <a class="indexterm" name="idp193827568"></a>
+    <a class="indexterm" name="idp193827584"></a>
 
-    <a class="indexterm" name="idp193829152"></a>
+    <a class="indexterm" name="idp193829200"></a>
 
-    <a class="indexterm" name="idp193830912"></a>
+    <a class="indexterm" name="idp193830816"></a>
 
-    <a class="indexterm" name="idp193832400"></a>
+    <a class="indexterm" name="idp193832432"></a>
 
-    <a class="indexterm" name="idp193834032"></a>
+    <a class="indexterm" name="idp193834048"></a>
 
-    <a class="indexterm" name="idp193835664"></a>
+    <a class="indexterm" name="idp193835632"></a>
 
-    <a class="indexterm" name="idp193837296"></a>
+    <a class="indexterm" name="idp193837392"></a>
 
-    <a class="indexterm" name="idp193838928"></a>
+    <a class="indexterm" name="idp193838880"></a>
 
-    <a class="indexterm" name="idp193840576"></a>
+    <a class="indexterm" name="idp193840512"></a>
 
-    <a class="indexterm" name="idp193842224"></a>
+    <a class="indexterm" name="idp193842160"></a>
 
-    <a class="indexterm" name="idp193843984"></a>
+    <a class="indexterm" name="idp193843792"></a>
 
-    <a class="indexterm" name="idp193845472"></a>
-
-    <a class="indexterm" name="idp193847232"></a>
-
-    <a class="indexterm" name="idp193848720"></a>
-
-    <a class="indexterm" name="idp193850480"></a>
-
-    <a class="indexterm" name="idp193852000"></a>
-
-    <a class="indexterm" name="idp193853616"></a>
-
-    <a class="indexterm" name="idp193855232"></a>
-
-    <a class="indexterm" name="idp193856848"></a>
-
-    <a class="indexterm" name="idp193858464"></a>
-
-    <a class="indexterm" name="idp193860080"></a>
-
-    <a class="indexterm" name="idp193861696"></a>
-
-    <a class="indexterm" name="idp193863280"></a>
-
-    <a class="indexterm" name="idp193864912"></a>
-
-    <a class="indexterm" name="idp193866672"></a>
-
-    <a class="indexterm" name="idp193868192"></a>
-
-    <a class="indexterm" name="idp193869808"></a>
-
-    <a class="indexterm" name="idp193871424"></a>
-
-    <a class="indexterm" name="idp193873040"></a>
-
-    <a class="indexterm" name="idp193874656"></a>
-
-    <a class="indexterm" name="idp193876272"></a>
-
-    <a class="indexterm" name="idp193877888"></a>
-
-    <a class="indexterm" name="idp193879472"></a>
-
-    <a class="indexterm" name="idp193881232"></a>
-
-    <a class="indexterm" name="idp193882720"></a>
-
-    <a class="indexterm" name="idp193884352"></a>
-
-    <a class="indexterm" name="idp193886000"></a>
-
-    <a class="indexterm" name="idp193887632"></a>
-
-    <a class="indexterm" name="idp193889264"></a>
+    <a class="indexterm" name="idp193845424"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1859,6 +1890,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

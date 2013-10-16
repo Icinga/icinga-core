@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>9.5. Installation von Icinga-Reporting mit JasperReports Server</title>
+<title>9.5. Installation von Icinga Reporting mit JasperReports Server</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">9.5. Installation von Icinga-Reporting mit JasperReports Server</th></tr>
+<tr><th colspan="3" align="center">9.5. Installation von Icinga Reporting mit JasperReports Server</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="int-mklivestatus.html">Zurück</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="9.5. Installation von Icinga-Reporting mit JasperReports Server">
+<div class="section" title="9.5. Installation von Icinga Reporting mit JasperReports Server">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="reporting"></a>9.5. Installation von Icinga-Reporting mit JasperReports Server</h2></div></div></div>
+<a name="reporting"></a>9.5. Installation von Icinga Reporting mit JasperReports Server</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">9.5.1. <a href="reporting.html#introduction">Offizielle Dokumentation</a></span></dt>
 <dt><span class="section">9.5.2. <a href="reporting.html#officialdocs">Voraussetzungen</a></span></dt>
@@ -39,10 +39,10 @@
 </dl></div>
   
 
-  <p>Icinga-Reporting basiert auf dem IDOUtils-Backend und unterstützt, genau wie der Icinga-Core, alle großen
+  <p>Icinga Reporting basiert auf dem IDOUtils-Backend und unterstützt, genau wie der Icinga Core, alle großen
   Datenbankplattformen.</p>
 
-  <p>Hier geben wir Ihnen einige Hinweise, wie Sie das Icinga-Reporting mit JasperReports Server installieren.</p>
+  <p>Hier geben wir Ihnen einige Hinweise, wie Sie das Icinga Reporting mit JasperReports Server installieren.</p>
 
   <div class="section" title="9.5.1. Offizielle Dokumentation">
 <div class="titlepage"><div><div><h3 class="title">
@@ -76,7 +76,7 @@
 
         <p>MySQL</p>
 
-        <pre class="screen">#&gt; /usr/bin/mysql icinga &lt; icinga-reports-1.9.0/db/icinga/mysql/availability.sql</pre>
+        <pre class="screen">#&gt; /usr/bin/mysql icinga &lt; icinga-reports-1.10.0/db/icinga/mysql/availability.sql</pre>
 
         <p>Stellen Sie bitte ebenfalls sicher, dass der Datenbank- Benutzer (hier icinga@localhost) das Recht EXECUTE besitzt.</p>
 <pre class="screen">#&gt; /usr/bin/mysql -u root -p &lt;password&gt; icinga
@@ -117,7 +117,7 @@ quit</pre>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>JasperReports Server 5.0.0 wird erst ab Icinga-Reporting 1.9 unterstützt! Für die Installation Version des Icinga-Reporting- Paketes &lt; 1.9 ,
+          <p>JasperReports Server 5.0.0 wird erst ab Icinga Reporting 1.9 unterstützt! Für die Installation Version des Icinga Reporting- Paketes &lt; 1.9 ,
           nutzen Sie bitte mindestens JasperReports Server 4.5.0.</p>
         </td></tr>
 </table></div>
@@ -186,9 +186,9 @@ quit</pre>
 
         <p>Laden Sie das Paket von sourceforge herunter und entpacken es. Falls Sie ein Problem haben, das ggf. in der Entwickerversion
         gelöst ist, dann holen Sie sich den aktuellen Entwickler-Snapshot aus git </p>
-<pre class="screen"> $&gt; wget http://sourceforge.net/projects/icinga/files/icinga-reporting/1.9.0/icinga-reports-1.9.0.tar.gz; \
-    tar xzf icinga-reports-1.9.0.tar.gz; \
-    cd icinga-reports-1.9.0</pre>
+<pre class="screen"> $&gt; wget http://sourceforge.net/projects/icinga/files/icinga-reporting/1.10.0/icinga-reports-1.10.0.tar.gz; \
+    tar xzf icinga-reports-1.10.0.tar.gz; \
+    cd icinga-reports-1.10.0</pre>
 <p>oder</p>
 <pre class="screen"> $&gt; git clone git://git.icinga.org/icinga-reports.git ; \
     cd icinga-reports</pre>
@@ -216,7 +216,7 @@ quit</pre>
             <p>MySQL Connector</p>
 
             <p>JasperReports Server wird mit dem PostgreSQL-Connector ausgeliefert, aber wenn Sie MySQL benötigen, dann bietet das
-            Icinga-Reporting-Paket einen Connector zur Installation an.</p>
+            Icinga Reporting-Paket einen Connector zur Installation an.</p>
 <pre class="screen"> #&gt; make install-mysql-connector</pre>
 <p>Starten Sie den
             Tomcat-Server neu</p>
@@ -255,7 +255,7 @@ quit</pre>
         enthält).</p>
 
     <div class="figure">
-<a name="idp192392688"></a><p class="title"><b>Abbildung 9.1. Icinga reporting datasource ido mysql</b></p>
+<a name="idp192336688"></a><p class="title"><b>Abbildung 9.1. Icinga reporting datasource ido mysql</b></p>
 <div class="figure-contents">
       
 
@@ -268,7 +268,7 @@ quit</pre>
 
         <div class="itemizedlist">
 <div class="figure">
-<a name="idp192397360"></a><p class="title"><b>Abbildung 9.2. Icinga reporting</b></p>
+<a name="idp192341184"></a><p class="title"><b>Abbildung 9.2. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
@@ -303,7 +303,7 @@ quit</pre>
     <p>Überprüfen Sie, dass die Reports verfügbar und lauffähig sind.</p>
 
     <div class="figure">
-<a name="idp192404000"></a><p class="title"><b>Abbildung 9.3. Icinga reporting</b></p>
+<a name="idp192348048"></a><p class="title"><b>Abbildung 9.3. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
@@ -346,7 +346,7 @@ quit</pre>
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp192413056"></a>
+    <a class="indexterm" name="idp192357328"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -366,6 +366,6 @@ quit</pre>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
