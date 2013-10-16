@@ -2968,13 +2968,32 @@ int cmd_change_object_int_var(int cmd, char *args) {
 		break;
 	}
 
-	/* get the value */
-	if ((temp_ptr = my_strtok(NULL, ";")) == NULL)
-		return ERROR;
-	intval = (int)strtol(temp_ptr, NULL, 0);
-	if (intval < 0 || (intval == 0 && errno == EINVAL))
-		return ERROR;
-	dval = (int)strtod(temp_ptr, NULL);
+	switch (cmd) {
+
+	case CMD_CHANGE_NORMAL_HOST_CHECK_INTERVAL:
+	case CMD_CHANGE_RETRY_HOST_CHECK_INTERVAL:
+	case CMD_CHANGE_NORMAL_SVC_CHECK_INTERVAL:
+	case CMD_CHANGE_RETRY_SVC_CHECK_INTERVAL:
+		/* get the value */
+		if ((temp_ptr = my_strtok(NULL, ";")) == NULL)
+			return ERROR;
+#ifdef HAVE_STRTOF
+		dval = strtof(temp_ptr, NULL);
+#else
+		/* Solaris 8 doesn't have strtof() */
+		dval = (float)strtod(temp_ptr, NULL);
+#endif
+		break;
+	default:
+		/* get the value */
+		if ((temp_ptr = my_strtok(NULL, ";")) == NULL)
+			return ERROR;
+		intval = (int)strtol(temp_ptr, NULL, 0);
+		if (intval < 0 || (intval == 0 && errno == EINVAL))
+			return ERROR;
+		dval = (double)strtod(temp_ptr, NULL);
+		break;
+	}
 
 	switch (cmd) {
 

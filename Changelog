@@ -61,6 +61,7 @@ FIXES
 * core: fix umask after reset for cmd pipe #4771 - MF
 * core: dump host/service initial states on event loop initialization again #3838 - MF
 * core: fix scheduling a downtime should preserve the author's name if provided, not setting "(Icinga Process)" (thx Eric Stanley) #4822 - MF
+* core: fix external commands for CHANGE_*_INTERVAL don't accept floating point values #4897 - MF
 
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 * classic ui: fix empty REMOTE_ADDR env var causes sigsegv in cmd.cgi (use_logging=1) #4445 - MF
