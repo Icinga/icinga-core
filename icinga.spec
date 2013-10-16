@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 0
+%define revision 0.beta
 
 %define logmsg logger -t %{name}/rpm
 
