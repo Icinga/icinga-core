@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 0.dev
+%define revision 0
 
 %define logmsg logger -t %{name}/rpm
 
@@ -610,6 +610,9 @@ fi
 
 
 %changelog
+* Wed Oct 16 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.10.0-1
+- bump 1.10.0
+
 * Sun Jul 07 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.3-1
 - bump 1.9.3
 
