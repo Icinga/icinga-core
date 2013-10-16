@@ -321,6 +321,8 @@
 
 /* custom command introduced in Nagios 3.x */
 #define CMD_CUSTOM_COMMAND                              999
+#define CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL   1001
+#define CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL    1002
 
 /**************************** COMMAND ERRORS *****************************/
 #define CMD_ERROR_OK 			0 	/* No errors encountered */

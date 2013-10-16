@@ -1727,8 +1727,19 @@ void show_host_info(void) {
 			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Host comment' title='Add a new Host comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_HOST_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Add a new Host comment</a></td>");
 
+			if (status_file_icinga_version != NULL && status_file_icinga_version[0] != '1') {
+				/* Modify Check/Retry Interval */
+				printf("<tr class='command'><td><a href='%s?cmd_typ=%d&amp;interval=0.015&amp;host=%s&amp;cmd_mod=2'><img src='%s%s' border='0' alt='Modify Check/Retry Interval' title='Modify Check/Retry Interval'></a></td><td class='command'><a href='%s?cmd_typ=%d&amp;interval=0.015&amp;host=%s'>",
+				       CMD_CGI, CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name),
+				       url_images_path, RELOAD_ICON,
+				       CMD_CGI, CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+				printf("Modify Check/Retry Interval</a></td>");
+			}
+
 			/* allow modified attributes to be reset */
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' title='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' title='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=0.015&amp;attr=%d&amp;host=%s'>",
+			       url_images_path, DISABLED_ICON,
+			       CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Reset Modified Attributes</a></td>");
 
 			printf("</table>\n");
@@ -2217,6 +2228,19 @@ void show_service_info(void) {
 			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Service comment' title='Add a new Service comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_SVC_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("&amp;service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
 			printf("Add a new Service comment</a></td>");
+
+			if (status_file_icinga_version != NULL && status_file_icinga_version[0] != '1') {
+				/* Modify Check/Retry Interval */
+				printf("<tr class='command'><td><a href='%s?cmd_typ=%d&amp;interval=0.015&amp;host=%s&amp;service=%s&amp;cmd_mod=2'><img src='%s%s' border='0' alt='Modify Check/Retry Interval' title='Modify Check/Retry Interval'></a></td><td class='command'><a href='%s?cmd_typ=%d&amp;interval=0.015&amp;host=%s&amp;service=%s'>",
+				       CMD_CGI, CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL,
+				       (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name),
+				       (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc),
+				       url_images_path, RELOAD_ICON,
+				       CMD_CGI, CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL,
+				       (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name),
+				       (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
+				printf("Modify Check/Retry Interval</a></td>");
+			}
 
 			/* allow modified attributes to be reset */
 			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' title='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));

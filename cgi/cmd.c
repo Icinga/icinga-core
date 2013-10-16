@@ -168,6 +168,7 @@ time_t end_time = 0L;				/**< end time as unix timestamp */
 int CGI_ID = CMD_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
 
 unsigned long attr = MODATTR_NONE;		/**< default modified_attributes */
+double interval = 1.0;				/**< default modified *_interval */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -441,6 +442,21 @@ int process_cgivars(void) {
                         }
 
                         attr = strtoul(variables[x], NULL, 10);
+                }
+
+                /* we found the attr */
+                else if (!strcmp(variables[x], "interval")) {
+                        x++;
+                        if (variables[x] == NULL) {
+                                error = TRUE;
+                                break;
+                        }
+#ifdef HAVE_STRTOF
+			interval = strtof(variables[x], NULL);
+#else
+			/* Solaris 8 doesn't have strtof() */
+			interval = (float)strtod(variables[x], NULL);
+#endif
                 }
 
 		/* we found the command mode */
@@ -1504,6 +1520,14 @@ void request_command_data(int cmd) {
 		snprintf(action, sizeof(action), "Reset modified attributes for Service(s).");
 		break;
 
+	case CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL:
+		snprintf(action, sizeof(action), "Internal change of {check,retry}_interval and forced reschedule for Host(s).");
+		break;
+
+	case CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL:
+		snprintf(action, sizeof(action), "Internal change of {check,retry}_interval and forced reschedule for Service(s).");
+		break;
+
 	default:
 		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
@@ -2004,6 +2028,24 @@ void request_command_data(int cmd) {
 		printf("</td></tr>\n");
 		break;
 
+	case CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL:
+		print_object_list(PRINT_HOST_LIST);
+		print_form_element(PRINT_COMMON_HEADER, cmd);
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modify Check/Retry Interval:</td>");
+		printf("<td><input type='hidden' name='interval' value='%lf'>", interval);
+		printf("%lf", interval);
+		printf("</td></tr>\n");
+		break;
+
+	case CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL:
+		print_object_list(PRINT_SERVICE_LIST);
+		print_form_element(PRINT_COMMON_HEADER, cmd);
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modify Check/Retry Interval:</td>");
+		printf("<td><input type='hidden' name='interval' value='%lf'>", interval);
+		printf("%lf", interval);
+		printf("</td></tr>\n");
+		break;
+
 	default:
 		printf("<tr><td class='objectDescription' colspan='2'>This should not be happening... :-(</td></tr>\n");
 	}
@@ -2053,7 +2095,6 @@ void commit_command_data(int cmd) {
 	}
 
 	switch (cmd) {
-
 
 	case CMD_ADD_HOST_COMMENT:
 	case CMD_ADD_SVC_COMMENT:
@@ -2449,6 +2490,31 @@ void commit_command_data(int cmd) {
 
 		break;
 
+	case CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL:
+	case CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL:
+
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+
+                        cmd_has_objects = TRUE;
+
+                        if (commands[x].host_name == NULL)
+                                continue;
+
+                        /* see if the user is authorized to issue a command... */
+                        is_authorized[x] = FALSE;
+                        if (cmd == CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL) {
+                                temp_host = find_host(commands[x].host_name);
+                                if (is_authorized_for_host_commands(temp_host, &current_authdata) == TRUE)
+                                        is_authorized[x] = TRUE;
+                        } else {
+                                temp_service = find_service(commands[x].host_name, commands[x].description);
+                                if (is_authorized_for_service_commands(temp_service, &current_authdata) == TRUE)
+                                        is_authorized[x] = TRUE;
+                        }
+                }
+
+		break;
+
 	default:
 		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
@@ -2517,7 +2583,7 @@ void commit_command_data(int cmd) {
 		return;
 	}
 
-	/* Let's see if we have a command witch dosn't have any host, services or downtime/comment id's and check the authorisation */
+	/* Let's see if we have a command which doesn't have any host, services or downtime/comment id's and check the authorisation */
 	if (cmd_has_objects == FALSE && is_authorized[0] == FALSE) {
 		print_generic_error_message("Sorry, but you are not authorized to commit the specified command.", "Read the section of the documentation that deals with authentication and authorization in the CGIs for more information.", 2);
 
@@ -2624,17 +2690,6 @@ static int cmd_submitf(int id, const char *fmt, ...) {
 	va_list ap;
 
 	command = extcmd_get_name(id);
-
-	/*
-	 * We disallow sending 'CHANGE' commands from the cgi's
-	 * until we do proper session handling to prevent cross-site
-	 * request forgery
-	 * 2012-04-23 MF: Allow those and do proper checks on the cmds
-	 * for changed mod attr
-	 */
-	/*if (!command || (strlen(command) > 6 && !memcmp("CHANGE", command, 6)))
-		return ERROR;
-	*/
 
 	len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
 
@@ -3108,6 +3163,32 @@ int commit_command(int cmd) {
                                 continue;
 			if (is_authorized[x])
 				submit_result[x] = cmd_submitf(cmd, "%s;%s;%lu", commands[x].host_name, commands[x].description, attr);
+		}
+		break;
+
+        case CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL:
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+
+			if (is_authorized[x]) {
+				submit_result[x] = cmd_submitf(CMD_CHANGE_NORMAL_HOST_CHECK_INTERVAL, "%s;%lf", commands[x].host_name, interval);
+				submit_result[x] = cmd_submitf(CMD_CHANGE_RETRY_HOST_CHECK_INTERVAL, "%s;%lf", commands[x].host_name, interval);
+				submit_result[x] = cmd_submitf(CMD_SCHEDULE_FORCED_HOST_CHECK, "%s;%lu", commands[x].host_name, time(NULL));
+			}
+		}
+		break;
+
+        case CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL:
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			if (is_authorized[x]) {
+				/* check interval, retry interval, forced rescheduled check */
+				submit_result[x] = cmd_submitf(CMD_CHANGE_NORMAL_SVC_CHECK_INTERVAL, "%s;%s;%lf", commands[x].host_name, commands[x].description, interval);
+				submit_result[x] = cmd_submitf(CMD_CHANGE_RETRY_SVC_CHECK_INTERVAL, "%s;%s;%lf", commands[x].host_name, commands[x].description, interval);
+				submit_result[x] = cmd_submitf(CMD_SCHEDULE_FORCED_SVC_CHECK, "%s;%s;%lu", commands[x].host_name, commands[x].description, time(NULL));
+			}
 		}
 		break;
 
