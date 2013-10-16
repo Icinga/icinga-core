@@ -43,6 +43,13 @@ ENHANCEMENTS
 * idoutils: add check_source to status tables #4709 - MF
 * idoutils: add object_id (host, service) to logentries status updates/state changes #4754 - MF
 
+* docs: add samples files for reference #4422 - WN
+* docs: update pnp screenshots #4288 - WN
+* docs: explain icinga web expander icon #4527 - WN
+* docs: add hint to views.xml config file #4690 - WN
+* docs: add "show_partial_servicegroups" to cgi.cfg #4730 - WN
+* docs: add "dump_customvar_status" to idomod.cfg #4705 - WN
+
 * install: allow enable perfdata config switch via configure #3996 - MF
 * install: add --enable-debug=yes/no to set specific compiler flags for gdb, valgrind #4387 - MF
 * install: detect /etc/apache2/conf-available on debian with apache2.4 #4509 - MF
@@ -75,6 +82,11 @@ FIXES
 * idoutils: fix contact_notificationcommands contain garbage and insert faulty command object ids (thx mhein/mjentsch) #4799 - MF
 * idoutils: deprecate clean_{config,realtime}_tables_on_core_startup #4791 - MF
 * idoutils: fix ido2db does not clear scheduleddowntime table on instance startup #4808 - MF
+
+* docs: quickstart guides / default changed to compilation of IDOUtils #4203 - WN
+* docs: update icinga web troubleshooting for timezones #4554 - WN
+* docs: remove enable_sla, timedevent* from idoutils docs #4487 - MF
+* docs: add colon to illegal_object_name_chars #4704 - MF
 
 * install: fix initscripts exit-code 1 on start when service is already started (thx Marco Hoyer) #4393 - MF
 * install: fix ido2db initscript: kill fails on stop() on debian wheezy #4504 - MF
