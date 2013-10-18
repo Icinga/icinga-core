@@ -47,7 +47,7 @@ $(document).ready(function() {
   });
 
   // autocomplete function
-  $("#autocomplete").catcomplete( { minLength: min_char }, {
+  $("#autocomplete").catcomplete( { minLength: min_char, delay : 700 }, {
     // select function is used to open url for selected item
     select: function( event, ui ) { top.frames['main'].location.href = ui.item.url },
     // get results from icinga API
