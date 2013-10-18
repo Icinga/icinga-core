@@ -131,6 +131,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 	@printf "\t%-23s - %s\n" "install-testconfig" "install test config"
 	@printf "\t%-23s - %s\n" "install-classicui-standalone" "install standalone classic ui"
+	@printf "\t%-23s - %s\n" "install-classicui-standalone-conf" "install standalone classic ui config"
 
 
 # Solaris make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
