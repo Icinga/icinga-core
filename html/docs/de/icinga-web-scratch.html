@@ -70,7 +70,6 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-mysql php5-ldap php-soap php5-gd php5-mysql</pre>
-
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -125,7 +124,6 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-ldap php5-soap php5-gd php5-pgsql</pre>
-
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -226,6 +224,19 @@
         </td></tr>
 </table></div>
 
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
+          <code class="filename">/etc/apache2/conf-available</code> geändert, so dass Sie abhängig von Ihrer Distribution (testing-Versionen von
+          Debian / Ubuntu) dem Aufruf von configure diese Option hinzufügen müssen </p>
+<pre class="screen">#&gt; ./configure --with-web-apache-path=/etc/apache2/conf-available</pre>
+        </td></tr>
+</table></div>
+
         <p>Alle Konfigurationsmöglichkeiten sehen Sie mit:</p>
 
         <pre class="screen"> #&gt; ./configure --help</pre>
@@ -250,6 +261,18 @@
         <p>Installation der neuen Apache-Konfiguration</p>
 
         <pre class="screen"> #&gt; make install-apache-config</pre>
+
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Beginnend mit Apache 2.4 (testing-Versionen von Debian / Ubuntu) müssen Sie die Konfiguration
+          aktivieren</p>
+<pre class="screen">#&gt; a2enconf icinga-web</pre>
+        </td></tr>
+</table></div>
 
         <p>Wenn Sie das nicht möchten, können Sie das bisherige Verfahren nutzen, durch die Eingabe von:</p>
 
@@ -460,7 +483,7 @@
 </tr>
 <tr><td align="left" valign="top">
           <p>Optional: Ihre spezifischen Icinga Datenbankeinstellungen können Sie vornehmen in
-          <code class="filename">etc/conf.d/database.xml</code> (oder dem web-conf-folder Ziel). Es gibt zwei Datenbanken: icinga_web (welche für die
+          <code class="filename">etc/conf.d/database.xml</code> (oder dem web_conf_path-Ziel). Es gibt zwei Datenbanken: icinga_web (welche für die
           interne Verwaltung von icinga_web verwendet wird) und icinga, welche auf die Datenbank zeigt, in die ido2db schreibt. Diese
           Informationen bleiben während eines Update-Prozesses erhalten.</p>
         </td></tr>
@@ -915,9 +938,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp188594240"></a>
+    <a class="indexterm" name="idp188500624"></a>
 
-    <a class="indexterm" name="idp188595552"></a>
+    <a class="indexterm" name="idp188501936"></a>
   </div>
 </div>
 <div class="navfooter">

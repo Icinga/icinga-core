@@ -69,7 +69,7 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>speichern der Ergebnisse der letzten 21 Prüfungen des Hosts oder Service</p>
+        <p>speichern der Ergebnisse der letzten 21 Prüfungen des Hosts oder Service [1]</p>
       </li>
 <li class="listitem">
         <p>analysieren der historischen Prüfergebnisse und feststellen, wo Statusänderungen/-übergänge auftreten</p>
@@ -88,6 +88,8 @@
 
     <p>Ein Host oder Service wird angesehen, das Flattern <span class="emphasis"><em>beendet</em></span> zu haben, wenn der Prozentsatz unter einen
     <span class="emphasis"><em>niedrigen</em></span> Flatter-Schwellwert sinkt (vorausgesetzt, dass er vorher geflattert hat).</p>
+
+    <p>[1] Ergebnisse von Services in einem SOFT-Status werden nicht gespeichert, außer wenn sie zum OK-Zustand zurückkehren.</p>
   </div>
 
   <div class="section" title="7.8.3. Beispiel">
@@ -105,7 +107,7 @@
     <p>Die historischen Service-Prüfergebnisse werden untersucht, um festzustellen, wo Statusänderungen/-übergänge auftreten.
     Statusänderungen treten auf, wenn ein archivierter Status sich von den archivierten Zuständen unterscheidet, die ihm direkt vorausgehen.
     Da wir die Ergebnisse der letzten 21 Status-Prüfungen in dem Array ablegen, können wir bis zu 20 Statusänderungen haben. In diesem
-    Beispiel gibt es sieben Statusänderungen, die im Bild durch blaue Pfeile gekennzeichnet sind.</p>
+    Beispiel gibt es sieben Statusänderungen, die im Bild durch Pfeile gekennzeichnet sind.</p>
 
     <p>Die Flatter-Erkennungslogik nutzt die Statusänderungen, um einen Gesamtprozentsatz für den Service festzulegen. Dies ist ein
     Maßstab für die Sprunghaftigkeit/Änderung des Service. Services, die nie den Status wechseln, haben einen Statusänderungswert von 0%,
@@ -358,7 +360,7 @@
     <p>Wenn Sie die Flatter-Erkennung nur für einige Hosts oder Services deaktivieren wollen, nutzen Sie die
     <span class="emphasis"><em>flap_detection_enabled</em></span>-Direktive in den Host- oder Service-Definitionen, um das zu tun.</p>
 
-    <a class="indexterm" name="idp190419984"></a>
+    <a class="indexterm" name="idp190327536"></a>
   </div>
 </div>
 <div class="navfooter">

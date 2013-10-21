@@ -70,7 +70,6 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-mysql php-soap php5-gd php5-ldap php5-mysql</pre>
-
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -128,7 +127,6 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php-soap php5-gd php5-ldap php5-pgsql</pre>
-
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -228,6 +226,20 @@
         </td></tr>
 </table></div>
 
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Starting with Apache 2.4 (testing versions of Debian / Ubuntu) the default web configuration folder has
+          changed from <code class="filename">/etc/apache2/conf.d</code> to <code class="filename">/etc/apache2/conf-available</code> so you might have to add
+          this option to the call of configure</p>
+
+          <pre class="screen">#&gt; ./configure --with-web-apache-path=/etc/apache2/conf-available</pre>
+        </td></tr>
+</table></div>
+
         <p>Please use:</p>
 
         <pre class="screen"> #&gt; ./configure --help</pre>
@@ -253,6 +265,26 @@
         <p>Install the new Apache configuration</p>
 
         <pre class="screen"> #&gt; make install-apache-config</pre>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          Starting with Apache 2.4 (testing versions of 
+
+          Debian
+
+           / 
+
+          Ubuntu
+
+          ) you have to enable the module
+
+          <pre class="screen">#&gt; a2enconf icinga-web</pre>
+        </td></tr>
+</table></div>
 
         <p>If you don't need an alias, you can alternatively use the old behaviour setting a symlink instead: </p>
 <pre class="screen"> #&gt; make install-javascript</pre>
@@ -908,11 +940,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp189082608"></a>
+    <a class="indexterm" name="idp188473728"></a>
 
-    <a class="indexterm" name="idp189084032"></a>
+    <a class="indexterm" name="idp188475152"></a>
 
-    <a class="indexterm" name="idp189082736"></a>
+    <a class="indexterm" name="idp188473856"></a>
   </div>
 </div>
 <div class="navfooter">

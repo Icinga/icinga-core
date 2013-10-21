@@ -599,6 +599,19 @@
 
     <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
 
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
+      <code class="filename">/etc/apache2/conf-available</code> geändert, so dass Sie abhängig von Ihrer Distribution (testing-Versionen von
+      Debian / Ubuntu) dem Aufruf von configure diese Option hinzufügen müssen </p>
+<pre class="screen">#&gt; ./configure --with-httpd-conf=/etc/apache2/conf-available</pre>
+    </td></tr>
+</table></div>
+
     <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
@@ -980,6 +993,17 @@
     </td></tr>
 </table></div>
 
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Apache 2.4 (testing-Versionen von Debian / Ubuntu) müssen Sie die Konfiguration aktivieren</p>
+<pre class="screen">#&gt; a2enconf icinga</pre>
+    </td></tr>
+</table></div>
+
     <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu können. Merken Sie sich
     das Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
 
@@ -1212,9 +1236,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp177201648"></a>
+    <a class="indexterm" name="idp177084256"></a>
 
-    <a class="indexterm" name="idp177203376"></a>
+    <a class="indexterm" name="idp177085984"></a>
   </div>
 </div>
 <div class="navfooter">
