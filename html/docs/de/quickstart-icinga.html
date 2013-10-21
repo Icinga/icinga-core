@@ -346,6 +346,19 @@
 
     <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --disable-idoutils</pre>
 
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
+      <code class="filename">/etc/apache2/conf-available</code> geändert, so dass Sie abhängig von Ihrer Distribution (testing-versionen von
+      Debian / Ubuntu) dem Aufruf von configure diese Option hinzufügen müssen </p>
+<pre class="screen">#&gt; ./configure --with-httpd-conf=/etc/apache2/conf-available</pre>
+    </td></tr>
+</table></div>
+
     <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
 
     <pre class="programlisting"> #&gt; make all</pre>
@@ -424,7 +437,8 @@
     <p>Wenn Sie (zusätzlich) das neue Icinga Web installieren wollen, lesen Sie bitte <a class="link" href="icinga-web-scratch.html" title="6.4. Installation des Icinga Web Frontend">Installation des
     Web-Interface</a>.</p>
 
-    <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache conf.d-Verzeichnis.</p>
+    <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache conf.d-Verzeichnis (bzw. conf-available ab Apache
+    2.4).</p>
 
     <pre class="programlisting"> #&gt; make install-webconf</pre>
 
@@ -437,6 +451,17 @@
       <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei
       <code class="filename">htpasswd.users</code>, die Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie
       den nächsten Schritt überspringen können. Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    </td></tr>
+</table></div>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Apache 2.4 (testing-Versionen von Debian / Ubuntu) müssen Sie die Konfiguration aktivieren</p>
+<pre class="screen">#&gt; a2enconf icinga</pre>
     </td></tr>
 </table></div>
 
@@ -614,9 +639,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp176845872"></a>
+    <a class="indexterm" name="idp176725312"></a>
 
-    <a class="indexterm" name="idp176847600"></a>
+    <a class="indexterm" name="idp176727040"></a>
   </div>
 </div>
 <div class="navfooter">

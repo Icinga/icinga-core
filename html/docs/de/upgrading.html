@@ -60,7 +60,7 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp177413488"></a>
+  <a class="indexterm" name="idp177296976"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -133,9 +133,30 @@
     <pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig
  #&gt; /etc/init.d/icinga restart</pre>
 
+    <p><span class="bold"><strong>Aktualisieren auf Apache 2.4</strong></span></p>
+
+      <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
+      <code class="filename">/etc/apache2/conf-available</code> geändert. Wenn Sie migrieren wollen, dann verschieben Sie einfach die Datei(en), aktivieren die Konfiguration(en) und starten den Web-Server neu</p>
+<pre class="screen">#&gt; mv /etc/apache2/conf.d/icinga*.conf /etc/apache2/conf-available
+#&gt; a2enconf icinga icinga-web
+#&gt; service apache2 reload</pre>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+      Hinter
+
+      <code class="literal">a2enconf</code>
+
+      geben Sie die Konfiguration(en) an. Das Beispiel nimmt an, dass Sie Icinga Classic UI und Icinga Web installiert haben.
+    </p></td></tr>
+</table></div>
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp177430240"></a>
+    <a class="indexterm" name="idp177317152"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
@@ -287,11 +308,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp177479408"></a>
+    <a class="indexterm" name="idp177366176"></a>
 
-    <a class="indexterm" name="idp177479568"></a>
+    <a class="indexterm" name="idp177366336"></a>
 
-    <a class="indexterm" name="idp177482704"></a>
+    <a class="indexterm" name="idp177369472"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
@@ -410,7 +431,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp177525248"></a>
+    <a class="indexterm" name="idp177412016"></a>
   </div>
 </div>
 <div class="navfooter">
