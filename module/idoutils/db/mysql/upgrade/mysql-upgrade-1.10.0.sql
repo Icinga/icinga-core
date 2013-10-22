@@ -59,6 +59,13 @@ ALTER TABLE icinga_servicestatus ADD check_source TEXT character set latin1  def
 ALTER TABLE icinga_logentries ADD object_id bigint unsigned default NULL;
 
 -- -----------------------------------------
+-- #4939 duration column too small
+-- -----------------------------------------
+
+ALTER TABLE icinga_downtimehistory MODIFY duration BIGINT(20);
+ALTER TABLE icinga_scheduleddowntime MODIFY duration BIGINT(20);
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
