@@ -76,7 +76,7 @@ FIXES
 * classic ui: Hostgroup/Servicegroup Overview: hosts not sorted alphabetical #4404 - RB
 
 * idoutils: remove enable_sla functionality (deprecated in 1.9) #4363
-* idoutils: fix duration integer columns could run out of range (William Epler) #4420 - MF
+* idoutils: fix duration integer columns could run out of range (William Epler) #4420 #4939 - MF
 * idoutils: remove timedevent support and tables #4482 - MF
 * idoutils: fix comments(history) UK misses object_id, not allowing the same comment on host AND service #4544 - MF
 * idoutils: fix contact_notificationcommands contain garbage and insert faulty command object ids (thx mhein/mjentsch) #4799 - MF
