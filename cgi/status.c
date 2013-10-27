@@ -2509,7 +2509,7 @@ void show_service_detail(void) {
 
 		if (new_host == TRUE && content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 			if (strcmp(last_host, ""))
-				printf("<tr><td colspan='6'></td></tr>\n");
+				printf("<tr><td colspan='8'></td></tr>\n");
 		}
 
 		if (odd)
