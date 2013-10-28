@@ -109,7 +109,7 @@
 
 /************** COMMON DATA ATTRIBUTES **************/
 
-#define IDO_MAX_DATA_TYPES                           273
+#define IDO_MAX_DATA_TYPES                           272
 
 #define IDO_DATA_NONE                                0
 
@@ -394,5 +394,4 @@
 #define IDO_DATA_DOWNTIMETRIGGERTIME		     269
 #define IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME  270
 #define IDO_DATA_CUSTOMVARIABLESTATUS                271    /* seperate type from CUSTOMVARIABLE config */
-#define IDO_DATA_CHECKSOURCE			     272
 #endif

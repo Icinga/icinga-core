@@ -258,7 +258,7 @@ int broker_event_handler(int type, int flags, int attr, int eventhandler_type, v
 
 
 /* send host check data to broker */
-int broker_host_check(int type, int flags, int attr, host *hst, int check_type, int state, int state_type, struct timeval start_time, struct timeval end_time, char *cmd, double latency, double exectime, int timeout, int early_timeout, int retcode, char *cmdline, char *output, char *long_output, char *perfdata, struct timeval *timestamp, char *check_source) {
+int broker_host_check(int type, int flags, int attr, host *hst, int check_type, int state, int state_type, struct timeval start_time, struct timeval end_time, char *cmd, double latency, double exectime, int timeout, int early_timeout, int retcode, char *cmdline, char *output, char *long_output, char *perfdata, struct timeval *timestamp) {
 	char *command_buf = NULL;
 	char *command_name = NULL;
 	char *command_args = NULL;
@@ -317,7 +317,7 @@ int broker_host_check(int type, int flags, int attr, host *hst, int check_type, 
 
 
 /* send service check data to broker */
-int broker_service_check(int type, int flags, int attr, service *svc, int check_type, struct timeval start_time, struct timeval end_time, char *cmd, double latency, double exectime, int timeout, int early_timeout, int retcode, char *cmdline, struct timeval *timestamp, char *check_source) {
+int broker_service_check(int type, int flags, int attr, service *svc, int check_type, struct timeval start_time, struct timeval end_time, char *cmd, double latency, double exectime, int timeout, int early_timeout, int retcode, char *cmdline, struct timeval *timestamp) {
 	char *command_buf = NULL;
 	char *command_name = NULL;
 	char *command_args = NULL;

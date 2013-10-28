@@ -444,7 +444,6 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tplugin_output=%s\n", (temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output);
 		fprintf(fp, "\tlong_plugin_output=%s\n", (temp_host->long_plugin_output == NULL) ? "" : temp_host->long_plugin_output);
 		fprintf(fp, "\tperformance_data=%s\n", (temp_host->perf_data == NULL) ? "" : temp_host->perf_data);
-		fprintf(fp, "\tcheck_source=%s\n", (temp_host->check_source == NULL) ? "" : temp_host->check_source);
 		fprintf(fp, "\tlast_check=%lu\n", temp_host->last_check);
 		fprintf(fp, "\tnext_check=%lu\n", temp_host->next_check);
 		fprintf(fp, "\tcheck_options=%d\n", temp_host->check_options);
@@ -532,7 +531,6 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tplugin_output=%s\n", (temp_service->plugin_output == NULL) ? "" : temp_service->plugin_output);
 		fprintf(fp, "\tlong_plugin_output=%s\n", (temp_service->long_plugin_output == NULL) ? "" : temp_service->long_plugin_output);
 		fprintf(fp, "\tperformance_data=%s\n", (temp_service->perf_data == NULL) ? "" : temp_service->perf_data);
-		fprintf(fp, "\tcheck_source=%s\n", (temp_service->check_source == NULL) ? "" : temp_service->check_source);
 		fprintf(fp, "\tlast_check=%lu\n", temp_service->last_check);
 		fprintf(fp, "\tnext_check=%lu\n", temp_service->next_check);
 		fprintf(fp, "\tcheck_options=%d\n", temp_service->check_options);

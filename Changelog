@@ -13,6 +13,12 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.10.1 - XX/YY/2013
+
+* core/idoutils: revert check_source attribute due to mod_gearman manipulating in-memory checkresult list #4958 - MF
+	** classic ui/idoutils schema: functionality is kept only for Icinga 2 support
+
+
 1.10.0 - 24/10/2013
 
 * idoutils: slahistory table must be removed manually after enable_sla removal #4363

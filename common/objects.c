@@ -848,7 +848,6 @@ host *add_host(char *name, char *display_name, char *alias, char *address, char 
 		my_free(new_host->plugin_output);
 		my_free(new_host->long_plugin_output);
 		my_free(new_host->perf_data);
-		my_free(new_host->check_source);
 #endif
 		my_free(new_host->statusmap_image);
 		my_free(new_host->vrml_image);
@@ -1766,7 +1765,6 @@ service *add_service(char *host_name, char *description, char *display_name, cha
 		my_free(new_service->perf_data);
 		my_free(new_service->plugin_output);
 		my_free(new_service->long_plugin_output);
-		my_free(new_service->check_source);
 #endif
 		my_free(new_service->failure_prediction_options);
 		my_free(new_service->notification_period);
@@ -3489,7 +3487,6 @@ int free_object_data(void) {
 		my_free(this_host->long_plugin_output);
 		my_free(this_host->perf_data);
 		my_free(this_host->processed_command);
-		my_free(this_host->check_source);
 
 		free_objectlist(&this_host->hostgroups_ptr);
 #endif
@@ -3691,7 +3688,6 @@ int free_object_data(void) {
 		my_free(this_service->long_plugin_output);
 		my_free(this_service->perf_data);
 		my_free(this_service->processed_command);
-		my_free(this_service->check_source);
 
 		my_free(this_service->event_handler_args);
 		my_free(this_service->check_command_args);

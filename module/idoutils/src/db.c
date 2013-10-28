@@ -3949,7 +3949,7 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             "process_performance_data=:X39, obsess_over_host=:X40, "
 	             "modified_host_attributes=:X41, event_handler=:X42, "
 	             "check_command=:X43, normal_check_interval=:X44, "
-	             "retry_check_interval=:X45, check_timeperiod_object_id=:X46, check_source=:X47 "
+	             "retry_check_interval=:X45, check_timeperiod_object_id=:X46 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, host_object_id, status_update_time, output, long_output, perfdata, "
 	             "current_state, has_been_checked, should_be_scheduled, current_check_attempt, "
@@ -3963,7 +3963,7 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             "percent_state_change, latency, execution_time, scheduled_downtime_depth, "
 	             "failure_prediction_enabled, process_performance_data, obsess_over_host, "
 	             "modified_host_attributes, event_handler, check_command, normal_check_interval, "
-	             "retry_check_interval, check_timeperiod_object_id, check_source) "
+	             "retry_check_interval, check_timeperiod_object_id) "
 	             "VALUES (seq_hoststatus.nextval, :X1, :X2, unixts2localts(:X3), :X4i, :X5i, :X6i, "
 	             ":X7, :X8, :X9, :X10, "
 	             ":X11, unixts2localts(:X12), unixts2localts(:X13), :X14, "
@@ -3976,7 +3976,7 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             ":X34, :X35, :X36, :X37, "
 	             ":X38, :X39, :X40, "
 	             ":X41, :X42, :X43, :X44, "
-	             ":X45, :X46, :X47)",
+	             ":X45, :X46)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS]) == -1) {
 		buf = NULL;
 	}
@@ -4086,7 +4086,7 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             "failure_prediction_enabled=:X39, process_performance_data=:X40, "
 	             "obsess_over_service=:X41, modified_service_attributes=:X42, "
 	             "event_handler=:X43, check_command=:X44, normal_check_interval=:X45, "
-	             "retry_check_interval=:X46, check_timeperiod_object_id=:X47, check_source=:X48 "
+	             "retry_check_interval=:X46, check_timeperiod_object_id=:X47 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT "
 	             "(id, instance_id, service_object_id, status_update_time, "
@@ -4102,7 +4102,7 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             "percent_state_change, latency, execution_time, scheduled_downtime_depth, "
 	             "failure_prediction_enabled, process_performance_data, obsess_over_service, "
 	             "modified_service_attributes, event_handler, check_command, "
-	             "normal_check_interval, retry_check_interval, check_timeperiod_object_id, check_source) "
+	             "normal_check_interval, retry_check_interval, check_timeperiod_object_id) "
 	             "VALUES "
 	             "(seq_servicestatus.nextval, :X1, :X2, unixts2localts(:X3), "
 	             ":X4i, :X5i, :X6i, :X7, :X8, :X9, :X10, :X11, "
@@ -4112,7 +4112,7 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             ":X22, unixts2localts(:X23), unixts2localts(:X24), :X25, "
 	             ":X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, "
 	             ":X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, "
-	             ":X43, :X44, :X45, :X46, :X47, :X48)",
+	             ":X43, :X44, :X45, :X46, :X47)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS]) == -1) {
 		buf = NULL;
 	}

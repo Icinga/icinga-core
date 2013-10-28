@@ -3597,11 +3597,11 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	double normal_check_interval = 0.0;
 	double retry_check_interval = 0.0;
 	char *ts[10];
-	char *es[6];
+	char *es[5];
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
-	void *data[57];
+	void *data[56];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hoststatusdata() start\n");
 
@@ -3659,7 +3659,6 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	es[2] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PERFDATA]);
 	es[3] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_EVENTHANDLER]);
 	es[4] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CHECKCOMMAND]);
-	es[5] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CHECKSOURCE]);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, last_check);
@@ -3734,8 +3733,6 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	data[53] = (void *) &last_time_unreachable;
 	data[54] = (void *) &last_notification;
 	data[55] = (void *) &next_notification;
-	/* check_source */
-	data[56] = (void *) &es[5];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hoststatusdata() LongLen:%d\n", strlen(es[1]));
 
@@ -3797,11 +3794,11 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	double normal_check_interval = 0.0;
 	double retry_check_interval = 0.0;
 	char *ts[11];
-	char *es[6];
+	char *es[5];
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
-	void *data[59];
+	void *data[58];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicestatusdata() start\n");
 
@@ -3860,7 +3857,6 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	es[2] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PERFDATA]);
 	es[3] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_EVENTHANDLER]);
 	es[4] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CHECKCOMMAND]);
-	es[5] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CHECKSOURCE]);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, last_check);
@@ -3943,8 +3939,6 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	data[55] = (void *) &last_time_critical;
 	data[56] = (void *) &last_notification;
 	data[57] = (void *) &next_notification;
-	/* check_source */
-	data[58] = (void *) &es[5];
 
 	ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
 

@@ -2933,8 +2933,6 @@ int process_check_result_file(char *fname) {
 				new_cr->return_code = atoi(val);
 			else if (!strcmp(var, "output"))
 				new_cr->output = (char *)strdup(val);
-			else if (!strcmp(var, "source"))
-				new_cr->source = (char *)strdup(val);
 		}
 	}
 
@@ -3031,7 +3029,6 @@ int init_check_result(check_result *info) {
 	info->exited_ok = TRUE;
 	info->return_code = 0;
 	info->output = NULL;
-	info->source = NULL;
 	info->next = NULL;
 
 	return OK;
