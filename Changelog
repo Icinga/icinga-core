@@ -18,6 +18,9 @@ UPGRADE NOTES
 * core/idoutils: revert check_source attribute due to mod_gearman manipulating in-memory checkresult list #4958 - MF
 	** classic ui/idoutils schema: functionality is kept only for Icinga 2 support
 
+* idoutils: fix pgsql update script #4953
+* idoutils: fix logentry_type being integer, not unsigned long #4953
+
 
 1.10.0 - 24/10/2013
 
