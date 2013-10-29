@@ -17,7 +17,7 @@ UPGRADE NOTES
 
 ENHANCEMENTS
 
-* core: make the config parser's error messages more verbose #4967 - GB
+* core: add line number information to config verification error messages #4967 - GB
 
 FIXES
 
