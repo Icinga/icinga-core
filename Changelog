@@ -15,8 +15,11 @@ UPGRADE NOTES
 
 1.10.1 - XX/YY/2013
 
+FIXES
 * core/idoutils: revert check_source attribute due to mod_gearman manipulating in-memory checkresult list #4958 - MF
 	** classic ui/idoutils schema: functionality is kept only for Icinga 2 support
+
+* classic ui: fix context help on mouseover in cmd.cgi (thx Marc-Christian Petersen) #4971 - MF
 
 * idoutils: fix pgsql update script #4953
 * idoutils: fix logentry_type being integer, not unsigned long #4953
