@@ -15,7 +15,12 @@ UPGRADE NOTES
 
 1.10.1 - XX/YY/2013
 
+ENHANCEMENTS
+
+* core: make the config parser's error messages more verbose #4967 - GB
+
 FIXES
+
 * core/idoutils: revert check_source attribute due to mod_gearman manipulating in-memory checkresult list #4958 - MF
 	** classic ui/idoutils schema: functionality is kept only for Icinga 2 support
 

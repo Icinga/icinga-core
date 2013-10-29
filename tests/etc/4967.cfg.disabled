@@ -1,0 +1,101 @@
+#############################################################################################
+# ICINGA TEST CONFIG BY ISSUES
+# (c) 2009-2013 Icinga Development Team and Community Contributors
+#
+# #4967
+# Add line number information to config verification error messages.
+#############################################################################################
+
+define command {
+        command_name    		4967check_env
+        command_line    		/usr/bin/env >> /tmp/4967_icinga.$TIMET$.env
+}
+
+
+define host{
+        name                            4967linux-server
+        check_period                    testconfig-24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              10
+        check_command                   testconfig-check-host-alive
+        notification_period             testconfig-workhours
+        notification_interval           120
+        notification_options            d,u,r
+	register                        0
+	; trigger no contacts defined warning
+}
+
+
+define host{
+        use                     	4967linux-server
+        host_name               	4967localhost
+        alias                   	4967localhost
+        address                 	127.0.0.1
+        address6                	::1
+}
+
+define host{
+        use                     	4967linux-server
+        host_name               	4967localhostnoservices ; trigger no services warning (use -vv)
+        alias                   	4967localhost
+        address                 	127.0.0.1
+        address6                	::1
+}
+
+define  service {
+        name                            4967generic-error-message-check
+	event_handler			eventhandlerdoesnotexisttriggererror ; trigger event handler error
+        is_volatile                     0
+	check_command			checkcommanddoesnotexist ; trigger check command error
+        max_check_attempts              2
+        normal_check_interval           2
+        retry_check_interval            1
+        active_checks_enabled           1
+        passive_checks_enabled          1
+        parallelize_check               1
+        obsess_over_service             1
+        check_freshness                 0
+        event_handler_enabled           1
+        flap_detection_enabled          1
+        process_perf_data               1
+        retain_status_information       1
+        retain_nonstatus_information    1
+        notification_interval           120
+        notification_period             testconfig-24x7
+        notification_options            r 	; trigger recovery verification error
+        notifications_enabled           1
+        register                        0
+}
+
+define  service {
+        use                             4967generic-error-message-check
+        host_name                       4967localhost
+        contacts                 	testconfig-test_contact*|'"<>? ; trigger illegal object chars error
+        service_description             4967ERRORMSG
+        check_period                    testconfig-24x7
+}
+
+define  service {
+        use                             4967generic-error-message-check
+        host_name                       4967localhost
+        service_description             4967ERRORMSG2
+	contacts			null ; trigger missing contact* warning
+	contact_groups			null ; trigger missing contact* warning
+	check_period			null ; trigger missing check_period warning
+	notification_period		null ; trigger missing notification_period warning
+	check_interval			60 ; trigger notification_interval < check_interval warning
+	notification_interval		10 ; trigger notification_interval < check_interval warning
+}
+
+# contact with illegal object name chars
+define contact{
+    contact_name                    testconfig-test_contact*|'"<>?
+    alias                           testconfig-test_contact_alias
+    service_notification_options    w,u,c,r
+    host_notification_options       d,r
+    service_notification_commands   notificationcommanddoesnotexist ; trigger service_notification_command error
+    ; trigger host_notification_commands error
+    email                           icinga@localhost
+}
+
