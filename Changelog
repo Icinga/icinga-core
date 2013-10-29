@@ -20,6 +20,7 @@ FIXES
 	** classic ui/idoutils schema: functionality is kept only for Icinga 2 support
 
 * classic ui: fix context help on mouseover in cmd.cgi (thx Marc-Christian Petersen) #4971 - MF
+* classic ui: correction of colspan value in status.cgi (Bernd Arnold) #4961 - MF
 
 * idoutils: fix pgsql update script #4953
 * idoutils: fix logentry_type being integer, not unsigned long #4953
