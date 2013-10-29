@@ -128,6 +128,8 @@ int presorted_objects = FALSE;
 
 extern int allow_empty_hostgroup_assignment;
 
+static debuginfo *debuginfo_buckets[4096];
+
 int xodtemplate_create_escalation_condition(char*, xodtemplate_escalation_condition*);
 
 /*
@@ -8865,6 +8867,8 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod) {
 		return ERROR;
 	}
 
+	xodtemplate_set_debuginfo(new_timeperiod, this_timeperiod);
+
 	/* add all exceptions to timeperiod */
 	for (x = 0; x < DATERANGE_TYPES; x++) {
 		for (temp_daterange = this_timeperiod->exceptions[x]; temp_daterange != NULL; temp_daterange = temp_daterange->next) {
@@ -9020,6 +9024,8 @@ int xodtemplate_register_command(xodtemplate_command *this_command) {
 		return ERROR;
 	}
 
+	xodtemplate_set_debuginfo(new_command, this_command);
+
 	return OK;
 }
 
@@ -9043,6 +9049,8 @@ int xodtemplate_register_contactgroup(xodtemplate_contactgroup *this_contactgrou
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register contactgroup (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_contactgroup->_config_file), this_contactgroup->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_contactgroup, this_contactgroup);
 
 	/* Need to check for NULL because strtok could use a NULL value to check the previous string's token value */
 	if (this_contactgroup->members != NULL) {
@@ -9080,6 +9088,8 @@ int xodtemplate_register_hostgroup(xodtemplate_hostgroup *this_hostgroup) {
 		return ERROR;
 	}
 
+	xodtemplate_set_debuginfo(new_hostgroup, this_hostgroup);
+
 	if (this_hostgroup->members != NULL) {
 		for (host_name = strtok(this_hostgroup->members, ","); host_name != NULL; host_name = strtok(NULL, ",")) {
 			strip(host_name);
@@ -9115,6 +9125,8 @@ int xodtemplate_register_servicegroup(xodtemplate_servicegroup *this_servicegrou
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register servicegroup (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_servicegroup->_config_file), this_servicegroup->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_servicegroup, this_servicegroup);
 
 	if (this_servicegroup->members != NULL) {
 		for (host_name = strtok(this_servicegroup->members, ","); host_name != NULL; host_name = strtok(NULL, ",")) {
@@ -9163,6 +9175,8 @@ int xodtemplate_register_servicedependency(xodtemplate_servicedependency *this_s
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register service execution dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_servicedependency->_config_file), this_servicedependency->_start_line);
 			return ERROR;
 		}
+
+		xodtemplate_set_debuginfo(new_servicedependency, this_servicedependency);
 	}
 	if (this_servicedependency->have_notification_dependency_options == TRUE) {
 
@@ -9173,6 +9187,8 @@ int xodtemplate_register_servicedependency(xodtemplate_servicedependency *this_s
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register service notification dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_servicedependency->_config_file), this_servicedependency->_start_line);
 			return ERROR;
 		}
+
+		xodtemplate_set_debuginfo(new_servicedependency, this_servicedependency);
 	}
 
 	return OK;
@@ -9208,6 +9224,8 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register service escalation (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_serviceescalation->_config_file), this_serviceescalation->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_serviceescalation, this_serviceescalation);
 
 	/* add the contact groups */
 	if (this_serviceescalation->contact_groups != NULL) {
@@ -9288,6 +9306,8 @@ int xodtemplate_register_contact(xodtemplate_contact *this_contact) {
 		return ERROR;
 	}
 
+	xodtemplate_set_debuginfo(new_contact, this_contact);
+
 	/* add all the host notification commands */
 	if (this_contact->host_notification_commands != NULL) {
 
@@ -9357,6 +9377,8 @@ int xodtemplate_register_host(xodtemplate_host *this_host) {
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register host (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_host->_config_file), this_host->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_host, this_host);
 
 	/* add the parent hosts */
 	if (this_host->parents != NULL) {
@@ -9434,6 +9456,8 @@ int xodtemplate_register_service(xodtemplate_service *this_service) {
 		return ERROR;
 	}
 
+	xodtemplate_set_debuginfo(new_service, this_service);
+
 	/* add all contact groups to the service */
 	if (this_service->contact_groups != NULL) {
 
@@ -9496,6 +9520,8 @@ int xodtemplate_register_hostdependency(xodtemplate_hostdependency *this_hostdep
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register host execution dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_hostdependency->_config_file), this_hostdependency->_start_line);
 			return ERROR;
 		}
+
+		xodtemplate_set_debuginfo(new_hostdependency, this_hostdependency);
 	}
 
 	/* add the host notification dependency */
@@ -9508,6 +9534,8 @@ int xodtemplate_register_hostdependency(xodtemplate_hostdependency *this_hostdep
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register host notification dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_hostdependency->_config_file), this_hostdependency->_start_line);
 			return ERROR;
 		}
+
+		xodtemplate_set_debuginfo(new_hostdependency, this_hostdependency);
 	}
 
 	return OK;
@@ -9542,6 +9570,8 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register host escalation (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_hostescalation->_config_file), this_hostescalation->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_hostescalation, this_hostescalation);
 
 	/* add all contact groups */
 	if (this_hostescalation->contact_groups != NULL) {
@@ -9617,6 +9647,8 @@ int xodtemplate_register_module(xodtemplate_module *this_module) {
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not register module (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(this_module->_config_file), this_module->_start_line);
 		return ERROR;
 	}
+
+	xodtemplate_set_debuginfo(new_module, this_module);
 
 	return OK;
 }
@@ -14305,5 +14337,73 @@ int xodtemplate_create_escalation_condition(char *value, xodtemplate_escalation_
 		condition_last = new_condition;
 	}
 	return result;
+}
+
+debuginfo *get_debuginfo(void *cookie) {
+	debuginfo *di;
+	int bucket = (intptr_t)cookie % (sizeof(debuginfo_buckets) / sizeof(debuginfo_buckets[0]));
+
+	for (di = debuginfo_buckets[bucket]; di; di = di->next)
+		if (di->cookie == cookie)
+			return di;
+
+	return NULL;
+}
+
+const char *format_debuginfo(void *cookie) {
+	static char *text;
+	debuginfo *di = get_debuginfo(cookie);
+
+	if (!di)
+		return "unknown file/line";
+
+	free(text);
+	(void) asprintf(&text, "file '%s', line %d", di->file, di->line);
+
+	return text;
+}
+
+void set_debuginfo(void *cookie, const char *file, int line) {
+	debuginfo *di;
+	int bucket = (intptr_t)cookie % (sizeof(debuginfo_buckets) / sizeof(debuginfo_buckets[0]));
+
+	for (di = debuginfo_buckets[bucket]; di; di = di->next) {
+		if (di->cookie == cookie) {
+			free(di->file);
+			break;
+		}
+	}
+
+	if (!di) {
+		di = malloc(sizeof(debuginfo));
+		di->cookie = cookie;
+		di->next = debuginfo_buckets[bucket];
+		debuginfo_buckets[bucket] = di;
+	}
+
+	di->file = strdup(file);
+	di->line = line;
+}
+
+void purge_debuginfo(void) {
+	int i;
+	debuginfo *next;
+
+	for (i = 0; i < sizeof(debuginfo_buckets) / sizeof(debuginfo_buckets[0]); i++) {
+		while (debuginfo_buckets[i]) {
+			next = debuginfo_buckets[i]->next;
+			free(debuginfo_buckets[i]->file);
+			free(debuginfo_buckets[i]);
+			debuginfo_buckets[i] = next;
+		}
+	}
+}
+
+void xodtemplate_set_debuginfo(void *object, void *xodtemplate) {
+	/* Thanks to the xodtemplate_* struct layout this is guaranteed to
+	 * work. Nevertheless, it's quite evil. */
+	xodtemplate_timeperiod *real_template = (xodtemplate_timeperiod *)xodtemplate;
+
+	set_debuginfo(object, xodtemplate_config_file_name(real_template->_config_file), real_template->_start_line);
 }
 

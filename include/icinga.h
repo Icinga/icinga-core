@@ -406,7 +406,6 @@ typedef struct check_stats_struct{
 	time_t last_update;
         }check_stats;
 
-
 /******************* THREAD STUFF ********************/
 
 /* slots in circular buffers */
@@ -738,7 +737,6 @@ char *get_program_modification_date(void);
 int has_shell_metachars(const char *);
 
 extern pthread_mutex_t icinga_eventloop_lock;
-
 
 #ifdef __cplusplus
 }

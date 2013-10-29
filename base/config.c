@@ -31,6 +31,7 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
+#include "../xdata/xodtemplate.h"
 
 
 extern char	*log_file;
@@ -1713,6 +1714,7 @@ int pre_flight_check(void) {
 	if (test_scheduling == TRUE)
 		gettimeofday(&tv[2], NULL);
 
+	purge_debuginfo();
 
 	/********************************************/
 	/* check global event handler commands...   */
@@ -1951,7 +1953,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* we couldn't find an associated host! */
 		if (!temp_host) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service '%s' not defined anywhere!", temp_service->host_name, temp_service->description);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service '%s' (%s) not defined anywhere!", temp_service->host_name, temp_service->description, format_debuginfo(temp_service));
 			errors++;
 		}
 
@@ -1972,7 +1974,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_command = find_command(temp_command_name);
 			if (temp_command == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Event handler command '%s' specified in service '%s' for host '%s' not defined anywhere", temp_command_name, temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Event handler command '%s' specified in service '%s' for host '%s' (%s) not defined anywhere", temp_command_name, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 
@@ -1990,7 +1992,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		temp_command = find_command(temp_command_name);
 		if (temp_command == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service check command '%s' specified in service '%s' for host '%s' not defined anywhere!", temp_command_name, temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service check command '%s' specified in service '%s' for host '%s' (%s) not defined anywhere!", temp_command_name, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			errors++;
 		}
 
@@ -2001,7 +2003,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check for sane recovery options */
 		if (temp_service->notify_on_recovery == TRUE && temp_service->notify_on_warning == FALSE && temp_service->notify_on_critical == FALSE) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Recovery notification option in service '%s' for host '%s' doesn't make any sense - specify warning and/or critical options as well", temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Recovery notification option in service '%s' for host '%s' (%s) doesn't make any sense - specify warning and/or critical options as well", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			warnings++;
 		}
 
@@ -2011,7 +2013,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contact = find_contact(temp_contactsmember->contact_name);
 
 			if (temp_contact == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in service '%s' for host '%s' is not defined anywhere!", temp_contactsmember->contact_name, temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in service '%s' for host '%s' (%s) is not defined anywhere!", temp_contactsmember->contact_name, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 
@@ -2025,7 +2027,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contactgroup = find_contactgroup(temp_contactgroupsmember->group_name);
 
 			if (temp_contactgroup == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in service '%s' for host '%s' is not defined anywhere!", temp_contactgroupsmember->group_name, temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in service '%s' for host '%s' (%s) is not defined anywhere!", temp_contactgroupsmember->group_name, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 
@@ -2035,18 +2037,18 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check to see if there is at least one contact/group */
 		if (temp_service->contacts == NULL && temp_service->contact_groups == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' has no default contacts or contactgroups defined!", temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' (%s) has no default contacts or contactgroups defined!", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			warnings++;
 		}
 
 		/* verify service check timeperiod */
 		if (temp_service->check_period == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' has no check time period defined!", temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' (%s) has no check time period defined!", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			warnings++;
 		} else {
 			temp_timeperiod = find_timeperiod(temp_service->check_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Check period '%s' specified for service '%s' on host '%s' is not defined anywhere!", temp_service->check_period, temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Check period '%s' specified for service '%s' on host '%s' (%s) is not defined anywhere!", temp_service->check_period, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 
@@ -2056,14 +2058,14 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check service notification timeperiod */
 		if (temp_service->notification_period == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' has no notification time period defined!", temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' (%s) has no notification time period defined!", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			warnings++;
 		}
 
 		else {
 			temp_timeperiod = find_timeperiod(temp_service->notification_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Notification period '%s' specified for service '%s' on host '%s' is not defined anywhere!", temp_service->notification_period, temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Notification period '%s' specified for service '%s' on host '%s' (%s) is not defined anywhere!", temp_service->notification_period, temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 
@@ -2073,14 +2075,14 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* see if the notification interval is less than the check interval */
 		if (temp_service->notification_interval < temp_service->check_interval && temp_service->notification_interval != 0) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s'  has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.", temp_service->description, temp_service->host_name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service '%s' on host '%s' (%s) has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 			warnings++;
 		}
 
 		/* check for illegal characters in service description */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_service->description) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The description string for service '%s' on host '%s' contains one or more illegal characters.", temp_service->description, temp_service->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The description string for service '%s' on host '%s' (%s) contains one or more illegal characters.", temp_service->description, temp_service->host_name, format_debuginfo(temp_service));
 				errors++;
 			}
 		}
@@ -2109,7 +2111,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* make sure each host has at least one service associated with it */
 		if(temp_host->total_services == 0 && verify_config >= 2) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no services associated with it!", temp_host->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' (%s) has no services associated with it!", temp_host->name, format_debuginfo(temp_host));
 			warnings++;
 		}
 
@@ -2124,7 +2126,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_command = find_command(temp_command_name);
 			if (temp_command == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Event handler command '%s' specified for host '%s' not defined anywhere", temp_command_name, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Event handler command '%s' specified for host '%s' (%s) not defined anywhere", temp_command_name, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2145,7 +2147,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_command = find_command(temp_command_name);
 			if (temp_command == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host check command '%s' specified for host '%s' is not defined anywhere!", temp_command_name, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host check command '%s' specified for host '%s' (%s) is not defined anywhere!", temp_command_name, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2159,7 +2161,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_host->check_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_host->check_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Check period '%s' specified for host '%s' is not defined anywhere!", temp_host->check_period, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Check period '%s' specified for host '%s' (%s) is not defined anywhere!", temp_host->check_period, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2173,7 +2175,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contact = find_contact(temp_contactsmember->contact_name);
 
 			if (temp_contact == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in host '%s' is not defined anywhere!", temp_contactsmember->contact_name, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in host '%s' (%s) is not defined anywhere!", temp_contactsmember->contact_name, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2187,7 +2189,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contactgroup = find_contactgroup(temp_contactgroupsmember->group_name);
 
 			if (temp_contactgroup == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in host '%s' is not defined anywhere!", temp_contactgroupsmember->group_name, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in host '%s' (%s) is not defined anywhere!", temp_contactgroupsmember->group_name, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2197,7 +2199,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check to see if there is at least one contact/group */
 		if (temp_host->contacts == NULL && temp_host->contact_groups == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no default contacts or contactgroups defined!", temp_host->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' (%s) has no default contacts or contactgroups defined!", temp_host->name, format_debuginfo(temp_host));
 			warnings++;
 		}
 
@@ -2205,7 +2207,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_host->notification_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_host->notification_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Notification period '%s' specified for host '%s' is not defined anywhere!", temp_host->notification_period, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Notification period '%s' specified for host '%s' (%s) is not defined anywhere!", temp_host->notification_period, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2217,7 +2219,7 @@ int pre_flight_object_check(int *w, int *e) {
 		for (temp_hostsmember = temp_host->parent_hosts; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
 
 			if ((temp_host2 = find_host(temp_hostsmember->host_name)) == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: '%s' is not a valid parent for host '%s'!", temp_hostsmember->host_name, temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: '%s' is not a valid parent for host '%s' (%s)!", temp_hostsmember->host_name, temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 
@@ -2230,14 +2232,14 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check for sane recovery options */
 		if (temp_host->notify_on_recovery == TRUE && temp_host->notify_on_down == FALSE && temp_host->notify_on_unreachable == FALSE) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Recovery notification option in host '%s' definition doesn't make any sense - specify down and/or unreachable options as well", temp_host->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Recovery notification option in host '%s' (%s) definition doesn't make any sense - specify down and/or unreachable options as well", temp_host->name, format_debuginfo(temp_host));
 			warnings++;
 		}
 
 		/* check for illegal characters in host name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_host->name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of host '%s' contains one or more illegal characters.", temp_host->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of host '%s' (%s) contains one or more illegal characters.", temp_host->name, format_debuginfo(temp_host));
 				errors++;
 			}
 		}
@@ -2260,7 +2262,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_host = find_host(temp_hostsmember->host_name);
 			if (temp_host == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in host group '%s' is not defined anywhere!", temp_hostsmember->host_name, temp_hostgroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in host group '%s' (%s) is not defined anywhere!", temp_hostsmember->host_name, temp_hostgroup->group_name, format_debuginfo(temp_hostgroup));
 				errors++;
 			}
 
@@ -2275,7 +2277,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in hostgroup name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_hostgroup->group_name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of hostgroup '%s' contains one or more illegal characters.", temp_hostgroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of hostgroup '%s' (%s) contains one or more illegal characters.", temp_hostgroup->group_name, format_debuginfo(temp_hostgroup));
 				errors++;
 			}
 		}
@@ -2297,7 +2299,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_service = find_service(temp_servicesmember->host_name, temp_servicesmember->service_description);
 			if (temp_service == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service group '%s' is not defined anywhere!", temp_servicesmember->service_description, temp_servicesmember->host_name, temp_servicegroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service group '%s' (%s) is not defined anywhere!", temp_servicesmember->service_description, temp_servicesmember->host_name, temp_servicegroup->group_name, format_debuginfo(temp_servicegroup));
 				errors++;
 			}
 
@@ -2312,7 +2314,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in servicegroup name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_servicegroup->group_name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of servicegroup '%s' contains one or more illegal characters.", temp_servicegroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of servicegroup '%s' (%s) contains one or more illegal characters.", temp_servicegroup->group_name, format_debuginfo(temp_servicegroup));
 				errors++;
 			}
 		}
@@ -2336,7 +2338,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check service notification commands */
 		if (temp_contact->service_notification_commands == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' has no service notification commands defined!", temp_contact->name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' (%s) has no service notification commands defined!", temp_contact->name, format_debuginfo(temp_contact));
 			errors++;
 		} else for (temp_commandsmember = temp_contact->service_notification_commands; temp_commandsmember != NULL; temp_commandsmember = temp_commandsmember->next) {
 
@@ -2348,7 +2350,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 				temp_command = find_command(temp_command_name);
 				if (temp_command == NULL) {
-					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service notification command '%s' specified for contact '%s' is not defined anywhere!", temp_command_name, temp_contact->name);
+					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service notification command '%s' specified for contact '%s' (%s) is not defined anywhere!", temp_command_name, temp_contact->name, format_debuginfo(temp_contact));
 					errors++;
 				}
 
@@ -2360,7 +2362,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check host notification commands */
 		if (temp_contact->host_notification_commands == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' has no host notification commands defined!", temp_contact->name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' (%s) has no host notification commands defined!", temp_contact->name, format_debuginfo(temp_contact));
 			errors++;
 		} else for (temp_commandsmember = temp_contact->host_notification_commands; temp_commandsmember != NULL; temp_commandsmember = temp_commandsmember->next) {
 
@@ -2372,7 +2374,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 				temp_command = find_command(temp_command_name);
 				if (temp_command == NULL) {
-					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host notification command '%s' specified for contact '%s' is not defined anywhere!", temp_command_name, temp_contact->name);
+					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host notification command '%s' specified for contact '%s' (%s) is not defined anywhere!", temp_command_name, temp_contact->name, format_debuginfo(temp_contact));
 					errors++;
 				}
 
@@ -2384,14 +2386,14 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check service notification timeperiod */
 		if (temp_contact->service_notification_period == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Contact '%s' has no service notification time period defined!", temp_contact->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Contact '%s' (%s) has no service notification time period defined!", temp_contact->name, format_debuginfo(temp_contact));
 			warnings++;
 		}
 
 		else {
 			temp_timeperiod = find_timeperiod(temp_contact->service_notification_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service notification period '%s' specified for contact '%s' is not defined anywhere!", temp_contact->service_notification_period, temp_contact->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service notification period '%s' specified for contact '%s' (%s) is not defined anywhere!", temp_contact->service_notification_period, temp_contact->name, format_debuginfo(temp_contact));
 				errors++;
 			}
 
@@ -2401,14 +2403,14 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check host notification timeperiod */
 		if (temp_contact->host_notification_period == NULL) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Contact '%s' has no host notification time period defined!", temp_contact->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Contact '%s' (%s) has no host notification time period defined!", temp_contact->name, format_debuginfo(temp_contact));
 			warnings++;
 		}
 
 		else {
 			temp_timeperiod = find_timeperiod(temp_contact->host_notification_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host notification period '%s' specified for contact '%s' is not defined anywhere!", temp_contact->host_notification_period, temp_contact->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host notification period '%s' specified for contact '%s' (%s) is not defined anywhere!", temp_contact->host_notification_period, temp_contact->name, format_debuginfo(temp_contact));
 				errors++;
 			}
 
@@ -2418,20 +2420,20 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* check for sane host recovery options */
 		if (temp_contact->notify_on_host_recovery == TRUE && temp_contact->notify_on_host_down == FALSE && temp_contact->notify_on_host_unreachable == FALSE) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host recovery notification option for contact '%s' doesn't make any sense - specify down and/or unreachable options as well", temp_contact->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host recovery notification option for contact '%s' (%s) doesn't make any sense - specify down and/or unreachable options as well", temp_contact->name, format_debuginfo(temp_contact));
 			warnings++;
 		}
 
 		/* check for sane service recovery options */
 		if (temp_contact->notify_on_service_recovery == TRUE && temp_contact->notify_on_service_critical == FALSE && temp_contact->notify_on_service_warning == FALSE) {
-			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service recovery notification option for contact '%s' doesn't make any sense - specify critical and/or warning options as well", temp_contact->name);
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Service recovery notification option for contact '%s' (%s) doesn't make any sense - specify critical and/or warning options as well", temp_contact->name, format_debuginfo(temp_contact));
 			warnings++;
 		}
 
 		/* check for illegal characters in contact name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_contact->name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of contact '%s' contains one or more illegal characters.", temp_contact->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of contact '%s' (%s) contains one or more illegal characters.", temp_contact->name, format_debuginfo(temp_contact));
 				errors++;
 			}
 		}
@@ -2454,7 +2456,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_contact = find_contact(temp_contactsmember->contact_name);
 			if (temp_contact == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in contact group '%s' is not defined anywhere!", temp_contactsmember->contact_name, temp_contactgroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in contact group '%s' (%s) is not defined anywhere!", temp_contactsmember->contact_name, temp_contactgroup->group_name, format_debuginfo(temp_contactgroup));
 				errors++;
 			}
 
@@ -2469,7 +2471,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in contactgroup name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_contactgroup->group_name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of contact group '%s' contains one or more illegal characters.", temp_contactgroup->group_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of contact group '%s' (%s) contains one or more illegal characters.", temp_contactgroup->group_name, format_debuginfo(temp_contactgroup));
 				errors++;
 			}
 		}
@@ -2491,7 +2493,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* find the service */
 		temp_service = find_service(temp_se->host_name, temp_se->description);
 		if (temp_service == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!", temp_se->description, temp_se->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation (%s) is not defined anywhere!", temp_se->description, temp_se->host_name, format_debuginfo(temp_se));
 			errors++;
 		}
 
@@ -2502,7 +2504,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_se->escalation_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_se->escalation_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Escalation period '%s' specified in service escalation for service '%s' on host '%s' is not defined anywhere!", temp_se->escalation_period, temp_se->description, temp_se->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Escalation period '%s' specified in service escalation for service '%s' on host '%s' (%s) is not defined anywhere!", temp_se->escalation_period, temp_se->description, temp_se->host_name, format_debuginfo(temp_se));
 				errors++;
 			}
 
@@ -2516,7 +2518,7 @@ int pre_flight_object_check(int *w, int *e) {
 			/* find the contact */
 			temp_contact = find_contact(temp_contactsmember->contact_name);
 			if (temp_contact == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in service escalation for service '%s' on host '%s' is not defined anywhere!", temp_contactsmember->contact_name, temp_se->description, temp_se->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in service escalation for service '%s' on host '%s' (%s) is not defined anywhere!", temp_contactsmember->contact_name, temp_se->description, temp_se->host_name, format_debuginfo(temp_se));
 				errors++;
 			}
 
@@ -2530,7 +2532,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contactgroup = find_contactgroup(temp_contactgroupsmember->group_name);
 
 			if (temp_contactgroup == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in service escalation for service '%s' on host '%s' is not defined anywhere!", temp_contactgroupsmember->group_name, temp_se->description, temp_se->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in service escalation for service '%s' on host '%s' (%s) is not defined anywhere!", temp_contactgroupsmember->group_name, temp_se->description, temp_se->host_name, format_debuginfo(temp_se));
 				errors++;
 			}
 
@@ -2544,7 +2546,7 @@ int pre_flight_object_check(int *w, int *e) {
 			/* find the host */
 			temp_host = find_host(temp_escalation_condition->host_name);
 			if (temp_host == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service escalation condition is not defined anywhere!", temp_escalation_condition->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service escalation condition (%s) is not defined anywhere!", temp_escalation_condition->host_name, format_debuginfo(temp_se));
 				errors++;
 			}
 
@@ -2552,7 +2554,7 @@ int pre_flight_object_check(int *w, int *e) {
 				/* find the service */
 				temp_service = find_service(temp_escalation_condition->host_name, temp_escalation_condition->service_description);
 				if (temp_service == NULL) {
-					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!", temp_escalation_condition->service_description, temp_escalation_condition->host_name);
+					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation (%s) is not defined anywhere!", temp_escalation_condition->service_description, temp_escalation_condition->host_name, format_debuginfo(temp_se));
 					errors++;
 				}
 			}
@@ -2576,7 +2578,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* find the dependent service */
 		temp_service = find_service(temp_sd->dependent_host_name, temp_sd->dependent_service_description);
 		if (temp_service == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependent service '%s' on host '%s' specified in service dependency for service '%s' on host '%s' is not defined anywhere!", temp_sd->dependent_service_description, temp_sd->dependent_host_name, temp_sd->service_description, temp_sd->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependent service '%s' on host '%s' specified in service dependency for service '%s' on host '%s' (%s) is not defined anywhere!", temp_sd->dependent_service_description, temp_sd->dependent_host_name, temp_sd->service_description, temp_sd->host_name, format_debuginfo(temp_sd));
 			errors++;
 		}
 
@@ -2586,7 +2588,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* find the service we're depending on */
 		temp_service2 = find_service(temp_sd->host_name, temp_sd->service_description);
 		if (temp_service2 == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service dependency for service '%s' on host '%s' is not defined anywhere!", temp_sd->service_description, temp_sd->host_name, temp_sd->dependent_service_description, temp_sd->dependent_host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service dependency for service '%s' on host '%s' (%s) is not defined anywhere!", temp_sd->service_description, temp_sd->host_name, temp_sd->dependent_service_description, temp_sd->dependent_host_name, format_debuginfo(temp_sd));
 			errors++;
 		}
 
@@ -2595,7 +2597,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* make sure they're not the same service */
 		if (temp_service == temp_service2) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service dependency definition for service '%s' on host '%s' is circular (it depends on itself)!", temp_sd->dependent_service_description, temp_sd->dependent_host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service dependency definition for service '%s' on host '%s' (%s) is circular (it depends on itself)!", temp_sd->dependent_service_description, temp_sd->dependent_host_name, format_debuginfo(temp_sd));
 			errors++;
 		}
 
@@ -2603,7 +2605,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_sd->dependency_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_sd->dependency_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependency period '%s' specified in service dependency for service '%s' on host '%s' is not defined anywhere!", temp_sd->dependency_period, temp_sd->dependent_service_description, temp_sd->dependent_host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependency period '%s' specified in service dependency for service '%s' on host '%s' (%s) is not defined anywhere!", temp_sd->dependency_period, temp_sd->dependent_service_description, temp_sd->dependent_host_name, format_debuginfo(temp_sd));
 				errors++;
 			}
 
@@ -2639,7 +2641,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_he->escalation_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_he->escalation_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Escalation period '%s' specified in host escalation for host '%s' is not defined anywhere!", temp_he->escalation_period, temp_he->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Escalation period '%s' specified in host escalation for host '%s' (%s) is not defined anywhere!", temp_he->escalation_period, temp_he->host_name, format_debuginfo(temp_he));
 				errors++;
 			}
 
@@ -2653,7 +2655,7 @@ int pre_flight_object_check(int *w, int *e) {
 			/* find the contact*/
 			temp_contact = find_contact(temp_contactsmember->contact_name);
 			if (temp_contact == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in host escalation for host '%s' is not defined anywhere!", temp_contactsmember->contact_name, temp_he->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact '%s' specified in host escalation for host '%s' (%s) is not defined anywhere!", temp_contactsmember->contact_name, temp_he->host_name, format_debuginfo(temp_he));
 				errors++;
 			}
 
@@ -2667,7 +2669,7 @@ int pre_flight_object_check(int *w, int *e) {
 			temp_contactgroup = find_contactgroup(temp_contactgroupsmember->group_name);
 
 			if (temp_contactgroup == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in host escalation for host '%s' is not defined anywhere!", temp_contactgroupsmember->group_name, temp_he->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Contact group '%s' specified in host escalation for host '%s' (%s) is not defined anywhere!", temp_contactgroupsmember->group_name, temp_he->host_name, format_debuginfo(temp_he));
 				errors++;
 			}
 
@@ -2681,7 +2683,7 @@ int pre_flight_object_check(int *w, int *e) {
 			/* find the host */
 			temp_host = find_host(temp_escalation_condition->host_name);
 			if (temp_host == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service escalation condition is not defined anywhere!", temp_escalation_condition->host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host '%s' specified in service escalation condition (%s) is not defined anywhere!", temp_escalation_condition->host_name, format_debuginfo(temp_he));
 				errors++;
 			}
 
@@ -2689,7 +2691,7 @@ int pre_flight_object_check(int *w, int *e) {
 				/* find the service */
 				temp_service = find_service(temp_escalation_condition->host_name, temp_escalation_condition->service_description);
 				if (temp_service == NULL) {
-					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!", temp_escalation_condition->service_description, temp_escalation_condition->host_name);
+					logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Service '%s' on host '%s' specified in service escalation (%s) is not defined anywhere!", temp_escalation_condition->service_description, temp_escalation_condition->host_name, format_debuginfo(temp_he));
 					errors++;
 				}
 			}
@@ -2713,7 +2715,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* find the dependent host */
 		temp_host = find_host(temp_hd->dependent_host_name);
 		if (temp_host == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependent host specified in host dependency for host '%s' is not defined anywhere!", temp_hd->dependent_host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependent host specified in host dependency for host '%s' (%s) is not defined anywhere!", temp_hd->dependent_host_name, format_debuginfo(temp_hd));
 			errors++;
 		}
 
@@ -2723,7 +2725,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* find the host we're depending on */
 		temp_host2 = find_host(temp_hd->host_name);
 		if (temp_host2 == NULL) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host specified in host dependency for host '%s' is not defined anywhere!", temp_hd->dependent_host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host specified in host dependency for host '%s' (%s) is not defined anywhere!", temp_hd->dependent_host_name, format_debuginfo(temp_hd));
 			errors++;
 		}
 
@@ -2732,7 +2734,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 		/* make sure they're not the same host */
 		if (temp_host == temp_host2) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host dependency definition for host '%s' is circular (it depends on itself)!", temp_hd->dependent_host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Host dependency definition for host '%s' (%s) is circular (it depends on itself)!", temp_hd->dependent_host_name, format_debuginfo(temp_hd));
 			errors++;
 		}
 
@@ -2740,7 +2742,7 @@ int pre_flight_object_check(int *w, int *e) {
 		if (temp_hd->dependency_period != NULL) {
 			temp_timeperiod = find_timeperiod(temp_hd->dependency_period);
 			if (temp_timeperiod == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependency period '%s' specified in host dependency for host '%s' is not defined anywhere!", temp_hd->dependency_period, temp_hd->dependent_host_name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Dependency period '%s' specified in host dependency for host '%s' (%s) is not defined anywhere!", temp_hd->dependency_period, temp_hd->dependent_host_name, format_debuginfo(temp_hd));
 				errors++;
 			}
 
@@ -2765,7 +2767,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in command name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_command->name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of command '%s' contains one or more illegal characters.", temp_command->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of command '%s' (%s) contains one or more illegal characters.", temp_command->name, format_debuginfo(temp_command));
 				errors++;
 			}
 		}
@@ -2787,7 +2789,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in timeperiod name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_timeperiod->name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of time period '%s' contains one or more illegal characters.", temp_timeperiod->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of time period '%s' (%s) contains one or more illegal characters.", temp_timeperiod->name, format_debuginfo(temp_timeperiod));
 				errors++;
 			}
 		}
@@ -2797,7 +2799,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 			temp_timeperiod2 = find_timeperiod(temp_timeperiodexclusion->timeperiod_name);
 			if (temp_timeperiod2 == NULL) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Excluded time period '%s' specified in timeperiod '%s' is not defined anywhere!", temp_timeperiodexclusion->timeperiod_name, temp_timeperiod->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: Excluded time period '%s' specified in timeperiod '%s' (%s) is not defined anywhere!", temp_timeperiodexclusion->timeperiod_name, temp_timeperiod->name, format_debuginfo(temp_timeperiod));
 				errors++;
 			}
 
@@ -2821,7 +2823,7 @@ int pre_flight_object_check(int *w, int *e) {
 		/* check for illegal characters in module name */
 		if (use_precached_objects == FALSE) {
 			if (contains_illegal_object_chars(temp_module->name) == TRUE) {
-				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of module '%s' contains one or more illegal characters.", temp_module->name);
+				logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: The name of module '%s' (%s) contains one or more illegal characters.", temp_module->name, format_debuginfo(temp_module));
 				errors++;
 			}
 		}
@@ -2964,7 +2966,7 @@ int pre_flight_circular_check(int *w, int *e) {
 
 		found = check_for_circular_servicedependency_path(temp_sd, temp_sd, EXECUTION_DEPENDENCY);
 		if (found == TRUE) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular execution dependency (which could result in a deadlock) exists for service '%s' on host '%s'!", temp_sd->service_description, temp_sd->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular execution dependency (which could result in a deadlock) exists for service '%s' on host '%s' (%s)!", temp_sd->service_description, temp_sd->host_name, format_debuginfo(temp_sd));
 			errors++;
 		}
 	}
@@ -2978,7 +2980,7 @@ int pre_flight_circular_check(int *w, int *e) {
 
 		found = check_for_circular_servicedependency_path(temp_sd, temp_sd, NOTIFICATION_DEPENDENCY);
 		if (found == TRUE) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular notification dependency (which could result in a deadlock) exists for service '%s' on host '%s'!", temp_sd->service_description, temp_sd->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular notification dependency (which could result in a deadlock) exists for service '%s' on host '%s' (%s)!", temp_sd->service_description, temp_sd->host_name, format_debuginfo(temp_sd));
 			errors++;
 		}
 	}
@@ -2992,7 +2994,7 @@ int pre_flight_circular_check(int *w, int *e) {
 
 		found = check_for_circular_hostdependency_path(temp_hd, temp_hd, EXECUTION_DEPENDENCY);
 		if (found == TRUE) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular execution dependency (which could result in a deadlock) exists for host '%s'!", temp_hd->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular execution dependency (which could result in a deadlock) exists for host '%s' (%s)!", temp_hd->host_name, format_debuginfo(temp_hd));
 			errors++;
 		}
 	}
@@ -3006,7 +3008,7 @@ int pre_flight_circular_check(int *w, int *e) {
 
 		found = check_for_circular_hostdependency_path(temp_hd, temp_hd, NOTIFICATION_DEPENDENCY);
 		if (found == TRUE) {
-			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular notification dependency (which could result in a deadlock) exists for host '%s'!", temp_hd->host_name);
+			logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: A circular notification dependency (which could result in a deadlock) exists for host '%s' (%s)!", temp_hd->host_name, format_debuginfo(temp_hd));
 			errors++;
 		}
 	}
@@ -3018,4 +3020,3 @@ int pre_flight_circular_check(int *w, int *e) {
 
 	return (errors > 0) ? ERROR : OK;
 }
-
