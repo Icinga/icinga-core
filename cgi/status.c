@@ -827,7 +827,7 @@ int main(void) {
 					}
 				}
 
-				/* if no hostgroup matched, try to find a serviegroup */
+				/* if no hostgroup matched, try to find a servicegroup */
 				if (return_live_search_data == TRUE || found == FALSE) {
 					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
 						if (regexec(&preg, temp_servicegroup->group_name, 0, NULL, 0) == 0 || regexec(&preg, temp_servicegroup->alias, 0, NULL, 0) == 0) {
