@@ -23,6 +23,8 @@ var NOTIFICATIONS_DISABLED	= 4096
 var NOTIFICATIONS_ENABLED	= 8192
 var PASSIVE_CHECKS_DISABLED	= 16384
 var PASSIVE_CHECKS_ENABLED	= 32768
+var MODIFIED_ATTRIBUTES		= 65536
+var NO_MODIFIED_ATTRIBUTES	= 131072
 var HARD_STATE			= 262144
 var SOFT_STATE			= 524288
 var STATE_HANDLED		= 1048576
@@ -188,6 +190,12 @@ function icinga_set_properties_text(filter) {
 		if (status_properties & PASSIVE_CHECKS_ENABLED)
 			return_properties_text.push("Passive Checks Enabled");
 
+		if (status_properties & MODIFIED_ATTRIBUTES)
+			return_properties_text.push("Modified Attributes");
+
+		if (status_properties & NO_MODIFIED_ATTRIBUTES)
+			return_properties_text.push("No Modified Attributes");
+
 		if (status_properties & HARD_STATE)
 			return_properties_text.push("In Hard State");
 
@@ -302,6 +310,13 @@ function icinga_set_status_properies(filter) {
 	else
 		document.getElementById("filter_" + t + "p_state_type_3").checked = true;
 
+	if (status_properties & MODIFIED_ATTRIBUTES)
+		document.getElementById("filter_" + t + "p_modified_attributes_1").checked = true;
+	else if (status_properties & NO_MODIFIED_ATTRIBUTES)
+		document.getElementById("filter_" + t + "p_modified_attributes_2").checked = true;
+	else
+		document.getElementById("filter_" + t + "p_modified_attributes_3").checked = true;
+
 	if (status_properties & STATE_HANDLED)
 		document.getElementById("filter_" + t + "p_state_handled_1").checked = true;
 	else
@@ -352,6 +367,7 @@ function icinga_update_properties(filter) {
 	status_properties += parseInt($('input[name="filter_' + t + 'p_is_flapping"]:checked').val());
 	status_properties += parseInt($('input[name="filter_' + t + 'p_notifications"]:checked').val());
 	status_properties += parseInt($('input[name="filter_' + t + 'p_state_type"]:checked').val());
+	status_properties += parseInt($('input[name="filter_' + t + 'p_modified_attributes"]:checked').val());
 	status_properties += parseInt($('input[name="filter_' + t + 'p_state_handled"]:checked').val());
 	status_properties += parseInt($('input[name="filter_' + t + 'p_not_all_checks_disabled"]:checked').val());
 
@@ -473,7 +489,7 @@ function icinga_filter_toggle(section) {
 function icinga_apply_new_filters() {
 
 	/* update status types and properties ahead of submission
-	   in case the use changed a option without using the "Apply" button */
+	   in case the user changed an option without using the "Apply" button */
 	icinga_update_status_types("host_status_types");
 	icinga_update_status_types("service_status_types");
 	icinga_update_properties("host_properties");

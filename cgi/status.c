@@ -6530,6 +6530,12 @@ int passes_host_properties_filter(hoststatus *temp_hoststatus) {
 	if ((host_properties & HOST_PASSIVE_CHECKS_ENABLED) && temp_hoststatus->accept_passive_host_checks == FALSE)
 		return FALSE;
 
+	if ((host_properties & HOST_MODIFIED_ATTRIBUTES) && temp_hoststatus->modified_attributes == MODATTR_NONE)
+		return FALSE;
+
+	if ((host_properties & HOST_NO_MODIFIED_ATTRIBUTES) && temp_hoststatus->modified_attributes != MODATTR_NONE)
+		return FALSE;
+
 	if ((host_properties & HOST_HARD_STATE) && temp_hoststatus->state_type == SOFT_STATE)
 		return FALSE;
 
@@ -6595,6 +6601,12 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus) {
 		return FALSE;
 
 	if ((service_properties & SERVICE_PASSIVE_CHECKS_ENABLED) && temp_servicestatus->accept_passive_service_checks == FALSE)
+		return FALSE;
+
+	if ((service_properties & SERVICE_MODIFIED_ATTRIBUTES) && temp_servicestatus->modified_attributes == MODATTR_NONE)
+		return FALSE;
+
+	if ((service_properties & SERVICE_NO_MODIFIED_ATTRIBUTES) && temp_servicestatus->modified_attributes != MODATTR_NONE)
 		return FALSE;
 
 	if ((service_properties & SERVICE_HARD_STATE) && temp_servicestatus->state_type == SOFT_STATE)
@@ -6736,6 +6748,12 @@ void show_filters(void) {
 	printf("<input id='filter_hp_state_type_3' name='filter_hp_state_type' type='radio' value='0' ><label for='filter_hp_state_type_3'>No Filter</label>\n");
 	printf("</div></td></tr>\n");
 
+	printf("<tr><td align='left' class='filterName' nowrap>Modified Attributes</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_hp_modified_attributes_1' name='filter_hp_modified_attributes' type='radio' value='%d'><label for='filter_hp_modified_attributes_1'>Yes</label>\n", HOST_MODIFIED_ATTRIBUTES);
+	printf("<input id='filter_hp_modified_attributes_2' name='filter_hp_modified_attributes' type='radio' value='%d'><label for='filter_hp_modified_attributes_2'>No</label>\n", HOST_NO_MODIFIED_ATTRIBUTES);
+	printf("<input id='filter_hp_modified_attributes_3' name='filter_hp_modified_attributes' type='radio' value='0' ><label for='filter_hp_modified_attributes_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
 	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
 
 	printf("<tr><td align='left' class='filterName' nowrap>Host State Handled</td><td><div id='radio' nowrap>\n");
@@ -6838,6 +6856,12 @@ void show_filters(void) {
 	printf("<input id='filter_sp_state_type_1' name='filter_sp_state_type' type='radio' value='%d'><label for='filter_sp_state_type_1'>Hard</label>\n", SERVICE_HARD_STATE);
 	printf("<input id='filter_sp_state_type_2' name='filter_sp_state_type' type='radio' value='%d'><label for='filter_sp_state_type_2'>Soft</label>\n", SERVICE_SOFT_STATE);
 	printf("<input id='filter_sp_state_type_3' name='filter_sp_state_type' type='radio' value='0' ><label for='filter_sp_state_type_3'>No Filter</label>\n");
+	printf("</div></td></tr>\n");
+
+	printf("<tr><td align='left' class='filterName' nowrap>Modified Attributes</td><td><div id='radio' nowrap>\n");
+	printf("<input id='filter_sp_modified_attributes_1' name='filter_sp_modified_attributes' type='radio' value='%d'><label for='filter_sp_modified_attributes_1'>Yes</label>\n", SERVICE_MODIFIED_ATTRIBUTES);
+	printf("<input id='filter_sp_modified_attributes_2' name='filter_sp_modified_attributes' type='radio' value='%d'><label for='filter_sp_modified_attributes_2'>No</label>\n", SERVICE_NO_MODIFIED_ATTRIBUTES);
+	printf("<input id='filter_sp_modified_attributes_3' name='filter_sp_modified_attributes' type='radio' value='0' ><label for='filter_sp_modified_attributes_3'>No Filter</label>\n");
 	printf("</div></td></tr>\n");
 
 	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
