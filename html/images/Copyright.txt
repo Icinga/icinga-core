@@ -1,0 +1,12 @@
+Images in this directory are Copyright by the Icinga team and
+are released under The FSF GPL version 2.
+
+Many of the images in the "logos" directory (and subdirectories)
+were created by Piotr Ciesielski of the F*Nagios project and
+remain owned by him but are redistributed here with his kind
+permission.
+
+Obviously, Corporate logos remain the intellectual property of
+the organisations that developed or commissioned them, but the
+work of translating them to the Icinga-compatible form and size
+is the work of the individual contributor.
