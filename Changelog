@@ -13,6 +13,13 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.11.0 - 13/03/2014
+
+ENHANCEMENTS
+
+* classic ui: include more logos #4057 - CF/RB
+
+
 1.10.0 - 24/10/2013
 
 * idoutils: slahistory table must be removed manually after enable_sla removal #4363
