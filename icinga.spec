@@ -30,7 +30,7 @@
 %define apacheuser apache
 %define apachegroup apache
 %define extcmdfile %{_localstatedir}/spool/icinga/cmd/icinga.cmd
-%define extcmdfiledir %{_localstatedir}/icinga/cmd
+%define extcmdfiledir %{_localstatedir}/spool/icinga/cmd
 %define readme README.RHEL
 %define readmeido README.RHEL.idoutils
 %endif
