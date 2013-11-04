@@ -526,18 +526,14 @@ AC_SUBST(IDOMODTMPFILE)
 
 dnl Default xdata routines...
 XSDTYPE=default
-XCDTYPE=default
 XRDTYPE=default
 XODTYPE=template
 XPDTYPE=default
-XDDTYPE=default
 
 XSDCOMMENT=
-XCDCOMMENT=
 XRDCOMMENT=
 XODCOMMENT=
 XPDCOMMENT=
-XDDCOMMENT=
 
 USE_MYSQL=no
 USE_PGSQL=no
@@ -550,16 +546,6 @@ XSDCOMMENT="Default (text file)"
 echo "We'll use default routines (in xdata/xsddefault.*) for status data I/O..."
 AC_SUBST(XSDC)
 AC_SUBST(XSDH)
-
-
-dnl Comment data
-AC_DEFINE_UNQUOTED(USE_XCDDEFAULT,,[use default routines (in xdata/xcddefault.*) for comment data I/O...])
-XCDC="xcddefault.c"
-XCDH="xcddefault.h"
-XCDCOMMENT="Default (text file)"
-echo "We'll use default routines (in xdata/xcddefault.*) for comment data I/O..."
-AC_SUBST(XCDC)
-AC_SUBST(XCDH)
 
 
 dnl Retention data
@@ -592,15 +578,6 @@ echo "We'll use default routines (in xdata/xpddefault.*) for performance data I/
 AC_SUBST(XPDC)
 AC_SUBST(XPDH)
 
-
-dnl Downtime data
-AC_DEFINE_UNQUOTED(USE_XDDDEFAULT,,[use default routines (in xdata/xdddefault.*) for scheduled downtime data I/O...])
-XDDC="xdddefault.c"
-XDDH="xdddefault.h"
-XDDCOMMENT="Default (text file)"
-echo "We'll use default routines (in xdata/xdddefault.*) for scheduled downtime data I/O..."
-AC_SUBST(XDDC)
-AC_SUBST(XDDH)
 
 
 dnl Optional GD library and include paths
@@ -1511,16 +1488,6 @@ echo " ------------------------"
 AC_MSG_RESULT([                 HTML URL:  http://localhost$htmurl/])
 AC_MSG_RESULT([                  CGI URL:  http://localhost$cgiurl/])
 AC_MSG_RESULT([                 Main URL:  http://localhost$mainurl])
-
-dnl echo ""
-dnl echo " External Data Routines:"
-dnl echo " ------------------------"
-
-dnl AC_MSG_RESULT([              Status data:  $XSDCOMMENT])
-dnl AC_MSG_RESULT([             Comment data:  $XCDCOMMENT])
-dnl AC_MSG_RESULT([            Downtime data:  $XDDCOMMENT])
-dnl AC_MSG_RESULT([          Peformance data:  $XPDCOMMENT])
-
 
 echo ""
 echo ""

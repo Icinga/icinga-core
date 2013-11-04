@@ -32,10 +32,6 @@
 
 /***** IMPLEMENTATION-SPECIFIC INCLUDES *****/
 
-#ifdef USE_XDDDEFAULT
-#include "../xdata/xdddefault.h"
-#endif
-
 #ifdef NSCORE
 #include "../include/icinga.h"
 #include "../include/broker.h"
@@ -62,6 +58,7 @@ int		   defer_downtime_sorting = 0;
 extern timed_event *event_list_high;
 extern timed_event *event_list_high_tail;
 pthread_mutex_t icinga_downtime_lock = PTHREAD_MUTEX_INITIALIZER;
+extern unsigned long next_downtime_id;
 #endif
 
 #ifdef NSCORE
@@ -75,28 +72,88 @@ pthread_mutex_t icinga_downtime_lock = PTHREAD_MUTEX_INITIALIZER;
 int initialize_downtime_data(char *config_file) {
 	int result = OK;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_initialize_downtime_data(config_file);
-#endif
+        scheduled_downtime *temp_downtime = NULL;
+
+        /* clean up the old downtime data */
+        validate_downtime_data();
+
+        /* find the new starting index for downtime id if its missing*/
+        if (next_downtime_id == 0L) {
+                for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+                        if (temp_downtime->downtime_id >= next_downtime_id)
+                                next_downtime_id = temp_downtime->downtime_id + 1;
+                }
+        }
+
+        /* initialize next downtime id if necessary */
+        if (next_downtime_id == 0L)
+                next_downtime_id = 1;
 
 	return result;
 }
 
 
+/* removes invalid and old downtime entries from the downtime file */
+int validate_downtime_data(void) {
+        scheduled_downtime *temp_downtime;
+        scheduled_downtime *next_downtime;
+        int save = TRUE;
+
+        /* remove stale downtimes */
+        for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+
+                next_downtime = temp_downtime->next;
+                save = TRUE;
+
+                /* delete downtimes with invalid host names */
+                if (find_host(temp_downtime->host_name) == NULL)
+                        save = FALSE;
+
+                /* delete downtimes with invalid service descriptions */
+                if (temp_downtime->type == SERVICE_DOWNTIME && find_service(temp_downtime->host_name, temp_downtime->service_description) == NULL)
+                        save = FALSE;
+
+                /* delete downtimes that have expired */
+                if (temp_downtime->end_time < time(NULL))
+                        save = FALSE;
+
+                /* delete the downtime */
+                if (save == FALSE) {
+                        delete_downtime(temp_downtime->type, temp_downtime->downtime_id);
+                }
+        }
+
+        /* remove triggered downtimes without valid parents */
+        for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+
+                next_downtime = temp_downtime->next;
+                save = TRUE;
+
+                if (temp_downtime->triggered_by == 0)
+                        continue;
+
+                if (find_host_downtime(temp_downtime->triggered_by) == NULL && find_service_downtime(temp_downtime->triggered_by) == NULL)
+                        save = FALSE;
+
+                /* delete the downtime */
+                if (save == FALSE) {
+                        delete_downtime(temp_downtime->type, temp_downtime->downtime_id);
+                }
+        }
+
+        /* update downtime file - done in aggregated dumps */
+
+        return OK;
+}
+
+
 /* cleans up scheduled downtime data */
 int cleanup_downtime_data(char *config_file) {
-	int result = OK;
-
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_cleanup_downtime_data(config_file);
-#endif
 
 	/* free memory allocated to downtime data */
 	free_downtime_data();
 
-	return result;
+	return OK;
 }
 
 
@@ -737,24 +794,30 @@ int add_new_downtime(int type, char *host_name, char *service_description, time_
 /* saves a host downtime entry */
 int add_new_host_downtime(char *host_name, time_t entry_time, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long *downtime_id, int is_in_effect, time_t trigger_time) {
 	int result = OK;
-	unsigned long new_downtime_id = 0L;
 
 	if (host_name == NULL)
 		return ERROR;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_add_new_host_downtime(host_name, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, &new_downtime_id, is_in_effect, trigger_time);
-#endif
+        /* find the next valid downtime id */
+        while (find_host_downtime(next_downtime_id) != NULL)
+                next_downtime_id++;
+
+        /* add downtime to list in memory */
+        result = add_host_downtime(host_name, entry_time,
+			author, comment_data, start_time, end_time, fixed, triggered_by,
+			duration, next_downtime_id, is_in_effect, trigger_time);
 
 	/* save downtime id */
 	if (downtime_id != NULL)
-		*downtime_id = new_downtime_id;
+		*downtime_id = next_downtime_id;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_DOWNTIME, host_name, NULL, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, new_downtime_id, NULL, is_in_effect, trigger_time);
+	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_DOWNTIME, host_name, NULL, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, next_downtime_id, NULL, is_in_effect, trigger_time);
 #endif
+
+        /* increment the downtime id */
+        next_downtime_id++;
 
 	return result;
 }
@@ -763,24 +826,30 @@ int add_new_host_downtime(char *host_name, time_t entry_time, char *author, char
 /* saves a service downtime entry */
 int add_new_service_downtime(char *host_name, char *service_description, time_t entry_time, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long *downtime_id, int is_in_effect, time_t trigger_time) {
 	int result = OK;
-	unsigned long new_downtime_id = 0L;
 
 	if (host_name == NULL || service_description == NULL)
 		return ERROR;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_add_new_service_downtime(host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, &new_downtime_id, is_in_effect, trigger_time);
-#endif
+        /* find the next valid downtime id */
+        while (find_service_downtime(next_downtime_id) != NULL)
+                next_downtime_id++;
+
+        /* add downtime to list in memory */
+        result = add_service_downtime(host_name, service_description, entry_time,
+			author, comment_data, start_time, end_time, fixed, triggered_by,
+			duration, next_downtime_id, is_in_effect, trigger_time);
 
 	/* save downtime id */
 	if (downtime_id != NULL)
-		*downtime_id = new_downtime_id;
+		*downtime_id = next_downtime_id;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_DOWNTIME, host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, new_downtime_id, NULL, is_in_effect, trigger_time);
+	broker_downtime_data(NEBTYPE_DOWNTIME_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_DOWNTIME, host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, next_downtime_id, NULL, is_in_effect, trigger_time);
 #endif
+
+        /* increment the downtime id */
+        next_downtime_id++;
 
 	return result;
 }
@@ -854,33 +923,23 @@ int delete_downtime(int type, unsigned long downtime_id) {
 
 /* deletes a scheduled host downtime entry */
 int delete_host_downtime(unsigned long downtime_id) {
-	int result = OK;
-
+	/*
+	 * do not update status immediately
+	 * let aggregated dumps take care of it
+	 */
 	/* delete the downtime from memory */
-	delete_downtime(HOST_DOWNTIME, downtime_id);
-
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_delete_host_downtime(downtime_id);
-#endif
-
-	return result;
+	return delete_downtime(HOST_DOWNTIME, downtime_id);
 }
 
 
 /* deletes a scheduled service downtime entry */
 int delete_service_downtime(unsigned long downtime_id) {
-	int result = OK;
-
+	/*
+	 * do not update status immediately
+	 * let aggregated dumps take care of it
+	 */
 	/* delete the downtime from memory */
-	delete_downtime(SERVICE_DOWNTIME, downtime_id);
-
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XDDDEFAULT
-	result = xdddefault_delete_service_downtime(downtime_id);
-#endif
-
-	return result;
+	return delete_downtime(SERVICE_DOWNTIME, downtime_id);
 }
 
 /*

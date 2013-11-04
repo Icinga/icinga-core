@@ -64,6 +64,7 @@ typedef struct scheduled_downtime_struct{
 #ifdef NSCORE
 int initialize_downtime_data(char *);                                /* initializes scheduled downtime data */
 int cleanup_downtime_data(char *);                                   /* cleans up scheduled downtime data */
+int validate_downtime_data(void);
 
 int add_new_downtime(int,char *,char *,time_t,char *,char *,time_t,time_t,int,unsigned long,unsigned long,unsigned long *,int,time_t);
 int add_new_host_downtime(char *,time_t,char *,char *,time_t,time_t,int,unsigned long,unsigned long,unsigned long *,int,time_t);

@@ -30,10 +30,6 @@
 
 /***** IMPLEMENTATION-SPECIFIC INCLUDES *****/
 
-#ifdef USE_XCDDEFAULT
-#include "../xdata/xcddefault.h"
-#endif
-
 #ifdef NSCORE
 #include "../include/icinga.h"
 #include "../include/broker.h"
@@ -52,6 +48,8 @@ comment     **comment_hashlist = NULL;
 
 
 #ifdef NSCORE
+extern unsigned long next_comment_id;
+
 pthread_mutex_t icinga_comment_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /******************************************************************/
@@ -62,11 +60,21 @@ pthread_mutex_t icinga_comment_lock = PTHREAD_MUTEX_INITIALIZER;
 /* initializes comment data */
 int initialize_comment_data(char *config_file) {
 	int result = OK;
+        comment *temp_comment = NULL;
+        comment *next_comment = NULL;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XCDDEFAULT
-	result = xcddefault_initialize_comment_data(config_file);
-#endif
+        /* find the new starting index for comment id if its missing*/
+        if (next_comment_id == 0L) {
+                for (temp_comment = comment_list; temp_comment != NULL; temp_comment = next_comment) {
+                        next_comment = temp_comment->next;
+                        if (temp_comment->comment_id >= next_comment_id)
+                                next_comment_id = temp_comment->comment_id + 1;
+                }
+        }
+
+        /* initialize next comment id if necessary */
+        if (next_comment_id == 0L)
+                next_comment_id = 1;
 
 	return result;
 }
@@ -76,11 +84,7 @@ int initialize_comment_data(char *config_file) {
 int cleanup_comment_data(char *config_file) {
 	int result = OK;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XCDDEFAULT
-	result = xcddefault_cleanup_comment_data(config_file);
-#endif
-
+	/* gets cleaned in free_memory() */
 	return result;
 }
 
@@ -116,21 +120,25 @@ int add_new_comment(int type, int entry_type, char *host_name, char *svc_descrip
 /* adds a new host comment */
 int add_new_host_comment(int entry_type, char *host_name, time_t entry_time, char *author_name, char *comment_data, int persistent, int source, int expires, time_t expire_time, unsigned long *comment_id) {
 	int result = OK;
-	unsigned long new_comment_id = 0L;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XCDDEFAULT
-	result = xcddefault_add_new_host_comment(entry_type, host_name, entry_time, author_name, comment_data, persistent, source, expires, expire_time, &new_comment_id);
-#endif
+        /* find the next valid comment id */
+        while (find_host_comment(next_comment_id) != NULL)
+                next_comment_id++;
+
+        /* add comment to list in memory */
+        result = add_host_comment(entry_type, host_name, entry_time, author_name, comment_data, next_comment_id, persistent, expires, expire_time, source);
 
 	/* save comment id */
 	if (comment_id != NULL)
-		*comment_id = new_comment_id;
+		*comment_id = next_comment_id;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_COMMENT, entry_type, host_name, NULL, entry_time, author_name, comment_data, persistent, source, expires, expire_time, new_comment_id, NULL);
+	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, HOST_COMMENT, entry_type, host_name, NULL, entry_time, author_name, comment_data, persistent, source, expires, expire_time, next_comment_id, NULL);
 #endif
+
+        /* increment the comment id */
+        next_comment_id++;
 
 	return result;
 }
@@ -139,21 +147,25 @@ int add_new_host_comment(int entry_type, char *host_name, time_t entry_time, cha
 /* adds a new service comment */
 int add_new_service_comment(int entry_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, int persistent, int source, int expires, time_t expire_time, unsigned long *comment_id) {
 	int result = OK;
-	unsigned long new_comment_id = 0L;
 
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XCDDEFAULT
-	result = xcddefault_add_new_service_comment(entry_type, host_name, svc_description, entry_time, author_name, comment_data, persistent, source, expires, expire_time, &new_comment_id);
-#endif
+        /* find the next valid comment id */
+        while (find_service_comment(next_comment_id) != NULL)
+                next_comment_id++;
+
+        /* add comment to list in memory */
+        result = add_service_comment(entry_type, host_name, svc_description, entry_time, author_name, comment_data, next_comment_id, persistent, expires, expire_time, source);
 
 	/* save comment id */
 	if (comment_id != NULL)
-		*comment_id = new_comment_id;
+		*comment_id = next_comment_id;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_COMMENT, entry_type, host_name, svc_description, entry_time, author_name, comment_data, persistent, source, expires, expire_time, new_comment_id, NULL);
+	broker_comment_data(NEBTYPE_COMMENT_ADD, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_COMMENT, entry_type, host_name, svc_description, entry_time, author_name, comment_data, persistent, source, expires, expire_time, next_comment_id, NULL);
 #endif
+
+        /* increment the downtime id */
+        next_comment_id++;
 
 	return result;
 }
@@ -234,14 +246,6 @@ int delete_comment(int type, unsigned long comment_id) {
 		result = OK;
 	} else
 		result = ERROR;
-
-	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
-#ifdef USE_XCDDEFAULT
-	if (type == HOST_COMMENT)
-		result = xcddefault_delete_host_comment(comment_id);
-	else
-		result = xcddefault_delete_service_comment(comment_id);
-#endif
 
 #ifdef NSCORE
 	pthread_mutex_unlock(&icinga_comment_lock);
