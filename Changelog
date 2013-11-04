@@ -13,6 +13,13 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.11.0 - 13/03/2014
+
+ENHANCEMENTS
+
+* classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
+
+
 1.10.1 - 04/11/2013
 
 ENHANCEMENTS
