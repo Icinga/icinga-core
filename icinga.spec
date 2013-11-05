@@ -407,7 +407,7 @@ if [ $1 -eq 0 ]; then
 fi
 %endif
 %else
-f [ $1 -eq 0 ]; then
+if [ $1 -eq 0 ]; then
     # No systemd, just plain old sysvinit
     /sbin/service ido2db stop &>/dev/null || :
     /sbin/chkconfig --del ido2db
