@@ -198,6 +198,11 @@
 #include <stdarg.h>
 #endif
 
+#undef HAVE_STDINT_H
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+
 #undef HAVE_SYS_TYPES_H
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
