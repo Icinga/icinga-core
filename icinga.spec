@@ -304,37 +304,6 @@ fi
 # restart httpd for auth change
 /sbin/service %{apachename} condrestart > /dev/null 2>&1 || :
 
-# if this is an upgrade, and we found an old retention.dat, copy it to new location before starting icinga
-if [ $1 -eq 2 ]
-then
-# stop icinga
-/sbin/service icinga stop &>/dev/null || :
-# check for retention.dat
-if [ -f /var/icinga/retention.dat ]
-then
-    cp /var/icinga/retention.dat %{spooldir}/retention.dat
-    rm /var/icinga/retention.dat
-fi
-# same for objects.precache
-if [ -f /var/icinga/objects.precache ]
-then
-    cp /var/icinga/objects.precache %{spooldir}/objects.precache
-    rm /var/icinga/objects.precache
-fi
-
-# we must then check all changed config locations (and we enforce that change to icinga.cfg only once)
-# cgi.cfg luckily knows where icinga.cfg is and does not need an update
-# retention.dat, objects.cache, objects.precache, status.dat, cmdfile, pidfile, checkresults
-%{__perl} -pi -e '
-	s|/var/icinga/retention.dat|%{spooldir}/retention.dat|;
-	s|/var/icinga/objects.precache|%{spooldir}/objects.precache|;
-	s|/var/icinga/objects.cache|%{spooldir}/objects.cache|;
-	s|/var/icinga/status.dat|%{spooldir}/status.dat|;
-	s|/var/icinga/rw/icinga.cmd|%{extcmdfile}|;
-	s|/var/icinga/icinga.pid|/var/run/icinga.pid|;
-	s|/var/icinga/checkresults|%{spooldir}/checkresults|;
-	' /etc/icinga/icinga.cfg
-
 # start icinga
 /sbin/service icinga start &>/dev/null || :
 fi
@@ -385,12 +354,6 @@ fi
 /sbin/chkconfig --add ido2db
 %endif
 
-# delete old bindir/idomod.o if it exists
-if [ -f %{_bindir}/idomod.o ]
-then
-    rm -f %{_bindir}/idomod.o
-fi
-
 %logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check %{readmeido}"
 
 %preun idoutils-libdbi-mysql
@@ -431,11 +394,6 @@ fi
 /sbin/chkconfig --add ido2db
 %endif
 
-# delete old bindir/idomod.o if it exists
-if [ -f %{_bindir}/idomod.o ]
-then
-    rm -f %{_bindir}/idomod.o
-fi
 ### change ido2db.cfg to match pgsql config
 # check if this is an upgrade
 if [ $1 -eq 2 ]

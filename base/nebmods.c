@@ -243,15 +243,6 @@ int neb_load_module(nebmodule *mod) {
 		mod->dl_file = strdup(output_file);
 	}
 
-	/* add a compatibility check for 1.7 change of idomod.o -> idomod.so */
-	/* FIXME - drop in 1.8 */
-	if (strstr(mod->filename, "idomod.o") != NULL) {
-		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: trying to load module '%s' which has been moved to libdir/idomod.so in Icinga 1.7!\n", mod->filename);
-		logit(NSLOG_RUNTIME_ERROR, FALSE, "Check Changelog and upgrade docs to update the broker module entry!\n");
-		neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
-		return ERROR;
-	}
-
 	/* find module API version */
 	module_version_ptr = (int *)dlsym(mod->module_handle, "__neb_api_version");
 

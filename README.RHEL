@@ -1,12 +1,6 @@
 Introduction
 ------------
 
-CHANGES for 1.7
-* bindir/idomod.o => libdir/idomod.so
-* /var/icinga => /var/spool/icinga
-* icinga-idoutils => icinga-idoutils-libdbi-mysql and icinga-idoutils-libdbi-pgsql
-
-
 The packages are made as little dependend on each other as possible, to get the
 maximum flexibility in setting up distributed monitoring environments. This
 means, that you may have to install some additional packages manually. Yum is
