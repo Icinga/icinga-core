@@ -3115,6 +3115,7 @@ int free_check_result(check_result *info) {
 int open_command_file(void) {
 	struct stat st;
 	int result = 0;
+	mode_t old_mask = (mode_t) 0;
 
 	/* if we're not checking external commands, don't do anything */
 	if (check_external_commands == FALSE)
@@ -3125,7 +3126,7 @@ int open_command_file(void) {
 		return OK;
 
 	/* reset umask (group needs write permissions) */
-	mode_t old_mask = umask(S_IWOTH);
+	old_mask = umask(S_IWOTH);
 
 	/* use existing FIFO if possible */
 	if (!(stat(command_file, &st) != -1 && (st.st_mode & S_IFIFO))) {
