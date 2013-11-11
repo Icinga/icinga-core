@@ -145,7 +145,12 @@ files and nothing depends on it.
 Summary: database broker module for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
+%if 0%{?suse_version} >= 1210
+# opensuse
+Requires: libdbi-drivers-dbd-mysql
+%else
 Requires: libdbi-dbd-mysql
+%endif
 Conflicts: %{name}-idoutils-libdbi-pgsql
 
 %description idoutils-libdbi-mysql
@@ -156,7 +161,12 @@ database storage via libdbi and mysql.
 Summary: database broker module for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
+%if 0%{?suse_version} >= 1210
+# opensuse
+Requires: libdbi-drivers-dbd-pgsql
+%else
 Requires: libdbi-dbd-pgsql
+%endif
 Conflicts: %{name}-idoutils-libdbi-mysql
 
 %description idoutils-libdbi-pgsql
