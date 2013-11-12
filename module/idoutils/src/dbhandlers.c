@@ -1406,7 +1406,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X9") == IDO_ERROR) {
 			return IDO_ERROR;
 		}
-	else {
+	}else {
 		if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X9"), (uint *) data[8])) {
 			return IDO_ERROR;
 		}
@@ -1881,7 +1881,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
                 if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X9") == IDO_ERROR) {
                         return IDO_ERROR;
                 }
-        else {
+        }else {
                 if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X9"), (uint *) data[8])) {
                         return IDO_ERROR;
                 }
@@ -7548,8 +7548,7 @@ int ido2db_save_custom_variables(ido2db_idi *idi, int table_idx, unsigned long o
 		free(buf);
 
 		if (ts == NULL) {
-			if (asprintf(&ts, "NULL") == -1)
-				;
+			asprintf(&ts, "NULL");
 		}
 
 		if (table_idx == IDO2DB_DBTABLE_CUSTOMVARIABLES) {
