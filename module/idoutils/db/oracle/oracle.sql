@@ -14,14 +14,10 @@
 -- CAUTION: THIS WILL DROP EXISTING USER AND TABLESPACE WITH SAME NAME
 -- # export TWO_TASK=<instance>; cd <this_sql_dir>; sqlplus "sys as sysdba" @ oracle.sql
 --
--- initial version: 2008-02-20 David Schmidt
--- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2012-03-03 Thomas Dressler
---
 -- -- --------------------------------------------------------
 */
 
-DEFINE ICINGA_VERSION=1.10.0
+DEFINE ICINGA_VERSION=1.11.0
 
 -- -----------------------------------------
 -- set defines

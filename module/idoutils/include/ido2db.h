@@ -256,6 +256,7 @@ typedef struct ido2db_input_data_info_struct{
 	ido2db_mbuf mbuf[IDO2DB_MAX_MBUF_ITEMS];
 	ido2db_dbconninfo dbinfo;
 	ido2db_txbuf txbuf;
+	int in_transaction;
         }ido2db_idi;
 
 typedef struct ido2db_proxy_struct {
