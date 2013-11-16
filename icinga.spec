@@ -344,7 +344,11 @@ fi
 
 %pre gui
 # Add apacheuser in the icingacmd group
+%if "%{_vendor}" == "suse"
+  %{_sbindir}/usermod -G icingacmd %{apacheuser}
+%else
   %{_sbindir}/usermod -a -G icingacmd %{apacheuser}
+%endif
 
 
 %post idoutils-libdbi-mysql
