@@ -718,6 +718,10 @@ int main(int argc, char **argv, char **env) {
                 exit(EXIT_FAILURE);
             }
 
+			/* forcibly send a program status update
+			 * for later updates of PROCESS_* */
+			broker_program_status(NEBTYPE_PROGRAMSTATUS_UPDATE, NEBFLAG_NONE, NEBATTR_NONE, NULL);
+
 			/* send program data to broker */
 			broker_program_state(NEBTYPE_PROCESS_PRELAUNCH, NEBFLAG_NONE, NEBATTR_NONE, NULL);
 #endif
@@ -786,10 +790,6 @@ int main(int argc, char **argv, char **env) {
 
 
 #ifdef USE_EVENT_BROKER
-			/* forcibly send a program status update
-			 * for later updates of PROCESS_* */
-			broker_program_status(NEBTYPE_PROGRAMSTATUS_UPDATE, NEBFLAG_NONE, NEBATTR_NONE, NULL);
-
 			/* send program data to broker */
 			broker_program_state(NEBTYPE_PROCESS_START, NEBFLAG_NONE, NEBATTR_NONE, NULL);
 #endif
