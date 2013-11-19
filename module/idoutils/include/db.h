@@ -167,6 +167,7 @@ void ido2db_db_txbuf_flush(ido2db_idi *idi, ido2db_txbuf *txbuf);
 
 int ido2db_db_tx_begin(ido2db_idi *idi);
 int ido2db_db_tx_commit(ido2db_idi *idi);
+int ido2db_db_update_config_dump(ido2db_idi *idi, int in_progress);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 #define OCI_VARCHAR_SIZE 4096 /* max allowed string size for varchar2 (+1) */

@@ -1625,25 +1625,29 @@ int ido2db_handle_client_connection(int sd, ido2db_proxy *proxy) {
 
 		result = IDO_OK;
 
-		if (!in_transaction)
+		if (in_transaction == IDO_FALSE)
 			result = ido2db_db_tx_begin(&idi);
 
+		/* check for client input */
 		ido2db_check_for_client_input(&idi);
 
 		if (result == IDO_OK) {
-			in_transaction = (proxy && ido2db_proxy_get_size_left(proxy) > 16 * 1024);
+			in_transaction = (proxy && ido2db_proxy_get_size_left(proxy) > 16 * 1024) ? IDO_TRUE : IDO_FALSE;
 
 			if (io_since_last_commit > 1024 * 1024)
-				in_transaction = 0;
+				in_transaction = IDO_FALSE;
 
-			if (!in_transaction) {
+			if (in_transaction == IDO_FALSE) {
 				io_since_last_commit = 0;
 				printf("Committing...\n");
 			}
 
-			if (!in_transaction && ido2db_db_tx_commit(&idi) != IDO_OK)
+			if (in_transaction == IDO_FALSE && ido2db_db_tx_commit(&idi) != IDO_OK)
 				syslog(LOG_ERR, "IDO2DB commit failed. Some data may have been lost.\n");
 		}
+
+		/* store in_transaction for later */
+		idi.in_transaction = in_transaction;
 
 		/* should we disconnect the client? */
 		if (idi.disconnect_client == IDO_TRUE) {
@@ -1716,6 +1720,7 @@ int ido2db_idi_init(ido2db_idi *idi) {
 	idi->data_start_time = 0L;
 	idi->data_end_time = 0L;
 	idi->tables_cleared = IDO_FALSE;
+	idi->in_transaction = IDO_FALSE;
 
 	ido2db_db_txbuf_init(&(idi->txbuf));
 
@@ -1930,9 +1935,11 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 				/* config dumps */
 			case IDO_API_STARTCONFIGDUMP:
 				idi->current_input_data = IDO2DB_INPUT_DATA_CONFIGDUMPSTART;
+				ido2db_db_update_config_dump(idi, IDO_TRUE);
 				break;
 			case IDO_API_ENDCONFIGDUMP:
 				idi->current_input_data = IDO2DB_INPUT_DATA_CONFIGDUMPEND;
+				ido2db_db_update_config_dump(idi, IDO_FALSE);
 				idi->tables_cleared = IDO_FALSE;
 				syslog(LOG_USER | LOG_INFO, "Config dump completed");
 				break;
