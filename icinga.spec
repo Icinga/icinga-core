@@ -316,7 +316,6 @@ fi
 
 # start icinga
 /sbin/service icinga start &>/dev/null || :
-fi
 
 %preun
 
