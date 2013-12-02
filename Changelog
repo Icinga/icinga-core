@@ -13,6 +13,12 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.10.2 - ??/??/????
+
+FIES
+
+* classic ui: fix Off-by-one memory access in process_cgivars() #5251 - RB
+
 1.10.1 - 04/11/2013
 
 ENHANCEMENTS
