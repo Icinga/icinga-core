@@ -7091,11 +7091,17 @@ void status_page_num_selector(int local_result_start, int status_type) {
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
-			printf("status_page_num_selector(): Could not allocate memory for stripped_query_string\n");
-			exit(1);
+			write_to_cgi_log("status_page_num_selector(): Query string exceeds max length. Returning without displaying page num selector.\n");
+			return;
 		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
+
+		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
+		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER) {
+			write_to_cgi_log("status_page_num_selector(): Full query string exceeds max length. Returning without displaying page num selector.\n");
+			return;
+		}
 
 		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
 			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {

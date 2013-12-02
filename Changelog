@@ -13,6 +13,12 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.10.2 _ ??/??/????
+
+FIXES
+
+* classic ui: fix possible buffer overflows #5250 - RB
+
 1.10.1 - 04/11/2013
 
 ENHANCEMENTS

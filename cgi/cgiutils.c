@@ -2218,11 +2218,17 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 	/* get url options but filter out "ts_end", "ts_start" and "start" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
-			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
-			exit(1);
+			write_to_cgi_log("display_nav_table(): Query string exceeds max length. Returning without displaying nav table.\n");
+			return;
 		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
+
+		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
+		if (strlen(url) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER) {
+			write_to_cgi_log("display_nav_table(): Full query string exceeds max length. Returning without displaying nav table.\n");
+			return;
+		}
 
 		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
 			if (strncmp(temp_buffer, "ts_start=", 9) != 0 && strncmp(temp_buffer, "ts_end=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
@@ -2838,17 +2844,24 @@ void print_export_link(int content_type, char *cgi, char *add_to_url) {
 	/* just do stuff if some options are requested */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
-			printf("print_export_link(): Could not allocate memory for stripped_query_string\n");
-			exit(1);
+			write_to_cgi_log("print_export_link(): Query string exceeds max length. Returning without displaying export link.\n");
+			return;
 		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
+
+		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
+		if (strlen(link) + strlen(stripped_query_string) + 2 > MAX_INPUT_BUFFER) {
+			write_to_cgi_log("print_export_link(): Full query string exceeds max length. Returning without displaying export link.\n");
+			return;
+		}
+
 		strcat(link, "?");
 		strcat(link, stripped_query_string);
 	}
 
 	/* add string to url */
-	if (add_to_url != NULL && (strlen(add_to_url) != 0)) {
+	if (add_to_url != NULL && strlen(add_to_url) != 0 && strlen(link) + strlen(stripped_query_string) + strlen(add_to_url) + 2 <= MAX_INPUT_BUFFER) {
 		if (strlen(stripped_query_string) != 0)
 			strcat(link, "&");
 		else
@@ -3657,11 +3670,17 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
-			printf("page_num_selector(): Could not allocate memory for stripped_query_string\n");
-			exit(1);
+			write_to_cgi_log("page_num_selector(): Query string exceeds max length. Returning without displaying num selector.\n");
+			return;
 		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
+
+		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
+		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER) {
+			write_to_cgi_log("page_num_selector(): Full query string exceeds max length. Returning without displaying num selector.\n");
+			return;
+		}
 
 		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
 			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
@@ -3774,11 +3793,17 @@ void page_limit_selector(int result_start) {
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
-			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
-			exit(1);
+			write_to_cgi_log("page_limit_selector(): Query string exceeds max length. Returning without displaying page limit selector.\n");
+			return;
 		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
+
+		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
+		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER) {
+			write_to_cgi_log("page_limit_selector(): Full query string exceeds max length. Returning without displaying page limit selector.\n");
+			return;
+		}
 
 		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
 			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
