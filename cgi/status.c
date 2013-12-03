@@ -6175,12 +6175,12 @@ int add_status_data(int status_type, void *data) {
 	strip(state_duration);
 
 	/* plugin ouput */
-	if (status_show_long_plugin_output != FALSE && plugin_output_long != NULL) {
+	if (status_show_long_plugin_output == TRUE && plugin_output_long != NULL) {
 		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
-			if (plugin_output_short != NULL)
+			if (plugin_output_short == NULL)
 				asprintf(&plugin_output, "%s", escape_newlines(plugin_output_long));
 			else
-				asprintf(&plugin_output, "%s %s", plugin_output_short, escape_newlines(plugin_output_long));
+				asprintf(&plugin_output, "%s\\n%s", plugin_output_short, escape_newlines(plugin_output_long));
 		} else
 			asprintf(&plugin_output, "%s<br>%s", (plugin_output_short == NULL) ? "" : html_encode(plugin_output_short, TRUE), html_encode(plugin_output_long, TRUE));
 	} else if (plugin_output_short != NULL) {
