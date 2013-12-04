@@ -43,32 +43,22 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 
 -- -----------------------------------------
 -- #4482 deprecate timedevent* tables
--- -----------------------------------------
+-- #5256 use table drop to remove dependend objects like indexes 
+-----------------------------------------
 
-DROP INDEX timedevents_i_id_idx;
-DROP INDEX timedeventq_i_id_idx;
-DROP INDEX timedevents_time_id_idx;
-DROP INDEX timedeventq_time_id_idx;
-DROP INDEX timed_e_q_event_type_idx;
-DROP INDEX timed_e_q_sched_time_idx;
-DROP INDEX timed_e_q_object_id_idx;
-DROP INDEX timed_e_q_rec_ev_id_idx;
-DROP INDEX timed_e_event_type_idx;
-DROP INDEX timed_e_object_id_idx;
-DROP INDEX timed_e_rec_ev_idx;
+DROP TABLE timedevents;
+DROP TABLE timedeventqueue;
 
 DROP SEQUENCE seq_timedeventqueue;
 DROP SEQUENCE seq_timedevents;
 
-DROP TABLE timedevents;
-DROP TABLE timedeventqueue;
 
 -- -----------------------------------------
 -- #4544 icinga_comments table UK
 -- -----------------------------------------
 
-ALTER TABLE comments DROP CONSTRAINT comments_uq;
-ALTER TABLE commenthistory DROP CONSTRAINT commenthist_uq;
+ALTER TABLE comments DROP CONSTRAINT comments_uq DROP INDEX;
+ALTER TABLE commenthistory DROP CONSTRAINT commenthist_uq DROP INDEX;
 
 ALTER TABLE comments ADD constraint comments_uq UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
         using index tablespace &&IDXTBS;
