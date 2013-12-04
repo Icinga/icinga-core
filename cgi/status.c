@@ -2778,7 +2778,7 @@ void show_service_detail(void) {
 			printf("<td onClick=\"toggle_checkbox('service_%d','tableformservice');\" class='status%s' nowrap>%s</td>\n", total_service_entries, status_bg_class, temp_status->last_check);
 			printf("<td onClick=\"toggle_checkbox('service_%d','tableformservice');\" class='status%s' nowrap>%s</td>\n", total_service_entries, status_bg_class, temp_status->state_duration);
 			printf("<td onClick=\"toggle_checkbox('service_%d','tableformservice');\" class='status%s'>%s</td>\n", total_service_entries, status_bg_class, temp_status->attempts);
-			printf("<td onClick=\"toggle_checkbox('service_%d','tableformservice');\" class='status%s' valign='middle'>%s</td>\n", total_service_entries, status_bg_class, temp_status->plugin_output);
+			printf("<td onClick=\"toggle_checkbox('service_%d','tableformservice');\" class='status%s' valign='middle'>%s</td>\n", total_service_entries, status_bg_class, (temp_status->plugin_output == NULL) ? "&nbsp;" : html_encode(temp_status->plugin_output, TRUE));
 
 			/* Checkbox for service(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
@@ -2838,7 +2838,7 @@ void show_service_detail(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->state_duration, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->attempts, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_status->plugin_output == NULL) ? "" : temp_status->plugin_output, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->plugin_output == NULL) ? "" : escape_newlines(temp_status->plugin_output), csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_status->is_flapping == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_status->scheduled_downtime_depth > 0) ? "true" : "false", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_status->checks_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
@@ -3232,7 +3232,7 @@ void show_host_detail(void) {
 			printf("<td onClick=\"toggle_checkbox('host_%d','tableformhost');\" class='status%s' nowrap>%s</td>\n", total_host_entries, status_bg_class, temp_statusdata->last_check);
 			printf("<td onClick=\"toggle_checkbox('host_%d','tableformhost');\" class='status%s' nowrap>%s</td>\n", total_host_entries, status_bg_class, temp_statusdata->state_duration);
 			printf("<td onClick=\"toggle_checkbox('host_%d','tableformhost');\" class='status%s'>%s</td>\n", total_host_entries, status_bg_class, temp_statusdata->attempts);
-			printf("<td onClick=\"toggle_checkbox('host_%d','tableformhost');\" class='status%s' valign='middle'>%s</td>\n", total_host_entries, status_bg_class, temp_statusdata->plugin_output);
+			printf("<td onClick=\"toggle_checkbox('host_%d','tableformhost');\" class='status%s' valign='middle'>%s</td>\n", total_host_entries, status_bg_class, (temp_statusdata->plugin_output == NULL) ? "&nbsp;" : html_encode(temp_statusdata->plugin_output, TRUE));
 
 			/* Checkbox for host(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
@@ -3288,7 +3288,7 @@ void show_host_detail(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->state_duration, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->attempts, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->plugin_output == NULL) ? "" : temp_statusdata->plugin_output, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->plugin_output == NULL) ? "" : escape_newlines(temp_statusdata->plugin_output), csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->is_flapping == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->scheduled_downtime_depth > 0) ? "true" : "false", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->checks_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
@@ -6174,23 +6174,12 @@ int add_status_data(int status_type, void *data) {
 
 	/* plugin ouput */
 	if (status_show_long_plugin_output == TRUE && plugin_output_long != NULL) {
-		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
-			if (plugin_output_short == NULL)
-				asprintf(&plugin_output, "%s", escape_newlines(plugin_output_long));
-			else
-				asprintf(&plugin_output, "%s\\n%s", plugin_output_short, escape_newlines(plugin_output_long));
-		} else
-			asprintf(&plugin_output, "%s<br>%s", (plugin_output_short == NULL) ? "" : html_encode(plugin_output_short, TRUE), html_encode(plugin_output_long, TRUE));
+		if (plugin_output_short == NULL)
+			asprintf(&plugin_output, "%s", plugin_output_long);
+		else
+			asprintf(&plugin_output, "%s\n%s", plugin_output_short, plugin_output_long);
 	} else if (plugin_output_short != NULL) {
-		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
-			asprintf(&plugin_output, "%s", plugin_output_short);
-		else
-			asprintf(&plugin_output, "%s&nbsp;", html_encode(plugin_output_short, TRUE));
-	} else {
-		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
-			plugin_output = NULL;
-		else
-			asprintf(&plugin_output, "&nbsp;");
+		asprintf(&plugin_output, "%s", plugin_output_short);
 	}
 
 	/* allocating new memory */
