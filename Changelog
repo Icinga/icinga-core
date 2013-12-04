@@ -14,13 +14,24 @@ UPGRADE NOTES
 * package locations may differ!
 
 
-1.10.2 - ??/??/????
+1.10.2 - 05/12/2013
+
+ENHANCEMENTS
+
+* core: Add an Icinga syntax plugin for Vim #4150 - LE/MF
 
 FIXES
+
+* core: Document dropped options log_external_commands_user and event_profiling_enabled #4957 - BA
+* core: type in spec file on ido2db startup #5000 - MF
+* core: Build fails: xdata/xodtemplate.c requires stdint.h #5021 - SH
 
 * classic ui: fix status output in JSON format not including short and long plugin output properly #5217 - RB
 * classic ui: fix possible buffer overflows #5250 - RB
 * classic ui: fix Off-by-one memory access in process_cgivars() #5251 - RB
+
+* idoutils: idoutils oracle compile error #5059 - TD
+* idoutils: Oracle update script 1.10.0 failes while trying to drop nonexisting index #5256 - RB
 
 
 1.10.1 - 04/11/2013
