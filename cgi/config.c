@@ -584,10 +584,8 @@ int process_cgivars(void) {
 	for (x = 0; variables[x] != NULL; x++) {
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1) {
-			x++;
+		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
 			continue;
-		}
 
 		/* we found the search_string argument */
 		else if (!strcmp(variables[x], "search_string")) {
@@ -4267,6 +4265,7 @@ void display_command_expansion(void) {
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
 					(*(cc++)) = '\0';
 					printf("%s", html_encode(c, FALSE));
+					if (strlen(commandline_pre_processed) + strlen(c) + 1 > MAX_COMMAND_BUFFER) return;
 					strcat(commandline_pre_processed, c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
@@ -4277,6 +4276,7 @@ void display_command_expansion(void) {
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
 						printf("<font color='#777777'>$%s%s</font>", html_encode(cc, FALSE), (c ? "$" : ""));
+						if (strlen(commandline_pre_processed) + strlen(cc) + 3 > MAX_COMMAND_BUFFER) return;
 						strcat(commandline_pre_processed, "$");
 						strcat(commandline_pre_processed, cc);
 						if (c) strcat(commandline_pre_processed, "$");
@@ -4292,8 +4292,9 @@ void display_command_expansion(void) {
 								if (command_args[i]) {
 									if (*(command_args[i]) != '\0') {
 										printf("<font color='%s'><b>%s%s%s</b></font>",
-										       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""),
-										       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
+										hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""),
+										escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
+										if (strlen(commandline_pre_processed) + strlen(command_args[i]) + 1 > MAX_COMMAND_BUFFER) return;
 										strcat(commandline_pre_processed, command_args[i]);
 									} else printf("<font color='#0000FF'>(empty)</font>");
 								} else printf("<font color='#0000FF'>(undefined)</font>");
@@ -4310,6 +4311,7 @@ void display_command_expansion(void) {
 				}
 				if (c) {
 					printf("%s", html_encode(c, FALSE));
+					if (strlen(commandline_pre_processed) + strlen(c) + 1 > MAX_COMMAND_BUFFER) return;
 					strcat(commandline_pre_processed, c);
 				}
 				commandline_pre_processed[MAX_COMMAND_BUFFER - 1] = '\0';
