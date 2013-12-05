@@ -610,7 +610,7 @@ fi
 
 
 %changelog
-* Mon Dec 05 2013 Ricardo Bartels <ricardo@bitchbrothers.com> - 1.10.2-1
+* Thu Dec 05 2013 Ricardo Bartels <ricardo@bitchbrothers.com> - 1.10.2-1
 - bump 1.10.2
 
 * Mon Nov 04 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.10.1-1
