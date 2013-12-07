@@ -406,6 +406,8 @@ int main(void) {
 int process_cgivars(void) {
 	char **variables;
 	char *temp_buffer = NULL;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 	int z = 0;
@@ -414,129 +416,127 @@ int process_cgivars(void) {
 	variables = getcgivars();
 
 	/* Process the variables */
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if there is one */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the command type */
-		else if (!strcmp(variables[x], "cmd_typ")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "cmd_typ")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			command_type = atoi(variables[x]);
+			command_type = atoi(value);
 		}
 
                 /* we found the attr */
-                else if (!strcmp(variables[x], "attr")) {
-                        x++;
-                        if (variables[x] == NULL) {
+                else if (!strcmp(key, "attr")) {
+                        if (value == NULL) {
                                 error = TRUE;
                                 break;
                         }
 
-                        attr = strtoul(variables[x], NULL, 10);
+                        attr = strtoul(value, NULL, 10);
                 }
 
                 /* we found the attr */
-                else if (!strcmp(variables[x], "interval")) {
-                        x++;
-                        if (variables[x] == NULL) {
+                else if (!strcmp(value, "interval")) {
+                        if (value == NULL) {
                                 error = TRUE;
                                 break;
                         }
 #ifdef HAVE_STRTOF
-			interval = strtof(variables[x], NULL);
+			interval = strtof(value, NULL);
 #else
 			/* Solaris 8 doesn't have strtof() */
-			interval = (float)strtod(variables[x], NULL);
+			interval = (float)strtod(value, NULL);
 #endif
                 }
 
 		/* we found the command mode */
-		else if (!strcmp(variables[x], "cmd_mod")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "cmd_mod")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			command_mode = atoi(variables[x]);
+			command_mode = atoi(value);
 		}
 
 		/* we found a comment id or a downtime id*/
-		else if (!strcmp(variables[x], "com_id") || !strcmp(variables[x], "down_id")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "com_id") || !strcmp(key, "down_id")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			multi_ids[z] = strtoul(variables[x], NULL, 10);
+			multi_ids[z] = strtoul(value, NULL, 10);
 			z++;
 		}
 
 		/* we found the notification delay */
-		else if (!strcmp(variables[x], "not_dly")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "not_dly")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			notification_delay = atoi(variables[x]);
+			notification_delay = atoi(value);
 		}
 
 		/* we found the schedule delay */
-		else if (!strcmp(variables[x], "sched_dly")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sched_dly")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			schedule_delay = atoi(variables[x]);
+			schedule_delay = atoi(value);
 		}
 
 		/* we found the comment author */
-		else if (!strcmp(variables[x], "com_author")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "com_author")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((comment_author = (char *)strdup(variables[x])) == NULL)
+			if ((comment_author = (char *)strdup(value)) == NULL)
 				comment_author = "";
 			strip_html_brackets(comment_author);
 		}
 
 		/* we found the comment data */
-		else if (!strcmp(variables[x], "com_data")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "com_data")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((comment_data = (char *)strdup(variables[x])) == NULL)
+			if ((comment_data = (char *)strdup(value)) == NULL)
 				comment_data = "";
 			strip_html_brackets(comment_data);
 		}
 
 		/* we found the host name */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((host_name = (char *)strdup(variables[x])) == NULL)
+			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
 			else {
 				strip_html_brackets(host_name);
@@ -547,27 +547,25 @@ int process_cgivars(void) {
 		}
 
 		/* we found the hostgroup name */
-		else if (!strcmp(variables[x], "hostgroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostgroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((hostgroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((hostgroup_name = (char *)strdup(value)) == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
 		}
 
 		/* we found the service name */
-		else if (!strcmp(variables[x], "service")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "service")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((service_desc = (char *)strdup(variables[x])) == NULL)
+			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
 			else {
 				strip_html_brackets(service_desc);
@@ -578,14 +576,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found a combined host/service */
-		else if (!strcmp(variables[x], "hostservice")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostservice")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			temp_buffer = strtok(variables[x], "^");
+			temp_buffer = strtok(value, "^");
 
 			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
 				host_name = "";
@@ -605,196 +602,175 @@ int process_cgivars(void) {
 		}
 
 		/* we found the servicegroup name */
-		else if (!strcmp(variables[x], "servicegroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicegroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((servicegroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((servicegroup_name = (char *)strdup(value)) == NULL)
 				servicegroup_name = "";
 			strip_html_brackets(servicegroup_name);
 		}
 
 		/* we got the persistence option for a comment */
-		else if (!strcmp(variables[x], "persistent"))
+		else if (!strcmp(key, "persistent"))
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(variables[x], "send_notification"))
+		else if (!strcmp(key, "send_notification"))
 			send_notification = TRUE;
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(variables[x], "sticky_ack"))
+		else if (!strcmp(key, "sticky_ack"))
 			sticky_ack_set = TRUE;
 
 		/* we use the end_time as expire time */
-		else if (!strcmp(variables[x], "use_ack_end_time"))
+		else if (!strcmp(key, "use_ack_end_time"))
 			use_ack_end_time = TRUE;
 
 		/* we use the end_time as disabled notifcations expire time */
-		else if (!strcmp(variables[x], "use_disabled_notif_end_time"))
+		else if (!strcmp(key, "use_disabled_notif_end_time"))
 			use_disabled_notif_end_time = TRUE;
 
 		/* we got the service check force option */
-		else if (!strcmp(variables[x], "force_check"))
+		else if (!strcmp(key, "force_check"))
 			force_check = TRUE;
 
 		/* we got the option to affect host and all its services */
-		else if (!strcmp(variables[x], "ahas"))
+		else if (!strcmp(key, "ahas"))
 			affect_host_and_services = TRUE;
 
 		/* we got the option to propagate to child hosts */
-		else if (!strcmp(variables[x], "ptc"))
+		else if (!strcmp(key, "ptc"))
 			propagate_to_children = TRUE;
 
 		/* we got the option for fixed downtime */
-		else if (!strcmp(variables[x], "fixed")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "fixed")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			fixed = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+			fixed = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
 		/* we got the triggered by downtime option */
-		else if (!strcmp(variables[x], "trigger")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "trigger")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			triggered_by = strtoul(variables[x], NULL, 10);
+			triggered_by = strtoul(value, NULL, 10);
 		}
 
 		/* we got the child options */
-		else if (!strcmp(variables[x], "childoptions")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "childoptions")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			child_options = atoi(variables[x]);
+			child_options = atoi(value);
 		}
 
 		/* we found the plugin output */
-		else if (!strcmp(variables[x], "plugin_output")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "plugin_output")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			/* protect against buffer overflows */
-			if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-			} else
-				strcpy(plugin_output, variables[x]);
+			strcpy(plugin_output, value);
 		}
 
 		/* we found the performance data */
-		else if (!strcmp(variables[x], "performance_data")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "performance_data")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			/* protect against buffer overflows */
-			if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-			} else
-				strcpy(performance_data, variables[x]);
+			strcpy(performance_data, value);
 		}
 
 		/* we found the plugin state */
-		else if (!strcmp(variables[x], "plugin_state")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "plugin_state")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			plugin_state = atoi(variables[x]);
+			plugin_state = atoi(value);
 		}
 
 		/* we found the hour duration */
-		else if (!strcmp(variables[x], "hours")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hours")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (atoi(variables[x]) < 0) {
+			if (atoi(value) < 0) {
 				error = TRUE;
 				break;
 			}
-			duration += (unsigned long)(atoi(variables[x]) * 3600);
+			duration += (unsigned long)(atoi(value) * 3600);
 		}
 
 		/* we found the minute duration */
-		else if (!strcmp(variables[x], "minutes")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "minutes")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (atoi(variables[x]) < 0) {
+			if (atoi(value) < 0) {
 				error = TRUE;
 				break;
 			}
-			duration += (unsigned long)(atoi(variables[x]) * 60);
+			duration += (unsigned long)(atoi(value) * 60);
 		}
 
 		/* we found the start time */
-		else if (!strcmp(variables[x], "start_time")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start_time")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			start_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			start_time_string = (char *)malloc(strlen(value) + 1);
 			if (start_time_string == NULL)
 				start_time_string = "";
 			else
-				strcpy(start_time_string, variables[x]);
+				strcpy(start_time_string, value);
 		}
 
 		/* we found the end time */
-		else if (!strcmp(variables[x], "end_time")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "end_time")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			end_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			end_time_string = (char *)malloc(strlen(value) + 1);
 			if (end_time_string == NULL)
 				end_time_string = "";
 			else
-				strcpy(end_time_string, variables[x]);
+				strcpy(end_time_string, value);
 		}
 
 		/* we found the forced notification option */
-		else if (!strcmp(variables[x], "force_notification"))
+		else if (!strcmp(key, "force_notification"))
 			force_notification = NOTIFICATION_OPTION_FORCED;
 
 		/* we found the broadcast notification option */
-		else if (!strcmp(variables[x], "broadcast_notification"))
+		else if (!strcmp(key, "broadcast_notification"))
 			broadcast_notification = NOTIFICATION_OPTION_BROADCAST;
 
 		/* we got the persistence option for a comment */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 	}

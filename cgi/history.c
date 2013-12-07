@@ -317,26 +317,37 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((host_name = (char *)strdup(variables[x])) == NULL)
+			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 
@@ -349,14 +360,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the service argument */
-		else if (!strcmp(variables[x], "service")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "service")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((service_desc = (char *)strdup(variables[x])) == NULL)
+			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 
@@ -364,144 +374,135 @@ int process_cgivars(void) {
 		}
 
 		/* we found the hostgroup argument */
-		else if (!strcmp(variables[x], "hostgroup")) {
+		else if (!strcmp(key, "hostgroup")) {
 			display_type = DISPLAY_HOSTGROUPS;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			if ((hostgroup_name = strdup(variables[x])) == NULL)
+			if ((hostgroup_name = strdup(value)) == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
 		}
 
 		/* we found the servicegroup argument */
-		else if (!strcmp(variables[x], "servicegroup")) {
+		else if (!strcmp(key, "servicegroup")) {
 			display_type = DISPLAY_SERVICEGROUPS;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			if ((servicegroup_name = strdup(variables[x])) == NULL)
+			if ((servicegroup_name = strdup(value)) == NULL)
 				servicegroup_name = "";
 			strip_html_brackets(servicegroup_name);
 		}
 
 		/* we found the history type argument */
-		else if (!strcmp(variables[x], "type")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "type")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			history_options = atoi(variables[x]);
+			history_options = atoi(value);
 		}
 
 		/* we found the history state type argument */
-		else if (!strcmp(variables[x], "statetype")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "statetype")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			state_options = atoi(variables[x]);
+			state_options = atoi(value);
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "ts_start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ts_start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			ts_start = (time_t)strtoul(variables[x], NULL, 10);
+			ts_start = (time_t)strtoul(value, NULL, 10);
 		}
 
 		/* we found last time argument */
-		else if (!strcmp(variables[x], "ts_end")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ts_end")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			ts_end = (time_t)strtoul(variables[x], NULL, 10);
+			ts_end = (time_t)strtoul(value, NULL, 10);
 		}
 
 		/* we found the order argument */
-		else if (!strcmp(variables[x], "order")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "order")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "new2old"))
+			if (!strcmp(value, "new2old"))
 				reverse = FALSE;
-			else if (!strcmp(variables[x], "old2new"))
+			else if (!strcmp(value, "old2new"))
 				reverse = TRUE;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 		/* we found the nofrills option */
-		else if (!strcmp(variables[x], "nofrills"))
+		else if (!strcmp(key, "nofrills"))
 			display_frills = FALSE;
 
 		/* we found the notimebreaks option */
-		else if (!strcmp(variables[x], "notimebreaks"))
+		else if (!strcmp(key, "notimebreaks"))
 			display_timebreaks = FALSE;
 
 		/* we found the no system messages option */
-		else if (!strcmp(variables[x], "nosystem"))
+		else if (!strcmp(key, "nosystem"))
 			display_system_messages = FALSE;
 
 		/* we found the no flapping alerts option */
-		else if (!strcmp(variables[x], "noflapping"))
+		else if (!strcmp(key, "noflapping"))
 			display_flapping_alerts = FALSE;
 
 		/* we found the no downtime alerts option */
-		else if (!strcmp(variables[x], "nodowntime"))
+		else if (!strcmp(key, "nodowntime"))
 			display_downtime_alerts = FALSE;
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(variables[x], "start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			result_start = atoi(variables[x]);
+			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			get_result_limit = atoi(variables[x]);
+			get_result_limit = atoi(value);
 		}
 	}
 

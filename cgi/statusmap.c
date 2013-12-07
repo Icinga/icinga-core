@@ -301,26 +301,37 @@ int main(int argc, char **argv) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((host_name = (char *)strdup(variables[x])) == NULL)
+			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "all";
 			else
 				strip_html_brackets(host_name);
@@ -332,161 +343,149 @@ int process_cgivars(void) {
 		}
 
 		/* we found the image creation option */
-		else if (!strcmp(variables[x], "createimage")) {
+		else if (!strcmp(key, "createimage")) {
 			content_type = IMAGE_CONTENT;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the canvas origin */
-		else if (!strcmp(variables[x], "canvas_x")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "canvas_x")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			canvas_x = atoi(variables[x]);
+			canvas_x = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(variables[x], "canvas_y")) {
-			x++;
-			if (variables[x] == NULL) {
+		} else if (!strcmp(key, "canvas_y")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			canvas_y = atoi(variables[x]);
+			canvas_y = atoi(value);
 			user_supplied_canvas = TRUE;
 		}
 
 		/* we found the canvas size */
-		else if (!strcmp(variables[x], "canvas_width")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "canvas_width")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			canvas_width = atoi(variables[x]);
+			canvas_width = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(variables[x], "canvas_height")) {
-			x++;
-			if (variables[x] == NULL) {
+		} else if (!strcmp(key, "canvas_height")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			canvas_height = atoi(variables[x]);
+			canvas_height = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(variables[x], "proximity_width")) {
-			x++;
-			if (variables[x] == NULL) {
+		} else if (!strcmp(key, "proximity_width")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			proximity_width = atoi(variables[x]);
+			proximity_width = atoi(value);
 			if (proximity_width < 0)
 				proximity_width = DEFAULT_PROXIMITY_WIDTH;
-		} else if (!strcmp(variables[x], "proximity_height")) {
-			x++;
-			if (variables[x] == NULL) {
+		} else if (!strcmp(key, "proximity_height")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			proximity_height = atoi(variables[x]);
+			proximity_height = atoi(value);
 			if (proximity_height < 0)
 				proximity_height = DEFAULT_PROXIMITY_HEIGHT;
 		}
 
 		/* we found the scaling factor */
-		else if (!strcmp(variables[x], "scaling_factor")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "scaling_factor")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			user_scaling_factor = strtod(variables[x], NULL);
+			user_scaling_factor = strtod(value, NULL);
 			if (user_scaling_factor > 0.0)
 				user_supplied_scaling = TRUE;
 		}
 
 		/* we found the max image size */
-		else if (!strcmp(variables[x], "max_width")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "max_width")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			max_image_width = atoi(variables[x]);
-		} else if (!strcmp(variables[x], "max_height")) {
-			x++;
-			if (variables[x] == NULL) {
+			max_image_width = atoi(value);
+		} else if (!strcmp(key, "max_height")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			max_image_height = atoi(variables[x]);
+			max_image_height = atoi(value);
 		}
 
 		/* we found the layout method option */
-		else if (!strcmp(variables[x], "layout")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "layout")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			layout_method = atoi(variables[x]);
+			layout_method = atoi(value);
 		}
 
 		/* we found the no links argument*/
-		else if (!strcmp(variables[x], "nolinks"))
+		else if (!strcmp(key, "nolinks"))
 			use_links = FALSE;
 
 		/* we found the no text argument*/
-		else if (!strcmp(variables[x], "notext"))
+		else if (!strcmp(key, "notext"))
 			use_text = FALSE;
 
 		/* we found the no highlights argument*/
-		else if (!strcmp(variables[x], "nohighlights"))
+		else if (!strcmp(key, "nohighlights"))
 			use_highlights = FALSE;
 
 		/* we found the no popups argument*/
-		else if (!strcmp(variables[x], "nopopups"))
+		else if (!strcmp(key, "nopopups"))
 			display_popups = FALSE;
 
 		/* we found the layer inclusion/exclusion argument */
-		else if (!strcmp(variables[x], "layermode")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "layermode")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "include"))
+			if (!strcmp(value, "include"))
 				exclude_layers = FALSE;
 			else
 				exclude_layers = TRUE;
 		}
 
 		/* we found the layer argument */
-		else if (!strcmp(variables[x], "layer")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "layer")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			strip_html_brackets(variables[x]);
-			add_layer(variables[x]);
+			strip_html_brackets(value);
+			add_layer(value);
 		}
 
 		/* we found the pause option */
-		else if (!strcmp(variables[x], "paused"))
+		else if (!strcmp(key, "paused"))
 			refresh = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 	}

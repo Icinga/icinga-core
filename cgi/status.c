@@ -1672,61 +1672,65 @@ int main(void) {
 int process_cgivars(void) {
 	char **variables;
 	char *temp_buffer = NULL;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists (NULL is valid if it does not) */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the search_string argument */
-		else if (!strcmp(variables[x], "search_string")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "search_string")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
 			group_style_type = STYLE_HOST_SERVICE_DETAIL;
-			search_string = strdup(variables[x]);
+			search_string = strdup(value);
 		}
 
 		/* we found the servicefilter argument */
-		else if (!strcmp(variables[x], "servicefilter")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicefilter")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_filter = (char *)strdup(variables[x]);
+			service_filter = (char *)strdup(value);
 		}
 
 		/* we found the navbar search argument */
 		/* kept for backwards compatibility */
-		else if (!strcmp(variables[x], "navbarsearch")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "navbarsearch")) {
 			navbar_search = TRUE;
 		}
 
 		/* we found the hostgroup argument */
-		else if (!strcmp(variables[x], "hostgroup")) {
+		else if (!strcmp(key, "hostgroup")) {
 			display_type = DISPLAY_HOSTGROUPS;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			temp_buffer = (char *)strdup(variables[x]);
+			temp_buffer = (char *)strdup(value);
 			strip_html_brackets(temp_buffer);
 
 			if (temp_buffer != NULL)
@@ -1736,15 +1740,14 @@ int process_cgivars(void) {
 		}
 
 		/* we found the servicegroup argument */
-		else if (!strcmp(variables[x], "servicegroup")) {
+		else if (!strcmp(key, "servicegroup")) {
 			display_type = DISPLAY_SERVICEGROUPS;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			temp_buffer = strdup(variables[x]);
+			temp_buffer = strdup(value);
 			strip_html_brackets(temp_buffer);
 
 			if (temp_buffer != NULL)
@@ -1754,15 +1757,14 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
+		else if (!strcmp(key, "host")) {
 			display_type = DISPLAY_HOSTS;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			temp_buffer = strdup(variables[x]);
+			temp_buffer = strdup(value);
 			strip_html_brackets(temp_buffer);
 
 			if (temp_buffer != NULL)
@@ -1772,192 +1774,181 @@ int process_cgivars(void) {
 		}
 
 		/* we found the columns argument */
-		else if (!strcmp(variables[x], "columns")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "columns")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			overview_columns = atoi(variables[x]);
+			overview_columns = atoi(value);
 			if (overview_columns <= 0)
 				overview_columns = 1;
 		}
 
 		/* we found the service status type argument */
-		else if (!strcmp(variables[x], "servicestatustypes")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicestatustypes")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_status_types = atoi(variables[x]);
+			service_status_types = atoi(value);
 		}
 
 		/* we found the host status type argument */
-		else if (!strcmp(variables[x], "hoststatustypes")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hoststatustypes")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			host_status_types = atoi(variables[x]);
+			host_status_types = atoi(value);
 		}
 
 		/* we found the service properties argument */
-		else if (!strcmp(variables[x], "serviceprops")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "serviceprops")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_properties = strtoul(variables[x], NULL, 10);
+			service_properties = strtoul(value, NULL, 10);
 		}
 
 		/* we found the host properties argument */
-		else if (!strcmp(variables[x], "hostprops")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostprops")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			host_properties = strtoul(variables[x], NULL, 10);
+			host_properties = strtoul(value, NULL, 10);
 		}
 
 		/* we found the host or service group style argument */
-		else if (!strcmp(variables[x], "style")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "style")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "overview"))
+			if (!strcmp(value, "overview"))
 				group_style_type = STYLE_OVERVIEW;
-			else if (!strcmp(variables[x], "detail"))
+			else if (!strcmp(value, "detail"))
 				group_style_type = STYLE_SERVICE_DETAIL;
-			else if (!strcmp(variables[x], "summary"))
+			else if (!strcmp(value, "summary"))
 				group_style_type = STYLE_SUMMARY;
-			else if (!strcmp(variables[x], "grid"))
+			else if (!strcmp(value, "grid"))
 				group_style_type = STYLE_GRID;
-			else if (!strcmp(variables[x], "hostdetail"))
+			else if (!strcmp(value, "hostdetail"))
 				group_style_type = STYLE_HOST_DETAIL;
-			else if (!strcmp(variables[x], "hostservicedetail"))
+			else if (!strcmp(value, "hostservicedetail"))
 				group_style_type = STYLE_HOST_SERVICE_DETAIL;
 			else
 				group_style_type = STYLE_SERVICE_DETAIL;
 		}
 
 		/* we found the sort type argument */
-		else if (!strcmp(variables[x], "sorttype")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sorttype")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			sort_type = atoi(variables[x]);
+			sort_type = atoi(value);
 		}
 
 		/* we found the sort option argument */
-		else if (!strcmp(variables[x], "sortoption")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sortoption")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			sort_option = atoi(variables[x]);
+			sort_option = atoi(value);
 		}
 
 		/* we found the sort object argument */
-		else if (!strcmp(variables[x], "sortobject")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sortobject")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "hosts"))
+			if (!strcmp(value, "hosts"))
 				sort_object = HOST_STATUS;
-			else if (!strcmp(variables[x], "services"))
+			else if (!strcmp(value, "services"))
 				sort_object = SERVICE_STATUS;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the nostatusheader option */
-		else if (!strcmp(variables[x], "nostatusheader"))
+		else if (!strcmp(key, "nostatusheader"))
 			nostatusheader_option = TRUE;
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the JSON output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the pause option */
-		else if (!strcmp(variables[x], "livesearchdata")) {
+		else if (!strcmp(key, "livesearchdata")) {
 			return_live_search_data = TRUE;
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the pause option */
-		else if (!strcmp(variables[x], "paused"))
+		else if (!strcmp(key, "paused"))
 			refresh = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "allunhandledproblems"))
+		else if (!strcmp(key, "allunhandledproblems"))
 			display_all_unhandled_problems = TRUE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "allproblems"))
+		else if (!strcmp(key, "allproblems"))
 			display_all_problems = TRUE;
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(variables[x], "start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			result_start = atoi(variables[x]);
+			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			get_result_limit = atoi(variables[x]);
+			get_result_limit = atoi(value);
 		}
 
 	}

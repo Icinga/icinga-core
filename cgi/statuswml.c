@@ -187,23 +187,38 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
+
+		/* do some basic length checking on the variable identifier to prevent buffer overflows */
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the hostgroup argument */
-		if (!strcmp(variables[x], "hostgroup")) {
+		if (!strcmp(key, "hostgroup")) {
 			display_type = DISPLAY_HOSTGROUP;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((hostgroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((hostgroup_name = (char *)strdup(value)) == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
 
@@ -214,88 +229,83 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
+		else if (!strcmp(key, "host")) {
 			display_type = DISPLAY_HOST;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((host_name = (char *)strdup(variables[x])) == NULL)
+			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 		}
 
 		/* we found the service argument */
-		else if (!strcmp(variables[x], "service")) {
+		else if (!strcmp(key, "service")) {
 			display_type = DISPLAY_SERVICE;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((service_desc = (char *)strdup(variables[x])) == NULL)
+			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 		}
 
 
 		/* we found the hostgroup style argument */
-		else if (!strcmp(variables[x], "style")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "style")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "overview"))
+			if (!strcmp(value, "overview"))
 				hostgroup_style = DISPLAY_HOSTGROUP_OVERVIEW;
-			else if (!strcmp(variables[x], "summary"))
+			else if (!strcmp(value, "summary"))
 				hostgroup_style = DISPLAY_HOSTGROUP_SUMMARY;
-			else if (!strcmp(variables[x], "servicedetail"))
+			else if (!strcmp(value, "servicedetail"))
 				host_style = DISPLAY_HOST_SERVICES;
-			else if (!strcmp(variables[x], "processinfo"))
+			else if (!strcmp(value, "processinfo"))
 				display_type = DISPLAY_PROCESS;
-			else if (!strcmp(variables[x], "aprobs"))
+			else if (!strcmp(value, "aprobs"))
 				display_type = DISPLAY_ALL_PROBLEMS;
-			else if (!strcmp(variables[x], "uprobs"))
+			else if (!strcmp(value, "uprobs"))
 				display_type = DISPLAY_UNHANDLED_PROBLEMS;
 			else
 				display_type = DISPLAY_QUICKSTATS;
 		}
 
 		/* we found the ping argument */
-		else if (!strcmp(variables[x], "ping")) {
+		else if (!strcmp(key, "ping")) {
 			display_type = DISPLAY_PING;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((ping_address = (char *)strdup(variables[x])) == NULL)
+			if ((ping_address = (char *)strdup(value)) == NULL)
 				ping_address = "";
 			strip_html_brackets(ping_address);
 		}
 
 		/* we found the traceroute argument */
-		else if (!strcmp(variables[x], "traceroute")) {
+		else if (!strcmp(key, "traceroute")) {
 			display_type = DISPLAY_TRACEROUTE;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((traceroute_address = (char *)strdup(variables[x])) == NULL)
+			if ((traceroute_address = (char *)strdup(value)) == NULL)
 				traceroute_address = "";
 			strip_html_brackets(traceroute_address);
 		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 	}

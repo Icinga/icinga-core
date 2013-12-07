@@ -799,26 +799,37 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int temp_type;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the display type */
-		else if (!strcmp(variables[x], "type")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "type")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			temp_type = atoi(variables[x]);
+			temp_type = atoi(value);
 			if (temp_type == DISPLAY_HOST_INFO)
 				display_type = DISPLAY_HOST_INFO;
 			else if (temp_type == DISPLAY_SERVICE_INFO)
@@ -840,149 +851,140 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host name */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			host_name = strdup(variables[x]);
+			host_name = strdup(value);
 			if (host_name == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 		}
 
 		/* we found the hostgroup name */
-		else if (!strcmp(variables[x], "hostgroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostgroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			hostgroup_name = strdup(variables[x]);
+			hostgroup_name = strdup(value);
 			if (hostgroup_name == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
 		}
 
 		/* we found the service name */
-		else if (!strcmp(variables[x], "service")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "service")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_desc = strdup(variables[x]);
+			service_desc = strdup(value);
 			if (service_desc == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 		}
 
 		/* we found the servicegroup name */
-		else if (!strcmp(variables[x], "servicegroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicegroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			servicegroup_name = strdup(variables[x]);
+			servicegroup_name = strdup(value);
 			if (servicegroup_name == NULL)
 				servicegroup_name = "";
 			strip_html_brackets(servicegroup_name);
 		}
 
 		/* we found the sort type argument */
-		else if (!strcmp(variables[x], "sorttype")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sorttype")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			sort_type = atoi(variables[x]);
+			sort_type = atoi(value);
 		}
 
 		/* we found the sort option argument */
-		else if (!strcmp(variables[x], "sortoption")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sortoption")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			sort_option = atoi(variables[x]);
+			sort_option = atoi(value);
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the JSON output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
-		else if (!strcmp(variables[x], "csvtype")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "csvtype")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "comment"))
+			if (!strcmp(value, "comment"))
 				csv_type = CSV_COMMENT;
-			else if (!strcmp(variables[x], "downtime"))
+			else if (!strcmp(value, "downtime"))
 				csv_type = CSV_DOWNTIME;
 			else
 				csv_type = CSV_DEFAULT;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the pause option */
-		else if (!strcmp(variables[x], "paused"))
+		else if (!strcmp(key, "paused"))
 			refresh = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(variables[x], "start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			result_start = atoi(variables[x]);
+			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			get_result_limit = atoi(variables[x]);
+			get_result_limit = atoi(value);
 		}
 
 	}

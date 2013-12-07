@@ -276,29 +276,24 @@ char **getcgivars(void) {
 	}
 
 	for (i = 0; i < paircount; i++) {
-
 		/* get the variable name preceding the equal (=) sign */
 		if ((eqpos = strchr(pairlist[i], '=')) != NULL) {
 			*eqpos = '\0';
 			cgivars[i*2+1] = strdup(eqpos + 1);
 			if(cgivars[i*2+1] == NULL) {
-				printf("getcgivars(): Could not allocate memory for cgi param value #%d.\n", i);
+				printf("getcgivars(): Could not allocate memory for cgi param value #%d,%s.\n", i,eqpos + 1);
 				exit(1);
 			}
 			unescape_cgi_input(cgivars[i*2+1]);
 
 		} else {
-			cgivars[i*2+1] = strdup("");
-			if(cgivars[i*2+1] == NULL) {
-				printf("getcgivars(): Could not allocate memory for empty cgi param value #%d.\n", i);
-				exit(1);
-			}
+			cgivars[i*2+1] = NULL;
 		}
 
 		/* get the variable value (or name/value of there was no real "pair" in the first place) */
 		cgivars[i*2] = strdup(pairlist[i]);
 		if(cgivars[i*2] == NULL) {
-			printf("getcgivars(): Could not allocate memory for cgi param name #%d.\n", i);
+			printf("getcgivars(): Could not allocate memory for cgi param name #%d,%s.\n", i,eqpos + 1);
 			exit(1);
 		}
 		unescape_cgi_input(cgivars[i*2]);

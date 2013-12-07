@@ -198,55 +198,65 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = 1;
+			break;
+		}
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = 1;
+				break;
+		}
 
 		/* we found the service severity divisor option */
-		if (!strcmp(variables[x], "service_divisor")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "service_divisor")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_severity_divisor = atoi(variables[x]);
+			service_severity_divisor = atoi(value);
 			if (service_severity_divisor < 1)
 				service_severity_divisor = 1;
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the pause option */
-		else if (!strcmp(variables[x], "paused"))
+		else if (!strcmp(key, "paused"))
 			refresh = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 	}
