@@ -417,6 +417,8 @@ int process_cgivars(void) {
 
 	/* Process the variables */
 	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
 		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
