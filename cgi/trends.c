@@ -1147,7 +1147,7 @@ int process_cgivars(void) {
 		}
 
 		/* we found the node width argument */
-		else if (!strcmp(value, "service")) {
+		else if (!strcmp(key, "service")) {
 			if (value == NULL) {
 				error = TRUE;
 				break;
