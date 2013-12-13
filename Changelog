@@ -14,7 +14,7 @@ UPGRADE NOTES
 * package locations may differ!
 
 
-1.8.5 - XX/XX/2013
+1.8.5 - 13/12/2013
 
 FIXES
 * core: fix keep_unknown_macros still exposes wrong warnings to logs #3725 - MF
@@ -23,6 +23,8 @@ FIXES
 * classic ui: fixed JSON output is insufficiently escaped #3541 - RB
 * classic ui: fixed segfault when reading malformed log entries #3528 - RB
 * classic ui: fixed Command expansion problem with percentage signs #3929 - RB
+* classic ui: fix possible buffer overflows #5250 - RB
+* classic ui: fix Off-by-one memory access in process_cgivars() #5251 - RB
 
 * idoutils: idomod leaks memory on core reload #3749 - GB
 * idoutils: add workaround fix for num_rows_affected broken in libdbi/mariadb, returned ids are 0 #3728 - MF
