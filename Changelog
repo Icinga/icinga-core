@@ -13,6 +13,14 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.4 - 13/12/2013
+
+FIXES
+* classic ui: fix status output in JSON format not including short and long plugin output properly #5217 - RB
+* classic ui: fix possible buffer overflows #5250 - RB
+* classic ui: fix Off-by-one memory access in process_cgivars() #5251 - RB
+
+
 1.9.3 - 07/07/2013
 
 FIXES
