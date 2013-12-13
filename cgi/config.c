@@ -4258,6 +4258,7 @@ void display_command_expansion(void) {
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
 					(*(cc++)) = '\0';
 					printf("%s", html_encode(c, FALSE));
+					if (strlen(commandline_pre_processed) + strlen(c) + 1 > MAX_COMMAND_BUFFER) return;
 					strcat(commandline_pre_processed, c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
@@ -4268,6 +4269,7 @@ void display_command_expansion(void) {
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
 						printf("<FONT COLOR='#777777'>$%s%s</FONT>", html_encode(cc, FALSE), (c ? "$" : ""));
+						if (strlen(commandline_pre_processed) + strlen(cc) + 3 > MAX_COMMAND_BUFFER) return;
 						strcat(commandline_pre_processed, "$");
 						strcat(commandline_pre_processed, cc);
 						if (c) strcat(commandline_pre_processed, "$");
@@ -4283,8 +4285,9 @@ void display_command_expansion(void) {
 								if (command_args[i]) {
 									if (*(command_args[i]) != '\0') {
 										printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
-										       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
-										       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+										hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""),
+										escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
+										if (strlen(commandline_pre_processed) + strlen(command_args[i]) + 1 > MAX_COMMAND_BUFFER) return;
 										strcat(commandline_pre_processed, command_args[i]);
 									} else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
 								} else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
@@ -4301,6 +4304,7 @@ void display_command_expansion(void) {
 				}
 				if (c) {
 					printf("%s", html_encode(c, FALSE));
+					if (strlen(commandline_pre_processed) + strlen(c) + 1 > MAX_COMMAND_BUFFER) return;
 					strcat(commandline_pre_processed, c);
 				}
 				commandline_pre_processed[MAX_COMMAND_BUFFER - 1] = '\0';
