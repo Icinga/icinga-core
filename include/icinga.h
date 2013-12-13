@@ -694,10 +694,10 @@ void start_obsessing_over_service_checks(void);		/* start obsessing about servic
 void stop_obsessing_over_service_checks(void);		/* stop obsessing about service check results */
 void start_obsessing_over_host_checks(void);		/* start obsessing about host check results */
 void stop_obsessing_over_host_checks(void);		/* stop obsessing about host check results */
-void enable_service_freshness_checks(void);		/* enable service freshness checks */
-void disable_service_freshness_checks(void);		/* disable service freshness checks */
-void enable_host_freshness_checks(void);		/* enable host freshness checks */
-void disable_host_freshness_checks(void);		/* disable host freshness checks */
+void enable_service_freshness_checks(service *svc);	/* enable service freshness checks */
+void disable_service_freshness_checks(service *svc);	/* disable service freshness checks */
+void enable_host_freshness_checks(host *hst);		/* enable host freshness checks */
+void disable_host_freshness_checks(host *hst);		/* disable host freshness checks */
 void process_passive_checks(void);                      /* processes passive host and service check results */
 void enable_all_failure_prediction(void);               /* enables failure prediction on a program-wide basis */
 void disable_all_failure_prediction(void);              /* disables failure prediction on a program-wide basis */
