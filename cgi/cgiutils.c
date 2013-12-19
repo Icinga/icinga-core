@@ -184,6 +184,7 @@ int		add_notif_num_hard = 0;
 int		add_notif_num_soft = 0;
 int		enforce_comments_on_actions = FALSE;
 int		week_starts_on_monday = FALSE;
+int		disable_cmd_cgi_csrf_protection = FALSE;
 
 int		show_partial_hostgroups = FALSE;
 int		show_partial_servicegroups = FALSE;
@@ -690,6 +691,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "display_status_totals"))
 			display_status_totals = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "disable_cmd_cgi_csrf_protection"))
+			disable_cmd_cgi_csrf_protection = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "authorization_config_file")) {
 			authorization_config_file = strdup(val);

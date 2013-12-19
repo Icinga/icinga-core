@@ -20,6 +20,9 @@ ENHANCEMENTS
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
 
+FIXES
+* classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
+
 
 1.10.2 - 05/12/2013
 
