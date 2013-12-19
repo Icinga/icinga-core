@@ -575,167 +575,171 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 	to_expand[0] = '\0';
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value for length if it's present */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the search_string argument */
-		else if (!strcmp(variables[x], "search_string")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "search_string")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (strlen(variables[x]) != 0)
-				search_string = strdup(variables[x]);
+			if (strlen(value) != 0)
+				search_string = strdup(value);
 		}
 
 		/* we found the item_name argument */
-		else if (!strcmp(variables[x], "item_name")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "item_name")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (strlen(variables[x]) != 0)
-				item_name = strdup(variables[x]);
+			if (strlen(value) != 0)
+				item_name = strdup(value);
 		}
 
 		/* we found the host name */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			host_name = strdup(variables[x]);
+			host_name = strdup(value);
 			if (host_name == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 		}
 
 		/* we found the service name */
-		else if (!strcmp(variables[x], "service")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "service")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_desc = strdup(variables[x]);
+			service_desc = strdup(value);
 			if (service_desc == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 		}
 
 		/* we found the configuration type argument */
-		else if (!strcmp(variables[x], "type")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "type")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
 			/* what information should we display? */
-			if (!strcmp(variables[x], "hosts"))
+			if (!strcmp(value, "hosts"))
 				display_type = DISPLAY_HOSTS;
-			else if (!strcmp(variables[x], "hostgroups"))
+			else if (!strcmp(value, "hostgroups"))
 				display_type = DISPLAY_HOSTGROUPS;
-			else if (!strcmp(variables[x], "servicegroups"))
+			else if (!strcmp(value, "servicegroups"))
 				display_type = DISPLAY_SERVICEGROUPS;
-			else if (!strcmp(variables[x], "contacts"))
+			else if (!strcmp(value, "contacts"))
 				display_type = DISPLAY_CONTACTS;
-			else if (!strcmp(variables[x], "contactgroups"))
+			else if (!strcmp(value, "contactgroups"))
 				display_type = DISPLAY_CONTACTGROUPS;
-			else if (!strcmp(variables[x], "services"))
+			else if (!strcmp(value, "services"))
 				display_type = DISPLAY_SERVICES;
-			else if (!strcmp(variables[x], "timeperiods"))
+			else if (!strcmp(value, "timeperiods"))
 				display_type = DISPLAY_TIMEPERIODS;
-			else if (!strcmp(variables[x], "commands"))
+			else if (!strcmp(value, "commands"))
 				display_type = DISPLAY_COMMANDS;
-			else if (!strcmp(variables[x], "servicedependencies"))
+			else if (!strcmp(value, "servicedependencies"))
 				display_type = DISPLAY_SERVICEDEPENDENCIES;
-			else if (!strcmp(variables[x], "serviceescalations"))
+			else if (!strcmp(value, "serviceescalations"))
 				display_type = DISPLAY_SERVICEESCALATIONS;
-			else if (!strcmp(variables[x], "hostdependencies"))
+			else if (!strcmp(value, "hostdependencies"))
 				display_type = DISPLAY_HOSTDEPENDENCIES;
-			else if (!strcmp(variables[x], "hostescalations"))
+			else if (!strcmp(value, "hostescalations"))
 				display_type = DISPLAY_HOSTESCALATIONS;
-			else if (!strcmp(variables[x], "command"))
+			else if (!strcmp(value, "command"))
 				display_type = DISPLAY_COMMAND_EXPANSION;
-			else if (!strcmp(variables[x], "modules"))
+			else if (!strcmp(value, "modules"))
 				display_type = DISPLAY_MODULES;
-			else if (!strcmp(variables[x], "cgiconfig"))
+			else if (!strcmp(value, "cgiconfig"))
 				display_type = DISPLAY_CGICONFIG;
-			else if (!strcmp(variables[x], "all"))
+			else if (!strcmp(value, "all"))
 				display_type = DISPLAY_ALL;
-
-			/* we found the embed option */
-			else if (!strcmp(variables[x], "embedded"))
-				embedded = TRUE;
-
-			/* we found the nodaemoncheck option */
-			else if (!strcmp(variables[x], "nodaemoncheck"))
-				daemon_check = FALSE;
 		}
 
+		/* we found the embed option */
+		else if (!strcmp(key, "embedded"))
+			embedded = TRUE;
+
+		/* we found the nodaemoncheck option */
+		else if (!strcmp(key, "nodaemoncheck"))
+			daemon_check = FALSE;
+
 		/* we found the string-to-expand argument */
-		else if (!strcmp(variables[x], "expand")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "expand")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			strncpy(to_expand, variables[x], MAX_COMMAND_BUFFER);
+			strncpy(to_expand, value, MAX_COMMAND_BUFFER);
 			to_expand[MAX_COMMAND_BUFFER - 1] = '\0';
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the JSON output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(variables[x], "start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			result_start = atoi(variables[x]);
+			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			get_result_limit = atoi(variables[x]);
+			get_result_limit = atoi(value);
 		}
 
 		/* we received an invalid argument */

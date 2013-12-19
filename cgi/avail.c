@@ -1103,26 +1103,37 @@ int main(int argc, char **argv) {
 int process_cgivars(void) {
 	char **variables;
 	char *temp_buffer = NULL;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		/* do some basic length checking on the variable key to prevent buffer overflows */
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if present */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found the hostgroup argument */
-		else if (!strcmp(variables[x], "hostgroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "hostgroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((hostgroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((hostgroup_name = (char *)strdup(value)) == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
 
@@ -1131,14 +1142,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the servicegroup argument */
-		else if (!strcmp(variables[x], "servicegroup")) {
-			x++;
+		else if (!strcmp(key, "servicegroup")) {
 			if (variables[x] == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((servicegroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((servicegroup_name = (char *)strdup(value)) == NULL)
 				servicegroup_name = "";
 			strip_html_brackets(servicegroup_name);
 
@@ -1147,14 +1157,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((host_name = (char *)strdup(variables[x])) == NULL)
+			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 
@@ -1165,14 +1174,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the service description argument */
-		else if (!strcmp(variables[x], "service")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "service")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((service_desc = (char *)strdup(variables[x])) == NULL)
+			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 
@@ -1181,14 +1189,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found a combined host/service */
-		else if (!strcmp(variables[x], "hostservice")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostservice")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			temp_buffer = strtok(variables[x], "^");
+			temp_buffer = strtok(value, "^");
 
 			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
 				host_name = "";
@@ -1207,118 +1214,109 @@ int process_cgivars(void) {
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "t1")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "t1")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			t1 = (time_t)strtoul(variables[x], NULL, 10);
+			t1 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = FALSE;
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "t2")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "t2")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			t2 = (time_t)strtoul(variables[x], NULL, 10);
+			t2 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = FALSE;
 		}
 
 		/* we found the assume initial states option */
-		else if (!strcmp(variables[x], "assumeinitialstates")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "assumeinitialstates")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "yes"))
+			if (!strcmp(value, "yes"))
 				assume_initial_states = TRUE;
 			else
 				assume_initial_states = FALSE;
 		}
 
 		/* we found the assume state during program not running option */
-		else if (!strcmp(variables[x], "assumestatesduringnotrunning")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "assumestatesduringnotrunning")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "yes"))
+			if (!strcmp(value, "yes"))
 				assume_states_during_notrunning = TRUE;
 			else
 				assume_states_during_notrunning = FALSE;
 		}
 
 		/* we found the initial assumed host state option */
-		else if (!strcmp(variables[x], "initialassumedhoststate")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "initialassumedhoststate")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			initial_assumed_host_state = atoi(variables[x]);
+			initial_assumed_host_state = atoi(value);
 		}
 
 		/* we found the initial assumed service state option */
-		else if (!strcmp(variables[x], "initialassumedservicestate")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "initialassumedservicestate")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			initial_assumed_service_state = atoi(variables[x]);
+			initial_assumed_service_state = atoi(value);
 		}
 
 		/* we found the assume state retention option */
-		else if (!strcmp(variables[x], "assumestateretention")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "assumestateretention")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "yes"))
+			if (!strcmp(value, "yes"))
 				assume_state_retention = TRUE;
 			else
 				assume_state_retention = FALSE;
 		}
 
 		/* we found the include soft states option */
-		else if (!strcmp(variables[x], "includesoftstates")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "includesoftstates")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "yes"))
+			if (!strcmp(value, "yes"))
 				include_soft_states = TRUE;
 			else
 				include_soft_states = FALSE;
 		}
 
 		/* we found the backtrack archives argument */
-		else if (!strcmp(variables[x], "backtrack")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "backtrack")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			backtrack_archives = atoi(variables[x]);
+			backtrack_archives = atoi(value);
 			if (backtrack_archives < 0)
 				backtrack_archives = 0;
 			if (backtrack_archives > MAX_ARCHIVE_BACKTRACKS)
@@ -1330,40 +1328,39 @@ int process_cgivars(void) {
 		}
 
 		/* we found the standard timeperiod argument */
-		else if (!strcmp(variables[x], "timeperiod")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "timeperiod")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "today"))
+			if (!strcmp(value, "today"))
 				timeperiod_type = TIMEPERIOD_TODAY;
-			else if (!strcmp(variables[x], "yesterday"))
+			else if (!strcmp(value, "yesterday"))
 				timeperiod_type = TIMEPERIOD_YESTERDAY;
-			else if (!strcmp(variables[x], "thisweek"))
+			else if (!strcmp(value, "thisweek"))
 				timeperiod_type = TIMEPERIOD_THISWEEK;
-			else if (!strcmp(variables[x], "lastweek"))
+			else if (!strcmp(value, "lastweek"))
 				timeperiod_type = TIMEPERIOD_LASTWEEK;
-			else if (!strcmp(variables[x], "thismonth"))
+			else if (!strcmp(value, "thismonth"))
 				timeperiod_type = TIMEPERIOD_THISMONTH;
-			else if (!strcmp(variables[x], "lastmonth"))
+			else if (!strcmp(value, "lastmonth"))
 				timeperiod_type = TIMEPERIOD_LASTMONTH;
-			else if (!strcmp(variables[x], "thisquarter"))
+			else if (!strcmp(value, "thisquarter"))
 				timeperiod_type = TIMEPERIOD_THISQUARTER;
-			else if (!strcmp(variables[x], "lastquarter"))
+			else if (!strcmp(value, "lastquarter"))
 				timeperiod_type = TIMEPERIOD_LASTQUARTER;
-			else if (!strcmp(variables[x], "thisyear"))
+			else if (!strcmp(value, "thisyear"))
 				timeperiod_type = TIMEPERIOD_THISYEAR;
-			else if (!strcmp(variables[x], "lastyear"))
+			else if (!strcmp(value, "lastyear"))
 				timeperiod_type = TIMEPERIOD_LASTYEAR;
-			else if (!strcmp(variables[x], "last24hours"))
+			else if (!strcmp(value, "last24hours"))
 				timeperiod_type = TIMEPERIOD_LAST24HOURS;
-			else if (!strcmp(variables[x], "last7days"))
+			else if (!strcmp(value, "last7days"))
 				timeperiod_type = TIMEPERIOD_LAST7DAYS;
-			else if (!strcmp(variables[x], "last31days"))
+			else if (!strcmp(value, "last31days"))
 				timeperiod_type = TIMEPERIOD_LAST31DAYS;
-			else if (!strcmp(variables[x], "custom"))
+			else if (!strcmp(value, "custom"))
 				timeperiod_type = TIMEPERIOD_CUSTOM;
 			else
 				continue;
@@ -1373,46 +1370,45 @@ int process_cgivars(void) {
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the JSON output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the XML output option */
-		else if (!strcmp(variables[x], "xmloutput")) {
+		else if (!strcmp(key, "xmloutput")) {
 			display_header = FALSE;
 			content_type = XML_CONTENT;
 		}
 
 		/* we found the content type argument */
-		else if (!strcmp(variables[x], "content_type")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "content_type")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "xml"))
+			if (!strcmp(value, "xml"))
 				content_type = XML_CONTENT;
-			else if (!strcmp(variables[x], "csv"))
+			else if (!strcmp(value, "csv"))
 				content_type = CSV_CONTENT;
-			else if (!strcmp(variables[x], "json"))
+			else if (!strcmp(value, "json"))
 				content_type = JSON_CONTENT;
-			else if (!strcmp(variables[x], "html"))
+			else if (!strcmp(value, "html"))
 				content_type = HTML_CONTENT;
 			else
 				continue;
@@ -1422,38 +1418,36 @@ int process_cgivars(void) {
 		}
 
 		/* we found the log entries option  */
-		else if (!strcmp(variables[x], "show_log_entries"))
+		else if (!strcmp(key, "show_log_entries"))
 			show_log_entries = TRUE;
 
 		/* we found the full log entries option */
-		else if (!strcmp(variables[x], "full_log_entries"))
+		else if (!strcmp(key, "full_log_entries"))
 			full_log_entries = TRUE;
 
 		/* we found the get date parts option */
-		else if (!strcmp(variables[x], "get_date_parts"))
+		else if (!strcmp(key, "get_date_parts"))
 			get_date_parts = TRUE;
 
 		/* we found the report type selection option */
-		else if (!strcmp(variables[x], "report_type")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "report_type")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
-			if (!strcmp(variables[x], "hostgroups"))
+			if (!strcmp(value, "hostgroups"))
 				select_hostgroups = TRUE;
-			else if (!strcmp(variables[x], "servicegroups"))
+			else if (!strcmp(value, "servicegroups"))
 				select_servicegroups = TRUE;
-			else if (!strcmp(variables[x], "hosts"))
+			else if (!strcmp(value, "hosts"))
 				select_hosts = TRUE;
 			else
 				select_services = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "smon")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "smon")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1461,15 +1455,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_month = atoi(variables[x]);
+			start_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "sday")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sday")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1477,15 +1470,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_day = atoi(variables[x]);
+			start_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "syear")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "syear")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1493,15 +1485,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_year = atoi(variables[x]);
+			start_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "smin")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "smin")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1509,15 +1500,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_minute = atoi(variables[x]);
+			start_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "ssec")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ssec")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1525,15 +1515,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_second = atoi(variables[x]);
+			start_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "shour")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "shour")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1541,16 +1530,15 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_hour = atoi(variables[x]);
+			start_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "emon")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "emon")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1558,15 +1546,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_month = atoi(variables[x]);
+			end_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "eday")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "eday")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1574,15 +1561,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_day = atoi(variables[x]);
+			end_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "eyear")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "eyear")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1590,15 +1576,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_year = atoi(variables[x]);
+			end_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "emin")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "emin")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1606,15 +1591,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_minute = atoi(variables[x]);
+			end_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "esec")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "esec")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1622,15 +1606,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_second = atoi(variables[x]);
+			end_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "ehour")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ehour")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -1638,36 +1621,34 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_hour = atoi(variables[x]);
+			end_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found the show scheduled downtime option */
-		else if (!strcmp(variables[x], "showscheduleddowntime")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "showscheduleddowntime")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "yes"))
+			if (!strcmp(value, "yes"))
 				show_scheduled_downtime = TRUE;
 			else
 				show_scheduled_downtime = FALSE;
 		}
 
 		/* we found the report timeperiod option */
-		else if (!strcmp(variables[x], "rpttimeperiod")) {
+		else if (!strcmp(key, "rpttimeperiod")) {
 			timeperiod *temp_timeperiod;
-			x++;
-			if (variables[x] == NULL) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
 			for (temp_timeperiod = timeperiod_list; temp_timeperiod != NULL; temp_timeperiod = temp_timeperiod->next) {
-				if (!strcmp(url_encode(temp_timeperiod->name), variables[x])) {
+				if (!strcmp(url_encode(temp_timeperiod->name), value)) {
 					current_timeperiod = temp_timeperiod;
 					break;
 				}
@@ -1675,7 +1656,7 @@ int process_cgivars(void) {
 		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 	}

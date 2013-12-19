@@ -230,26 +230,36 @@ int main(void) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* found query string */
-		else if (!strcmp(variables[x], "query_string")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "query_string")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			query_string = strdup(variables[x]);
+			query_string = strdup(value);
 			strip_html_brackets(query_string);
 
 			if (strlen(query_string) == 0)
@@ -257,88 +267,83 @@ int process_cgivars(void) {
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "ts_start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ts_start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			ts_start = (time_t)strtoul(variables[x], NULL, 10);
+			ts_start = (time_t)strtoul(value, NULL, 10);
 		}
 
 		/* we found last time argument */
-		else if (!strcmp(variables[x], "ts_end")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ts_end")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			ts_end = (time_t)strtoul(variables[x], NULL, 10);
+			ts_end = (time_t)strtoul(value, NULL, 10);
 		}
 
 		/* we found the start time */
-		else if (!strcmp(variables[x], "start_time")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start_time")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			start_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			start_time_string = (char *)malloc(strlen(value) + 1);
 			if (start_time_string == NULL)
 				start_time_string = "";
 			else
-				strcpy(start_time_string, variables[x]);
+				strcpy(start_time_string, value);
 		}
 
 		/* we found the end time */
-		else if (!strcmp(variables[x], "end_time")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "end_time")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			end_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			end_time_string = (char *)malloc(strlen(value) + 1);
 			if (end_time_string == NULL)
 				end_time_string = "";
 			else
-				strcpy(end_time_string, variables[x]);
+				strcpy(end_time_string, value);
 		}
 
 		/* we found the standard timeperiod argument */
-		else if (!strcmp(variables[x], "timeperiod")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "timeperiod")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "today"))
+			if (!strcmp(value, "today"))
 				timeperiod_type = TIMEPERIOD_TODAY;
-			else if (!strcmp(variables[x], "singelday"))
+			else if (!strcmp(value, "singelday"))
 				timeperiod_type = TIMEPERIOD_SINGLE_DAY;
-			else if (!strcmp(variables[x], "last24hours"))
+			else if (!strcmp(value, "last24hours"))
 				timeperiod_type = TIMEPERIOD_LAST24HOURS;
-			else if (!strcmp(variables[x], "thisweek"))
+			else if (!strcmp(value, "thisweek"))
 				timeperiod_type = TIMEPERIOD_THISWEEK;
-			else if (!strcmp(variables[x], "lastweek"))
+			else if (!strcmp(value, "lastweek"))
 				timeperiod_type = TIMEPERIOD_LASTWEEK;
-			else if (!strcmp(variables[x], "thismonth"))
+			else if (!strcmp(value, "thismonth"))
 				timeperiod_type = TIMEPERIOD_THISMONTH;
-			else if (!strcmp(variables[x], "lastmonth"))
+			else if (!strcmp(value, "lastmonth"))
 				timeperiod_type = TIMEPERIOD_LASTMONTH;
-			else if (!strcmp(variables[x], "thisyear"))
+			else if (!strcmp(value, "thisyear"))
 				timeperiod_type = TIMEPERIOD_THISYEAR;
-			else if (!strcmp(variables[x], "lastyear"))
+			else if (!strcmp(value, "lastyear"))
 				timeperiod_type = TIMEPERIOD_LASTYEAR;
-			else if (!strcmp(variables[x], "last7days"))
+			else if (!strcmp(value, "last7days"))
 				timeperiod_type = TIMEPERIOD_LAST7DAYS;
-			else if (!strcmp(variables[x], "last31days"))
+			else if (!strcmp(value, "last31days"))
 				timeperiod_type = TIMEPERIOD_LAST31DAYS;
-			else if (!strcmp(variables[x], "custom"))
+			else if (!strcmp(value, "custom"))
 				timeperiod_type = TIMEPERIOD_CUSTOM;
 			else
 				continue;
@@ -347,183 +352,171 @@ int process_cgivars(void) {
 		}
 
 		/* we found the order argument */
-		else if (!strcmp(variables[x], "order")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "order")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "new2old"))
+			if (!strcmp(value, "new2old"))
 				reverse = FALSE;
-			else if (!strcmp(variables[x], "old2new"))
+			else if (!strcmp(value, "old2new"))
 				reverse = TRUE;
 		}
 
 		/* show filter */
-		else if (!strcmp(variables[x], "display_filter")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "display_filter")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "true"))
+			if (!strcmp(value, "true"))
 				display_filter = TRUE;
 		}
 
 		/* notification filter */
-		else if (!strcmp(variables[x], "noti")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "noti")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_notifications = FALSE;
 		}
 
 		/* host status filter */
-		else if (!strcmp(variables[x], "hst")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hst")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_host_status = FALSE;
 		}
 
 		/* service status filter */
-		else if (!strcmp(variables[x], "sst")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sst")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_service_status = FALSE;
 		}
 
 		/* external commands filter */
-		else if (!strcmp(variables[x], "cmd")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "cmd")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_external_commands = FALSE;
 		}
 
 		/* system messages filter */
-		else if (!strcmp(variables[x], "sms")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sms")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_system_messages = FALSE;
 		}
 
 		/* event handler filter */
-		else if (!strcmp(variables[x], "evh")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "evh")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_event_handler = FALSE;
 		}
 
 		/* flapping filter */
-		else if (!strcmp(variables[x], "flp")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "flp")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_flapping = FALSE;
 		}
 
 		/* downtime filter */
-		else if (!strcmp(variables[x], "dwn")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "dwn")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "off"))
+			if (!strcmp(value, "off"))
 				show_downtime = FALSE;
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the nofrills option */
-		else if (!strcmp(variables[x], "nofrills"))
+		else if (!strcmp(key, "nofrills"))
 			display_frills = FALSE;
 
 		/* we found the notimebreaks option */
-		else if (!strcmp(variables[x], "notimebreaks"))
+		else if (!strcmp(key, "notimebreaks"))
 			display_timebreaks = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(variables[x], "start")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "start")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			result_start = atoi(variables[x]);
+			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			get_result_limit = atoi(variables[x]);
+			get_result_limit = atoi(value);
 		}
 
 		/* we received an invalid argument */

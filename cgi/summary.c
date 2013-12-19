@@ -618,78 +618,87 @@ int main(int argc, char **argv) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *key = NULL;
+	char *value = NULL;
 	int error = FALSE;
 	int x;
 
 	variables = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x++) {
+	for (x = 0; variables[x] != NULL; x+=2) {
+		key = variables[x];
+		value = variables[x+1];
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(variables[x]) >= MAX_INPUT_BUFFER - 1)
-			continue;
+		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
+			error = TRUE;
+			break;
+		}
+		/* likewise, check the value if it exists */
+		if (value != NULL)
+			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
+				error = TRUE;
+				break;
+		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "t1")) {
-			x++;
-			if (variables[x] == NULL) {
+		if (!strcmp(key, "t1")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			t1 = (time_t)strtoul(variables[x], NULL, 10);
+			t1 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = FALSE;
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(variables[x], "t2")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "t2")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			t2 = (time_t)strtoul(variables[x], NULL, 10);
+			t2 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = FALSE;
 		}
 
 		/* we found the standard timeperiod argument */
-		else if (!strcmp(variables[x], "timeperiod")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "timeperiod")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if (!strcmp(variables[x], "today"))
+			if (!strcmp(value, "today"))
 				timeperiod_type = TIMEPERIOD_TODAY;
-			else if (!strcmp(variables[x], "yesterday"))
+			else if (!strcmp(value, "yesterday"))
 				timeperiod_type = TIMEPERIOD_YESTERDAY;
-			else if (!strcmp(variables[x], "thisweek"))
+			else if (!strcmp(value, "thisweek"))
 				timeperiod_type = TIMEPERIOD_THISWEEK;
-			else if (!strcmp(variables[x], "lastweek"))
+			else if (!strcmp(value, "lastweek"))
 				timeperiod_type = TIMEPERIOD_LASTWEEK;
-			else if (!strcmp(variables[x], "thismonth"))
+			else if (!strcmp(value, "thismonth"))
 				timeperiod_type = TIMEPERIOD_THISMONTH;
-			else if (!strcmp(variables[x], "lastmonth"))
+			else if (!strcmp(value, "lastmonth"))
 				timeperiod_type = TIMEPERIOD_LASTMONTH;
-			else if (!strcmp(variables[x], "thisquarter"))
+			else if (!strcmp(value, "thisquarter"))
 				timeperiod_type = TIMEPERIOD_THISQUARTER;
-			else if (!strcmp(variables[x], "lastquarter"))
+			else if (!strcmp(value, "lastquarter"))
 				timeperiod_type = TIMEPERIOD_LASTQUARTER;
-			else if (!strcmp(variables[x], "thisyear"))
+			else if (!strcmp(value, "thisyear"))
 				timeperiod_type = TIMEPERIOD_THISYEAR;
-			else if (!strcmp(variables[x], "lastyear"))
+			else if (!strcmp(value, "lastyear"))
 				timeperiod_type = TIMEPERIOD_LASTYEAR;
-			else if (!strcmp(variables[x], "last24hours"))
+			else if (!strcmp(value, "last24hours"))
 				timeperiod_type = TIMEPERIOD_LAST24HOURS;
-			else if (!strcmp(variables[x], "last7days"))
+			else if (!strcmp(value, "last7days"))
 				timeperiod_type = TIMEPERIOD_LAST7DAYS;
-			else if (!strcmp(variables[x], "last31days"))
+			else if (!strcmp(value, "last31days"))
 				timeperiod_type = TIMEPERIOD_LAST31DAYS;
-			else if (!strcmp(variables[x], "custom"))
+			else if (!strcmp(value, "custom"))
 				timeperiod_type = TIMEPERIOD_CUSTOM;
 			else
 				continue;
@@ -699,33 +708,32 @@ int process_cgivars(void) {
 		}
 
 		/* we found the CSV output option */
-		else if (!strcmp(variables[x], "csvoutput")) {
+		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
 		}
 
 		/* we found the JSON output option */
-		else if (!strcmp(variables[x], "jsonoutput")) {
+		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(variables[x], "embedded"))
+		else if (!strcmp(key, "embedded"))
 			embedded = TRUE;
 
 		/* we found the noheader option */
-		else if (!strcmp(variables[x], "noheader"))
+		else if (!strcmp(key, "noheader"))
 			display_header = FALSE;
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(variables[x], "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck"))
 			daemon_check = FALSE;
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "smon")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "smon")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -733,15 +741,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_month = atoi(variables[x]);
+			start_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "sday")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "sday")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -749,15 +756,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_day = atoi(variables[x]);
+			start_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "syear")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "syear")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -765,15 +771,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_year = atoi(variables[x]);
+			start_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "smin")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "smin")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -781,15 +786,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_minute = atoi(variables[x]);
+			start_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "ssec")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ssec")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -797,15 +801,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_second = atoi(variables[x]);
+			start_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "shour")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "shour")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -813,16 +816,15 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			start_hour = atoi(variables[x]);
+			start_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "emon")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "emon")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -830,15 +832,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_month = atoi(variables[x]);
+			end_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "eday")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "eday")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -846,15 +847,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_day = atoi(variables[x]);
+			end_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "eyear")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "eyear")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -862,15 +862,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_year = atoi(variables[x]);
+			end_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "emin")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "emin")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -878,15 +877,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_minute = atoi(variables[x]);
+			end_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "esec")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "esec")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -894,15 +892,14 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_second = atoi(variables[x]);
+			end_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(variables[x], "ehour")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "ehour")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
@@ -910,109 +907,100 @@ int process_cgivars(void) {
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
 
-			end_hour = atoi(variables[x]);
+			end_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
 		}
 
 		/* we found the item limit argument */
-		else if (!strcmp(variables[x], "limit")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "limit")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			item_limit = atoi(variables[x]);
+			item_limit = atoi(value);
 		}
 
 		/* we found the state types argument */
-		else if (!strcmp(variables[x], "statetypes")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "statetypes")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			state_types = atoi(variables[x]);
+			state_types = atoi(value);
 		}
 
 		/* we found the alert types argument */
-		else if (!strcmp(variables[x], "alerttypes")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "alerttypes")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			alert_types = atoi(variables[x]);
+			alert_types = atoi(value);
 		}
 
 		/* we found the host states argument */
-		else if (!strcmp(variables[x], "hoststates")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hoststates")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			host_states = atoi(variables[x]);
+			host_states = atoi(value);
 		}
 
 		/* we found the service states argument */
-		else if (!strcmp(variables[x], "servicestates")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicestates")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			service_states = atoi(variables[x]);
+			service_states = atoi(value);
 		}
 
 		/* we found the generate report argument */
-		else if (!strcmp(variables[x], "report")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "report")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			generate_report = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+			generate_report = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
 
 		/* we found the display type argument */
-		else if (!strcmp(variables[x], "displaytype")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "displaytype")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			display_type = atoi(variables[x]);
+			display_type = atoi(value);
 		}
 
 		/* we found the standard report argument */
-		else if (!strcmp(variables[x], "standardreport")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "standardreport")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			standard_report = atoi(variables[x]);
+			standard_report = atoi(value);
 		}
 
 		/* we found the hostgroup argument */
-		else if (!strcmp(variables[x], "hostgroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "hostgroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((target_hostgroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((target_hostgroup_name = (char *)strdup(value)) == NULL)
 				target_hostgroup_name = "";
 			strip_html_brackets(target_hostgroup_name);
 
@@ -1025,14 +1013,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the servicegroup argument */
-		else if (!strcmp(variables[x], "servicegroup")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "servicegroup")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((target_servicegroup_name = (char *)strdup(variables[x])) == NULL)
+			if ((target_servicegroup_name = (char *)strdup(value)) == NULL)
 				target_servicegroup_name = "";
 			strip_html_brackets(target_servicegroup_name);
 
@@ -1045,14 +1032,13 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host argument */
-		else if (!strcmp(variables[x], "host")) {
-			x++;
-			if (variables[x] == NULL) {
+		else if (!strcmp(key, "host")) {
+			if (value == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			if ((target_host_name = (char *)strdup(variables[x])) == NULL)
+			if ((target_host_name = (char *)strdup(value)) == NULL)
 				target_host_name = "";
 			strip_html_brackets(target_host_name);
 
