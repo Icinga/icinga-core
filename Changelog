@@ -20,6 +20,10 @@ ENHANCEMENTS
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
 
+FIX
+
+* classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
+
 
 1.10.2 - 05/12/2013
 
