@@ -19,11 +19,15 @@ UPGRADE NOTES
 ENHANCEMENTS
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
+* classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB
 
 FIX
 
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 
+CHANGES
+
+* classic ui: added current_notification_number to host and service status in status.cgi #5370
 
 1.10.2 - 05/12/2013
 
