@@ -23,6 +23,12 @@ ENHANCEMENTS
 FIXES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
 
+CHANGES
+* classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346
+	** If cmd.cgi get's executed from command line then you have to set
+	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
+	   otherwise the command will be rejected if csrf protection is enabled.
+
 
 1.10.2 - 05/12/2013
 
