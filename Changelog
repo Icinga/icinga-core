@@ -30,10 +30,8 @@ CHANGES
 	** If cmd.cgi get's executed from command line then you have to set
 	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
 	   otherwise the command will be rejected if csrf protection is enabled.
-
-CHANGES
-
 * classic ui: added current_notification_number to host and service status in status.cgi #5370
+
 
 1.10.2 - 05/12/2013
 
