@@ -24,6 +24,7 @@ ENHANCEMENTS
 FIXES
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
+* classic ui: fix timepicker is resetting time in input field #5239 - RB
 
 CHANGES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346
