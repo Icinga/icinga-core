@@ -38,6 +38,7 @@
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
 #include "../include/getcgi.h"
+#include "../include/locations.h"
 
 /** @name External vars
     @{ **/
@@ -57,6 +58,7 @@ extern int  send_ack_notifications;
 extern int  default_expiring_acknowledgement_duration;
 extern int  set_expire_ack_by_default;
 extern int  default_expiring_disabled_notifications_duration;
+extern int  disable_cmd_cgi_csrf_protection;
 
 extern int  display_header;
 extern int  daemon_check;
@@ -2048,6 +2050,9 @@ void commit_command_data(int cmd) {
 	scheduled_downtime *temp_downtime;
 	servicegroup *temp_servicegroup = NULL;
 	contact *temp_contact = NULL;
+	char *referer;
+	char *referer_check;
+	char *buffer;
 	int x = 0;
 	int e = 0;
 	short error_found = FALSE;
@@ -2056,6 +2061,18 @@ void commit_command_data(int cmd) {
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
+
+	referer = getenv("HTTP_REFERER");
+	asprintf(&referer_check, "%s/%s", DEFAULT_URL_CGIBIN_PATH, CMD_CGI);
+
+	if (disable_cmd_cgi_csrf_protection == FALSE && (referer == NULL || !strstr(referer, referer_check))) {
+		if (use_logging == TRUE) {
+			asprintf(&buffer, "ERROR: %s;%s;%s;This appears to be a CSRF attack! The command wasn't issued via Classic-UI itself!", current_authdata.username, (getenv("REMOTE_ADDR") != NULL) ? getenv("REMOTE_ADDR") : "unknown remote address", extcmd_get_name(cmd));
+			write_to_cgi_log(buffer);
+		}
+		print_generic_error_message("Error: This appears to be a CSRF attack! The command wasn't issued via Classic-UI itself!", NULL, 2);
+		return;
+	}
 
 	/* allways set the first element to FALSE*/
 	/* If there is a single COMMAND witch is not coverd correctly throught the following cases it won't get executed */
