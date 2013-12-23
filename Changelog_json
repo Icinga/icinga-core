@@ -2,6 +2,9 @@
 Classic-UI JSON Change Log
 #######################
 
+1.11.0 - only values added, no existing values changed
+* added current_notification_number to host and service status in status.cgi #5370
+
 1.10.0 - only values added, no existing values changed
 * added custom vars to hosts and services in extinfo #4390
 * added performance data to extinfo.cgi json #4723

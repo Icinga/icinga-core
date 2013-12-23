@@ -151,6 +151,7 @@ typedef struct statusdata_struct {
 	time_t		ts_state_duration;		/**< duration of this status as timestamp */
 	char		*attempts;			/**< attempts as string */
 	int		current_attempt;		/**< attempts as integer */
+	int		current_notification_number;	/**< number of current sent out notifications */
 	char		*plugin_output;			/**< full processed plugin output */
 	int		problem_has_been_acknowledged;	/**< bool if problem is acknowledged */
 	int		scheduled_downtime_depth;	/**< int of downtime depth */
@@ -2798,6 +2799,7 @@ void show_service_detail(void) {
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
 			printf("\"attempts\": \"%s\", ", temp_status->attempts);
+			printf("\"current_notification_number\": %d, ", temp_status->current_notification_number);
 			printf("\"state_type\": \"%s\", ", (temp_status->state_type == HARD_STATE) ? "HARD" : "SOFT");
 			printf("\"is_flapping\": %s, ", (temp_status->is_flapping == TRUE) ? "true" : "false");
 			printf("\"in_scheduled_downtime\": %s, ", (temp_status->scheduled_downtime_depth > 0) ? "true" : "false");
@@ -3249,6 +3251,7 @@ void show_host_detail(void) {
 			printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 			printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
 			printf("\"attempts\": \"%s\", ", temp_statusdata->attempts);
+			printf("\"current_notification_number\": %d, ", temp_statusdata->current_notification_number);
 			printf("\"state_type\": \"%s\", ", (temp_statusdata->state_type == HARD_STATE) ? "HARD" : "SOFT");
 			printf("\"is_flapping\": %s, ", (temp_statusdata->is_flapping == TRUE) ? "true" : "false");
 			printf("\"in_scheduled_downtime\": %s, ", (temp_statusdata->scheduled_downtime_depth > 0) ? "true" : "false");
@@ -6045,6 +6048,7 @@ int add_status_data(int status_type, void *data) {
 	int checks_enabled = FALSE;
 	int accept_passive_checks = FALSE;
 	int state_type = HARD_STATE;
+	int current_notification_number = 0;
 
 	if (status_type == HOST_STATUS) {
 
@@ -6071,6 +6075,7 @@ int add_status_data(int status_type, void *data) {
 
 		host_name = host_status->host_name;
 		current_attempt = host_status->current_attempt;
+		current_notification_number = host_status->current_notification_number;
 
 		problem_has_been_acknowledged = host_status->problem_has_been_acknowledged;
 		scheduled_downtime_depth = host_status->scheduled_downtime_depth;
@@ -6114,6 +6119,7 @@ int add_status_data(int status_type, void *data) {
 		host_name = service_status->host_name;
 		svc_description = service_status->description;
 		current_attempt = service_status->current_attempt;
+		current_notification_number = service_status->current_notification_number;
 
 		problem_has_been_acknowledged = service_status->problem_has_been_acknowledged;
 		scheduled_downtime_depth = service_status->scheduled_downtime_depth;
@@ -6190,6 +6196,7 @@ int add_status_data(int status_type, void *data) {
 	new_statusdata->attempts = strdup(attempts);
 
 	new_statusdata->current_attempt = current_attempt;
+	new_statusdata->current_notification_number = current_notification_number;
 
 	new_statusdata->problem_has_been_acknowledged = problem_has_been_acknowledged;
 	new_statusdata->scheduled_downtime_depth = scheduled_downtime_depth;

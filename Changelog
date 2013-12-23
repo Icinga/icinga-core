@@ -19,6 +19,7 @@ UPGRADE NOTES
 ENHANCEMENTS
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
+* classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB
 
 FIXES
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
@@ -30,6 +31,9 @@ CHANGES
 	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
 	   otherwise the command will be rejected if csrf protection is enabled.
 
+CHANGES
+
+* classic ui: added current_notification_number to host and service status in status.cgi #5370
 
 1.10.2 - 05/12/2013
 
