@@ -1389,6 +1389,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 
 		printf("\t\ttimeFormat: 'hh:mm:ss',\n");
 		printf("\t\tshowWeek: true,\n");
+		printf("\t\tshowSecond: false,\n");
 		printf("\t\tchangeMonth: true,\n");
 		printf("\t\tchangeYear: true\n");
 		printf("\t});\n");
