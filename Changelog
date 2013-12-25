@@ -20,6 +20,7 @@ ENHANCEMENTS
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
 * classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB
+* classic ui: add groups Notes and Action URL links to status summary, overview and grid #5301 - RB
 
 FIXES
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
