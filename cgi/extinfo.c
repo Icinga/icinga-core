@@ -686,16 +686,20 @@ int main(void) {
 			printf("<table border='0'>\n");
 
 			if (temp_servicegroup->action_url != NULL && strcmp(temp_servicegroup->action_url, "")) {
+				printf("<tr><td align='right'>\n");
 				printf("<a href='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->action_url);
 				printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Actions</i></font><br clear='all'><br clear='all'>\n");
+				printf("</td></tr>\n");
 			}
 			if (temp_servicegroup->notes_url != NULL && strcmp(temp_servicegroup->notes_url, "")) {
+				printf("<tr><td align='right'>\n");
 				printf("<a href='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->notes_url);
 				printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Notes</i></font><br clear='all'><br clear='all'>\n");
+				printf("</td></tr>\n");
 			}
 			printf("</table>\n");
 		}

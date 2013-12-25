@@ -3479,6 +3479,16 @@ int show_servicegroup_overview(servicegroup *temp_servicegroup) {
 		printf("<div class='status'>\n");
 		printf("<a href='%s?servicegroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->alias, TRUE));
 		printf(" (<a href='%s?type=%d&amp;servicegroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
+		if (temp_servicegroup->action_url != NULL && strcmp(temp_servicegroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_servicegroup->notes_url != NULL && strcmp(temp_servicegroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
 		printf("</div>\n");
 
 		printf("<table border='1' class='status' align='center'>\n");
@@ -3685,6 +3695,16 @@ void show_servicegroup_summary(servicegroup *temp_servicegroup, int odd) {
 		printf("<tr class='status%s'><td class='status%s'>\n", status_bg_class, status_bg_class);
 		printf("<a href='%s?servicegroup=%s&amp;style=overview'>%s</a> ", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->alias, TRUE));
 		printf("(<a href='%s?type=%d&amp;servicegroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
+		if (temp_servicegroup->action_url != NULL && strcmp(temp_servicegroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_servicegroup->notes_url != NULL && strcmp(temp_servicegroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
 		printf("</td>");
 
 		printf("<td class='status%s' align='center' valign='middle'>", status_bg_class);
@@ -4247,7 +4267,18 @@ int show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		printf("\"members\": [ \n");
 	} else {
 		printf("<div class='status'><a href='%s?servicegroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->alias, TRUE));
-		printf(" (<a href='%s?type=%d&amp;servicegroup=%s'>%s</a>)</div>", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
+		printf(" (<a href='%s?type=%d&amp;servicegroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
+		if (temp_servicegroup->action_url != NULL && strcmp(temp_servicegroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_servicegroup->notes_url != NULL && strcmp(temp_servicegroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
+		printf("</div>");
 
 		printf("<table border='1' class='status' align='center'>\n");
 		printf("<tr><th class='status'>Host</th><th class='status'>Services</a></th><th class='status'>Actions</th></tr>\n");
@@ -4629,6 +4660,16 @@ int show_hostgroup_overview(hostgroup *temp_hostgroup) {
 		printf("<div class='status'>\n");
 		printf("<a href='%s?hostgroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->alias, TRUE));
 		printf(" (<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
+		if (temp_hostgroup->action_url != NULL && strcmp(temp_hostgroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_hostgroup->notes_url != NULL && strcmp(temp_hostgroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
 		printf("</div>\n");
 
 		printf("<table border='1' class='status' align='center'>\n");
@@ -5029,6 +5070,16 @@ void show_hostgroup_summary(hostgroup *temp_hostgroup, int odd) {
 		printf("<tr class='status%s'><td class='status%s'>\n", status_bg_class, status_bg_class);
 		printf("<a href='%s?hostgroup=%s&amp;style=overview'>%s</a> ", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->alias, TRUE));
 		printf("(<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
+		if (temp_hostgroup->action_url != NULL && strcmp(temp_hostgroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_hostgroup->notes_url != NULL && strcmp(temp_hostgroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
 		printf("</td>");
 
 		printf("<td class='status%s' align='center' valign='middle'>", status_bg_class);
@@ -5584,7 +5635,18 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		printf("\"members\": [ \n");
 	} else {
 		printf("<div class='status'><a href='%s?hostgroup=%s&amp;style=detail'>%s</a>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->alias, TRUE));
-		printf(" (<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)</div>", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
+		printf(" (<a href='%s?type=%d&amp;hostgroup=%s'>%s</a>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
+		if (temp_hostgroup->action_url != NULL && strcmp(temp_hostgroup->action_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->action_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+		}
+		if (temp_hostgroup->notes_url != NULL && strcmp(temp_hostgroup->notes_url, "")) {
+			printf("<a href='");
+			print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->notes_url);
+			printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+		}
+		printf("</div>");
 
 		printf("<table border='1' class='status' align='center'>\n");
 		printf("<tr><th class='status'>Host</th><th class='status'>Services</a></th><th class='status'>Actions</th></tr>\n");
