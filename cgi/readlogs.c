@@ -214,7 +214,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 #ifdef HAVE_ZLIB_H
 	gzFile gzfile = NULL;
 	char gz_buffer[MAX_COMMAND_BUFFER * 2];
-
+#else
 	read_gzip_logs = FALSE;
 #endif
 
