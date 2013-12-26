@@ -306,6 +306,11 @@
 #include <getopt.h>
 #endif
 
+#undef HAVE_ZLIB_H
+#ifdef HAVE_ZLIB_H
+#include <zlib.h>
+#endif
+
 #undef HAVE_LINUX_MODULE_H
 #ifdef HAVE_LINUX_MODULE_H
 #include <linux/module.h>

@@ -682,6 +682,7 @@ EXTCMDFILEDIR
 CGILOGDIR
 ENABLECGILOG
 LOGDIR
+DISABLECOMPRESSEDLOGS
 ENABLEPERFDATA
 EVENTHANDLERDIR
 PLUGINDIR
@@ -790,6 +791,8 @@ with_httpd_conf_file
 with_plugin_dir
 with_eventhandler_dir
 enable_perfdata
+enable_compressed_logs
+with_zlib
 with_log_dir
 enable_cgi_log
 with_cgi_log_dir
@@ -1457,6 +1460,8 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-perfdata       enables perfdata in icinga.cfg
+  --disable-compressed-logs
+                          disable support for gzip compressed logs
   --enable-cgi-log        enables cgi logging - experimental!!
   --disable-statusmap     disables compilation of statusmap CGI
   --enable-debug          enables debug mode
@@ -1513,6 +1518,7 @@ Optional Packages:
   --with-eventhandler-dir=<path>
                           sets path to eventhandlers directory path i.e.
                           $prefix/libexec/eventhandlers
+  --with-zlib[=DIR]       use libz in DIR
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
                           sets path to cgi logging directory
@@ -5537,6 +5543,122 @@ fi
 
 
 
+DISABLE_COMPRESSED_LOGS=no
+DISABLECOMPRESSEDLOGS=""
+# Check whether --enable-compressed-logs was given.
+if test "${enable_compressed_logs+set}" = set; then :
+  enableval=$enable_compressed_logs;
+	if test x$enableval = xno; then
+	        DISABLE_COMPRESSED_LOGS=yes
+	fi
+
+else
+  DISABLE_COMPRESSED_LOGS=no
+fi
+
+
+if test x$DISABLE_COMPRESSED_LOGS = xno; then
+
+# Check whether --with-zlib was given.
+if test "${with_zlib+set}" = set; then :
+  withval=$with_zlib;
+		if test "$withval" != "no" -a "$withval" != "yes"; then
+			Z_DIR=$withval
+			CFLAGS="${CPPFLAGS} -I$withval/include"
+			LDFLAGS="${LDFLAGS} -L$withval/lib"
+		fi
+
+fi
+
+	if test "$with_zlib" = "no"; then
+		echo "Disabling support for gzip compressed logs"
+		DISABLE_COMPRESSED_LOGS=yes
+	else
+		for ac_header in zlib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "zlib.h" "ac_cv_header_zlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_zlib_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_ZLIB_H 1
+_ACEOF
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for gzread in -lz" >&5
+$as_echo_n "checking for gzread in -lz... " >&6; }
+if ${ac_cv_lib_z_gzread+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lz  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gzread ();
+int
+main ()
+{
+return gzread ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_z_gzread=yes
+else
+  ac_cv_lib_z_gzread=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_z_gzread" >&5
+$as_echo "$ac_cv_lib_z_gzread" >&6; }
+if test "x$ac_cv_lib_z_gzread" = xyes; then :
+
+
+$as_echo "#define HAVE_ZLIB /**/" >>confdefs.h
+
+				if test "x${Z_DIR}" != "x"; then
+					CFLAGS="$CFLAGS -I${Z_DIR}/include"
+					LIBS="$LIBS -L${Z_DIR}/lib -lz"
+					case ${host} in
+						*-*-solaris*)
+							LIBS="$LIBS -L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
+							;;
+					esac
+				else
+					LIBS="$LIBS -lz"
+				fi
+else
+
+					echo "Disabling support for gzip compressed logs"
+					DISABLE_COMPRESSED_LOGS=yes
+
+
+fi
+
+else
+
+				echo "No zlib.h found, disabling support for gzip compressed logs"
+				DISABLE_COMPRESSED_LOGS=yes
+
+
+fi
+
+done
+
+	fi
+fi
+
+if test x$DISABLE_COMPRESSED_LOGS = xyes; then
+	DISABLECOMPRESSEDLOGS="THIS OPTION WAS DISABLED DURING COMPILE TIME"
+fi
+
+
 
 LOGDIR=no
 
@@ -8573,6 +8695,13 @@ $as_echo "             Event Broker:  yes" >&6; }
 else
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:              Event Broker:  no" >&5
 $as_echo "             Event Broker:  no" >&6; }
+fi
+if test x$DISABLE_COMPRESSED_LOGS = xno; then
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:    Enable compressed logs:  yes" >&5
+$as_echo "   Enable compressed logs:  yes" >&6; }
+else
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:    Enable compressed logs:  no" >&5
+$as_echo "   Enable compressed logs:  no" >&6; }
 fi
 if test x$ENABLE_PERFDATA = xyes; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:   Enable Performance Data:  yes" >&5
