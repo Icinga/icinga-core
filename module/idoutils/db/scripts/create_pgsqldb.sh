@@ -5,7 +5,7 @@
 #--
 #-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 #--
-#-- current version: 2011-05-03 Thomas Dressler
+#-- current version: 2013-08-18 Thomas Dressler
 #-- -- --------------------------------------------------------
 
 #set -x
@@ -16,6 +16,11 @@ WD=`pwd`
 cp -r ../pgsql /tmp/.
 chmod a+r /tmp/pgsql/*
 chmod 777 /tmp/pgsql
+#logfile privacy #4565
+rm -f create_*pgsql*.log
+UMASK=`umask`
+umask 0077
+
 (
 cat <<'PGSCRIPT' 
 #!/bin/sh
@@ -70,9 +75,10 @@ chmod a+rx /tmp/pgsql/pgsqldb.sh
 #set -x
 su - postgres -c /tmp/pgsql/pgsqldb.sh
 RET=$?
-mv -f /tmp/pgsql/*.log .
+ls /tmp/pgsql/*.log >/dev/null && cp /tmp/pgsql/*.log .
 echo "Dont forget to modify pg_hba.conf to trust icinga!(see icinga documentation)"
 rm -rf /tmp/pgsql
+umask $UMASK
 echo "Logfiles:"
 ls -l *pgsql*.log
 exit $RET
