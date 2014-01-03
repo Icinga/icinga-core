@@ -1926,6 +1926,10 @@ CREATE INDEX sla_idx_sthist ON statehistory (object_id, state_time DESC) tablesp
 CREATE INDEX sla_idx_dohist ON downtimehistory (object_id, actual_start_time, actual_end_time) tablespace &&IDXTBS;
 CREATE INDEX sla_idx_obj ON objects (objecttype_id, is_active, name1) tablespace &&IDXTBS;
 
+-- #4985
+CREATE INDEX commenthistory_delete_idx ON commenthistory (instance_id, comment_time, internal_comment_id) tablespace &&IDXTBS;
+
+
 -- -----------------------------------------
 -- sequences
 -- -----------------------------------------

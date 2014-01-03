@@ -14,6 +14,12 @@
 ALTER TABLE icinga_programstatus ADD config_dump_in_progress INTEGER DEFAULT 0;
 
 -- -----------------------------------------
+-- #4985
+CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, comment_time, internal_comment_id);
+-- -----------------------------------------
+
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
