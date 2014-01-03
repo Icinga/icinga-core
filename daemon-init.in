@@ -161,9 +161,10 @@ start(){
 	touch $IcingaRunFile
 	chown $IcingaUser:$IcingaGroup $IcingaRunFile
 	$IcingaBin -d $IcingaCfgFile
+	bin_exit=$?
 	if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
 	echo "Starting icinga done."
-	exit 0
+	exit $bin_exit
 
 }
 
