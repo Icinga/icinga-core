@@ -296,6 +296,53 @@ int main(int argc, char **argv) {
 	/* open debug log */
 	ido2db_open_debug_log();
 
+	/******************************/
+	/* check db schema version */
+	ido2db_idi idi_schema;
+        ido2db_idi_init(&idi_schema);
+        ido2db_db_init(&idi_schema);
+
+        if (ido2db_db_connect(&idi_schema) == IDO_ERROR) {
+                if (idi_schema.dbinfo.connected != IDO_TRUE) {
+
+                        /* we did not get a db connection and the client should be disconnected */
+                        syslog(LOG_ERR, "Error: Database connection for schema check failed, bailing out...\n");
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Database connection for schema check failed, bailing out...");
+
+                        ido2db_db_deinit(&idi_schema);
+
+                        ido2db_free_input_memory(&idi_schema);
+                        ido2db_free_connection_memory(&idi_schema);
+
+			syslog(LOG_ERR, "Program shutdown... (PID=%d)\n", (int)getpid());
+			ido2db_close_debug_log();
+			ido2db_free_program_memory();
+                        return 1;
+                }
+        }
+
+        if (ido2db_db_version_check(&idi_schema) == IDO_ERROR) {
+                syslog(LOG_ERR, "ERROR: DB Version Check against %s database query failed! Please check %s database configuration and schema! Bailing out ...", ido2db_db_settings.dbserver, ido2db_db_settings.dbserver);
+
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ERROR: DB Version Check against %s database query failed! Please check %s database configuration and schema! Bailing out ...", ido2db_db_settings.dbserver, ido2db_db_settings.dbserver);
+                printf(" ERROR: DB Version Check failed! Please check %s database configuration, schema and syslog for details! Bailing out ...", ido2db_db_settings.dbserver);
+
+		ido2db_db_disconnect(&idi_schema);
+                ido2db_db_deinit(&idi_schema);
+
+                ido2db_free_input_memory(&idi_schema);
+                ido2db_free_connection_memory(&idi_schema);
+
+		syslog(LOG_ERR, "Program shutdown... (PID=%d)\n", (int)getpid());
+		ido2db_close_debug_log();
+		ido2db_free_program_memory();
+                return 1;
+        }
+
+	ido2db_db_disconnect(&idi_schema);
+	ido2db_db_deinit(&idi_schema);
+	/******************************/
+
         /* unlink leftover socket */
         if (ido2db_socket_type == IDO_SINK_UNIXSOCKET)
                 unlink(ido2db_socket_name);

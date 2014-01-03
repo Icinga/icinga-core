@@ -148,6 +148,7 @@ int ido2db_db_hello(ido2db_idi *);
 int ido2db_thread_db_hello(ido2db_idi *);
 int ido2db_db_goodbye(ido2db_idi *);
 int ido2db_db_checkin(ido2db_idi *);
+int ido2db_db_version_check(ido2db_idi *);
 
 char *ido2db_db_escape_string(ido2db_idi *,char *);
 char *ido2db_db_timet_to_sql(ido2db_idi *,time_t);
