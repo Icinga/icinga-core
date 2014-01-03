@@ -1,12 +1,9 @@
 perlxsi.c
 Makefile
-convertcfg
 mini_epn
 mini_epn.o
 new_mini_epn
 new_mini_epn.o
 perlxsi.o
-daemonchk.cgi
-daemonchk.o
 dst.o
 dst

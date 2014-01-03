@@ -23,16 +23,9 @@ CGIDIR=@sbindir@
 BINDIR=@bindir@
 LIBDIR=@libdir@
 
-CGIS=traceroute.cgi daemonchk.cgi
-UTILS=mini_epn new_mini_epn convertcfg
+UTILS=mini_epn new_mini_epn
 ALL=$(CGIS) $(UTILS)
 DST=dst
-
-CGI_C=$(SRC_CGI)/getcgi.c
-CGI_O=$(SRC_CGI)/getcgi.o $(SNPRINTF_O)
-CGI_H=$(SRC_INCLUDE)/getcgi.h
-COMMON_H=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/locations.h
-
 
 ###############################
 # Debug
@@ -50,7 +43,7 @@ endif
 all: $(ALL)
 
 clean:
-	rm -f convertcfg daemonchk.cgi mini_epn new_mini_epn core dst *.o
+	rm -f mini_epn new_mini_epn core dst *.o
 	rm -f */*/*~
 	rm -f */*~
 	rm -f *~
@@ -63,19 +56,11 @@ distclean: clean
 devclean: distclean
 
 install:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CGIDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
-	for f in $(CGIS); do $(INSTALL) -m 775 $(INSTALL_OPTS) $$f $(DESTDIR)$(CGIDIR); done
 	for f in $(UTILS); do $(INSTALL) -m 775 $(INSTALL_OPTS) $$f $(DESTDIR)$(BINDIR); done
 
 ##############################################################################
 # rules and dependencies for actual target programs
-
-daemonchk.cgi: daemonchk.o $(CGI_O) $(CGI_H) $(COMMON_H)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(CGI_O)
-
-daemonchk.o: daemonchk.c
-	$(CC) $(CFLAGS) -c -o $@ $< -I$(SRC_INCLUDE)
 
 mini_epn: mini_epn.c
 	perl -MExtUtils::Embed -e xsinit
@@ -90,16 +75,3 @@ new_mini_epn: new_mini_epn.c
 	$(CC) $(CFLAGS) $(LDFLAGS) perlxsi.o new_mini_epn.o `perl -MExtUtils::Embed -e ccopts -e ldopts` -o $@
 dst: dst.c
 	$(CC) $(CFLAGS) -o $@ $< 
-
-
-##############################################################################
-# dependencies
-
-$(CGI_O): $(CGI_C)
-	cd $(SRC_CGI) && make $(CGI_O)
-
-##############################################################################
-# implicit rules
-
-%.cgi : %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $< $(CGI_O) -o $@
