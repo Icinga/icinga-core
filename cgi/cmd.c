@@ -455,7 +455,7 @@ int process_cgivars(void) {
                 }
 
                 /* we found the attr */
-                else if (!strcmp(value, "interval")) {
+                else if (!strcmp(key, "interval")) {
                         if (value == NULL) {
                                 error = TRUE;
                                 break;
