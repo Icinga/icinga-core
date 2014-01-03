@@ -30,7 +30,6 @@ FIXES
 
 * core: allow exclude (!) to work for regexp matches for hosts (Franky Van Liedekerke) #5324 - MF
 * core: fix retained host check attempts being 0/1 #5061 - MF
-* core: merge xdata/x{c,d}ddefault.c back into common/{comment,downtime}.c #4815 - MF
 
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
@@ -41,6 +40,11 @@ FIXES
 * spec: only add apache user to the icingacmd group if existing #5263 - MF
 
 * contrib: remove legacy code #5406 - MF
+
+SUPPORT
+
+* core: merge xdata/x{c,d}ddefault.c back into common/{comment,downtime}.c #4815 - MF
+* core: remove unused netutils.c #5195 - MF
 
 CHANGES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346
