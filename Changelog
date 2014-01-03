@@ -22,10 +22,19 @@ ENHANCEMENTS
 * classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB
 * classic ui: add groups Notes and Action URL links to status summary, overview and grid #5301 - RB
 
+* idoutils: ido2db should check db schema on startup, and bail early on errors #5272 - MF
+
 FIXES
+
+* core: allow exclude (!) to work for regexp matches for hosts (Franky Van Liedekerke) #5324 - MF
+
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
 * classic ui: fix timepicker is resetting time in input field #5239 - RB
+
+* initscript: handle binary return codes gracefully #5412 - MF
+
+* contrib: remove legacy code #5406 - MF
 
 CHANGES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346
