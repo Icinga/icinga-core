@@ -1245,6 +1245,13 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			else
 				run_async_host_check_3x(temp_host, CHECK_OPTION_NONE, 0.0, FALSE, FALSE, NULL, NULL);
 		}
+
+		/* if a new service has been added, it needs to
+		 * be saved into statehistory. NOTOK states will
+		 * be added in other sections.
+		 */
+		if (temp_service->has_been_checked == FALSE)
+			handle_service_event(temp_service);
 	}
 
 
