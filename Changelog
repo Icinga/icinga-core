@@ -35,6 +35,8 @@ FIXES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
 * classic ui: fix timepicker is resetting time in input field #5239 - RB
 
+* idoutils: wait for child processes on exit preventing zombies #4427 - MF
+
 * initscript: handle binary return codes gracefully #5412 - MF
 
 * spec: only add apache user to the icingacmd group if existing #5263 - MF
