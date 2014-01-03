@@ -12642,6 +12642,8 @@ int xodtemplate_expand_contacts(xodtemplate_memberlist **list, xodtemplate_membe
 		/* should we use regular expression matching? */
 		if (use_regexp_matches == TRUE && (use_true_regexp_matching == TRUE || strstr(temp_ptr, "*") || strstr(temp_ptr, "?") || strstr(temp_ptr, "+") || strstr(temp_ptr, "\\.")))
 			use_regexp = TRUE;
+		else
+			use_regexp = FALSE;
 
 		/* use regular expression matching */
 		if (use_regexp == TRUE) {
@@ -12986,6 +12988,8 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 		/* should we use regular expression matching? */
 		if (use_regexp_matches == TRUE && (use_true_regexp_matching == TRUE || strstr(temp_ptr, "*") || strstr(temp_ptr, "?") || strstr(temp_ptr, "+") || strstr(temp_ptr, "\\.")))
 			use_regexp = TRUE;
+		else
+			use_regexp = FALSE;
 
 		/* use regular expression matching */
 		if (use_regexp == TRUE) {
@@ -13014,7 +13018,7 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 					continue;
 
 				/* add host to list */
-				xodtemplate_add_member_to_memberlist(list, temp_host->host_name, NULL);
+				xodtemplate_add_member_to_memberlist((reject_item == TRUE) ? reject_list:list, temp_host->host_name, NULL);
 			}
 
 			/* free memory allocated to compiled regexp */
