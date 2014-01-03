@@ -34,6 +34,8 @@ FIXES
 
 * initscript: handle binary return codes gracefully #5412 - MF
 
+* spec: only add apache user to the icingacmd group if existing #5263 - MF
+
 * contrib: remove legacy code #5406 - MF
 
 CHANGES
