@@ -1368,16 +1368,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	if (idi->instance_name == NULL)
 		idi->instance_name = strdup("default");
 
-
-	result = ido2db_db_version_check(idi);
-
-	if (result == IDO_ERROR) {
-                syslog(LOG_USER | LOG_INFO, "Error: DB Version Check against %s database query failed! Please check %s database configuration and schema!", ido2db_db_settings.dbserver, ido2db_db_settings.dbserver);
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() query against existing instance not possible, cleaning up and exiting\n");
-
-		return IDO_ERROR;
-	}
-
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	/* get existing instance */
