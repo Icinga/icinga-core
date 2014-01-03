@@ -42,6 +42,11 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 ALTER TABLE programstatus ADD config_dump_in_progress integer default 0;
 
 -- -----------------------------------------
+-- #4985
+-- -----------------------------------------
+CREATE INDEX commenthistory_delete_idx ON commenthistory (instance_id, comment_time, internal_comment_id) tablespace &&IDXTBS;
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 
