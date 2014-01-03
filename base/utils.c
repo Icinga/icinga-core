@@ -30,7 +30,6 @@
 #include "../include/comments.h"
 #include "../include/macros.h"
 #include "../include/icinga.h"
-#include "../include/netutils.h"
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
