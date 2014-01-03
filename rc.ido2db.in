@@ -161,9 +161,10 @@ case "$1" in
 		touch $Ido2dbRunFile
 		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
 		$Ido2dbBin -c $Ido2dbCfgFile
+		bin_exit=$?
 		if [ -d $Ido2dbLockDir ]; then touch $Ido2dbLockDir/$Ido2dbLockFile; fi
 		echo " done."
-		exit 0
+		exit $bin_exit
 		;;
 
 	stop)
