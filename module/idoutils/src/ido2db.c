@@ -997,6 +997,9 @@ void ido2db_parent_sighandler(int sig) {
 		/* forward signal to all members of this group of processes */
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "forward signal to all members of this group of processes\n");
 		kill(0, sig);
+
+		/* wait for child processes to prevent zombies */
+		while (waitpid(-1, NULL, WNOHANG) > 0);
 		break;
 	case SIGCHLD:
 		/* cleanup children that exit, so we don't have zombies */
