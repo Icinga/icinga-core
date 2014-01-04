@@ -23,6 +23,7 @@ ENHANCEMENTS
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
 * classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB
 * classic ui: add groups Notes and Action URL links to status summary, overview and grid #5301 - RB
+* classic ui: include more logos #4057 - CF/RB
 
 * idoutils: ido2db should check db schema on startup, and bail early on errors #5272 - MF
 
