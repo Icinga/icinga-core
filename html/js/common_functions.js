@@ -1,5 +1,5 @@
 // Written by Ricardo Bartels
-// Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
+// Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
 
 function icinga_update_text(id,text) {
 	if (document.getElementById(id) != null )

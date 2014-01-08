@@ -124,6 +124,10 @@
 </tbody>
 </table>
     </div>
+
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Note: If the option <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a>
+    is enabled a return code of 1 results in a host state of "DOWN" or "UNREACHABLE". Otherwise a return code of 1 results in a host state
+    of "UP". The process used by Icinga to determine if a host is DOWN or UNREACHABLE is explained <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">here</a>.</p>
   </div>
 
   <div class="section" title="11.1.4. Plugin Output Spec">
@@ -296,7 +300,7 @@
     <p>Icinga features an optional <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">embedded Perl interpreter</a> which can speed up the execution
     of Perl plugins. More information on developing Perl plugins for use with the embedded Perl interpreter can be found <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">here</a>.</p>
 
-    <a class="indexterm" name="idp192635840"></a>
+    <a class="indexterm" name="idp192719120"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -316,6 +320,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

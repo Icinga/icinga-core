@@ -55,7 +55,7 @@
 
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-            <p><a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+            <p><a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
           </li>
 <li class="listitem">
             <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
@@ -63,11 +63,17 @@
 </ul></div>
       </li>
 <li class="listitem">
-        <p>die Erteilung von passiven Prüfungen von entfernten Hosts</p>
+        <p><a name="addons-passive"></a>die Übertragung von passiven Prüfergebnissen von entfernten Hosts</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-            <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
-          </li></ul></div>
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p><a class="link" href="http://www.nsca-ng.org/" target="_top">NSCA-ng</a> (ein Ersatz für <a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>),
+            <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          </li>
+<li class="listitem">
+            <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a></p>
+          </li>
+</ul></div>
       </li>
 <li class="listitem">
         <p><a name="addons-logic"></a>die Vereinfachung/Erweiterung der Überwachungslogik</p>
@@ -81,10 +87,11 @@
 
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-            <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
+            <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a> (Darstellung von
+            Performance-Daten)</p>
           </li>
 <li class="listitem">
-            <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
+            <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a> (Objekte auf "Maps")</p>
           </li>
 </ul></div>
       </li>
@@ -132,10 +139,12 @@
 
     <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
 
-    <p>NSCA ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Prüf</a>-Resultate von entfernten
-    Linux-/Unix-Hosts an den Icinga-Daemon zu senden, der auf dem Überwachungs-Server läuft. Das ist sehr hilfreich in <a class="link" href="distributed.html" title="7.6. Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
+    <p>NSCA-ng (ein Ersatz für NSCA) ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive
+    Prüf</a>-Resultate von entfernten Linux-/Unix-Hosts an den Icinga-Daemon zu senden, der auf dem Überwachungs-Server
+    läuft. Das ist sehr hilfreich in <a class="link" href="distributed.html" title="7.6. Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
 
-    <p>Das NSCA-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>. Die <a class="link" href="nsca.html" title="10.3. NSCA">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
+    <p>Das NSCA-ng-Addon finden Sie unter <a class="link" href="http://www.nsca-ng.org/" target="_top">http://www.nsca-ng.org/</a>. Darüber hinaus finden
+    Sie etwas <a class="link" href="nsca.html" title="10.3. NSCA">Dokumentation</a> zu NSCA im nächsten Abschnitt.</p>
 
     <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
 
@@ -148,55 +157,55 @@
 
     <p>Das IDOUtils-Addon und die Dokumentation finden Sie unter <a class="link" href="http://docs.icinga.org/" target="_top">http://docs.icinga.org/</a>.</p>
 
-    <a class="indexterm" name="idp192326416"></a>
+    <a class="indexterm" name="idp192553280"></a>
 
-    <a class="indexterm" name="idp192328048"></a>
+    <a class="indexterm" name="idp192555104"></a>
 
-    <a class="indexterm" name="idp192329728"></a>
+    <a class="indexterm" name="idp192556496"></a>
 
-    <a class="indexterm" name="idp192331344"></a>
+    <a class="indexterm" name="idp192558256"></a>
 
-    <a class="indexterm" name="idp192332448"></a>
+    <a class="indexterm" name="idp192559392"></a>
 
-    <a class="indexterm" name="idp192334144"></a>
+    <a class="indexterm" name="idp192561056"></a>
 
-    <a class="indexterm" name="idp192335152"></a>
+    <a class="indexterm" name="idp192562160"></a>
 
-    <a class="indexterm" name="idp192336848"></a>
+    <a class="indexterm" name="idp192563888"></a>
 
-    <a class="indexterm" name="idp192338016"></a>
+    <a class="indexterm" name="idp192564896"></a>
 
-    <a class="indexterm" name="idp192339776"></a>
+    <a class="indexterm" name="idp192566592"></a>
 
-    <a class="indexterm" name="idp192340784"></a>
+    <a class="indexterm" name="idp192567760"></a>
 
-    <a class="indexterm" name="idp192342480"></a>
+    <a class="indexterm" name="idp192569520"></a>
 
-    <a class="indexterm" name="idp192343648"></a>
+    <a class="indexterm" name="idp192570528"></a>
 
-    <a class="indexterm" name="idp192345408"></a>
+    <a class="indexterm" name="idp192572224"></a>
 
-    <a class="indexterm" name="idp192346416"></a>
+    <a class="indexterm" name="idp192573392"></a>
 
-    <a class="indexterm" name="idp192348096"></a>
+    <a class="indexterm" name="idp192575152"></a>
 
-    <a class="indexterm" name="idp192349232"></a>
+    <a class="indexterm" name="idp192576160"></a>
 
-    <a class="indexterm" name="idp192351024"></a>
+    <a class="indexterm" name="idp192577840"></a>
 
-    <a class="indexterm" name="idp192352032"></a>
+    <a class="indexterm" name="idp192578976"></a>
 
-    <a class="indexterm" name="idp192353728"></a>
+    <a class="indexterm" name="idp192580768"></a>
 
-    <a class="indexterm" name="idp192354864"></a>
+    <a class="indexterm" name="idp192581776"></a>
 
-    <a class="indexterm" name="idp192356656"></a>
+    <a class="indexterm" name="idp192583472"></a>
 
-    <a class="indexterm" name="idp192357664"></a>
+    <a class="indexterm" name="idp192584608"></a>
 
-    <a class="indexterm" name="idp192359232"></a>
+    <a class="indexterm" name="idp192586400"></a>
 
-    <a class="indexterm" name="idp192360576"></a>
+    <a class="indexterm" name="idp192587408"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -216,6 +225,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

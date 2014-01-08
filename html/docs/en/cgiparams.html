@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>6.2. Information On CGI parameters</title>
+<title>6.3. Information On CGI parameters</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">
-<link rel="next" href="cgicmd.html" title="6.3. Executing CGIs on the command line">
+<link rel="prev" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">
+<link rel="next" href="cgicmd.html" title="6.4. Executing CGIs on the command line">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">6.2. Information On CGI parameters</th></tr>
+<tr><th colspan="3" align="center">6.3. Information On CGI parameters</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgis.html">Prev</a> </td>
+<a accesskey="p" href="cgiauth.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 6. User Interfaces</th>
 <td width="20%" align="right"> <a accesskey="n" href="cgicmd.html">Next</a>
 </td>
@@ -26,25 +26,25 @@
 </table>
 <hr>
 </div>
-<div class="section" title="6.2. Information On CGI parameters">
+<div class="section" title="6.3. Information On CGI parameters">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiparams"></a>6.2. Information On CGI parameters</h2></div></div></div>
+<a name="cgiparams"></a>6.3. Information On CGI parameters</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">6.2.1. <a href="cgiparams.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">6.2.2. <a href="cgiparams.html#executecmdline">Executing CGIs on the command line</a></span></dt>
-<dt><span class="section">6.2.3. <a href="cgiparams.html#propsstatustypes">Properties / Statustypes</a></span></dt>
-<dt><span class="section">6.2.4. <a href="cgiparams.html#matrixparamscgis">Matrix Parameters / CGIs</a></span></dt>
-<dt><span class="section">6.2.5. <a href="cgiparams.html#cgiparams_expl">Parameter Details</a></span></dt>
-<dt><span class="section">6.2.6. <a href="cgiparams.html#cgiparams_abbrev">Abbreviations, CGIs, Links</a></span></dt>
-<dt><span class="section">6.2.7. <a href="cgiparams.html#cgiparams-filter">Host and Service Filter Properties</a></span></dt>
-<dt><span class="section">6.2.8. <a href="cgiparams.html#cgiparams-statustypes">Host and Service Status Types</a></span></dt>
-<dt><span class="section">6.2.9. <a href="cgiparams.html#idp188072128">Commands</a></span></dt>
+<dt><span class="section">6.3.1. <a href="cgiparams.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">6.3.2. <a href="cgiparams.html#executecmdline">Executing CGIs on the command line</a></span></dt>
+<dt><span class="section">6.3.3. <a href="cgiparams.html#propsstatustypes">Properties / Statustypes</a></span></dt>
+<dt><span class="section">6.3.4. <a href="cgiparams.html#matrixparamscgis">Matrix Parameters / CGIs</a></span></dt>
+<dt><span class="section">6.3.5. <a href="cgiparams.html#cgiparams_expl">Parameter Details</a></span></dt>
+<dt><span class="section">6.3.6. <a href="cgiparams.html#cgiparams_abbrev">Abbreviations, CGIs, Links</a></span></dt>
+<dt><span class="section">6.3.7. <a href="cgiparams.html#cgiparams-filter">Host and Service Filter Properties</a></span></dt>
+<dt><span class="section">6.3.8. <a href="cgiparams.html#cgiparams-statustypes">Host and Service Status Types</a></span></dt>
+<dt><span class="section">6.3.9. <a href="cgiparams.html#idp188146064">Commands</a></span></dt>
 </dl></div>
   
 
-  <div class="section" title="6.2.1. Introduction">
+  <div class="section" title="6.3.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>6.2.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>6.3.1. Introduction</h3></div></div></div>
     
 
     <p>The menu on the left side of the classical web interface contains entries which offer a quick way to the information most people
@@ -53,14 +53,14 @@
     them according to your needs.</p>
 
     <p>Below you will find a table showing the parameters and the CGIs they apply to. The names of the CGIs are abbreviated. An
-    explanation along with a hint to the source code can be found <a class="link" href="cgiparams.html#cgiparams_abbrev" title="6.2.6. Abbreviations, CGIs, Links">here</a>.</p>
+    explanation along with a hint to the source code can be found <a class="link" href="cgiparams.html#cgiparams_abbrev" title="6.3.6. Abbreviations, CGIs, Links">here</a>.</p>
 
     <p>Following this table is an explanation of the parameters (work in progress).</p>
   </div>
 
-  <div class="section" title="6.2.2. Executing CGIs on the command line">
+  <div class="section" title="6.3.2. Executing CGIs on the command line">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="executecmdline"></a>6.2.2. Executing CGIs on the command line</h3></div></div></div>
+<a name="executecmdline"></a>6.3.2. Executing CGIs on the command line</h3></div></div></div>
     
 
     <p>Instead of using your browser you may want to run the CGIs on the command line and process the results with other tools. For a
@@ -90,16 +90,16 @@
  "REMOTE_USER" environment variable to be the name of the user you're
  "authenticated" as.</pre>
 
-    <p>You will find some examples <a class="link" href="cgicmd.html" title="6.3. Executing CGIs on the command line">here</a>.</p>
+    <p>You will find some examples <a class="link" href="cgicmd.html" title="6.4. Executing CGIs on the command line">here</a>.</p>
   </div>
 
-  <div class="section" title="6.2.3. Properties / Statustypes">
+  <div class="section" title="6.3.3. Properties / Statustypes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="propsstatustypes"></a>6.2.3. Properties / Statustypes</h3></div></div></div>
+<a name="propsstatustypes"></a>6.3.3. Properties / Statustypes</h3></div></div></div>
     
 
     <p>You can use <code class="filename">status.cgi</code> to show objects with one or more statustype (hoststatustype / servicestatustype) and
-    with certain properties (hostprops / serviceprops). Each statustype / property is identified by a number (shown <a class="link" href="cgiparams.html#cgiparams-filter" title="6.2.7. Host and Service Filter Properties">here</a> and <a class="link" href="cgiparams.html#cgiparams-statustypes" title="6.2.8. Host and Service Status Types">here</a> at the end of this section). Please sum up
+    with certain properties (hostprops / serviceprops). Each statustype / property is identified by a number (shown <a class="link" href="cgiparams.html#cgiparams-filter" title="6.3.7. Host and Service Filter Properties">here</a> and <a class="link" href="cgiparams.html#cgiparams-statustypes" title="6.3.8. Host and Service Status Types">here</a> at the end of this section). Please sum up
     the appropriate numbers and use the resulting value for each option.</p>
 
     <p>The example shows all non-OK services which are neither in downtime nor acknowledged:</p>
@@ -120,9 +120,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="6.2.4. Matrix Parameters / CGIs">
+  <div class="section" title="6.3.4. Matrix Parameters / CGIs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="matrixparamscgis"></a>6.2.4. Matrix Parameters / CGIs</h3></div></div></div>
+<a name="matrixparamscgis"></a>6.3.4. Matrix Parameters / CGIs</h3></div></div></div>
     
 
     <div class="informaltable">
@@ -2057,9 +2057,9 @@
     </div>
   </div>
 
-  <div class="section" title="6.2.5. Parameter Details">
+  <div class="section" title="6.3.5. Parameter Details">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="cgiparams_expl"></a>6.2.5. Parameter Details</h3></div></div></div>
+<a name="cgiparams_expl"></a>6.3.5. Parameter Details</h3></div></div></div>
     
 
     <p>Further information regarding the several parameters is given below. For a detailed understanding please have a look at the source
@@ -2357,7 +2357,7 @@
             conditions specified</td>
 <td> </td>
 <td>hostprops=131088 (active checks being disabled)</td>
-<td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter" title="6.2.7. Host and Service Filter Properties">[1]</a> (HOST AND SERVICE
+<td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter" title="6.3.7. Host and Service Filter Properties">[1]</a> (HOST AND SERVICE
             FILTER PROPERTIES)</td>
 </tr>
 <tr>
@@ -2640,7 +2640,7 @@
 <td>Select the services matching the given bit pattern. Note that the services have to match ALL conditions specified</td>
 <td> </td>
 <td>serviceprops=131088 (active checks being disabled)</td>
-<td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter" title="6.2.7. Host and Service Filter Properties">[1]</a> (HOST AND SERVICE
+<td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter" title="6.3.7. Host and Service Filter Properties">[1]</a> (HOST AND SERVICE
             FILTER PROPERTIES)</td>
 </tr>
 <tr>
@@ -2863,9 +2863,9 @@
     <p>[7] Undocumented since Icinga 1.2.</p>
   </div>
 
-  <div class="section" title="6.2.6. Abbreviations, CGIs, Links">
+  <div class="section" title="6.3.6. Abbreviations, CGIs, Links">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="cgiparams_abbrev"></a>6.2.6. Abbreviations, CGIs, Links</h3></div></div></div>
+<a name="cgiparams_abbrev"></a>6.3.6. Abbreviations, CGIs, Links</h3></div></div></div>
     
 
     <p>Abbreviations used in the first table, relations to CGI and menu items, and links to the source code in
@@ -2975,9 +2975,9 @@
     </div>
   </div>
 
-  <div class="section" title="6.2.7. Host and Service Filter Properties">
+  <div class="section" title="6.3.7. Host and Service Filter Properties">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="cgiparams-filter"></a>6.2.7. Host and Service Filter Properties</h3></div></div></div>
+<a name="cgiparams-filter"></a>6.3.7. Host and Service Filter Properties</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Excerpt from include/cgiutils.h</strong></span></p>
@@ -3031,9 +3031,9 @@
 #define SERVICE_NOT_ALL_CHECKS_DISABLED 2097152</pre>
   </div>
 
-  <div class="section" title="6.2.8. Host and Service Status Types">
+  <div class="section" title="6.3.8. Host and Service Status Types">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="cgiparams-statustypes"></a>6.2.8. Host and Service Status Types</h3></div></div></div>
+<a name="cgiparams-statustypes"></a>6.3.8. Host and Service Status Types</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Excerpt from include/statusdata.h</strong></span></p>
@@ -3052,9 +3052,9 @@
 #define HOST_UNREACHABLE 8</pre>
   </div>
 
-  <div class="section" title="6.2.9. Commands">
+  <div class="section" title="6.3.9. Commands">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp188072128"></a>6.2.9. <a name="cgiparams-commands"></a>Commands</h3></div></div></div>
+<a name="idp188146064"></a>6.3.9. <a name="cgiparams-commands"></a>Commands</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Excerpt from include/common.h</strong></span></p>
@@ -3296,231 +3296,231 @@
 #define CMD_INTERNAL_CHANGE_HOST_CHECK_RETRY_INTERVAL     1001
 #define CMD_INTERNAL_CHANGE_SVC_CHECK_RETRY_INTERVAL      1002</pre>
 
-    <a class="indexterm" name="idp188088320"></a>
+    <a class="indexterm" name="idp188162576"></a>
 
-    <a class="indexterm" name="idp188089712"></a>
+    <a class="indexterm" name="idp188164096"></a>
 
-    <a class="indexterm" name="idp188091440"></a>
+    <a class="indexterm" name="idp188165648"></a>
 
-    <a class="indexterm" name="idp188092576"></a>
+    <a class="indexterm" name="idp188166896"></a>
 
-    <a class="indexterm" name="idp188093856"></a>
+    <a class="indexterm" name="idp188168112"></a>
 
-    <a class="indexterm" name="idp188095584"></a>
+    <a class="indexterm" name="idp188169840"></a>
 
-    <a class="indexterm" name="idp188096592"></a>
+    <a class="indexterm" name="idp188170944"></a>
 
-    <a class="indexterm" name="idp188097776"></a>
+    <a class="indexterm" name="idp188172080"></a>
 
-    <a class="indexterm" name="idp188099536"></a>
+    <a class="indexterm" name="idp188173632"></a>
 
-    <a class="indexterm" name="idp188100928"></a>
+    <a class="indexterm" name="idp188175392"></a>
 
-    <a class="indexterm" name="idp188102688"></a>
+    <a class="indexterm" name="idp188176880"></a>
 
-    <a class="indexterm" name="idp188104176"></a>
+    <a class="indexterm" name="idp188178576"></a>
 
-    <a class="indexterm" name="idp188105808"></a>
+    <a class="indexterm" name="idp188180096"></a>
 
-    <a class="indexterm" name="idp188107424"></a>
+    <a class="indexterm" name="idp188181696"></a>
 
-    <a class="indexterm" name="idp188109040"></a>
+    <a class="indexterm" name="idp188183392"></a>
 
-    <a class="indexterm" name="idp188110656"></a>
+    <a class="indexterm" name="idp188185008"></a>
 
-    <a class="indexterm" name="idp188112272"></a>
+    <a class="indexterm" name="idp188186688"></a>
 
-    <a class="indexterm" name="idp188113824"></a>
+    <a class="indexterm" name="idp188188208"></a>
 
-    <a class="indexterm" name="idp188115440"></a>
+    <a class="indexterm" name="idp188189824"></a>
 
-    <a class="indexterm" name="idp188117056"></a>
+    <a class="indexterm" name="idp188191440"></a>
 
-    <a class="indexterm" name="idp188118672"></a>
+    <a class="indexterm" name="idp188193056"></a>
 
-    <a class="indexterm" name="idp188120288"></a>
+    <a class="indexterm" name="idp188194672"></a>
 
-    <a class="indexterm" name="idp188121904"></a>
+    <a class="indexterm" name="idp188196288"></a>
 
-    <a class="indexterm" name="idp188123520"></a>
+    <a class="indexterm" name="idp188197904"></a>
 
-    <a class="indexterm" name="idp188125136"></a>
+    <a class="indexterm" name="idp188199520"></a>
 
-    <a class="indexterm" name="idp188126752"></a>
+    <a class="indexterm" name="idp188201136"></a>
 
-    <a class="indexterm" name="idp188128368"></a>
+    <a class="indexterm" name="idp188202752"></a>
 
-    <a class="indexterm" name="idp188129984"></a>
+    <a class="indexterm" name="idp188204368"></a>
 
-    <a class="indexterm" name="idp188131600"></a>
+    <a class="indexterm" name="idp188205984"></a>
 
-    <a class="indexterm" name="idp188133216"></a>
+    <a class="indexterm" name="idp188207600"></a>
 
-    <a class="indexterm" name="idp188134832"></a>
+    <a class="indexterm" name="idp188209216"></a>
 
-    <a class="indexterm" name="idp188136448"></a>
+    <a class="indexterm" name="idp188210832"></a>
 
-    <a class="indexterm" name="idp188138064"></a>
+    <a class="indexterm" name="idp188212448"></a>
 
-    <a class="indexterm" name="idp188139680"></a>
+    <a class="indexterm" name="idp188214064"></a>
 
-    <a class="indexterm" name="idp188141296"></a>
+    <a class="indexterm" name="idp188215680"></a>
 
-    <a class="indexterm" name="idp188142912"></a>
-
-    <a class="indexterm" name="idp188144528"></a>
-
-    <a class="indexterm" name="idp188146144"></a>
-
-    <a class="indexterm" name="idp188147760"></a>
-
-    <a class="indexterm" name="idp188149440"></a>
-
-    <a class="indexterm" name="idp188150928"></a>
-
-    <a class="indexterm" name="idp188152560"></a>
-
-    <a class="indexterm" name="idp188154176"></a>
-
-    <a class="indexterm" name="idp188155760"></a>
-
-    <a class="indexterm" name="idp188157520"></a>
-
-    <a class="indexterm" name="idp188159040"></a>
-
-    <a class="indexterm" name="idp188160656"></a>
-
-    <a class="indexterm" name="idp188162272"></a>
-
-    <a class="indexterm" name="idp188163856"></a>
-
-    <a class="indexterm" name="idp188165616"></a>
-
-    <a class="indexterm" name="idp188167104"></a>
-
-    <a class="indexterm" name="idp188168736"></a>
-
-    <a class="indexterm" name="idp188170368"></a>
-
-    <a class="indexterm" name="idp188172016"></a>
-
-    <a class="indexterm" name="idp188173776"></a>
-
-    <a class="indexterm" name="idp188175296"></a>
-
-    <a class="indexterm" name="idp188176912"></a>
-
-    <a class="indexterm" name="idp188178528"></a>
-
-    <a class="indexterm" name="idp188180144"></a>
-
-    <a class="indexterm" name="idp188181760"></a>
-
-    <a class="indexterm" name="idp188183376"></a>
-
-    <a class="indexterm" name="idp188184992"></a>
-
-    <a class="indexterm" name="idp188186608"></a>
-
-    <a class="indexterm" name="idp188188224"></a>
-
-    <a class="indexterm" name="idp188189840"></a>
-
-    <a class="indexterm" name="idp188191456"></a>
-
-    <a class="indexterm" name="idp188193072"></a>
-
-    <a class="indexterm" name="idp188194688"></a>
-
-    <a class="indexterm" name="idp188196304"></a>
-
-    <a class="indexterm" name="idp188197920"></a>
-
-    <a class="indexterm" name="idp188199536"></a>
-
-    <a class="indexterm" name="idp188201120"></a>
-
-    <a class="indexterm" name="idp188202880"></a>
-
-    <a class="indexterm" name="idp188204400"></a>
-
-    <a class="indexterm" name="idp188206016"></a>
-
-    <a class="indexterm" name="idp188207632"></a>
-
-    <a class="indexterm" name="idp188209248"></a>
-
-    <a class="indexterm" name="idp188210864"></a>
-
-    <a class="indexterm" name="idp188212480"></a>
-
-    <a class="indexterm" name="idp188214096"></a>
-
-    <a class="indexterm" name="idp188215712"></a>
-
-    <a class="indexterm" name="idp188217328"></a>
+    <a class="indexterm" name="idp188217296"></a>
 
     <a class="indexterm" name="idp188218912"></a>
 
-    <a class="indexterm" name="idp188220672"></a>
+    <a class="indexterm" name="idp188220528"></a>
 
-    <a class="indexterm" name="idp188222192"></a>
+    <a class="indexterm" name="idp188222144"></a>
 
-    <a class="indexterm" name="idp188223808"></a>
+    <a class="indexterm" name="idp188223824"></a>
 
-    <a class="indexterm" name="idp188225424"></a>
+    <a class="indexterm" name="idp188225312"></a>
 
-    <a class="indexterm" name="idp188227040"></a>
+    <a class="indexterm" name="idp188226944"></a>
 
-    <a class="indexterm" name="idp188228624"></a>
+    <a class="indexterm" name="idp188228704"></a>
 
-    <a class="indexterm" name="idp188230256"></a>
+    <a class="indexterm" name="idp188230192"></a>
 
-    <a class="indexterm" name="idp188232016"></a>
+    <a class="indexterm" name="idp188231952"></a>
 
-    <a class="indexterm" name="idp188233504"></a>
+    <a class="indexterm" name="idp188233472"></a>
 
-    <a class="indexterm" name="idp188235136"></a>
+    <a class="indexterm" name="idp188235088"></a>
 
-    <a class="indexterm" name="idp188236896"></a>
+    <a class="indexterm" name="idp188236704"></a>
 
-    <a class="indexterm" name="idp188238416"></a>
+    <a class="indexterm" name="idp188238288"></a>
 
-    <a class="indexterm" name="idp188240032"></a>
+    <a class="indexterm" name="idp188240048"></a>
 
-    <a class="indexterm" name="idp188241648"></a>
+    <a class="indexterm" name="idp188241536"></a>
 
-    <a class="indexterm" name="idp188243264"></a>
+    <a class="indexterm" name="idp188243168"></a>
 
-    <a class="indexterm" name="idp188244848"></a>
+    <a class="indexterm" name="idp188244800"></a>
 
-    <a class="indexterm" name="idp188246608"></a>
+    <a class="indexterm" name="idp188246448"></a>
 
-    <a class="indexterm" name="idp188248128"></a>
+    <a class="indexterm" name="idp188248208"></a>
 
-    <a class="indexterm" name="idp188249744"></a>
+    <a class="indexterm" name="idp188249728"></a>
 
-    <a class="indexterm" name="idp188251360"></a>
+    <a class="indexterm" name="idp188251344"></a>
 
-    <a class="indexterm" name="idp188252976"></a>
+    <a class="indexterm" name="idp188252960"></a>
 
-    <a class="indexterm" name="idp188254592"></a>
+    <a class="indexterm" name="idp188254576"></a>
 
-    <a class="indexterm" name="idp188256208"></a>
+    <a class="indexterm" name="idp188256192"></a>
 
-    <a class="indexterm" name="idp188257824"></a>
+    <a class="indexterm" name="idp188257808"></a>
 
-    <a class="indexterm" name="idp188259440"></a>
+    <a class="indexterm" name="idp188259424"></a>
 
-    <a class="indexterm" name="idp188261056"></a>
+    <a class="indexterm" name="idp188261040"></a>
 
-    <a class="indexterm" name="idp188262672"></a>
+    <a class="indexterm" name="idp188262656"></a>
 
-    <a class="indexterm" name="idp188264288"></a>
+    <a class="indexterm" name="idp188264272"></a>
 
-    <a class="indexterm" name="idp188265904"></a>
+    <a class="indexterm" name="idp188265888"></a>
 
-    <a class="indexterm" name="idp188267520"></a>
+    <a class="indexterm" name="idp188267504"></a>
+
+    <a class="indexterm" name="idp188269120"></a>
+
+    <a class="indexterm" name="idp188270736"></a>
+
+    <a class="indexterm" name="idp188272352"></a>
+
+    <a class="indexterm" name="idp188273968"></a>
+
+    <a class="indexterm" name="idp188275552"></a>
+
+    <a class="indexterm" name="idp188277312"></a>
+
+    <a class="indexterm" name="idp188278832"></a>
+
+    <a class="indexterm" name="idp188280448"></a>
+
+    <a class="indexterm" name="idp188282064"></a>
+
+    <a class="indexterm" name="idp188283680"></a>
+
+    <a class="indexterm" name="idp188285296"></a>
+
+    <a class="indexterm" name="idp188286912"></a>
+
+    <a class="indexterm" name="idp188288528"></a>
+
+    <a class="indexterm" name="idp188290144"></a>
+
+    <a class="indexterm" name="idp188291760"></a>
+
+    <a class="indexterm" name="idp188293344"></a>
+
+    <a class="indexterm" name="idp188295104"></a>
+
+    <a class="indexterm" name="idp188296624"></a>
+
+    <a class="indexterm" name="idp188298240"></a>
+
+    <a class="indexterm" name="idp188299856"></a>
+
+    <a class="indexterm" name="idp188301472"></a>
+
+    <a class="indexterm" name="idp188303056"></a>
+
+    <a class="indexterm" name="idp188304688"></a>
+
+    <a class="indexterm" name="idp188306448"></a>
+
+    <a class="indexterm" name="idp188307936"></a>
+
+    <a class="indexterm" name="idp188309568"></a>
+
+    <a class="indexterm" name="idp188311328"></a>
+
+    <a class="indexterm" name="idp188312848"></a>
+
+    <a class="indexterm" name="idp188314464"></a>
+
+    <a class="indexterm" name="idp188316080"></a>
+
+    <a class="indexterm" name="idp188317696"></a>
+
+    <a class="indexterm" name="idp188319280"></a>
+
+    <a class="indexterm" name="idp188321040"></a>
+
+    <a class="indexterm" name="idp188322560"></a>
+
+    <a class="indexterm" name="idp188324176"></a>
+
+    <a class="indexterm" name="idp188325792"></a>
+
+    <a class="indexterm" name="idp188327408"></a>
+
+    <a class="indexterm" name="idp188329024"></a>
+
+    <a class="indexterm" name="idp188330640"></a>
+
+    <a class="indexterm" name="idp188332256"></a>
+
+    <a class="indexterm" name="idp188333872"></a>
+
+    <a class="indexterm" name="idp188335488"></a>
+
+    <a class="indexterm" name="idp188337104"></a>
+
+    <a class="indexterm" name="idp188338720"></a>
+
+    <a class="indexterm" name="idp188340336"></a>
+
+    <a class="indexterm" name="idp188341952"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -3528,18 +3528,18 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgis.html">Prev</a> </td>
+<a accesskey="p" href="cgiauth.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="cgicmd.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Information On The CGIs </td>
+<td width="40%" align="left" valign="top">6.2. Authentication And Authorization In The Classic UI </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 6.3. Executing CGIs on the command line</td>
+<td width="40%" align="right" valign="top"> 6.4. Executing CGIs on the command line</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="next" href="cgiparams.html" title="6.2. Information On CGI parameters">
+<link rel="next" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 <td width="20%" align="left">
 <a accesskey="p" href="ch06.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 6. User Interfaces</th>
-<td width="20%" align="right"> <a accesskey="n" href="cgiparams.html">Next</a>
+<td width="20%" align="right"> <a accesskey="n" href="cgiauth.html">Next</a>
 </td>
 </tr>
 </table>
@@ -35,8 +35,8 @@
 
   <p>The various CGIs distributed with Icinga core are described here, along with the authorization requirements for accessing and
   using each CGI. By default the CGIs require that you have authenticated to the web server and are authorized to view any information you
-  are requesting. More information on configuring authorization can be found <a class="link" href="cgiauth.html" title="3.7. Authentication And Authorization In The CGIs">here</a>.</p>
-  <p>The CGIs may be controlled using several parameters. More information can be found <a class="link" href="cgiparams.html" title="6.2. Information On CGI parameters">here</a>.</p>
+  are requesting. More information on configuring authorization can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
+  <p>The CGIs may be controlled using several parameters. More information can be found <a class="link" href="cgiparams.html" title="6.3. Information On CGI parameters">here</a>.</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
@@ -112,11 +112,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view all services.</p>
     </li>
 <li class="listitem">
@@ -150,14 +150,14 @@
 
   <p>This CGI creates a map of all hosts that you have defined on your network. The CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create a PNG image of your network layout. The
   coordinates used when drawing each host (along with the optional pretty icons) are taken from <a class="link" href="objectdefinitions#host" target="_top">host</a> definitions. If you'd prefer to let the CGI automatically generate drawing coordinates for
-  you, use the <a class="link" href="configcgi#default_statusmap_layout" target="_top">default_statusmap_layout</a> directive to specify a layout algorithm
+  you, use the <a class="link" href="configcgi-default_statusmap_layout" target="_top">default_statusmap_layout</a> directive to specify a layout algorithm
   that should be used.</p>
 
   <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view all hosts.</p>
     </li>
 <li class="listitem">
@@ -210,11 +210,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view all services.</p>
     </li>
 <li class="listitem">
@@ -254,7 +254,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view all hosts.</p>
     </li>
 <li class="listitem">
@@ -292,7 +292,7 @@
   <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>You must be <a class="link" href="configcgi#authorized_for_configuration_information" target="_top"> <span class="emphasis"><em>authorized for configuration
+      <p>You must be <a class="link" href="configcgi-authorized_for_configuration_information" target="_top"> <span class="emphasis"><em>authorized for configuration
       information</em></span> </a> in order to any kind of configuration information.</p>
     </li></ul></div>
 
@@ -328,15 +328,15 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>You must be <a class="link" href="configcgi#authorized_for_system_commands" target="_top"> <span class="emphasis"><em>authorized for system commands</em></span>
+      <p>You must be <a class="link" href="configcgi-authorized_for_system_commands" target="_top"> <span class="emphasis"><em>authorized for system commands</em></span>
       </a> in order to issue commands that affect the Icinga process (restarts, shutdowns, mode changes, etc.).</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_host_commands" target="_top"> <span class="emphasis"><em>authorized for all host commands</em></span>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_host_commands" target="_top"> <span class="emphasis"><em>authorized for all host commands</em></span>
       </a> you can issue commands for all hosts <span class="bold"><strong>and</strong></span> services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_service_commands" target="_top"> <span class="emphasis"><em>authorized for all service
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_service_commands" target="_top"> <span class="emphasis"><em>authorized for all service
       commands</em></span> </a> you can issue commands for all services.</p>
     </li>
 <li class="listitem">
@@ -352,7 +352,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>If you have chosen not to <a class="link" href="configcgi#use_authentication" target="_top">use authentication</a> with the CGIs, this CGI
+        <p>If you have chosen not to <a class="link" href="configcgi-use_authentication" target="_top">use authentication</a> with the CGIs, this CGI
         will <span class="emphasis"><em>not</em></span> allow anyone to issue commands to Icinga. This is done for your own protection. We would
         suggest removing this CGI altogether if you decide not to use authentication with the CGIs.</p>
       </li></ul></div>
@@ -403,15 +403,15 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
+      <p>You must be <a class="link" href="configcgi-authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
       information</em></span> </a> in order to view Icinga process information.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view extended information for all hosts <span class="bold"><strong>and</strong></span> services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view extended information for all services.</p>
     </li>
 <li class="listitem">
@@ -450,7 +450,7 @@
   <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
+      <p>You must be <a class="link" href="configcgi-authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
       information</em></span> </a> in order to view the log file.</p>
     </li></ul></div>
 
@@ -488,11 +488,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view history information for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view history information for all services.</p>
     </li>
 <li class="listitem">
@@ -536,11 +536,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view notifications for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view notifications for all services.</p>
     </li>
 <li class="listitem">
@@ -581,11 +581,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view trends for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view trends for all services.</p>
     </li>
 <li class="listitem">
@@ -632,11 +632,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view availability data for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view availability data for all services.</p>
     </li>
 <li class="listitem">
@@ -677,11 +677,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view histograms for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view histograms for all services.</p>
     </li>
 <li class="listitem">
@@ -720,11 +720,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can
       view summary information for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
     </li>
 <li class="listitem">
-      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
+      <p>If you are <a class="link" href="configcgi-authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a>
       you can view summary information for all services.</p>
     </li>
 <li class="listitem">
@@ -903,35 +903,35 @@ window.onload=urlify;
     </li>
 </ul></div>
 
-  <a class="indexterm" name="idp187043392"></a>
+  <a class="indexterm" name="idp186996960"></a>
 
-  <a class="indexterm" name="idp187044912"></a>
+  <a class="indexterm" name="idp186998576"></a>
 
-  <a class="indexterm" name="idp187046432"></a>
+  <a class="indexterm" name="idp187000096"></a>
 
-  <a class="indexterm" name="idp187047904"></a>
+  <a class="indexterm" name="idp187001568"></a>
 
-  <a class="indexterm" name="idp187049696"></a>
+  <a class="indexterm" name="idp187003360"></a>
 
-  <a class="indexterm" name="idp187051312"></a>
+  <a class="indexterm" name="idp187004976"></a>
 
-  <a class="indexterm" name="idp187052928"></a>
+  <a class="indexterm" name="idp187006592"></a>
 
-  <a class="indexterm" name="idp187054544"></a>
+  <a class="indexterm" name="idp187008208"></a>
 
-  <a class="indexterm" name="idp187056032"></a>
+  <a class="indexterm" name="idp187009696"></a>
 
-  <a class="indexterm" name="idp187057696"></a>
+  <a class="indexterm" name="idp187011360"></a>
 
-  <a class="indexterm" name="idp187059376"></a>
+  <a class="indexterm" name="idp187013040"></a>
 
-  <a class="indexterm" name="idp187060992"></a>
+  <a class="indexterm" name="idp187014656"></a>
 
-  <a class="indexterm" name="idp187062608"></a>
+  <a class="indexterm" name="idp187016272"></a>
 
-  <a class="indexterm" name="idp187064096"></a>
+  <a class="indexterm" name="idp187017760"></a>
 
-  <a class="indexterm" name="idp187065760"></a>
+  <a class="indexterm" name="idp187019424"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -940,16 +940,16 @@ window.onload=urlify;
 <td width="40%" align="left">
 <a accesskey="p" href="ch06.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cgiparams.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="cgiauth.html">Next</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">Chapter 6. User Interfaces </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 6.2. Information On CGI parameters</td>
+<td width="40%" align="right" valign="top"> 6.2. Authentication And Authorization In The Classic UI</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

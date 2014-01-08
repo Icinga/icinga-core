@@ -126,13 +126,105 @@
 
     <p>Der zweite Filter für Host- oder Service-Benachrichtigungenen ist eine Prüfung, ob der Host oder Service <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">flattert</a> (wenn Sie Flatter-Erkennung aktiviert haben). Falls der Service oder Host gerade flattert, <span class="bold"><strong>wird niemand informiert</strong></span>. Andernfalls geht es weiter zum nächsten Filter.</p>
 
-    <p>Der dritte für Hosts oder Services zu durchlaufende Filter sind die Host- oder Service-spezifischen Benachrichtigungsoptionen.
-    Jede Service-Definition enthält Optionen, die festlegen, ob Benachrichtungen für Warnungen, kritische Zustände oder Erholungen versandt
+    <p>Der dritte für Hosts oder Services zu durchlaufende Filter sind die <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>- oder <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-spezifischen Benachrichtigungsoptionen (sh. Links bzw. nachfolgende Tabelle). Jede
+    Service-Definition enthält Optionen, die festlegen, ob Benachrichtungen für Warnungen, kritische Zustände oder Erholungen versandt
     werden oder nicht. Ähnlich ist es bei Hosts, wo festgelegt wird, ob Benachrichtigungen versandt werden, wenn der Host down geht,
     unerreichbar wird oder sich wieder erholt. Falls die Host- oder Service-Benachrichtigungen diese Optionen nicht passieren, <span class="bold"><strong>wird niemand informiert</strong></span>. Wenn sie die Optionen durchlaufen, geht es zum nächsten Filter... Anmerkung:
     Benachrichtigungen über Host- oder Service-Erholungen werden nur dann versandt, wenn auch eine Benachrichtigung über das ursprüngliche
     Problem versandt wurde. Es ist nicht sinnvoll, eine Benachrichtigung über eine Erholung zu bekommen, wenn Sie nicht wussten, dass ein
     Problem existiert.</p>
+
+    <p></p>
+
+    <a name="notifications-options"></a>
+
+    <div class="informaltable">
+      <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Option</th>
+<th align="center">Bedeutung der Host-Benachrichtigungsoption</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>Benachrichtigungen bei einem DOWN-Zustand versenden</td>
+</tr>
+<tr>
+<td>u</td>
+<td>Benachrichtigungen bei einem UNREACHABLE-Zustand versenden</td>
+</tr>
+<tr>
+<td>r</td>
+<td>Benachrichtigungen bei Erholungen (OK-Zustand) versenden</td>
+</tr>
+<tr>
+<td>f</td>
+<td>Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört</td>
+</tr>
+<tr>
+<td>s</td>
+<td>Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört</td>
+</tr>
+<tr>
+<td>n</td>
+<td>Es werden keine Benachrichtungen versandt, <span class="bold"><strong>egal wie die anderen Optionen aussehen
+            mögen</strong></span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p></p>
+
+    <div class="informaltable">
+      <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Option</th>
+<th align="center">Bedeutung der Service-Benachrichtigungsoption</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>w</td>
+<td>Benachrichtigungen bei einem WARNING-Zustand versenden</td>
+</tr>
+<tr>
+<td>c</td>
+<td>Benachrichtigungen bei einem CRITICAL-Zustand versenden</td>
+</tr>
+<tr>
+<td>u</td>
+<td>Benachrichtigungen bei einem UNKNOWN-Zustand versenden</td>
+</tr>
+<tr>
+<td>r</td>
+<td>Benachrichtigungen bei Erholungen (OK-Zustand) versenden</td>
+</tr>
+<tr>
+<td>f</td>
+<td>Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört</td>
+</tr>
+<tr>
+<td>s</td>
+<td>Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört</td>
+</tr>
+<tr>
+<td>n</td>
+<td>Es werden keine Benachrichtungen versandt, <span class="bold"><strong>egal wie die anderen Optionen aussehen
+            mögen</strong></span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
 
     <p>Der vierte Host- oder Service-Filter, der durchlaufen werden muss, ist der Zeitfenster-Test. Jede Host- und Service-Definition hat
     eine &lt;<span class="emphasis"><em>notification_period</em></span>&gt;-Option, die angibt, welches Zeitfenster gültige Benachrichtigungszeiten für den
@@ -254,7 +346,7 @@
             Benachrichtigungen werden unterdrückt.</p></td>
 </tr>
 <tr>
-<td><p>DOWNTIMESTOP</p></td>
+<td><p>DOWNTIMEEND</p></td>
 <td><p>Der Host oder Service hat gerade eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Downtime</a> beendet. Benachrichtungen
             über Probleme werden wieder versandt.</p></td>
 </tr>
@@ -328,13 +420,13 @@
     Audio-Hinweise auf einem anderen Rechner abspielen möchten, dann sehen Sie sich die Projekte <a class="link" href="http://radscan.com/nas.html" target="_top">Network Audio System (NAS)</a> und <a class="link" href="http://rplay.doit.org/" target="_top">rplay</a>
     an.</p>
 
-    <a class="indexterm" name="idp186610528"></a>
+    <a class="indexterm" name="idp186715440"></a>
 
-    <a class="indexterm" name="idp186611808"></a>
+    <a class="indexterm" name="idp186716720"></a>
 
-    <a class="indexterm" name="idp186613536"></a>
+    <a class="indexterm" name="idp186718448"></a>
 
-    <a class="indexterm" name="idp186614928"></a>
+    <a class="indexterm" name="idp186719840"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -354,6 +446,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

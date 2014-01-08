@@ -125,7 +125,7 @@
 
     <p>The second filter for host or service notification is a check to see if the host or service is <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a> (if you enabled flap detection). If the service or host is currently flapping, <span class="bold"><strong>no one gets notified</strong></span>. Otherwise it gets passed to the next filter.</p>
 
-    <p>The third host or service filter that must be passed is the host- or service-specific notification options. Each service
+    <p>The third host or service filter that must be passed is the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a>- or <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a>-specific notification options (see links and table below for details). Each service
     definition contains options that determine whether or not notifications can be sent out for warning states, critical states, and
     recoveries. Similiarly, each host definition contains options that determine whether or not notifications can be sent out when the host
     goes down, becomes unreachable, or recovers. If the host or service notification does not pass these options, <span class="bold"><strong>no
@@ -141,6 +141,98 @@
       doesn't make sense to get a recovery notification for something you never knew was a problem.</p>
     </td></tr>
 </table></div>
+
+    <a name="notifications-options"></a>
+
+    <p></p>
+
+    <div class="informaltable">
+      <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">option</th>
+<th align="center">meaning of host notification option</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>send notifications on a DOWN state</td>
+</tr>
+<tr>
+<td>u</td>
+<td>send notifications on an UNREACHABLE state</td>
+</tr>
+<tr>
+<td>r</td>
+<td>send notifications on recoveries (OK state)</td>
+</tr>
+<tr>
+<td>f</td>
+<td>send notifications when the host starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>
+</td>
+</tr>
+<tr>
+<td>s</td>
+<td>send notifications when <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a> starts and ends</td>
+</tr>
+<tr>
+<td>n</td>
+<td>no notifications are sent, <span class="bold"><strong>no matter what the other options might be</strong></span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p></p>
+
+    <div class="informaltable">
+      <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">option</th>
+<th align="center">meaning of service notification option</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>w</td>
+<td>send notifications on a WARNING state</td>
+</tr>
+<tr>
+<td>c</td>
+<td>send notifications on an CRITICAL state</td>
+</tr>
+<tr>
+<td>u</td>
+<td>send notifications on an UNKNOWN state</td>
+</tr>
+<tr>
+<td>r</td>
+<td>send notifications on recoveries (OK state)</td>
+</tr>
+<tr>
+<td>f</td>
+<td>send notifications when the service starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>
+</td>
+</tr>
+<tr>
+<td>s</td>
+<td>send notifications when <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a> starts and ends</td>
+</tr>
+<tr>
+<td>n</td>
+<td>no notifications are sent, <span class="bold"><strong>no matter what the other options might be</strong></span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
 
     <p>The fourth host or service filter that must be passed is the time period test. Each host and service definition has a
     &lt;<span class="emphasis"><em>notification_period</em></span>&gt; option that specifies which time period contains valid notification times for the host
@@ -295,7 +387,7 @@
             notifications will be supressed.</p></td>
 </tr>
 <tr>
-<td><p>DOWNTIMESTOP</p></td>
+<td><p>DOWNTIMEEND</p></td>
 <td><p>The host or service has just exited from a period of <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a>.
             Notifications about problems can now resume.</p></td>
 </tr>
@@ -365,13 +457,13 @@
     have audio alerts played on the monitoring server (with synthesized speech), check out <a class="link" href="http://www.cstr.ed.ac.uk/projects/festival/" target="_top">Festival</a>. If you'd rather leave the monitoring box alone and have audio
     alerts played on another box, check out the <a class="link" href="http://radscan.com/nas" target="_top">Network Audio System (NAS)</a> and <a class="link" href="http://rplay.doit.org/" target="_top">rplay</a> projects.</p>
 
-    <a class="indexterm" name="idp186516576"></a>
+    <a class="indexterm" name="idp186470384"></a>
 
-    <a class="indexterm" name="idp186517888"></a>
+    <a class="indexterm" name="idp186471696"></a>
 
-    <a class="indexterm" name="idp186519280"></a>
+    <a class="indexterm" name="idp186473328"></a>
 
-    <a class="indexterm" name="idp186520960"></a>
+    <a class="indexterm" name="idp186474912"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -391,6 +483,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

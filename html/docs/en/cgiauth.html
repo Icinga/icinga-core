@@ -1,60 +1,60 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>3.7. Authentication And Authorization In The CGIs</title>
+<title>6.2. Authentication And Authorization In The Classic UI</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
-<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
-<link rel="prev" href="configcgi.html" title="3.6. CGI Configuration File Options">
-<link rel="next" href="ch04.html" title="Chapter 4. Running Icinga">
+<link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
+<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">
+<link rel="next" href="cgiparams.html" title="6.3. Information On CGI parameters">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">3.7. Authentication And Authorization In The CGIs</th></tr>
+<tr><th colspan="3" align="center">6.2. Authentication And Authorization In The Classic UI</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
+<a accesskey="p" href="cgis.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. User Interfaces</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgiparams.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="3.7. Authentication And Authorization In The CGIs">
+<div class="section" title="6.2. Authentication And Authorization In The Classic UI">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiauth"></a>3.7. <a name="cgi_authentication"></a>Authentication And Authorization In The CGIs</h2></div></div></div>
+<a name="cgiauth"></a>6.2. <a name="cgi_authentication"></a>Authentication And Authorization In The Classic UI</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">3.7.1. <a href="cgiauth.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">3.7.2. <a href="cgiauth.html#definitionscgiauth">Definitions</a></span></dt>
-<dt><span class="section">3.7.3. <a href="cgiauth.html#configwebusers">Setting Up Authenticated Users</a></span></dt>
-<dt><span class="section">3.7.4. <a href="cgiauth.html#enablecgiauth">Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
-<dt><span class="section">3.7.5. <a href="cgiauth.html#defaultpermissions">Default Permissions To CGI Information</a></span></dt>
-<dt><span class="section">3.7.6. <a href="cgiauth.html#additionalpermissions">Granting Additional Permissions To CGI Information</a></span></dt>
-<dt><span class="section">3.7.7. <a href="cgiauth.html#requirementscgiauth">CGI Authorization Requirements</a></span></dt>
-<dt><span class="section">3.7.8. <a href="cgiauth.html#securedwebservers">Authentication On Secured Web Servers</a></span></dt>
+<dt><span class="section">6.2.1. <a href="cgiauth.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">6.2.2. <a href="cgiauth.html#definitionscgiauth">Definitions</a></span></dt>
+<dt><span class="section">6.2.3. <a href="cgiauth.html#configwebusers">Setting Up Authenticated Users</a></span></dt>
+<dt><span class="section">6.2.4. <a href="cgiauth.html#enablecgiauth">Enabling Authentication/Authorization Functionality In The Classic UI</a></span></dt>
+<dt><span class="section">6.2.5. <a href="cgiauth.html#defaultpermissions">Default Permissions To Classic UI Information</a></span></dt>
+<dt><span class="section">6.2.6. <a href="cgiauth.html#additionalpermissions">Granting Additional Permissions To Classic UI Information</a></span></dt>
+<dt><span class="section">6.2.7. <a href="cgiauth.html#requirementscgiauth">Classic UI Authorization Requirements</a></span></dt>
+<dt><span class="section">6.2.8. <a href="cgiauth.html#securedwebservers">Authentication On Secured Web Servers</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp182059392"></a>
+  <a class="indexterm" name="idp186531104"></a>
 
-  <div class="section" title="3.7.1. Introduction">
+  <div class="section" title="6.2.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>3.7.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>6.2.1. Introduction</h3></div></div></div>
     
 
-    <p>This documentation describes how the Icinga CGIs decide who has access to view monitoring and configuration information,
-    and who can submit commands to the Icinga daemon through the web interface.</p>
+    <p>This documentation describes how the Icinga Classic UI (formerly called "CGI") decides who has access to view monitoring
+    and configuration information, and who can submit commands to the Icinga daemon through the Classic web interface.</p>
   </div>
 
-  <div class="section" title="3.7.2. Definitions">
+  <div class="section" title="6.2.2. Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="definitionscgiauth"></a>3.7.2. Definitions</h3></div></div></div>
+<a name="definitionscgiauth"></a>6.2.2. Definitions</h3></div></div></div>
     
 
     <p>Before continuing, it is important that you understand the meaning of and difference between authenticated users and authenticated
@@ -63,7 +63,7 @@
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>An <span class="bold"><strong>authenticated user</strong></span> is someone who has authenticated to the web server with a username and
-        password and has been granted access to the Icinga web interface.</p>
+        password and has been granted access to the Icinga Classic web interface.</p>
       </li>
 <li class="listitem">
         <p>An <span class="bold"><strong>authenticated contact</strong></span> is an authenticated user whose username matches the short name of a
@@ -71,52 +71,52 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp183133840"></a>
+    <a class="indexterm" name="idp187030064"></a>
 
-    <a class="indexterm" name="idp183135232"></a>
+    <a class="indexterm" name="idp187031856"></a>
   </div>
 
-  <div class="section" title="3.7.3. Setting Up Authenticated Users">
+  <div class="section" title="6.2.3. Setting Up Authenticated Users">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configwebusers"></a>3.7.3. Setting Up Authenticated Users</h3></div></div></div>
+<a name="configwebusers"></a>6.2.3. Setting Up Authenticated Users</h3></div></div></div>
     
 
     <p>Assuming you configured your web server as described in the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guide</a>, it should require
-    that you authenticate before accessing the Icinga CGIs. You should also have one user account (<span class="emphasis"><em>icingaadmin</em></span>)
-    that can access the CGIs.</p>
+    that you authenticate before accessing the Icinga Classic UI. You should also have one user account
+    (<span class="emphasis"><em>icingaadmin</em></span>) that can access the Classic UI.</p>
 
     <p>As you define more <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> for receiving host and service notifications, you'll
     most likely want to let them access the Icinga web interface. You can use the following command to add additional users who can
-    authenticate to the CGIs. Replace &lt;username&gt; with the actual username you want to add. In most cases, the username should match
-    the short name of a <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> that has been defined.</p>
+    authenticate to the UI. Replace &lt;username&gt; with the actual username you want to add. In most cases, the username should match the
+    short name of a <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> that has been defined.</p>
 
     <pre class="screen"> htpasswd /usr/local/icinga/etc/htpasswd.users &lt;username&gt;</pre>
 
-    <a class="indexterm" name="idp183142224"></a>
+    <a class="indexterm" name="idp187039024"></a>
   </div>
 
-  <div class="section" title="3.7.4. Enabling Authentication/Authorization Functionality In The CGIs">
+  <div class="section" title="6.2.4. Enabling Authentication/Authorization Functionality In The Classic UI">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="enablecgiauth"></a>3.7.4. Enabling Authentication/Authorization Functionality In The CGIs</h3></div></div></div>
+<a name="enablecgiauth"></a>6.2.4. Enabling Authentication/Authorization Functionality In The Classic UI</h3></div></div></div>
     
 
-    <p>The next thing you need to do is make sure that the CGIs are configured to use the authentication and authorization functionality
-    in determining what information and/or commands users have access to. This is done be setting the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> variable in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>
+    <p>The next thing you need to do is make sure that the Classic UI is configured to use the authentication and authorization
+    functionality in determining what information and/or commands users have access to. This is done be setting the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> variable in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>
     to a non-zero value. Example:</p>
 
     <pre class="programlisting"> use_authentication=1</pre>
 
-    <p>Okay, you're now done with setting up basic authentication/authorization functionality in the CGIs.</p>
+    <p>Okay, you're now done with setting up basic authentication/authorization functionality in the Classic UI.</p>
 
-    <a class="indexterm" name="idp183148208"></a>
+    <a class="indexterm" name="idp187044928"></a>
   </div>
 
-  <div class="section" title="3.7.5. Default Permissions To CGI Information">
+  <div class="section" title="6.2.5. Default Permissions To Classic UI Information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="defaultpermissions"></a>3.7.5. Default Permissions To CGI Information</h3></div></div></div>
+<a name="defaultpermissions"></a>6.2.5. Default Permissions To Classic UI Information</h3></div></div></div>
     
 
-    <p>So what default permissions do users have in the CGIs by default when the authentication/authorization functionality is
+    <p>So what default permissions do users have in the Classic UI by default when the authentication/authorization functionality is
     enabled?</p>
 
     <div class="informaltable">
@@ -129,8 +129,8 @@
 <tbody>
 <tr>
 <td><p>CGI Data</p></td>
-<td><p>Authenticated Contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="3.7.2. Definitions">*</a> </sup> </p></td>
-<td><p>Other Authenticated Users<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="3.7.2. Definitions">*</a> </sup> </p></td>
+<td><p>Authenticated Contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </p></td>
+<td><p>Other Authenticated Users<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </p></td>
 </tr>
 <tr>
 <td><p>Host Status Information</p></td>
@@ -201,7 +201,7 @@
 </table>
     </div>
 
-    <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="3.7.2. Definitions">*</a> </sup> </em></span> are granted
+    <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </em></span> are granted
     the following permissions for each <span class="bold"><strong>service</strong></span> for which they are contacts (but not for services for which
     they are not contacts)...</p>
 
@@ -220,7 +220,7 @@
       </li>
 </ul></div>
 
-    <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="3.7.2. Definitions">*</a> </sup> </em></span> are granted
+    <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </em></span> are granted
     the following permissions for each <span class="bold"><strong>host</strong></span> for which they are contacts (but not for hosts for which they
     are not contacts)...</p>
 
@@ -271,18 +271,18 @@
     <p>You will undoubtably want to access this information, so you'll have to assign additional rights for yourself (and possibly other
     users) as described below...</p>
 
-    <a class="indexterm" name="idp183215504"></a>
+    <a class="indexterm" name="idp187111920"></a>
   </div>
 
-  <div class="section" title="3.7.6. Granting Additional Permissions To CGI Information">
+  <div class="section" title="6.2.6. Granting Additional Permissions To Classic UI Information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="additionalpermissions"></a>3.7.6. Granting Additional Permissions To CGI Information</h3></div></div></div>
+<a name="additionalpermissions"></a>6.2.6. Granting Additional Permissions To Classic UI Information</h3></div></div></div>
     
 
     <p>You can grant <span class="emphasis"><em>authenticated contacts</em></span> or other <span class="emphasis"><em>authenticated users</em></span> permission to
-    additional information in the CGIs by adding them to various authorization variables in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration
-    file</a>. We realize that the available options don't allow for getting really specific about particular permissions, but its better
-    than nothing..</p>
+    additional information in the Classic UI by adding them to various authorization variables in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI
+    configuration file</a>. We realize that the available options don't allow for getting really specific about particular permissions,
+    but its better than nothing..</p>
 
     <p>Additional authorization can be given to users by adding them to the following variables in the CGI configuration file...</p>
 
@@ -311,32 +311,32 @@
 </ul></div>
   </div>
 
-  <div class="section" title="3.7.7. CGI Authorization Requirements">
+  <div class="section" title="6.2.7. Classic UI Authorization Requirements">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="requirementscgiauth"></a>3.7.7. CGI Authorization Requirements</h3></div></div></div>
+<a name="requirementscgiauth"></a>6.2.7. Classic UI Authorization Requirements</h3></div></div></div>
     
 
-    <p>If you are confused about the authorization needed to access various information in the CGIs, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each CGI as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">here</a>.</p>
+    <p>If you are confused about the authorization needed to access various information in the Classic UI, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each CGI as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">here</a>.</p>
 
-    <a class="indexterm" name="idp183234096"></a>
+    <a class="indexterm" name="idp187130704"></a>
   </div>
 
-  <div class="section" title="3.7.8. Authentication On Secured Web Servers">
+  <div class="section" title="6.2.8. Authentication On Secured Web Servers">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="securedwebservers"></a>3.7.8. Authentication On Secured Web Servers</h3></div></div></div>
+<a name="securedwebservers"></a>6.2.8. Authentication On Secured Web Servers</h3></div></div></div>
     
 
     <p>If your web server is located in a secure domain (i.e., behind a firewall) or if you are using SSL, you can define a default
-    username that can be used to access the CGIs. This is done by defining the <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a> option in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>. By
-    defining a default username that can access the CGIs, you can allow users to access the CGIs without necessarily having to authenticate
-    to the web server. You may want to use this to avoid having to use basic web authentication, as basic authentication transmits passwords
-    in clear text over the Internet.</p>
+    username that can be used to access the Classic UI. This is done by defining the <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a> option in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>. By
+    defining a default username that can access the Classic UI, you can allow users to access the Classic UI without necessarily having to
+    authenticate to the web server. You may want to use this to avoid having to use basic web authentication, as basic authentication
+    transmits passwords in clear text over the Internet.</p>
 
     <p><span class="bold"><strong>Important:</strong></span> Do <span class="emphasis"><em>not</em></span> define a default username unless you are running a secure
-    web server and are sure that everyone who has access to the CGIs has been authenticated in some manner. If you define this variable,
-    anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
+    web server and are sure that everyone who has access to the Classic UI has been authenticated in some manner. If you define this
+    variable, anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
 
-    <a class="indexterm" name="idp183241104"></a>
+    <a class="indexterm" name="idp187137920"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -344,18 +344,18 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
+<a accesskey="p" href="cgis.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="cgiparams.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">3.6. CGI Configuration File Options </td>
+<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Information On The CGIs </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 4. Running Icinga</td>
+<td width="40%" align="right" valign="top"> 6.3. Information On CGI parameters</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2013 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

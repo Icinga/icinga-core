@@ -6,7 +6,7 @@
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad
  * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
  *
  * First Written:   06-01-2010, based on test_nagios_config.c
  *
