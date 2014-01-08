@@ -1,6 +1,6 @@
 # $Id$
 # Authority: cmr
-# Upstream: The icinga devel team <icinga-devel at lists.sourceforge.net>
+# Upstream: The icinga devel team <icinga-devel at lists.icinga.org>
 #
 # Needs libdbi
 #
