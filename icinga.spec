@@ -60,7 +60,7 @@ License: GPLv2
 Group: Applications/System
 URL: http://www.icinga.org/
 
-Source0: http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}.tar.gz
+Source0: https://github.com/Icinga/icinga-core/releases/download/v%{version}/icinga-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %if 0%{?using_systemd}
