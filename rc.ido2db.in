@@ -61,16 +61,16 @@ export LD_LIBRARY_PATH
 
 # load extra environment variables
 if [ -f /etc/sysconfig/ido2db ]; then
-        . /etc/sysconfig/ido2db
+    . /etc/sysconfig/ido2db
 fi
 
 
 # Source function library
 # Solaris doesn't have an rc.d directory, so do a test first
 if [ -f /etc/rc.d/init.d/functions ]; then
-        . /etc/rc.d/init.d/functions
+    . /etc/rc.d/init.d/functions
 elif [ -f /etc/init.d/functions ]; then
-        . /etc/init.d/functions
+    . /etc/init.d/functions
 fi
 
 
@@ -88,29 +88,59 @@ fi
 
 ## helper functions ##
 
+# checks status if ido2db daemon
+# return 0 if running
+# return 1 if dead but pidfile exists
+# return 3 if daemon is not running
+# return 4 if the state is unknown
 status_ido2db ()
 {
-
-	if ps -p $Ido2dbPID > /dev/null 2>&1; then
-		return 0
-	else
-		return 1
-        fi
-
+    if pid_ido2db && status_ido2db_process; then
+        return 0
+    elif ! pid_ido2db && ! status_ido2db_process; then
+        return 3
+    elif pid_ido2db; then
         return 1
+    else
+        return 4
+    fi
 }
 
+# check if process is running
+status_ido2db_process ()
+{
+    if ps -p $Ido2dbPID > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# check pidfile for existence
+pid_ido2db ()
+{
+    if test -f $Ido2dbRunFile; then
+        Ido2dbPID=`head -n 1 $Ido2dbRunFile`
+        return 0
+    else
+        return 1
+    fi
+}
+
+# print human readable output of service status
 printstatus_ido2db()
 {
-	if status_ido2db $1 $2; then
-		echo "$servicename (pid $Ido2dbPID) is running..."
-	elif test $? == 2; then
-		echo "$servicename is not running but subsystem locked"
-	else
-		echo "$servicename is not running"
-	fi
+    status_ido2db $1 $2
+    STATUS=$?
+    if [ $STATUS -eq 0 ]; then
+        echo "$servicename (pid $Ido2dbPID) is running..."
+    elif [ $STATUS -eq 1 ]; then
+        echo "$servicename is not running but subsystem locked"
+    else
+        echo "$servicename is not running"
+    fi
+    exit $STATUS
 }
-
 
 killproc_ido2db ()
 {
@@ -122,19 +152,8 @@ killproc_ido2db ()
 
 killproc9_ido2db ()
 {
-        kill -9 $Ido2dbPID
+    kill -9 $Ido2dbPID
 
-}
-
-pid_ido2db ()
-{
-
-	if test ! -f $Ido2dbRunFile; then
-		echo "ido2db not running. PID file $Ido2dbRunFile not found"
-		exit 1
-	fi
-
-	Ido2dbPID=`head -n 1 $Ido2dbRunFile`
 }
 
 ## MAIN ##
@@ -196,8 +215,7 @@ case "$1" in
 
 		;;
 
-        status)
-		pid_ido2db
+    status)
 		printstatus_ido2db ido2db
                 ;;
 
