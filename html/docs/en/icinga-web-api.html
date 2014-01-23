@@ -270,7 +270,7 @@
     XML:</p>
 
     <pre class="programlisting">http://localhost/icinga-web/web/api/service/filter[AND(HOST_CURRENT_STATE|=|0;OR(SERVICE_CURRENT_STATE|=|1;SERVICE_CURRENT_STATE|=|2))]/
-columns(SERVICE_NAME|HOST_NAME|SERVICE_CURRENT_STATE|HOST_NAME|HOST_CURRENT_STATE|HOSTGROUP_NAME)/
+columns[SERVICE_NAME|HOST_NAME|SERVICE_CURRENT_STATE|HOST_NAME|HOST_CURRENT_STATE|HOSTGROUP_NAME]/
 order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/xml</pre>
 
     <p>This would return something like:</p>
@@ -454,7 +454,7 @@ http://localhost/icinga-web/web/api/xml </pre>
 
     <p>This would return the same result as the GET request shown before.</p>
 
-    <a class="indexterm" name="idp192847152"></a>
+    <a class="indexterm" name="idp192841392"></a>
   </div>
 </div>
 <div class="navfooter">
