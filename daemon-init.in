@@ -26,6 +26,7 @@ IcingaLockFile=icinga
 IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
 IcingaChkFile=@ICINGACHKFILE@
+IcingaPrecacheFallback=0
 
 # load extra environment variables
 if [ -f /etc/sysconfig/icinga ]; then
@@ -126,7 +127,13 @@ pid_icinga ()
 chk_config ()
 {
 	printf "Running configuration check..."
-	$IcingaBin -v $IcingaCfgFile > $IcingaChkFile 2>&1
+
+	if test "x$2" = "xprecache"; then
+		$IcingaBin -v -p $IcingaCfgFile > $IcingaChkFile 2>&1
+	else
+		$IcingaBin -v $IcingaCfgFile > $IcingaChkFile 2>&1
+	fi
+
 	if test $? -ne 0; then
 		if test -z "$1"; then
 			cat $IcingaChkFile
@@ -134,11 +141,11 @@ chk_config ()
 		else
 			echo $1
 		fi
-		exit 1
+		return 1
 	fi
 	rm -f $IcingaChkFile
 	echo "OK"
-	#exit 0
+	return 0
 }
 
 start(){
@@ -160,7 +167,13 @@ start(){
 	rm -f $IcingaCommandFile
 	touch $IcingaRunFile
 	chown $IcingaUser:$IcingaGroup $IcingaRunFile
-	$IcingaBin -d $IcingaCfgFile
+
+	if test "x$1" = "xprecache"; then
+		$IcingaBin -d -u $IcingaCfgFile
+	else
+		$IcingaBin -d $IcingaCfgFile
+	fi
+
 	if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
 	echo "Starting icinga done."
 	exit 0
@@ -173,8 +186,32 @@ start(){
 case "$1" in
 
 	start)
-		chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
-		start
+		if test $IcingaPrecacheFallback != 1; then
+			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
+
+			if test $? != 0; then
+				exit 1
+			fi
+
+			start
+		else
+			IcingaPrecacheFile=$(grep ^precached_object_file $IcingaCfgFile | tail -n 1 | awk 'BEGIN { FS = "=" }; { print $2 }')
+
+			chk_config "CONFIG ERROR!  Falling back to pre-cache file. See $IcingaChkFile for details." precache
+
+			if test $? = 0; then
+				cp $IcingaPrecacheFile $IcingaPrecacheFile.good
+				start
+			else
+				if test ! -e $IcingaPrecacheFile.good; then
+					echo "Pre-cache file does not exist."
+					exit 1
+				fi
+
+				cp $IcingaPrecacheFile.good $IcingaPrecacheFile
+				start precache
+			fi
+		fi
 		;;
 
 	stop)
@@ -214,20 +251,42 @@ case "$1" in
 
 	checkconfig)
 		chk_config " CONFIG ERROR!  See $IcingaChkFile for details."
+
+		if test $? != 0; then
+			exit 1
+		fi
 		;;
 
 	show-errors)
 		chk_config
+
+		if test $? != 0; then
+			exit 1
+		fi
 		;;
 
 	restart)
-		chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
+		if test $IcingaPrecacheFallback != 1; then
+			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
+
+			if test $? != 0; then
+				exit 1
+			fi
+		fi
+
 		$0 stop
 		start
 		;;
 
 	reload|force-reload)
-		chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
+		if test $IcingaPrecacheFallback != 1; then
+			chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
+
+			if test $? != 0; then
+				exit 1
+			fi
+		fi
+
 		if test ! -f $IcingaRunFile; then
 			$0 start
 		else
