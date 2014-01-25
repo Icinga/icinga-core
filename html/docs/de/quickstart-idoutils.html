@@ -560,7 +560,7 @@
 
     <p>Laden Sie die Sourcen von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-    <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+    <p>Vergessen Sie nicht die <a class="link" href="http://www.monitoring-plugins.org/" target="_top">Nagios Plugins</a>.</p>
   </div>
 
   <div class="section" title="2.5.7. Icinga und die IDOUtils kompilieren und installieren">
@@ -835,22 +835,13 @@
 
         <p>Anlegen von Datenbank, Benutzer und Berechtigungen:</p>
 
-        <pre class="programlisting"> #&gt; mysql -u root -p
-  
- mysql&gt; CREATE DATABASE icinga;
-  
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost' 
-   IDENTIFIED BY 'icinga'
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
-   
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
- 
- FLUSH PRIVILEGES ;
+            <pre class="screen"> # mysql -u root -p
 
- quit</pre>
+ mysql&gt; CREATE DATABASE icinga;
+
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
+
+        quit</pre>
 
         <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1236,9 +1227,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp177124320"></a>
+    <a class="indexterm" name="idp177239088"></a>
 
-    <a class="indexterm" name="idp177126048"></a>
+    <a class="indexterm" name="idp177240816"></a>
   </div>
 </div>
 <div class="navfooter">

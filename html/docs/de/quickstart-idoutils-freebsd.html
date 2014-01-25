@@ -275,7 +275,7 @@
 
   <p>Laden Sie die Sourcen von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-  <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a> .</p>
+  <p>Vergessen Sie nicht die <a class="link" href="http://www.monitoring-plugins.org/" target="_top">Monitoring Plugins</a> .</p>
 
   <p><span class="bold"><strong>Icinga und IDOUtils kompilieren und installieren</strong></span></p>
 
@@ -471,22 +471,13 @@
   </td></tr>
 </table></div>
 
-  <pre class="programlisting"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
-   IDENTIFIED BY 'icinga'
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
-
- FLUSH PRIVILEGES ;
-
- quit</pre>
+        quit</pre>
 
   <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
  #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
@@ -558,7 +549,7 @@
 
   <p><span class="bold"><strong>Kompilieren und installieren der Nagios-/Perl-Plugins</strong></span></p>
 
-  <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
+  <p>Entpacken Sie die Monitoring Plugins-Quellcode-Archivdatei.</p>
 
   <pre class="programlisting"> #&gt; cd ~/src 
  #&gt; tar xvzf nagios-plugins-1.5.tar.gz
@@ -647,14 +638,14 @@
  --with-dbi-inc=/usr/local/include --with-dbu-lib=/usr/local/lib \
  CPPFLAGS=-I/usr/local/include CFLAGS=-fPIC</pre>
 
-  <p>Compiler-Optionen für Nagios-Plugins (ports)</p>
+  <p>Compiler-Optionen für Monitoring Plugins (ports)</p>
 
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp177256880"></a>
+  <a class="indexterm" name="idp177370720"></a>
 
-  <a class="indexterm" name="idp177258272"></a>
+  <a class="indexterm" name="idp177372112"></a>
 </div>
 <div class="navfooter">
 <hr>

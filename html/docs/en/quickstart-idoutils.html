@@ -42,7 +42,7 @@
 <dt><span class="section">2.5.10. <a href="quickstart-idoutils.html#enableidomod">Enable the idomod event broker module</a></span></dt>
 <dt><span class="section">2.5.11. <a href="quickstart-idoutils.html#createidoutilsdatabase">Creation of Database and IDOUtils</a></span></dt>
 <dt><span class="section">2.5.12. <a href="quickstart-idoutils.html#configclassicui">Configure the Classic Web Interface</a></span></dt>
-<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Compile and Install the Nagios Plugins</a></span></dt>
+<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Compile and Install the Monitoring Plugins</a></span></dt>
 <dt><span class="section">2.5.14. <a href="quickstart-idoutils.html#selinuxsettings">Adjusting the SELinux settings</a></span></dt>
 <dt><span class="section">2.5.15. <a href="quickstart-idoutils.html#startiido2dbandicinga">Start IDOUtils and Icinga</a></span></dt>
 <dt><span class="section">2.5.16. <a href="quickstart-idoutils.html#configstartup">Configure Icinga Startup</a></span></dt>
@@ -562,7 +562,7 @@
     <pre class="screen"> #&gt; cd /usr/src</pre>
 
     <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>. Don't forget to download
-    the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a></p>
+    the <a class="link" href="http://www.monitoring-plugins.org/" target="_top">Monitoring Plugins</a></p>
   </div>
 
   <div class="section" title="2.5.7. Compile and Install Icinga with IDOUtils">
@@ -826,21 +826,13 @@
 
         <p>Create Database, User, Grants:</p>
 
-        <pre class="screen"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
+
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
-   IDENTIFIED BY 'icinga'
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
-  
- FLUSH PRIVILEGES;
-
- quit</pre>
+        quit</pre>
 
         <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1032,9 +1024,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.13. Compile and Install the Nagios Plugins">
+  <div class="section" title="2.5.13. Compile and Install the Monitoring Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstallplugins"></a>2.5.13. Compile and Install the Nagios Plugins</h3></div></div></div>
+<a name="compileinstallplugins"></a>2.5.13. Compile and Install the Monitoring Plugins</h3></div></div></div>
     
 
     <p>Extract the Nagios plugins source code tarball.</p>
@@ -1201,9 +1193,9 @@
     You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp176918368"></a>
+    <a class="indexterm" name="idp177130640"></a>
 
-    <a class="indexterm" name="idp176920096"></a>
+    <a class="indexterm" name="idp177132368"></a>
   </div>
 </div>
 <div class="navfooter">

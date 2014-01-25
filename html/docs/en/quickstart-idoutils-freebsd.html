@@ -274,7 +274,7 @@
 
   <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+  <p>Don't forget to download the <a class="link" href="http://www.monitoring-plugins.org/" target="_top">Monitoring Plugins</a>.</p>
 
   <p><span class="bold"><strong>Compile and install Icinga and IDOUtils</strong></span></p>
 
@@ -462,21 +462,13 @@
       </td></tr>
 </table></div>
 
-      <pre class="screen"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
-
- FLUSH PRIVILEGES ;
-
- quit</pre>
+        quit</pre>
 
       <pre class="screen"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
  #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
@@ -551,7 +543,7 @@
 
   <pre class="screen"> #&gt; /usr/local/etc/rc.d/apache22 reload</pre>
 
-  <p><span class="bold"><strong>Compile and Install the Nagios-/Perl Plugins</strong></span></p>
+  <p><span class="bold"><strong>Compile and Install the Perl Plugins and Monitoring Plugins</strong></span></p>
 
   <p>Extract the Nagios plugins source code tarball.</p>
 
@@ -659,9 +651,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp177071472"></a>
+  <a class="indexterm" name="idp177283344"></a>
 
-  <a class="indexterm" name="idp177073200"></a>
+  <a class="indexterm" name="idp177285072"></a>
 </div>
 <div class="navfooter">
 <hr>
