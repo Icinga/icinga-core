@@ -48,21 +48,11 @@ Create Database, User, Grants
 
 # mysql -u root -p
 
-mysql> CREATE DATABASE icinga;
-Query OK, 1 row affected (0.01 sec)
+mysql> 	CREATE DATABASE icinga;
 
-mysql>  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
-          IDENTIFIED BY 'icinga'
-          WITH MAX_QUERIES_PER_HOUR 0
-          MAX_CONNECTIONS_PER_HOUR 0
-          MAX_UPDATES_PER_HOUR 0;
+	GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
-mysql>  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-          ON icinga.* TO 'icinga'@'localhost';
-
-mysql>  FLUSH PRIVILEGES;
-
-mysql> quit
+        quit
 
 Import database schema
 ----------------------
