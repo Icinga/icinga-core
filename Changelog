@@ -22,6 +22,7 @@ ENHANCEMENTS
 FIXES
 
 * classic ui: aggressively check for possible buffer overflows in cmd.cgi (thx GitHub) #5434 - MF
+* classic ui: add missing jquery and jquery-ui-timepicker-addon sources #5564 - MF
 
 * idoutils: wait for child processes on exit preventing zombies (thx Laurent Bigonville) #4427 - MF
 
