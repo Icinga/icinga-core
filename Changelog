@@ -21,6 +21,8 @@ ENHANCEMENTS
 
 FIXES
 
+* core: fix passive host check commands check service's passive check acceptance (thx Naemon) #5568 - MF
+
 * classic ui: aggressively check for possible buffer overflows in cmd.cgi (thx GitHub) #5434 - MF
 * classic ui: add missing jquery and jquery-ui-timepicker-addon sources #5564 - MF
 
