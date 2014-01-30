@@ -162,7 +162,7 @@ killproc9_ido2db ()
 
 remove_run_files ()
 {
-    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
+    rm -f $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile
 }
 
 ## MAIN ##
