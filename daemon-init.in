@@ -35,7 +35,6 @@ if [ -f /etc/default/icinga ]; then
         . /etc/default/icinga
 fi
 
-
 # Source function library
 # Solaris doesn't have an rc.d directory, so do a test first
 if [ -f /etc/rc.d/init.d/functions ]; then
@@ -118,7 +117,13 @@ pid_icinga ()
     fi
 }
 
-# send TERM signal if process is running
+# send HUP signal
+reload_icinga ()
+{
+	kill -1 $IcingaPID
+}
+
+# send TERM signal
 killproc_icinga ()
 {
 	kill $IcingaPID
@@ -191,38 +196,41 @@ case "$1" in
 		;;
 
 	stop)
-		printf "Stopping icinga: "
+	    if status_icinga; then
 
-		pid_icinga
-		killproc_icinga icinga
+	        printf "Stopping Icinga: "
+		    killproc_icinga icinga
 
- 		# now we have to wait for icinga to exit and remove its
- 		# own IcingaRunFile, otherwise a following "start" could
- 		# happen, and then the exiting icinga will remove the
- 		# new IcingaRunFile, allowing multiple icinga daemons
- 		# to (sooner or later) run - John Sellens
-		#printf 'Waiting for icinga to exit .'
- 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
- 		    if status_icinga > /dev/null; then
- 			printf '.'
- 			sleep 1
+ 		    # now we have to wait for icinga to exit and remove its
+ 		    # own IcingaRunFile, otherwise a following "start" could
+ 		    # happen, and then the exiting icinga will remove the
+ 		    # new IcingaRunFile, allowing multiple icinga daemons
+ 		    # to (sooner or later) run - John Sellens
+		    printf 'Waiting for icinga to exit .'
+ 		    for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+ 		        if status_icinga; then
+ 			        printf '.'
+ 			        sleep 1
+ 		        else
+ 			         break
+ 		        fi
+ 		    done
+ 		    if status_icinga; then
+ 		        echo ''
+ 		        echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
+		        kill9proc_icinga
  		    else
- 			break
+ 		        echo 'Stopping icinga done.'
+                remove_run_files
  		    fi
- 		done
- 		if status_icinga > /dev/null; then
- 		    echo ''
- 		    echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
-		    kill9proc_icinga
- 		else
- 		    echo 'Stopping icinga done.'
-                    rm -f $IcingaRunFile $IcingaLockDir/$IcingaLockFile
- 		fi
-
+        else
+	        echo "Ido2db is already stopped!"
+	        exit 0
+        fi
 		;;
 
 	status)
-		checkstatus_icinga icinga
+		printstatus_icinga
 		;;
 
 	checkconfig)
@@ -241,18 +249,12 @@ case "$1" in
 
 	reload|force-reload)
 		chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
-		if test ! -f $IcingaRunFile; then
-			$0 start
+		if status_icinga; then
+		    printf "Reloading icinga configuration..."
+			reload_icinga
+			echo "done"
 		else
-			pid_icinga
-			if status_icinga > /dev/null; then
-				printf "Reloading icinga configuration..."
-				killproc_icinga icinga -HUP
-				echo "done"
-			else
-				$0 stop
-				$0 start
-			fi
+		    $0 start
 		fi
 		;;
 
