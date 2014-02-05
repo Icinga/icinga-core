@@ -3457,7 +3457,7 @@ void show_downtime(int type) {
 				printf("\"author\": null, ");
 			else
 				printf("\"author\": \"%s\", ", json_encode(temp_downtime->author));
-			if (temp_downtime->author == NULL)
+			if (temp_downtime->comment == NULL)
 				printf("\"comment\": null, ");
 			else
 				printf("\"comment\": \"%s\", ", json_encode(temp_downtime->comment));
