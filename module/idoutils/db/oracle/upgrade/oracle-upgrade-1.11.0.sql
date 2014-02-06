@@ -47,6 +47,26 @@ ALTER TABLE programstatus ADD config_dump_in_progress integer default 0;
 CREATE INDEX commenthistory_delete_idx ON commenthistory (instance_id, comment_time, internal_comment_id) tablespace &&IDXTBS;
 
 -- -----------------------------------------
+-- #5612
+-- -----------------------------------------
+ALTER TABLE statehistory ADD check_source varchar2(255) default NULL;
+
+ALTER TABLE acknowledgements ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE commenthistory ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE contactnotifications ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE downtimehistory ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE eventhandlers ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE externalcommands ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE flappinghistory ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE hostchecks ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE logentries ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE notifications ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE processevents ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE servicechecks ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE statehistory ADD icinga_node varchar2(255) default NULL;
+ALTER TABLE systemcommands ADD icinga_node varchar2(255) default NULL;
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 
