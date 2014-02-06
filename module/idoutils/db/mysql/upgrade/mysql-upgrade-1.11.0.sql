@@ -23,6 +23,21 @@ CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, co
 -- -----------------------------------------
 ALTER TABLE icinga_statehistory ADD COLUMN check_source varchar(255) character set latin1 default NULL;
 
+ALTER TABLE icinga_acknowledgements ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_commenthistory ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_contactnotifications ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_downtimehistory ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_eventhandlers ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_externalcommands ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_flappinghistory ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_hostchecks ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_logentries ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_notifications ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_processevents ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_servicechecks ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_statehistory ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+ALTER TABLE icinga_systemcommands ADD COLUMN icinga_node varchar(255) character set latin1 default NULL;
+
 -- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
