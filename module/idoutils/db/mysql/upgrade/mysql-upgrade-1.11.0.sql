@@ -19,6 +19,11 @@ ALTER TABLE icinga_programstatus ADD COLUMN config_dump_in_progress SMALLINT DEF
 CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, comment_time, internal_comment_id);
 
 -- -----------------------------------------
+-- #5612
+-- -----------------------------------------
+ALTER TABLE icinga_statehistory ADD COLUMN check_source varchar(255) character set latin1 default NULL;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

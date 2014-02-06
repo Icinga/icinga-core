@@ -1688,7 +1688,8 @@ CREATE TABLE statehistory (
   last_state integer default -1 ,
   last_hard_state integer default -1 ,
   output clob,
-  long_output clob
+  long_output clob,
+  check_source varchar2(255)
 )
 lob (output) store as statehistory_outp_lob(tablespace &&LOBTBS)
 lob (long_output) store as statehistory_loutp_lob(tablespace &&LOBTBS)
