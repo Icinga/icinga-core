@@ -20,7 +20,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.8.5
+Version: 1.8.6
 Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -433,6 +433,9 @@ fi
 
 
 %changelog
+* Tue Feb 11 2013 Ricardo Bartels <ricardo@bitchbrothers.com> - 1.8.6-1
+- 1.8.6 bump
+
 * Fri Dec 13 2013 Ricardo Bartels <ricardo@bitchbrothers.com> - 1.8.5-1
 - 1.8.5 bump
 

@@ -13,6 +13,13 @@ UPGRADE NOTES
 	- idoutils: module/idoutils/config/updates
 * package locations may differ!
 
+1.8.6 - 11/02/2014
+
+FIXES
+* core: fix host state translation for passive host check results #5575 - MF
+
+* classic ui: aggressively check for possible buffer overflows in cmd.cgi (thx GitHub) #5434 - MF
+
 
 1.8.5 - 13/12/2013
 

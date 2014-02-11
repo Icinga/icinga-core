@@ -22,8 +22,8 @@
 #define LOG2IDO_NAME 		"LOG2IDO"
 
 /* only one space for update-version matching */
-#define IDO_DATE "12-13-2013"
-#define IDO_VERSION "1.8.5"
+#define IDO_DATE "02-11-2014"
+#define IDO_VERSION "1.8.6"
 
 #define IDO_SCHEMA_VERSION "1.8.0"
 
