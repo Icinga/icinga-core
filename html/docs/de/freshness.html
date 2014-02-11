@@ -34,6 +34,7 @@
 <dt><span class="section">7.5.2. <a href="freshness.html#howitworks">Wie funktioniert die Frische-Prüfung?</a></span></dt>
 <dt><span class="section">7.5.3. <a href="freshness.html#enable">Frische-Prüfungen aktivieren</a></span></dt>
 <dt><span class="section">7.5.4. <a href="freshness.html#example">Beispiel</a></span></dt>
+<dt><span class="section">7.5.5. <a href="freshness.html#stale">"Check results ... are stale. Forcing an immediate check ...</a></span></dt>
 </dl></div>
   
 
@@ -154,7 +155,7 @@
     <p>Beachten Sie, dass aktive Prüfungen für den Service deaktiviert sind. Das ist so, weil die Ergebnisse für den Service nur durch
     eine externe Applikation geliefert werden. Die Frische-Prüfung ist aktiviert und der Frische-Schwellwert ist auf 26 Stunden gesetzt. Das
     ist ein bisschen mehr als 24 Stunden, weil Backup-Jobs ab und zu länger dauern (abhängig davon, wie viele Daten zu sichern sind, wie
-    viel Netzwerkverkehr herrscht, usw.). Das <span class="emphasis"><em>no-backup-report</em></span>-Kommando wird nur ausgeführt, wenn die Ergebnissse des
+    viel Netzwerkverkehr herrscht, usw.). Das <span class="emphasis"><em>no-backup-report</em></span>-Kommando wird nur ausgeführt, wenn die Ergebnisse des
     Service als abgestanden angesehen werden. Die Definition des <span class="emphasis"><em>no-backup-report</em></span>-Kommandos könnte wie folgt
     aussehen...</p>
 
@@ -168,7 +169,66 @@
     kritischen Status an Icinga meldet. Der Service wird dann in einen kritischen Zustand gehen (falls das nicht bereits der Fall
     ist) und wahrscheinlich wird jemand über das Problem informiert.</p>
 
-    <a class="indexterm" name="idp190228784"></a>
+    <a class="indexterm" name="idp190174496"></a>
+  </div>
+
+  <div class="section" title='7.5.5. "Check results ... are stale. Forcing an immediate check ...'>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="stale"></a>7.5.5. "Check results ... are stale. Forcing an immediate check ...</h3></div></div></div>
+    
+
+    <p>Manchmal finden Sie vielleicht Meldungen wie die folgende in icinga.log:</p>
+<pre class="screen"> Check results for service x on host y are stale by 0d 0h 0m 10s (threshold=0d 0h 10m 0s).
+ Forcing an immediate check of the service...</pre>
+
+    <p>Das bedeutet, dass der Service in der Vergangenheit geprüft wurde und die als Schwellwert definierte Zeit (z.B. 10min) vergangen
+    ist, ohne dass ein neues Prüfergebnis geliefert wurde, so dass eine Prüfung durch den Core erzwungen wird.</p>
+
+    <p>Die Meldung kommt aus dem Code-Fragment in base/checks.c (Zeilen wurden umgebrochen, um die Lesbarkeit zu
+    verbessern)</p>
+<pre class="programlisting"> /* the results for the last check of this service are stale */
+    if (expiration_time &lt; current_time) {
+
+       get_time_breakdown((current_time - expiration_time), &amp;days, &amp;hours, &amp;minutes, &amp;seconds);
+       get_time_breakdown(freshness_threshold, &amp;tdays, &amp;thours, &amp;tminutes, &amp;tseconds);
+
+       /* log a warning */ 
+       if (log_this == TRUE)
+          logit(NSLOG_RUNTIME_WARNING, TRUE,
+             "Warning: The results of service '%s' on host '%s' are stale by %dd %dh %dm %ds (threshold=%dd %dh %dm %ds).
+             I'm forcing an immediate check of the service.\n",
+             temp_service-&gt;description, temp_service-&gt;host_name,
+             days, hours, minutes, seconds, tdays, thours, tminutes, tseconds
+          );
+
+       log_debug_info(DEBUGL_CHECKS, 1,
+          "Check results for service '%s' on host '%s' are stale by %dd %dh %dm %ds (threshold=%dd %dh %dm %ds).
+          Forcing an immediate check of the service...\n",
+          temp_service-&gt;description, temp_service-&gt;host_name,
+          days, hours, minutes, seconds, tdays, thours, tminutes, tseconds
+       );
+
+       return FALSE;
+    }</pre>
+<p>Normalerweise trifft folgendes zu</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p><code class="literal">expiration_time</code> = last_check + freshness threshold (z.B. 10 Min.)</p>
+        </li>
+<li class="listitem">
+          <p>expiration_time ist in der Vergangenheit (<code class="literal">&lt; current_time</code>) == stale</p>
+        </li>
+<li class="listitem">
+          <p>der Unterschied zwischen jetzt und expiration_time wird im Protokoll angezeigt (z.B. 10 Sek.)</p>
+        </li>
+</ul></div>
+<p>Falls der Service nicht jetzt, aber bereits in der Vergangenheit geprüft wurde (event_start &gt; last_check) und der
+    Schwellwert 0 ist, wird max_service_check_spread multipliziert mit dem Intervall als zusätzlicher Offset addiert (das passiert während
+    der Startphase, um festzustellen, wann die erste Prüfung (und Status + Ausgabe) erfolgen muss).</p>
+
+    <a class="indexterm" name="idp190185680"></a>
+
+    <a class="indexterm" name="idp190187344"></a>
   </div>
 </div>
 <div class="navfooter">

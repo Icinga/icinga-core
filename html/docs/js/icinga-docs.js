@@ -1,7 +1,7 @@
 // javascript helper with jquery for docbook toc toggle, namely the second section
 // only works with dd, dl, dt output of docbook xml in html
 // written by Michael Friedrich <michael.friedrich@gmail.com>
-// (c) 2012 Icinga Development Team
+// (c) 2012-present Icinga Development Team
 
 
 $(document).ready(function() {

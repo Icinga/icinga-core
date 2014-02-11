@@ -80,7 +80,7 @@
   <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller Benutzer
   funktionieren, die anfangen wollen.</p>
 
-  <p>Diese Anleitung enthält Anweisungen für <a class="link" href="http://www.freebsd.org/" target="_top">FreeBSD</a> 8.1-RELEASE. Dank an <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> für die angepassten
+  <p>Diese Anleitung enthält Anweisungen für <a class="link" href="http://www.freebsd.org/" target="_top">FreeBSD</a> 8.1-RELEASE. Dank an <a class="link" href="http://www.monitoring-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> für die angepassten
   Anweisungen.</p>
 
   <p>Spätere Distributionen von FreeBSD werden wahrscheinlich auch mit diesen Anweisungen funktionieren.</p>
@@ -109,7 +109,7 @@
       Plattenbelegung, usw.)</p>
     </li>
 <li class="listitem">
-      <p>das klassische Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/nagios/</code> oder
+      <p>das klassische Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/icinga/</code> oder
       <code class="uri">http://yourdomain.com/icinga/</code></p>
     </li>
 <li class="listitem">
@@ -268,14 +268,14 @@
 
   <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
 
-  <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z:b. ~/src</p>
+  <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. ~/src</p>
 
   <pre class="programlisting"> #&gt; mkdir ~/src
  #&gt; cd ~/src</pre>
 
   <p>Laden Sie die Sourcen von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-  <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a> .</p>
+  <p>Vergessen Sie nicht die <a class="link" href="https://www.monitoring-plugins.org/" target="_top">Monitoring Plugins</a>.</p>
 
   <p><span class="bold"><strong>Icinga und IDOUtils kompilieren und installieren</strong></span></p>
 
@@ -471,22 +471,13 @@
   </td></tr>
 </table></div>
 
-  <pre class="programlisting"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
-   IDENTIFIED BY 'icinga'
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
-
- FLUSH PRIVILEGES ;
-
- quit</pre>
+        quit</pre>
 
   <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
  #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
@@ -551,14 +542,14 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben,
+    <p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="8.2. Verbesserte Classic UI Modul-Sicherheit und Authentifizierung">hier</a> beschrieben,
     um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht kompromittiert werden.</p>
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Kompilieren und installieren der Nagios-/Perl-Plugins</strong></span></p>
+  <p><span class="bold"><strong>Kompilieren und installieren der Plugins</strong></span></p>
 
-  <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
+  <p>Entpacken Sie die Plugins-Quellcode-Archivdatei.</p>
 
   <pre class="programlisting"> #&gt; cd ~/src 
  #&gt; tar xvzf nagios-plugins-1.5.tar.gz
@@ -647,14 +638,14 @@
  --with-dbi-inc=/usr/local/include --with-dbu-lib=/usr/local/lib \
  CPPFLAGS=-I/usr/local/include CFLAGS=-fPIC</pre>
 
-  <p>Compiler-Optionen für Nagios-Plugins (ports)</p>
+  <p>Compiler-Optionen für Monitoring Plugins (ports)</p>
 
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp177403632"></a>
+  <a class="indexterm" name="idp177323456"></a>
 
-  <a class="indexterm" name="idp177405024"></a>
+  <a class="indexterm" name="idp177325296"></a>
 </div>
 <div class="navfooter">
 <hr>

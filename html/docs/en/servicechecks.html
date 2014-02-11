@@ -37,7 +37,8 @@
 <dt><span class="section">5.5.5. <a href="servicechecks.html#parallelization">Parallelization of Service Checks</a></span></dt>
 <dt><span class="section">5.5.6. <a href="servicechecks.html#servicestates">Service States</a></span></dt>
 <dt><span class="section">5.5.7. <a href="servicechecks.html#servicestatedetermination">Service State Determination</a></span></dt>
-<dt><span class="section">5.5.8. <a href="servicechecks.html#servicestatechanges">Services State Changes</a></span></dt>
+<dt><span class="section">5.5.8. <a href="servicechecks.html#servicestatechanges">Service State Changes</a></span></dt>
+<dt><span class="section">5.5.9. <a href="servicechecks.html#servicestatestale">Service State is "stale"</a></span></dt>
 </dl></div>
   
 
@@ -140,9 +141,9 @@
     service to have a WARNING state.</p>
   </div>
 
-  <div class="section" title="5.5.8. Services State Changes">
+  <div class="section" title="5.5.8. Service State Changes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="servicestatechanges"></a>5.5.8. Services State Changes</h3></div></div></div>
+<a name="servicestatechanges"></a>5.5.8. Service State Changes</h3></div></div></div>
     
 
     <p>When Icinga checks the status of services, it will be able to detect when a service changes between OK, WARNING, UNKNOWN,
@@ -153,7 +154,15 @@
     flapping, and can suppress notifications until flapping stops and the service's state stabilizes. More information on the flap detection
     logic can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
 
-    <a class="indexterm" name="idp186060208"></a>
+    <a class="indexterm" name="idp186347120"></a>
+  </div>
+
+  <div class="section" title='5.5.9. Service State is "stale"'>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="servicestatestale"></a>5.5.9. Service State is "stale"</h3></div></div></div>
+    
+
+    <p>For an explanation please take a look at <a class="link" href="freshness.html#stale" title='7.5.5. "Check results ... are stale. Forcing an immediate check ...'>"freshness"</a>.</p>
   </div>
 </div>
 <div class="navfooter">

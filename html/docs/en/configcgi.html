@@ -1865,7 +1865,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="idp182842336"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="idp183116288"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -2492,12 +2492,38 @@
   Enabled)" to the top of the Servicegroup Overview to help prevent any confusion over whether the option is in use or not. However for
   privacy reasons, servicegroups that are only showing a partial listing are not specifically indicated.</p>
 
+  <p><a name="configcgi-disable_cmd_cgi_csrf_proctection"></a><span class="bold"><strong>Disable CSRF protection for command
+  cgi</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>disable_cmd_cgi_csrf_proctection=0|1</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>disable_cmd_cgi_csrf_proctection=1</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>By default (meaning the directive is not present or disabled), a command submitted by an external program (like Nagstamon) accessing
+  cmd.cgi directly will be rejected to protect against CSRF attacks (Cross-Site Request Forgery). Enable (=1) this option only if you need
+  this functionality.</p>
+
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>0 - disabled, user only sees full servicegroups (default)</p>
+      <p>0 - disabled, protect against CSRF attacks (default)</p>
     </li>
 <li class="listitem">
-      <p>1 - enabled, user sees partial servicegroups</p>
+      <p>1 - enabled, allow external programs to submit commands</p>
     </li>
 </ul></div>
 
@@ -2507,151 +2533,153 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.10</p>
+    <p>This option is available starting with Icinga 1.11</p>
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp183057952"></a>
+  <a class="indexterm" name="idp183343584"></a>
 
-  <a class="indexterm" name="idp183059296"></a>
+  <a class="indexterm" name="idp183344896"></a>
 
-  <a class="indexterm" name="idp183060848"></a>
+  <a class="indexterm" name="idp183346288"></a>
 
-  <a class="indexterm" name="idp183062544"></a>
+  <a class="indexterm" name="idp183348048"></a>
 
-  <a class="indexterm" name="idp183064304"></a>
+  <a class="indexterm" name="idp183349568"></a>
 
-  <a class="indexterm" name="idp183065792"></a>
+  <a class="indexterm" name="idp183351152"></a>
 
-  <a class="indexterm" name="idp183067424"></a>
+  <a class="indexterm" name="idp183352784"></a>
 
-  <a class="indexterm" name="idp183069056"></a>
+  <a class="indexterm" name="idp183354416"></a>
 
-  <a class="indexterm" name="idp183070752"></a>
+  <a class="indexterm" name="idp183356112"></a>
 
-  <a class="indexterm" name="idp183072464"></a>
+  <a class="indexterm" name="idp183357824"></a>
 
-  <a class="indexterm" name="idp183074000"></a>
+  <a class="indexterm" name="idp183359360"></a>
 
-  <a class="indexterm" name="idp183075216"></a>
+  <a class="indexterm" name="idp183360576"></a>
 
-  <a class="indexterm" name="idp183076912"></a>
+  <a class="indexterm" name="idp183362272"></a>
 
-  <a class="indexterm" name="idp183078608"></a>
+  <a class="indexterm" name="idp183363968"></a>
 
-  <a class="indexterm" name="idp183080880"></a>
+  <a class="indexterm" name="idp183366240"></a>
 
-  <a class="indexterm" name="idp183082528"></a>
+  <a class="indexterm" name="idp183367888"></a>
 
-  <a class="indexterm" name="idp183084224"></a>
+  <a class="indexterm" name="idp183369584"></a>
 
-  <a class="indexterm" name="idp183085984"></a>
+  <a class="indexterm" name="idp183371344"></a>
 
-  <a class="indexterm" name="idp183087584"></a>
+  <a class="indexterm" name="idp183372944"></a>
 
-  <a class="indexterm" name="idp183088688"></a>
+  <a class="indexterm" name="idp183374048"></a>
 
-  <a class="indexterm" name="idp183090976"></a>
+  <a class="indexterm" name="idp183376336"></a>
 
-  <a class="indexterm" name="idp183092736"></a>
+  <a class="indexterm" name="idp183378096"></a>
 
-  <a class="indexterm" name="idp183094336"></a>
+  <a class="indexterm" name="idp183379696"></a>
 
-  <a class="indexterm" name="idp183096016"></a>
+  <a class="indexterm" name="idp183381376"></a>
 
-  <a class="indexterm" name="idp183097792"></a>
+  <a class="indexterm" name="idp183383152"></a>
 
-  <a class="indexterm" name="idp183099344"></a>
+  <a class="indexterm" name="idp183384704"></a>
 
-  <a class="indexterm" name="idp183099472"></a>
+  <a class="indexterm" name="idp183384832"></a>
 
-  <a class="indexterm" name="idp183102816"></a>
+  <a class="indexterm" name="idp183388176"></a>
 
-  <a class="indexterm" name="idp183104448"></a>
+  <a class="indexterm" name="idp183389808"></a>
 
-  <a class="indexterm" name="idp183106112"></a>
+  <a class="indexterm" name="idp183391472"></a>
 
-  <a class="indexterm" name="idp183107776"></a>
+  <a class="indexterm" name="idp183393136"></a>
 
-  <a class="indexterm" name="idp183109376"></a>
+  <a class="indexterm" name="idp183394736"></a>
 
-  <a class="indexterm" name="idp183111040"></a>
+  <a class="indexterm" name="idp183396400"></a>
 
-  <a class="indexterm" name="idp183112800"></a>
+  <a class="indexterm" name="idp183398160"></a>
 
-  <a class="indexterm" name="idp183114288"></a>
+  <a class="indexterm" name="idp183399648"></a>
 
-  <a class="indexterm" name="idp183115920"></a>
+  <a class="indexterm" name="idp183401280"></a>
 
-  <a class="indexterm" name="idp183117552"></a>
+  <a class="indexterm" name="idp183402912"></a>
 
-  <a class="indexterm" name="idp183119184"></a>
+  <a class="indexterm" name="idp183404544"></a>
 
-  <a class="indexterm" name="idp183120848"></a>
+  <a class="indexterm" name="idp183406208"></a>
 
-  <a class="indexterm" name="idp183122448"></a>
+  <a class="indexterm" name="idp183407808"></a>
 
-  <a class="indexterm" name="idp183124128"></a>
+  <a class="indexterm" name="idp183409488"></a>
 
-  <a class="indexterm" name="idp183125728"></a>
+  <a class="indexterm" name="idp183411088"></a>
 
-  <a class="indexterm" name="idp183127424"></a>
+  <a class="indexterm" name="idp183412784"></a>
 
-  <a class="indexterm" name="idp183129072"></a>
+  <a class="indexterm" name="idp183414432"></a>
 
-  <a class="indexterm" name="idp183130704"></a>
+  <a class="indexterm" name="idp183416064"></a>
 
-  <a class="indexterm" name="idp183132336"></a>
+  <a class="indexterm" name="idp183417696"></a>
 
-  <a class="indexterm" name="idp183133968"></a>
+  <a class="indexterm" name="idp183419328"></a>
 
-  <a class="indexterm" name="idp183135616"></a>
+  <a class="indexterm" name="idp183420976"></a>
 
-  <a class="indexterm" name="idp183136880"></a>
+  <a class="indexterm" name="idp183422240"></a>
 
-  <a class="indexterm" name="idp183138576"></a>
+  <a class="indexterm" name="idp183423936"></a>
 
-  <a class="indexterm" name="idp183140096"></a>
+  <a class="indexterm" name="idp183425456"></a>
 
-  <a class="indexterm" name="idp183141680"></a>
+  <a class="indexterm" name="idp183427040"></a>
 
-  <a class="indexterm" name="idp183143328"></a>
+  <a class="indexterm" name="idp183428688"></a>
 
-  <a class="indexterm" name="idp183145008"></a>
+  <a class="indexterm" name="idp183430368"></a>
 
-  <a class="indexterm" name="idp183146720"></a>
+  <a class="indexterm" name="idp183432080"></a>
 
-  <a class="indexterm" name="idp183148336"></a>
+  <a class="indexterm" name="idp183433696"></a>
 
-  <a class="indexterm" name="idp183149984"></a>
+  <a class="indexterm" name="idp183435344"></a>
 
-  <a class="indexterm" name="idp183151664"></a>
+  <a class="indexterm" name="idp183437024"></a>
 
-  <a class="indexterm" name="idp183153328"></a>
+  <a class="indexterm" name="idp183438688"></a>
 
-  <a class="indexterm" name="idp183155008"></a>
+  <a class="indexterm" name="idp183440368"></a>
 
-  <a class="indexterm" name="idp183156656"></a>
+  <a class="indexterm" name="idp183442016"></a>
 
-  <a class="indexterm" name="idp183158304"></a>
+  <a class="indexterm" name="idp183443664"></a>
 
-  <a class="indexterm" name="idp183160064"></a>
+  <a class="indexterm" name="idp183445424"></a>
 
-  <a class="indexterm" name="idp183161712"></a>
+  <a class="indexterm" name="idp183447072"></a>
 
-  <a class="indexterm" name="idp183163328"></a>
+  <a class="indexterm" name="idp183448688"></a>
 
-  <a class="indexterm" name="idp183165008"></a>
+  <a class="indexterm" name="idp183450368"></a>
 
-  <a class="indexterm" name="idp183166640"></a>
+  <a class="indexterm" name="idp183452000"></a>
 
-  <a class="indexterm" name="idp183168352"></a>
+  <a class="indexterm" name="idp183453712"></a>
 
-  <a class="indexterm" name="idp183170000"></a>
+  <a class="indexterm" name="idp183455360"></a>
 
-  <a class="indexterm" name="idp183171616"></a>
+  <a class="indexterm" name="idp183456976"></a>
 
-  <a class="indexterm" name="idp183173296"></a>
+  <a class="indexterm" name="idp183458656"></a>
+
+  <a class="indexterm" name="idp183460336"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -7,8 +7,8 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">
-<link rel="next" href="cgiparams.html" title="6.3. Information On CGI parameters">
+<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Information On The Modules">
+<link rel="next" href="cgiparams.html" title="6.3. Information On Classic UI parameters">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,7 +41,7 @@
 </dl></div>
   
 
-  <a class="indexterm" name="idp186531104"></a>
+  <a class="indexterm" name="idp186820464"></a>
 
   <div class="section" title="6.2.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
@@ -71,9 +71,9 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp187030064"></a>
+    <a class="indexterm" name="idp187319808"></a>
 
-    <a class="indexterm" name="idp187031856"></a>
+    <a class="indexterm" name="idp187321600"></a>
   </div>
 
   <div class="section" title="6.2.3. Setting Up Authenticated Users">
@@ -92,7 +92,7 @@
 
     <pre class="screen"> htpasswd /usr/local/icinga/etc/htpasswd.users &lt;username&gt;</pre>
 
-    <a class="indexterm" name="idp187039024"></a>
+    <a class="indexterm" name="idp187328768"></a>
   </div>
 
   <div class="section" title="6.2.4. Enabling Authentication/Authorization Functionality In The Classic UI">
@@ -101,14 +101,14 @@
     
 
     <p>The next thing you need to do is make sure that the Classic UI is configured to use the authentication and authorization
-    functionality in determining what information and/or commands users have access to. This is done be setting the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> variable in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>
-    to a non-zero value. Example:</p>
+    functionality in determining what information and/or commands users have access to. This is done be setting the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> variable in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">Classic UI configuration
+    file</a> to a non-zero value. Example:</p>
 
     <pre class="programlisting"> use_authentication=1</pre>
 
     <p>Okay, you're now done with setting up basic authentication/authorization functionality in the Classic UI.</p>
 
-    <a class="indexterm" name="idp187044928"></a>
+    <a class="indexterm" name="idp187334544"></a>
   </div>
 
   <div class="section" title="6.2.5. Default Permissions To Classic UI Information">
@@ -128,7 +128,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p>CGI Data</p></td>
+<td><p>Classic UI Data</p></td>
 <td><p>Authenticated Contacts<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </p></td>
 <td><p>Other Authenticated Users<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitions">*</a> </sup> </p></td>
 </tr>
@@ -255,23 +255,23 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Viewing the raw log file via the <a class="link" href="cgis.html#cgis-showlog_cgi">showlog CGI</a></p>
+        <p>Viewing the raw log file via the <a class="link" href="cgis.html#cgis-showlog_cgi">showlog module</a></p>
       </li>
 <li class="listitem">
-        <p>Viewing Icinga process information via the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a></p>
+        <p>Viewing Icinga process information via the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information modules</a></p>
       </li>
 <li class="listitem">
-        <p>Issuing Icinga process commands via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a></p>
+        <p>Issuing Icinga process commands via the <a class="link" href="cgis.html#cgis-cmd_cgi">command module</a></p>
       </li>
 <li class="listitem">
-        <p>Viewing host group, contact, contact group, time period, and command definitions via the <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a></p>
+        <p>Viewing host group, contact, contact group, time period, and command definitions via the <a class="link" href="cgis.html#cgis-config_cgi">configuration module</a></p>
       </li>
 </ul></div>
 
     <p>You will undoubtably want to access this information, so you'll have to assign additional rights for yourself (and possibly other
     users) as described below...</p>
 
-    <a class="indexterm" name="idp187111920"></a>
+    <a class="indexterm" name="idp187401840"></a>
   </div>
 
   <div class="section" title="6.2.6. Granting Additional Permissions To Classic UI Information">
@@ -280,11 +280,12 @@
     
 
     <p>You can grant <span class="emphasis"><em>authenticated contacts</em></span> or other <span class="emphasis"><em>authenticated users</em></span> permission to
-    additional information in the Classic UI by adding them to various authorization variables in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI
+    additional information in the Classic UI by adding them to various authorization variables in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">Classic UI
     configuration file</a>. We realize that the available options don't allow for getting really specific about particular permissions,
     but its better than nothing..</p>
 
-    <p>Additional authorization can be given to users by adding them to the following variables in the CGI configuration file...</p>
+    <p>Additional authorization can be given to users by adding them to the following variables in the Classic UI configuration
+    file...</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -316,9 +317,9 @@
 <a name="requirementscgiauth"></a>6.2.7. Classic UI Authorization Requirements</h3></div></div></div>
     
 
-    <p>If you are confused about the authorization needed to access various information in the Classic UI, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each CGI as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">here</a>.</p>
+    <p>If you are confused about the authorization needed to access various information in the Classic UI, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each form as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The Modules">here</a>.</p>
 
-    <a class="indexterm" name="idp187130704"></a>
+    <a class="indexterm" name="idp187420576"></a>
   </div>
 
   <div class="section" title="6.2.8. Authentication On Secured Web Servers">
@@ -327,16 +328,16 @@
     
 
     <p>If your web server is located in a secure domain (i.e., behind a firewall) or if you are using SSL, you can define a default
-    username that can be used to access the Classic UI. This is done by defining the <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a> option in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">CGI configuration file</a>. By
-    defining a default username that can access the Classic UI, you can allow users to access the Classic UI without necessarily having to
-    authenticate to the web server. You may want to use this to avoid having to use basic web authentication, as basic authentication
-    transmits passwords in clear text over the Internet.</p>
+    username that can be used to access the Classic UI. This is done by defining the <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a> option in the <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">Classic UI configuration
+    file</a>. By defining a default username that can access the Classic UI, you can allow users to access the Classic UI without
+    necessarily having to authenticate to the web server. You may want to use this to avoid having to use basic web authentication, as basic
+    authentication transmits passwords in clear text over the Internet.</p>
 
     <p><span class="bold"><strong>Important:</strong></span> Do <span class="emphasis"><em>not</em></span> define a default username unless you are running a secure
     web server and are sure that everyone who has access to the Classic UI has been authenticated in some manner. If you define this
     variable, anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
 
-    <a class="indexterm" name="idp187137920"></a>
+    <a class="indexterm" name="idp187427488"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -350,9 +351,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Information On The CGIs </td>
+<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Information On The Modules </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 6.3. Information On CGI parameters</td>
+<td width="40%" align="right" valign="top"> 6.3. Information On Classic UI parameters</td>
 </tr>
 </table>
 </div>

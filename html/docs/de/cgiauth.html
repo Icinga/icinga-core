@@ -7,8 +7,8 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">
-<link rel="next" href="cgiparams.html" title="6.3. Informationen zu den CGI-Parametern">
+<link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die Classic UI-Module">
+<link rel="next" href="cgiparams.html" title="6.3. Informationen zu den Classic UI-Modul-Parametern">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -94,12 +94,13 @@
 
     <p>Als nächstes sollten Sie sicherstellen, dass das Classic UI so konfiguriert ist, dass es die Authentifizierungs- und
     Autorisierungsfunktionalität nutzt, um festzulegen, welchen Zugang Benutzer zu Informationen und/oder Befehlen haben. Dies wird durch
-    die <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Variable in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a> erreicht, die einen Wert ungleich Null haben muss. Beispiel:</p>
+    die <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Variable in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">Classic
+    UI-Konfigurationsdatei</a> erreicht, die einen Wert ungleich Null haben muss. Beispiel:</p>
 
     <pre class="programlisting"> use_authentication=1</pre>
 
-    <p>Okay, nun sind Sie fertig mit dem Einstellen der grundlegenden Authentifizierungs- und Autorisierungsfunktionalität in den
-    CGIs.</p>
+    <p>Okay, nun sind Sie fertig mit dem Einstellen der grundlegenden Authentifizierungs- und Autorisierungsfunktionalität in den Classic
+    UI-Modulen.</p>
   </div>
 
   <div class="section" title="6.2.5. Standardberechtigungen für Classic UI-Informationen">
@@ -119,7 +120,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p>CGI-Daten</p></td>
+<td><p>Classic UI-Daten</p></td>
 <td><p>Authentifizierte Kontakte<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitionen">*</a> </sup> </p></td>
 <td><p>andere authentifizierte Benutzer<sup> <a class="link" href="cgiauth.html#definitionscgiauth" title="6.2.2. Definitionen">*</a> </sup>
             </p></td>
@@ -248,16 +249,17 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>die Log-Datei über das <a class="link" href="cgis.html#cgis-showlog_cgi">showlog CGI</a> anzusehen</p>
+        <p>die Log-Datei über das <a class="link" href="cgis.html#cgis-showlog_cgi">showlog-Modul</a> anzusehen</p>
       </li>
 <li class="listitem">
-        <p>Icinga-Prozessinformationen über das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> anzusehen</p>
+        <p>Icinga-Prozessinformationen über das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information-Modul</a>
+        anzusehen</p>
       </li>
 <li class="listitem">
-        <p>Icinga-Prozessbefehle über das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> zu erteilen</p>
+        <p>Icinga-Prozessbefehle über das <a class="link" href="cgis.html#cgis-cmd_cgi">command-Modul</a> zu erteilen</p>
       </li>
 <li class="listitem">
-        <p>Definitionen für Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster und Befehle über das <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> anzusehen</p>
+        <p>Definitionen für Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster und Befehle über das <a class="link" href="cgis.html#cgis-config_cgi">configuration-Modul</a> anzusehen</p>
       </li>
 </ul></div>
 
@@ -273,8 +275,8 @@
     <p>Uns ist klar, dass die verfügbaren Optionen es nicht erlauben, sehr genau auf bestimmte Berechtigungen einzugehen, aber es ist
     besser als nichts...</p>
 
-    <p>Benutzern können zusätzliche Autorisierungen gegeben werden, indem sie den folgenden Variablen in der CGI-Konfigurationsdatei
-    hinzugefügt werden...</p>
+    <p>Benutzern können zusätzliche Autorisierungen gegeben werden, indem sie den folgenden Variablen in der Classic
+    UI-Konfigurationsdatei hinzugefügt werden...</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -307,8 +309,8 @@
     
 
     <p>Wenn Sie verwirrt sind, welche Autorisierung Sie benötigen, um Zugang zu verschiedenen Informationen im Classic UI zu bekommen,
-    lesen Sie <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">hier</a> den Abschnitt <span class="emphasis"><em> <span class="bold"><strong>Autorisierungsanforderungen</strong></span>
-    </em></span>, in dem jedes CGI beschrieben ist.</p>
+    lesen Sie <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die Classic UI-Module">hier</a> den Abschnitt <span class="emphasis"><em> <span class="bold"><strong>Autorisierungsanforderungen</strong></span>
+    </em></span>, in dem jedes Modul beschrieben ist.</p>
   </div>
 
   <div class="section" title="6.2.8. Authentifizierung auf sicheren Web-Servern">
@@ -317,30 +319,31 @@
     
 
     <p>Wenn Ihr Web-Server in einer sicheren Domäne steht (d.h. hinter einer Firewall) oder wenn Sie SSL benutzen, dann können Sie einen
-    Standard-Benutzernamen definieren, der verwendet werden kann, um das Classic UI aufzurufen. Dies wird durch die Definition der <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a>-Option in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a>
-    erreicht. Durch die Definition eines Standard-Benutzernamens, der die CGIs aufrufen kann, können Sie Benutzern erlauben, das Classic UI
-    aufzurufen, ohne dass sie sich am Web-Server authentifizieren müssen. Sie möchten das vielleicht nutzen, um die Verwendung der
-    Basis-Web-Authentifizierung zu verhindern, weil diese Passwörter im Klartext über das Internet überträgt.</p>
+    Standard-Benutzernamen definieren, der verwendet werden kann, um das Classic UI aufzurufen. Dies wird durch die Definition der <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a>-Option in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">Classic
+    UI-Konfigurationsdatei</a> erreicht. Durch die Definition eines Standard-Benutzernamens, der die Classic UI-Module aufrufen kann,
+    können Sie Benutzern erlauben, das Classic UI aufzurufen, ohne dass sie sich am Web-Server authentifizieren müssen. Sie möchten das
+    vielleicht nutzen, um die Verwendung der Basis-Web-Authentifizierung zu verhindern, weil diese Passwörter im Klartext über das Internet
+    überträgt.</p>
 
     <p><span class="bold"><strong>Wichtig:</strong></span> Definieren Sie <span class="emphasis"><em>keinen</em></span> Standard-Benutzernamen, solange Sie nicht
     einen sicheren Web-Server haben und sicher sind, dass sich jeder, der das Classic UI aufruft, in irgendeiner Weise authentifiziert hat.
     Wenn Sie diese Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte dieses Benutzers erben!</p>
 
-    <a class="indexterm" name="idp187298528"></a>
+    <a class="indexterm" name="idp187244768"></a>
 
-    <a class="indexterm" name="idp187299632"></a>
+    <a class="indexterm" name="idp187245936"></a>
 
-    <a class="indexterm" name="idp187300752"></a>
+    <a class="indexterm" name="idp187247024"></a>
 
-    <a class="indexterm" name="idp187303008"></a>
+    <a class="indexterm" name="idp187248608"></a>
 
-    <a class="indexterm" name="idp187304064"></a>
+    <a class="indexterm" name="idp187250336"></a>
 
-    <a class="indexterm" name="idp187306448"></a>
+    <a class="indexterm" name="idp187252720"></a>
 
-    <a class="indexterm" name="idp187308128"></a>
+    <a class="indexterm" name="idp187253728"></a>
 
-    <a class="indexterm" name="idp187309104"></a>
+    <a class="indexterm" name="idp187256128"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -354,9 +357,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Informationen über die CGIs </td>
+<td width="40%" align="left" valign="top">6.1. Icinga Classic UI: Informationen über die Classic UI-Module </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 6.3. Informationen zu den CGI-Parametern</td>
+<td width="40%" align="right" valign="top"> 6.3. Informationen zu den Classic UI-Modul-Parametern</td>
 </tr>
 </table>
 </div>

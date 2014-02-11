@@ -7,7 +7,7 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="cgicmd.html" title="6.4. Ausführen von CGIs auf der Kommandozeile">
+<link rel="prev" href="cgicmd.html" title="6.4. Ausführen von Classic UI-Modulen (CGIs) auf der Kommandozeile">
 <link rel="next" href="icinga-web-config.html" title="6.6. Konfigurationsübersicht Icinga Web">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
@@ -179,7 +179,7 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Laden Sie das Archiv herunter von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a>. Falls Sie eine
+        <p>Laden Sie das Archiv herunter von <a class="link" href="http://www.icinga.org/download/" target="_top">http://www.icinga.org/download/</a>. Falls Sie eine
         Funktion benötigen, die nur in der aktuellen Entwicklerversion vorhanden ist, dann klonen Sie von icinga-web.git:</p>
 
         <pre class="screen"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
@@ -335,25 +335,15 @@
 
         <p>Der Benutzer muss mindestens diese Privilegien haben: SELECT, UPDATE, INSERT, DELETE.</p>
 
-        <pre class="programlisting"> SQL&gt; GRANT USAGE ON *.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
-
- SQL&gt; GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
-     ON icinga_web.* TO 'icinga_web'@'localhost';</pre>
-
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
             <p><span class="bold"><strong>MySQL</strong></span></p>
 
-            <pre class="screen"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
 
- mysql&gt; GRANT USAGE ON icinga_web.* TO 'icinga_web'@'localhost'
-        IDENTIFIED BY 'icinga_web'
-        WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+ mysql&gt; CREATE DATABASE icinga_web;
 
-        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
-        ON icinga_web.* TO 'icinga_web'@'localhost';
-
-        FLUSH PRIVILEGES;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
 
         quit</pre>
           </li>
@@ -938,9 +928,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp188725184"></a>
+    <a class="indexterm" name="idp188671440"></a>
 
-    <a class="indexterm" name="idp188726496"></a>
+    <a class="indexterm" name="idp188672752"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -954,7 +944,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.4. Ausführen von CGIs auf der Kommandozeile </td>
+<td width="40%" align="left" valign="top">6.4. Ausführen von Classic UI-Modulen (CGIs) auf der Kommandozeile </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
 <td width="40%" align="right" valign="top"> 6.6. Konfigurationsübersicht Icinga Web</td>
 </tr>

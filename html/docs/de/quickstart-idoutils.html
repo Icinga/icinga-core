@@ -42,7 +42,7 @@
 <dt><span class="section">2.5.10. <a href="quickstart-idoutils.html#enableidomod">Aktivieren des idomod-Eventbroker-Moduls</a></span></dt>
 <dt><span class="section">2.5.11. <a href="quickstart-idoutils.html#createidoutilsdatabase">Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen</a></span></dt>
 <dt><span class="section">2.5.12. <a href="quickstart-idoutils.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Kompilieren und installieren der Nagios-Plugins</a></span></dt>
+<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Kompilieren und installieren der Plugins</a></span></dt>
 <dt><span class="section">2.5.14. <a href="quickstart-idoutils.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
 <dt><span class="section">2.5.15. <a href="quickstart-idoutils.html#startiido2dbandicinga">IDOUtils und Icinga starten</a></span></dt>
 <dt><span class="section">2.5.16. <a href="quickstart-idoutils.html#configstartup">Automatischer Start von IDOUtils</a></span></dt>
@@ -560,7 +560,7 @@
 
     <p>Laden Sie die Sourcen von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-    <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+    <p>Vergessen Sie nicht die <a class="link" href="https://www.monitoring-plugins.org" target="_top">Monitoring Plugins</a>.</p>
   </div>
 
   <div class="section" title="2.5.7. Icinga und die IDOUtils kompilieren und installieren">
@@ -835,22 +835,13 @@
 
         <p>Anlegen von Datenbank, Benutzer und Berechtigungen:</p>
 
-        <pre class="programlisting"> #&gt; mysql -u root -p
-  
- mysql&gt; CREATE DATABASE icinga;
-  
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost' 
-   IDENTIFIED BY 'icinga'
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
-   
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
- 
- FLUSH PRIVILEGES ;
+            <pre class="screen"> # mysql -u root -p
 
- quit</pre>
+ mysql&gt; CREATE DATABASE icinga;
+
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
+
+        quit</pre>
 
         <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1049,18 +1040,18 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">hier</a>
+      <p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="8.2. Verbesserte Classic UI Modul-Sicherheit und Authentifizierung">hier</a>
       beschrieben, um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht kompromittiert werden.</p>
     </td></tr>
 </table></div>
   </div>
 
-  <div class="section" title="2.5.13. Kompilieren und installieren der Nagios-Plugins">
+  <div class="section" title="2.5.13. Kompilieren und installieren der Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstallplugins"></a>2.5.13. Kompilieren und installieren der Nagios-Plugins</h3></div></div></div>
+<a name="compileinstallplugins"></a>2.5.13. Kompilieren und installieren der Plugins</h3></div></div></div>
     
 
-    <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
+    <p>Entpacken Sie die Plugins-Quellcode-Archivdatei.</p>
 
     <pre class="screen"> #&gt; cd /usr/src
  #&gt; tar xzf nagios-plugins-1.5.tar.gz
@@ -1198,7 +1189,7 @@
     
 
     <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
-    (<span class="emphasis"><em>nagiosadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
+    (<span class="emphasis"><em>icingaadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
 
     <pre class="screen"> http://localhost/icinga/</pre>
 
@@ -1236,9 +1227,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp177277520"></a>
+    <a class="indexterm" name="idp177200368"></a>
 
-    <a class="indexterm" name="idp177279248"></a>
+    <a class="indexterm" name="idp177201760"></a>
   </div>
 </div>
 <div class="navfooter">

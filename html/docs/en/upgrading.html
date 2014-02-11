@@ -92,9 +92,9 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp177196528"></a>
+  <a class="indexterm" name="idp177446240"></a>
 
-  <a class="indexterm" name="idp177197840"></a>
+  <a class="indexterm" name="idp177447552"></a>
 
   <div class="section" title="2.9.1. Upgrading from previous Icinga Releases">
 <div class="titlepage"><div><div><h3 class="title">
@@ -119,15 +119,27 @@
 
     <p>Become the icinga user. Debian/Ubuntu users might use <code class="code">sudo -s icinga</code>. </p>
 <pre class="programlisting"> $&gt; su -l icinga</pre>
-<p>
-    Get the latest Icinga version from <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.org/</a> and extract it. Then run configure like
-    you did with the old version. </p>
-<pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
-<p>
-    Compile the source. </p>
+<p>Get
+    the latest Icinga version from <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.org/</a> and extract it. Then run configure like you
+    did with the old version. </p>
+<pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
+<p> </p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Starting with Icinga 1.9 the default has changed so you might have to disable the compilation of IDOUtils
+        explicitly.</p>
+
+        <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --disable-idoutils</pre>
+      </td></tr>
+</table></div>
+<p> Compile the source. </p>
 <pre class="programlisting"> #&gt; make all</pre>
-<p> Please make sure that you don't overwrite your configs - always
-    make a backup! Don't use <code class="code">make install-config</code> and/or <code class="code">make install-webconf</code> and/or <code class="code">make
+<p> Please make sure that you don't overwrite your configs -
+    always make a backup! Don't use <code class="code">make install-config</code> and/or <code class="code">make install-webconf</code> and/or <code class="code">make
     install-webconf-auth</code>if you want to manually diff the config files. </p>
 <pre class="programlisting"> #&gt; make install install-base install-cgis install-html install-init \
     install-commandmode install-idoutils</pre>
@@ -226,9 +238,9 @@
 
     <pre class="screen"> $ su -l nagios</pre>
 
-    <p>Get the latest Icinga version from <a class="link" href="http://www.icinga.org//" target="_top">https://www.icinga.org/</a></p>
+    <p>Get the latest Icinga version from <a class="link" href="http://www.icinga.org/download/" target="_top">https://www.icinga.org/</a></p>
 
-    <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.10</em></span>.tar.gz</pre>
+    <pre class="screen"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><em>1.10</em></span>/icinga-<span class="emphasis"><em>1.10</em></span>.tar.gz</pre>
 
     <p>Extract the tarball and change to the directory just created</p>
 
@@ -328,11 +340,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp177269808"></a>
+    <a class="indexterm" name="idp177520304"></a>
 
-    <a class="indexterm" name="idp177271472"></a>
+    <a class="indexterm" name="idp177520432"></a>
 
-    <a class="indexterm" name="idp177273296"></a>
+    <a class="indexterm" name="idp177523632"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrading from Nagios 2.x Releases">
@@ -440,7 +452,7 @@
     backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
     problems.</p>
 
-    <a class="indexterm" name="idp177311728"></a>
+    <a class="indexterm" name="idp177563216"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -210,17 +210,19 @@
 <a name="formatperfdata"></a>7.15.7. <a name="perfdata-format"></a>Format Performance-Daten</h3></div></div></div>
     
 
-    <p>Die Nagios-Entwicklerrichtlinien (<a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">http://nagiosplug.sourceforge.net/developer-guidelines.html</a>)
-    enthalten in <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN201" target="_top">Abschnitt 2.6</a> die Definition
-    und eine Erklärung des Performance-Daten-Formats. Es wird nachfolgend zu Ihrer Bequemlichkeit wiederholt (und übersetzt):</p>
+    <p>Die Monitoring Plugins-Entwicklerrichtlinien (<a class="link" href="https://www.monitoring-plugins.org/doc/guidelines.html" target="_top">https://www.monitoring-plugins.org/doc/guidelines.html</a>) enthalten in <a class="link" href="https://www.monitoring-plugins.org/doc/guidelines.html#AEN200" target="_top">Abschnitt 2.6</a> die Definition und eine Erklärung des
+    Performance-Daten-Formats. Es wird nachfolgend zu Ihrer Bequemlichkeit wiederholt (und übersetzt):</p>
 
     <p>----- 8&lt; -----</p>
 
     <p><span class="emphasis"><em>2.6.Performance-Daten</em></span></p>
 
-    <p>Performance-Daten wird von Nagios definiert als "alles nach dem | der Plugin-Ausgabe" - bitte werfen Sie einen Blick in die
-    Nagios(/Icinga)-Dokumentation für Information, wie man diese Daten in Log-Dateien umlenken kann. Auf jeden Fall ist der Plugin-Autor
-    dafür verantwortlich, dass die Performance-Daten dem "Nagios-Plugin"-Format entsprechen. Dies ist das erwartete Format:</p>
+    <p>Nagios 3 und neuer konkatenieren die Teile nach einem "|" in a) der ersten Ausgabezeile des Plugins und b) in der zweiten bis
+    letzten Zeile zu einer Zeichenkette, die an die konfigurierte Performance-Daten-Verarbeitung weitergeleitet wird. (Bitte beachten Sie,
+    dass bisher keine zusätzlichen "Whitespaces" zwischen diesen beiden eingefügt wird, so dass das Plugin welche bereitstellen muss, damit
+    das letzte Paar aus a) und das erste aus b) nicht ineinander laufen.) Bitte werfen Sie einen Blick in die Nagios(/Icinga)-Dokumention
+    für Informationen, wie solch eine Verarbeitung zu konfigurieren ist. Auf jeden Fall ist der Plugin-Autor dafür verantwortlich, dass die
+    Performance-Daten dem "Nagios-Plugin"-Format entsprechen. Dies ist das erwartete Format:</p>
 
     <p>'Bezeichnung'=Wert[UOM];[warn];[crit];[min];[max]</p>
 
@@ -318,9 +320,9 @@
       </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp190966816"></a>
+    <a class="indexterm" name="idp190925968"></a>
 
-    <a class="indexterm" name="idp190968096"></a>
+    <a class="indexterm" name="idp190927248"></a>
   </div>
 </div>
 <div class="navfooter">

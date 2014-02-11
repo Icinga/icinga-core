@@ -60,7 +60,7 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp177487312"></a>
+  <a class="indexterm" name="idp177411920"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -117,7 +117,20 @@
 
     <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
 
-    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
+    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Beginnend mit Icinga 1.9 hat sich der Default geändert, so dass Sie die Kompilation der IDOUtils ggf. explizit
+      verhindern müssen.</p>
+
+      <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --disable-idoutils</pre>
+    </td></tr>
+</table></div>
 
     <p>Kompilieren Sie den Icinga-Quellcode.</p>
 
@@ -135,8 +148,9 @@
 
     <p><span class="bold"><strong>Aktualisieren auf Apache 2.4</strong></span></p>
 
-      <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
-      <code class="filename">/etc/apache2/conf-available</code> geändert. Wenn Sie migrieren wollen, dann verschieben Sie einfach die Datei(en), aktivieren die Konfiguration(en) und starten den Web-Server neu</p>
+    <p>Beginnend mit Apache 2.4 hat sich der Standard-Konfigurationsordner von <code class="filename">/etc/apache2/conf.d</code> in
+    <code class="filename">/etc/apache2/conf-available</code> geändert. Wenn Sie migrieren wollen, dann verschieben Sie einfach die Datei(en),
+    aktivieren die Konfiguration(en) und starten den Web-Server neu</p>
 <pre class="screen">#&gt; mv /etc/apache2/conf.d/icinga*.conf /etc/apache2/conf-available
 #&gt; a2enconf icinga icinga-web
 #&gt; service apache2 reload</pre>
@@ -146,17 +160,15 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>
-      Hinter
-
-      <code class="literal">a2enconf</code>
-
-      geben Sie die Konfiguration(en) an. Das Beispiel nimmt an, dass Sie Icinga Classic UI und Icinga Web installiert haben.
-    </p></td></tr>
+<tr><td align="left" valign="top">
+      <p>Hinter <code class="literal">a2enconf</code> geben Sie die Konfiguration(en) an. Das Beispiel nimmt an, dass Sie Icinga Classic UI und
+      Icinga Web installiert haben.</p>
+    </td></tr>
 </table></div>
+
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp177507056"></a>
+    <a class="indexterm" name="idp177434992"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
@@ -212,7 +224,7 @@
 
     <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">https://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-    <pre class="programlisting"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><strong>1.10</strong></span>.tar.gz</pre>
+    <pre class="programlisting"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><strong>1.10</strong></span>/icinga-<span class="emphasis"><strong>1.10</strong></span>.tar.gz</pre>
 
     <p>Entpacken Sie das Quellcode-Archiv.</p>
 
@@ -308,11 +320,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp177557712"></a>
+    <a class="indexterm" name="idp177484592"></a>
 
-    <a class="indexterm" name="idp177557872"></a>
+    <a class="indexterm" name="idp177484752"></a>
 
-    <a class="indexterm" name="idp177561008"></a>
+    <a class="indexterm" name="idp177487888"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
@@ -431,7 +443,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp177603552"></a>
+    <a class="indexterm" name="idp177530432"></a>
   </div>
 </div>
 <div class="navfooter">

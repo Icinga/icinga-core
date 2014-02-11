@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>6.1. Icinga Classic UI: Informationen über die CGIs</title>
+<title>6.1. Icinga Classic UI: Informationen über die Classic UI-Module</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">6.1. Icinga Classic UI: Informationen über die CGIs</th></tr>
+<tr><th colspan="3" align="center">6.1. Icinga Classic UI: Informationen über die Classic UI-Module</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch06.html">Zurück</a> </td>
@@ -26,53 +26,53 @@
 </table>
 <hr>
 </div>
-<div class="section" title="6.1. Icinga Classic UI: Informationen über die CGIs">
+<div class="section" title="6.1. Icinga Classic UI: Informationen über die Classic UI-Module">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgis"></a>6.1. Icinga Classic UI: Informationen über die CGIs</h2></div></div></div>
+<a name="cgis"></a>6.1. Icinga Classic UI: Informationen über die Classic UI-Module</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung in das Icinga Classic UI</strong></span></p>
 
-  <p>Die verschiedenen mit dem Icinga Core gelieferten CGIs werden hier beschrieben, zusammen mit den Autorisierungsanforderungen
-  für den Zugriff und den Gebrauch jedes CGIs. Im Grundzustand erwarten die CGIs, dass Sie sich dem Web-Server gegenüber authentifiziert
-  haben und autorisiert sind, jede Information zu sehen, die Sie anfordern. Mehr Informationen über die Konfiguration der Autorisierung
-  finden Sie <a class="link" href="cgiauth.html" title="6.2. Authentifizierung und Autorisierung im Classic UI">hier</a>.</p>
+  <p>Die verschiedenen mit dem Icinga Core gelieferten Classic UI-Module (CGIs) werden hier beschrieben, zusammen mit den
+  Autorisierungsanforderungen für den Zugriff und den Gebrauch jedes Moduls. Im Grundzustand erwarten die Module, dass Sie sich dem
+  Web-Server gegenüber authentifiziert haben und autorisiert sind, jede Information zu sehen, die Sie anfordern. Mehr Informationen über die
+  Konfiguration der Autorisierung finden Sie <a class="link" href="cgiauth.html" title="6.2. Authentifizierung und Autorisierung im Classic UI">hier</a>.</p>
 
-  <p>Die CGIs können über verschiedene Parameter gesteuert werden. Mehr Informationen finden Sie <a class="link" href="cgiparams.html" title="6.3. Informationen zu den CGI-Parametern">hier</a>.</p>
+  <p>Die Module können über verschiedene Parameter gesteuert werden. Mehr Informationen finden Sie <a class="link" href="cgiparams.html" title="6.3. Informationen zu den Classic UI-Modul-Parametern">hier</a>.</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
-  <p><a class="link" href="cgis.html#cgis-status_cgi">Status CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-status_cgi">Status-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-statusmap_cgi">Status map CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-statusmap_cgi">Status map-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-tac_cgi">Tactical overview CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-tac_cgi">Tactical overview-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-outages_cgi">Network outages CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-outages_cgi">Network outages-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-config_cgi">Configuration CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-config_cgi">Configuration-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-cmd_cgi">Command CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-cmd_cgi">Command-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-extinfo_cgi">Extended information CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-extinfo_cgi">Extended information-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-showlog_cgi">Event log CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-showlog_cgi">Event log-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-history_cgi">Alert history CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-history_cgi">Alert history-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-notifications_cgi">Notifications CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-notifications_cgi">Notifications-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-trends_cgi">Trends CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-trends_cgi">Trends-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-avail_cgi">Availability reporting CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-avail_cgi">Availability reporting-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-histogram_cgi">Alert histogram CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-histogram_cgi">Alert histogram-Modul</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-summary_cgi">Alert summary CGI</a></p>
+  <p><a class="link" href="cgis.html#cgis-summary_cgi">Alert summary-Modul</a></p>
 
   <p><a class="link" href="cgis.html#cgis-changes">Änderungen am Classic UI</a></p>
 
-  <p><a name="cgis-status_cgi"></a><span class="bold"><strong>Status CGI</strong></span></p>
+  <p><a name="cgis-status_cgi"></a><span class="bold"><strong>Status-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -95,9 +95,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dies ist das wichtigste mit Icinga gelieferte CGI. Es erlaubt Ihnen den aktuellen Status aller überwachten Hosts und Services
-  zu sehen. Das Status-CGI kann zwei Arten von Ausgaben liefern - einen Status-Überblick aller Hostgruppen (oder einer bestimmten
-  Hostgruppe) und eine detaillierte Anzeige aller Services (oder diese bezogen auf einen bestimmten Host).</p>
+  <p>Dies ist das wichtigste mit Icinga gelieferte Classic UI-Modul. Es erlaubt Ihnen den aktuellen Status aller überwachten Hosts
+  und Services zu sehen. Das Status-Modul kann zwei Arten von Ausgaben liefern - einen Status-Überblick aller Hostgruppen (oder einer
+  bestimmten Hostgruppe) und eine detaillierte Anzeige aller Services (oder diese bezogen auf einen bestimmten Host).</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -116,7 +116,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-statusmap_cgi"></a><span class="bold"><strong>Status Map CGI</strong></span></p>
+  <p><a name="cgis-statusmap_cgi"></a><span class="bold"><strong>Status Map Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -129,8 +129,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI erstellt eine Karte aller Hosts, die Sie in Ihrem Netzwerk definiert haben. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um ein PNG-Bild Ihrer Netzwerk-Struktur zu
-  erstellen. Die verwendeten Koordinaten (zusammen mit den optionalen Icons) werden aus den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen genommen. Wenn Sie es vorziehen, dass das CGI automatisch für Sie Koordinaten
+  <p>Dieses Classic UI-Modul erstellt eine Karte aller Hosts, die Sie in Ihrem Netzwerk definiert haben. Das Modul nutzt Thomas Boutells
+  <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um ein PNG-Bild Ihrer Netzwerk-Struktur zu
+  erstellen. Die verwendeten Koordinaten (zusammen mit den optionalen Icons) werden aus den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen genommen. Wenn Sie es vorziehen, dass das Modul automatisch für Sie Koordinaten
   generiert, nutzen Sie die <a class="link" href="configcgi.html#configcgi-default_statusmap_layout">default_statusmap_layout</a>-Direktive, um einen
   Layout-Algorithmus zu definieren.</p>
 
@@ -159,7 +160,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="cgis-tac_cgi"></a><span class="bold"><strong>Tactical Overview CGI</strong></span></p>
+  <p><a name="cgis-tac_cgi"></a><span class="bold"><strong>Tactical Overview Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -172,11 +173,11 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI dient als Sicht aus der "Vogelperspektive" auf alle Netzwerk-Überwachungs-Aktivitäten. Es erlaubt Ihnen schnell
-  Netzwerkausfälle sowie Host- und Service-Zustände zu erkennen. Es unterscheidet zwischen Problemen, die auf irgendeine Weise "behandelt"
-  wurden (z.B. bestätigt oder Benachrichtigungen deaktiviert) und solchen, die nicht behandelt wurden und die deshalb Beachtung erfordern.
-  Das ist sehr hilfreich, wenn Sie viele zu überwachende Hosts und Services haben und einen einzelnen Bildschirm zur Alarmierung über
-  Probleme einsetzen möchten.</p>
+  <p>Dieses Classic UI-Modul dient als Sicht aus der "Vogelperspektive" auf alle Netzwerk-Überwachungs-Aktivitäten. Es erlaubt Ihnen
+  schnell Netzwerkausfälle sowie Host- und Service-Zustände zu erkennen. Es unterscheidet zwischen Problemen, die auf irgendeine Weise
+  "behandelt" wurden (z.B. bestätigt oder Benachrichtigungen deaktiviert) und solchen, die nicht behandelt wurden und die deshalb Beachtung
+  erfordern. Das ist sehr hilfreich, wenn Sie viele zu überwachende Hosts und Services haben und einen einzelnen Bildschirm zur Alarmierung
+  über Probleme einsetzen möchten.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -195,7 +196,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-outages_cgi"></a><span class="bold"><strong>Network Outages CGI</strong></span></p>
+  <p><a name="cgis-outages_cgi"></a><span class="bold"><strong>Network Outages Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -208,9 +209,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI zeigt eine Liste von "Problem"-Hosts, die Netzwerkausfälle hervorrufen. Dies kann besonders dann hilfreich sein, wenn Sie
-  ein großes Netzwerk haben und schnell die Quelle des Problems identifizieren möchten. Hosts werden sortiert nach der Schwere des Ausfalls,
-  den sie bewirken.</p>
+  <p>Dieses Classic UI-Modul zeigt eine Liste von "Problem"-Hosts, die Netzwerkausfälle hervorrufen. Dies kann besonders dann hilfreich
+  sein, wenn Sie ein großes Netzwerk haben und schnell die Quelle des Problems identifizieren möchten. Hosts werden sortiert nach der
+  Schwere des Ausfalls, den sie bewirken.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -222,7 +223,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-config_cgi"></a><span class="bold"><strong>Configuration CGI</strong></span></p>
+  <p><a name="cgis-config_cgi"></a><span class="bold"><strong>Configuration Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -235,8 +236,8 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI erlaubt es Ihnen, Objekte (z.B. Hosts, Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster, Services, etc.) anzusehen, die
-  Sie in Ihrer/Ihren <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a> definiert haben.</p>
+  <p>Dieses Classic UI-Modul erlaubt es Ihnen, Objekte (z.B. Hosts, Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster, Services, etc.)
+  anzusehen, die Sie in Ihrer/Ihren <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a> definiert haben.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -245,7 +246,7 @@
       autorisiert</em></span> </a> sein, um jegliche Konfigurationsinformationen ansehen zu können.</p>
     </li></ul></div>
 
-  <p><a name="cgis-cmd_cgi"></a><span class="bold"><strong>Command CGI</strong></span></p>
+  <p><a name="cgis-cmd_cgi"></a><span class="bold"><strong>Command-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -258,8 +259,8 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI erlaubt es Ihnen, Befehle an den Icinga-Prozess zu senden. Obwohl dieses CGI mehrere Argumente hat, sollten Sie
-  besser darauf verzichten. Die meisten wechseln zwischen verschiedenen Revisionen von Icinga. Nutzen Sie das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> als Startpunkt, um Befehle zu erteilen.</p>
+  <p>Dieses Classic UI-Modul erlaubt es Ihnen, Befehle an den Icinga-Prozess zu senden. Obwohl dieses Modul mehrere Argumente hat,
+  sollten Sie besser darauf verzichten. Die meisten wechseln zwischen verschiedenen Revisionen von Icinga. Nutzen Sie das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information Modul</a> als Startpunkt, um Befehle zu erteilen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -285,12 +286,13 @@
   <p><span class="bold"><strong>Anmerkungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>Wenn Sie sich entschieden haben, die Option <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> für die CGIs
-      nicht zu nutzen, wird dieses CGI <span class="emphasis"><em>jedem</em></span> die Möglichkeit verweigern, Befehle zu erteilen. Dies geschieht zu Ihrem
-      eigenen Schutz. Wir würden empfehlen, dieses CGI komplett zu entfernen, wenn Sie die Authentifizierung für CGI nicht nutzen.</p>
+      <p>Wenn Sie sich entschieden haben, die Option <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> für die
+      Module nicht zu nutzen, wird dieses Modul <span class="emphasis"><em>jedem</em></span> die Möglichkeit verweigern, Befehle zu erteilen. Dies geschieht
+      zu Ihrem eigenen Schutz. Wir würden empfehlen, dieses Modul komplett zu entfernen, wenn Sie die Authentifizierung für Module nicht
+      nutzen.</p>
     </li></ul></div>
 
-  <p><a name="cgis-extinfo_cgi"></a><span class="bold"><strong>Extended Information CGI</strong></span></p>
+  <p><a name="cgis-extinfo_cgi"></a><span class="bold"><strong>Extended Information-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -313,12 +315,11 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI erlaubt es Ihnen, Icinga-Prozess-Informationen, Host- und Service-Zustandsstatistiken, Host- und
-  Service-Kommentare und mehr anzusehen. Es dient auch als Startpunkt, um über das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> Befehle
-  an Icinga zu erteilen. Obwohl dieses CGI mehrere Argumente hat, sollten Sie besser darauf verzichten. Die meisten wechseln zwischen
-  verschiedenen Revisionen von Icinga. Sie können dieses CGI erreichen, indem Sie auf 'Network Health' bzw. 'Process Information' in
-  der setilichen Navigationsleiste klicken oder auf einen Host- oder Service-Link in der Ausgabe des <a class="link" href="cgis.html#cgis-status_cgi">status
-  CGI</a>.</p>
+  <p>Dieses Classic UI-Modul erlaubt es Ihnen, Icinga-Prozess-Informationen, Host- und Service-Zustandsstatistiken, Host- und
+  Service-Kommentare und mehr anzusehen. Es dient auch als Startpunkt, um über das <a class="link" href="cgis.html#cgis-cmd_cgi">command-Modul</a> Befehle
+  an Icinga zu erteilen. Obwohl dieses Modul mehrere Argumente hat, sollten Sie besser darauf verzichten. Die meisten wechseln
+  zwischen verschiedenen Revisionen von Icinga. Sie können dieses Modul erreichen, indem Sie auf 'Network Health' bzw. 'Process
+  Information' in der seitlichen Navigationsleiste klicken oder auf einen Host- oder Service-Link in der Ausgabe des <a class="link" href="cgis.html#cgis-status_cgi">status-Modul</a>.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -341,7 +342,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-showlog_cgi"></a><span class="bold"><strong>Event Log CGI</strong></span></p>
+  <p><a name="cgis-showlog_cgi"></a><span class="bold"><strong>Event Log-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -354,7 +355,7 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI zeigt das <a class="link" href="configmain.html#configmain-log_file">log file</a>. Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem Sie
+  <p>Dieses Classic UI-Modul zeigt das <a class="link" href="configmain.html#configmain-log_file">log file</a>. Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem Sie
   die Navigations-Links oben auf der Seite benutzen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
@@ -364,7 +365,7 @@
       </a> sein, um das Logfile ansehen zu können.</p>
     </li></ul></div>
 
-  <p><a name="cgis-history_cgi"></a><span class="bold"><strong>Alert History CGI</strong></span></p>
+  <p><a name="cgis-history_cgi"></a><span class="bold"><strong>Alert History-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -377,11 +378,11 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird benutzt, um die Problem-Historie für einen oder alle Hosts anzuzeigen. Die Ausgabe ist grundsätzlich ein Auszug der
-  Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt werden. Sie haben die Möglichkeit, die Ausgabe
-  zu filtern, um nur die Problemtypen anzuzeigen, die Sie sehen wollen (z.B. Hard- und/oder Soft-Alarme, verschiedene Typen von Service- und
-  Host-Alarmen, alle Arten von Alarmen, usw.). Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert
-  haben, können Sie in archivierten Log-Dateien blättern, indem Sie die Navigations-Links oben auf der Seite benutzen.</p>
+  <p>Dieses Classic UI-Modul wird benutzt, um die Problem-Historie für einen oder alle Hosts anzuzeigen. Die Ausgabe ist grundsätzlich
+  ein Auszug der Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file-Modul</a> angezeigt werden. Sie haben die
+  Möglichkeit, die Ausgabe zu filtern, um nur die Problemtypen anzuzeigen, die Sie sehen wollen (z.B. Hard- und/oder Soft-Alarme,
+  verschiedene Typen von Service- und Host-Alarmen, alle Arten von Alarmen, usw.). Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem Sie
+  die Navigations-Links oben auf der Seite benutzen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -400,7 +401,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-notifications_cgi"></a><span class="bold"><strong>Notifications CGI</strong></span></p>
+  <p><a name="cgis-notifications_cgi"></a><span class="bold"><strong>Notifications-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -413,9 +414,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um Host- und Service-Benachrichtigungen anzuzeigen, die an verschiedene Kontakte versandt wurden. Die
-  Ausgabe ist grundsätzlich ein Auszug der Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt
-  werden. Sie haben die Möglichkeit, die Ausgabe zu filtern, um nur die Benachrichtigungen anzuzeigen, die Sie sehen wollen (z.B.
+  <p>Dieses Classic UI-Modul wird genutzt, um Host- und Service-Benachrichtigungen anzuzeigen, die an verschiedene Kontakte versandt
+  wurden. Die Ausgabe ist grundsätzlich ein Auszug der Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file-Modul</a>
+  angezeigt werden. Sie haben die Möglichkeit, die Ausgabe zu filtern, um nur die Benachrichtigungen anzuzeigen, die Sie sehen wollen (z.B.
   Service-Benachrichtigungen, Host-Benachrichtigungen, Benachrichtigungen, die an bestimmte Kontakte versandt wurden, usw.). Wenn Sie die
   <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem
   Sie die Navigations-Links oben auf der Seite benutzen.</p>
@@ -437,7 +438,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-trends_cgi"></a><span class="bold"><strong>Trends CGI</strong></span></p>
+  <p><a name="cgis-trends_cgi"></a><span class="bold"><strong>Trends-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -450,11 +451,11 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Graphen über Host- oder Service-Zustände für einen beliebigen Zeitraum zu erstellen. Damit dieses
-  CGI von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a> aktivieren und archivierte Logs in dem
-  Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive angegeben wird. Das CGI
-  nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um die Trend-Grafiken zu
-  erstellen.</p>
+  <p>Dieses Classic UI-Modul wird genutzt, um einen Graphen über Host- oder Service-Zustände für einen beliebigen Zeitraum zu erstellen.
+  Damit dieses Modul von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a> aktivieren und
+  archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive
+  angegeben wird. Das Modul nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder
+  höher), um die Trend-Grafiken zu erstellen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -473,7 +474,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-avail_cgi"></a><span class="bold"><strong>Availability Reporting CGI</strong></span></p>
+  <p><a name="cgis-avail_cgi"></a><span class="bold"><strong>Availability Reporting-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -492,10 +493,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten Zeitraum zu
-  erstellen. Damit dieses CGI von Wert ist, sollten Sie <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktivieren und
-  archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain.html#configmain-log_archive_path">log_archive_path</a>-Direktive
-  angegeben wird.</p>
+  <p>Dieses Classic UI-Modul wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten
+  Zeitraum zu erstellen. Damit dieses Modul von Wert ist, sollten Sie <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a>
+  aktivieren und archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain.html#configmain-log_archive_path">log_archive_path</a>-Direktive angegeben wird.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -514,7 +514,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-histogram_cgi"></a><span class="bold"><strong>Alert Histogram CGI</strong></span></p>
+  <p><a name="cgis-histogram_cgi"></a><span class="bold"><strong>Alert Histogram-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -527,11 +527,9 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten Zeitraum zu
-  erstellen. Damit dieses CGI von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a> aktivieren und
-  archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive
-  angegeben wird. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher),
-  um die Histogramm-Grafiken zu erstellen.</p>
+  <p>Dieses Classic UI-Modul wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten
+  Zeitraum zu erstellen. Damit dieses Modul von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a>
+  aktivieren und archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive angegeben wird. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um die Histogramm-Grafiken zu erstellen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -550,7 +548,7 @@
     </li>
 </ul></div>
 
-  <p><a name="cgis-summary_cgi"></a><span class="bold"><strong>Alert Summary CGI</strong></span></p>
+  <p><a name="cgis-summary_cgi"></a><span class="bold"><strong>Alert Summary-Modul</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -563,8 +561,8 @@
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI stellt einige generische Berichte über Host- und Service-Alarmdaten zur Verfügung, darunter Gesamtzahl Alarme,
-  Alarm-Spitzenreiter, etc.</p>
+  <p>Dieses Classic UI-Modul stellt einige generische Berichte über Host- und Service-Alarmdaten zur Verfügung, darunter Gesamtzahl
+  Alarme, Alarm-Spitzenreiter, etc.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
@@ -592,7 +590,7 @@
 <li class="listitem">
       <p>Das Aussehen des "General"-Abschnitts auf der linke Seite hat sich erneut geändert</p>
 
-      <p><a name="cgis-general_cgi"></a><span class="bold"><strong>General CGI</strong></span></p>
+      <p><a name="cgis-general_cgi"></a><span class="bold"><strong>General-Modul</strong></span></p>
 
       <div class="informaltable">
         <table border="0">
@@ -632,7 +630,7 @@
       (direkt neben dem Text "Updated every 90 seconds" links oben im Status-Fenster). Klicken auf [continue] aktiviert die Aktualisierung
       wieder.</p>
 
-      <p><a name="cgis-pause_cgi"></a><span class="bold"><strong>Pause CGI</strong></span></p>
+      <p><a name="cgis-pause_cgi"></a><span class="bold"><strong>Pause-Modul</strong></span></p>
 
       <div class="informaltable">
         <table border="0">
@@ -654,7 +652,7 @@
 </table>
       </div>
 
-      <p><a name="cgi-continue_cgi"></a><span class="bold"><strong>Continue CGI</strong></span></p>
+      <p><a name="cgi-continue_cgi"></a><span class="bold"><strong>Continue-Modul</strong></span></p>
 
       <div class="informaltable">
         <table border="0">
@@ -682,7 +680,7 @@
       erteilen können (ab Icinga 1.2). Nun können Sie ein oder mehrere Objekte durch Check-Boxen neben den Objekten auswählen. Durch
       aktivieren der Check-Box neben "Status information" werden alle Services eines Hosts ausgewählt.</p>
 
-      <p><a name="cgi-statusinfo_cgi"></a><span class="bold"><strong>Statusinfo CGI</strong></span></p>
+      <p><a name="cgi-statusinfo_cgi"></a><span class="bold"><strong>Statusinfo-Modul</strong></span></p>
 
       <div class="informaltable">
         <table border="0">
@@ -705,7 +703,7 @@
 </table>
       </div>
 
-      <p><a name="cgi-commands_cgi"></a><span class="bold"><strong>Commands CGI</strong></span></p>
+      <p><a name="cgi-commands_cgi"></a><span class="bold"><strong>Commands-Modul</strong></span></p>
 
       <div class="informaltable">
         <table border="0">
@@ -755,35 +753,35 @@ window.onload=urlify;
     </li>
 </ul></div>
 
-  <a class="indexterm" name="idp187169408"></a>
+  <a class="indexterm" name="idp187115856"></a>
 
-  <a class="indexterm" name="idp187171024"></a>
+  <a class="indexterm" name="idp187117472"></a>
 
-  <a class="indexterm" name="idp187172640"></a>
+  <a class="indexterm" name="idp187118992"></a>
 
-  <a class="indexterm" name="idp187174256"></a>
+  <a class="indexterm" name="idp187120464"></a>
 
-  <a class="indexterm" name="idp187175872"></a>
+  <a class="indexterm" name="idp187122256"></a>
 
-  <a class="indexterm" name="idp187177488"></a>
+  <a class="indexterm" name="idp187123872"></a>
 
-  <a class="indexterm" name="idp187179104"></a>
+  <a class="indexterm" name="idp187125488"></a>
 
-  <a class="indexterm" name="idp187180720"></a>
+  <a class="indexterm" name="idp187127104"></a>
 
-  <a class="indexterm" name="idp187182208"></a>
+  <a class="indexterm" name="idp187128592"></a>
 
-  <a class="indexterm" name="idp187182336"></a>
+  <a class="indexterm" name="idp187130256"></a>
 
-  <a class="indexterm" name="idp187185504"></a>
+  <a class="indexterm" name="idp187131936"></a>
 
-  <a class="indexterm" name="idp187185632"></a>
+  <a class="indexterm" name="idp187133552"></a>
 
-  <a class="indexterm" name="idp187188736"></a>
+  <a class="indexterm" name="idp187135168"></a>
 
-  <a class="indexterm" name="idp187188864"></a>
+  <a class="indexterm" name="idp187136656"></a>
 
-  <a class="indexterm" name="idp187192000"></a>
+  <a class="indexterm" name="idp187138320"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -41,153 +41,145 @@
   <div class="section" title="7.12.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.12.1. Introduction</h3></div></div></div>
-	  
+    
 
-  <p>Several people have asked how to go about monitoring clusters of hosts or services, so this little documentation should
-  provide you with some information on how to do this. It's fairly straightforward, so hopefully you find things easy to
-  understand...</p>
+    <p>Several people have asked how to go about monitoring clusters of hosts or services, so this little documentation should provide
+    you with some information on how to do this. It's fairly straightforward, so hopefully you find things easy to understand...</p>
 
-  <p>First off, we need to define what we mean by a "cluster". The simplest way to understand this is with an example. Let's
-  say that your organization has five hosts which provide redundant DNS services to your organization. If one of them fails, its
-  not a major catastrophe because the remaining servers will continue to provide name resolution services. If you're concerned
-  with monitoring the availability of DNS service to your organization, you will want to monitor five DNS servers. This is what is
-  considered to be a <span class="emphasis"><em>service</em></span> cluster. The service cluster consists of five separate DNS services that you are
-  monitoring. Although you do want to monitor each individual service, your main concern is with the overall status of the DNS
-  service cluster, rather than the availability of any one particular service.</p>
+    <p>First off, we need to define what we mean by a "cluster". The simplest way to understand this is with an example. Let's say that
+    your organization has five hosts which provide redundant DNS services to your organization. If one of them fails, its not a major
+    catastrophe because the remaining servers will continue to provide name resolution services. If you're concerned with monitoring the
+    availability of DNS service to your organization, you will want to monitor five DNS servers. This is what is considered to be a
+    <span class="emphasis"><em>service</em></span> cluster. The service cluster consists of five separate DNS services that you are monitoring. Although you
+    do want to monitor each individual service, your main concern is with the overall status of the DNS service cluster, rather than the
+    availability of any one particular service.</p>
 
-  <p>If your organization has a group of hosts that provide a high-availability (clustering) solution, that would be considered
-  to be a <span class="emphasis"><em>host</em></span> cluster. If one particular host fails, another will step in to take over all the duties of the
-  failed server. As a side note, check out the <a class="link" href="http://www.linux-ha.org" target="_top">High-Availability Linux Project</a>
-  for information on providing host and service redundancy with Linux.</p>
-
+    <p>If your organization has a group of hosts that provide a high-availability (clustering) solution, that would be considered to be a
+    <span class="emphasis"><em>host</em></span> cluster. If one particular host fails, another will step in to take over all the duties of the failed server.
+    As a side note, check out the <a class="link" href="http://www.linux-ha.org" target="_top">High-Availability Linux Project</a> for information on
+    providing host and service redundancy with Linux.</p>
   </div>
 
   <div class="section" title="7.12.2. Plan of Attack">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="planofattack"></a>7.12.2. Plan of Attack</h3></div></div></div>
-	  
+    
 
-  <p>There are several ways you could potentially monitor service or host clusters. We'll describe one method to do that.
-  Monitoring service or host clusters involves two things:</p>
+    <p>There are several ways you could potentially monitor service or host clusters. We'll describe one method to do that. Monitoring
+    service or host clusters involves two things:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Monitoring individual cluster elements</p>
-    </li>
+        <p>Monitoring individual cluster elements</p>
+      </li>
 <li class="listitem">
-      <p>Monitoring the cluster as a collective entity</p>
-    </li>
+        <p>Monitoring the cluster as a collective entity</p>
+      </li>
 </ul></div>
 
-  <p>Monitoring individual host or service cluster elements is easier than you think. In fact, you're probably already doing
-  it. For service clusters, just make sure that you are monitoring each service element of the cluster. If you've got a cluster of
-  five DNS servers, make sure you have five separate service definitions (probably using the <span class="emphasis"><em>check_dns</em></span>
-  plugin). For host clusters, make sure you have configured appropriate host definitions for each member of the cluster (you'll
-  also have to define at least one service to be monitored for each of the hosts). <span class="bold"><strong>Important:</strong></span>
-  You're going to want to disable notifications for the individual cluster elements (host or service definitions). Even though no
-  notifications will be sent about the individual elements, you'll still get a visual display of the individual host or service
-  status in the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>. This will be useful for pinpointing the source of problems
-  within the cluster in the future.</p>
+    <p>Monitoring individual host or service cluster elements is easier than you think. In fact, you're probably already doing it. For
+    service clusters, just make sure that you are monitoring each service element of the cluster. If you've got a cluster of five DNS
+    servers, make sure you have five separate service definitions (probably using the <span class="emphasis"><em>check_dns</em></span> plugin). For host
+    clusters, make sure you have configured appropriate host definitions for each member of the cluster (you'll also have to define at least
+    one service to be monitored for each of the hosts). <span class="bold"><strong>Important:</strong></span> You're going to want to disable
+    notifications for the individual cluster elements (host or service definitions). Even though no notifications will be sent about the
+    individual elements, you'll still get a visual display of the individual host or service status in the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>. This will be useful for pinpointing the source of problems within the cluster in the
+    future.</p>
 
-  <p>Monitoring the overall cluster can be done by using the previously cached results of cluster elements. Although you could
-  re-check all elements of the cluster to determine the cluster's status, why waste bandwidth and resources when you already have
-  the results cached? Where are the results cached? Cached results for cluster elements can be found in the <a class="link" href="configmain.html#configmain-status_file">status file</a> (assuming you are monitoring each element). The
-  <span class="emphasis"><em>check_cluster</em></span> plugin is designed specifically for checking cached host and service states in the status
-  file. <span class="bold"><strong>Important:</strong></span> Although you didn't enable notifications for individual elements of the
-  cluster, you will want them enabled for the overall cluster status check.</p>
-
+    <p>Monitoring the overall cluster can be done by using the previously cached results of cluster elements. Although you could re-check
+    all elements of the cluster to determine the cluster's status, why waste bandwidth and resources when you already have the results
+    cached? Where are the results cached? Cached results for cluster elements can be found in the <a class="link" href="configmain.html#configmain-status_file">status file</a> (assuming you are monitoring each element). The <span class="emphasis"><em>check_cluster</em></span>
+    plugin is designed specifically for checking cached host and service states in the status file. <span class="bold"><strong>Important:</strong></span> Although you didn't enable notifications for individual elements of the cluster, you will want them
+    enabled for the overall cluster status check.</p>
   </div>
 
   <div class="section" title="7.12.3. Using the check_cluster Plugin">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="checkclusterplugin"></a>7.12.3. Using the check_cluster Plugin</h3></div></div></div>
-	  
+    
 
-  <p>The check_cluster plugin is designed to report the overall status of a host or service cluster by checking the status
-  information of each individual host or service cluster elements.</p>
+    <p>The check_cluster plugin is designed to report the overall status of a host or service cluster by checking the status information
+    of each individual host or service cluster elements.</p>
 
-  <p>More to come... The <span class="emphasis"><em>check_cluster</em></span> plugin can be found in the contrib directory of the Nagios
-	  Plugins release at <a class="link" href="https://www.nagios-plugins.org" target="_top">https://www.nagios-plugins.org</a>.</p>
-
+    <p>More to come... The <span class="emphasis"><em>check_cluster</em></span> plugin can be found in the contrib directory of the Monitoring Plugins
+    release at <a class="link" href="https://www.monitoring-plugins.org" target="_top">https://www.monitoring-plugins.org</a>.</p>
   </div>
 
   <div class="section" title="7.12.4. Monitoring Service Clusters">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="serviceclusters"></a>7.12.4. Monitoring Service Clusters</h3></div></div></div>
-	  
+    
 
-  <p>Let's say you have three DNS servers that provide redundant services on your network. First off, you need to be monitoring
-  each of these DNS servers separately before you can monitor them as a cluster. We'll assume that you already have three separate
-  services (all called "DNS Service") associated with your DNS hosts (called "host1", "host2" and "host3").</p>
+    <p>Let's say you have three DNS servers that provide redundant services on your network. First off, you need to be monitoring each of
+    these DNS servers separately before you can monitor them as a cluster. We'll assume that you already have three separate services (all
+    called "DNS Service") associated with your DNS hosts (called "host1", "host2" and "host3").</p>
 
-  <p>In order to monitor the services as a cluster, you'll need to create a new "cluster" service. However, before you do that,
-  make sure you have a service cluster check command configured. Let's assume that you have a command called
-  <span class="emphasis"><em>check_service_cluster</em></span> defined as follows:</p>
+    <p>In order to monitor the services as a cluster, you'll need to create a new "cluster" service. However, before you do that, make
+    sure you have a service cluster check command configured. Let's assume that you have a command called
+    <span class="emphasis"><em>check_service_cluster</em></span> defined as follows:</p>
 
-  <pre class="programlisting"> define command{
+    <pre class="programlisting"> define command{
         command_name    check_service_cluster
         command_line    /usr/local/icinga/libexec/check_cluster --service -l $ARG1$ -w $ARG2$ -c $ARG3$ -d $ARG4$ 
         }</pre>
 
-  <p>Now you'll need to create the "cluster" service and use the <span class="emphasis"><em>check_service_cluster</em></span> command you just
-  created as the cluster's check command. The example below gives an example of how to do this. The example below will generate a
-  CRITICAL alert if 2 or more services in the cluster are in a non-OK state, and a WARNING alert if only 1 of the services is in a
-  non-OK state. If all the individual service members of the cluster are OK, the cluster check will return an OK state as
-  well.</p>
+    <p>Now you'll need to create the "cluster" service and use the <span class="emphasis"><em>check_service_cluster</em></span> command you just created as
+    the cluster's check command. The example below gives an example of how to do this. The example below will generate a CRITICAL alert if 2
+    or more services in the cluster are in a non-OK state, and a WARNING alert if only 1 of the services is in a non-OK state. If all the
+    individual service members of the cluster are OK, the cluster check will return an OK state as well.</p>
 
-  <pre class="programlisting"> define service{
+    <pre class="programlisting"> define service{
         ...
         check_command   check_service_cluster!"DNS Cluster"!0!1!$SERVICESTATEID:host1:DNS Service$,$SERVICESTATEID:host2:DNS Service$,$SERVICESTATEID:host3:DNS Service$
         ...
         }</pre>
 
-  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> service state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
-  on-demand macros in with the current service state IDs (numerical values, rather than text strings) of the individual members of
-  the cluster.</p>
-
+    <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> service state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
+    on-demand macros in with the current service state IDs (numerical values, rather than text strings) of the individual members of the
+    cluster.</p>
   </div>
 
   <div class="section" title="7.12.5. Monitoring Host Clusters">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="hostclusters"></a>7.12.5. Monitoring Host Clusters</h3></div></div></div>
-	  
+    
 
-  <p>Monitoring host clusters is very similiar to monitoring service clusters. Obviously, the main difference is that the
-  cluster members are hosts and not services. In order to monitor the status of a host cluster, you must define a service that
-  uses the <span class="emphasis"><em>check_cluster</em></span> plugin. The service should <span class="emphasis"><em>not</em></span> be associated with any of the
-  hosts in the cluster, as this will cause problems with notifications for the cluster if that host goes down. A good idea might
-  be to associate the service with the host that Icinga is running on. After all, if the host that Icinga is running
-  on goes down, then Icinga isn't running anymore, so there isn't anything you can do as far as monitoring (unless you've
-  setup <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundant monitoring hosts</a>)...</p>
+    <p>Monitoring host clusters is very similiar to monitoring service clusters. Obviously, the main difference is that the cluster
+    members are hosts and not services. In order to monitor the status of a host cluster, you must define a service that uses the
+    <span class="emphasis"><em>check_cluster</em></span> plugin. The service should <span class="emphasis"><em>not</em></span> be associated with any of the hosts in the
+    cluster, as this will cause problems with notifications for the cluster if that host goes down. A good idea might be to associate the
+    service with the host that Icinga is running on. After all, if the host that Icinga is running on goes down, then
+    Icinga isn't running anymore, so there isn't anything you can do as far as monitoring (unless you've setup <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundant monitoring hosts</a>)...</p>
 
-  <p>Anyway, let's assume that you have a <span class="emphasis"><em>check_host_cluster</em></span> command defined as follows:</p>
+    <p>Anyway, let's assume that you have a <span class="emphasis"><em>check_host_cluster</em></span> command defined as follows:</p>
 
-  <pre class="programlisting"> define command{
+    <pre class="programlisting"> define command{
         command_name    check_host_cluster
         command_line    /usr/local/icinga/libexec/check_cluster --host -l $ARG1$ -w $ARG2$ -c $ARG3$ -d $ARG4$ 
         }</pre>
 
-  <p>Let's say you have three hosts (named "host1", "host2" and "host3") in the host cluster. If you want Icinga to
-  generate a warning alert if one host in the cluster is not UP or a critical alert if two or more hosts are not UP, the the
-  service you define to monitor the host cluster might look something like this:</p>
+    <p>Let's say you have three hosts (named "host1", "host2" and "host3") in the host cluster. If you want Icinga to generate a
+    warning alert if one host in the cluster is not UP or a critical alert if two or more hosts are not UP, the the service you define to
+    monitor the host cluster might look something like this:</p>
 
-  <pre class="programlisting"> define service{
+    <pre class="programlisting"> define service{
         ...
         check_command   check_host_cluster!"Super Host Cluster"!0!1!$HOSTSTATEID:host1$,$HOSTSTATEID:host2$,$HOSTSTATEID:host3$
         ...
         }</pre>
 
-  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> host state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
-  on-demand macros in with the current host state IDs (numerical values, rather than text strings) of the individual members of
-  the cluster.</p>
+    <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> host state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
+    on-demand macros in with the current host state IDs (numerical values, rather than text strings) of the individual members of the
+    cluster.</p>
 
-  <p>That's it! Icinga will periodically check the status of the host cluster and send notifications to you when its
-  status is degraded (assuming you've enabled notification for the service). Note that for thehost definitions of each cluster
-  member, you will most likely want to disable notifications when the host goes down . Remeber that you don't care as much about
-  the status of any individual host as you do the overall status of the cluster. Depending on your network layout and what you're
-  trying to accomplish, you may wish to leave notifications for unreachable states enabled for the host definitions.</p>
-  <a class="indexterm" name="idp190509824"></a>
-</div>
+    <p>That's it! Icinga will periodically check the status of the host cluster and send notifications to you when its status is
+    degraded (assuming you've enabled notification for the service). Note that for thehost definitions of each cluster member, you will most
+    likely want to disable notifications when the host goes down . Remeber that you don't care as much about the status of any individual
+    host as you do the overall status of the cluster. Depending on your network layout and what you're trying to accomplish, you may wish to
+    leave notifications for unreachable states enabled for the host definitions.</p>
+
+    <a class="indexterm" name="idp190813408"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

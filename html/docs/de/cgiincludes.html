@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.24. Angepasste CGI-Kopf- und Fußzeilen</title>
+<title>7.24. Angepasste Classic UI-Modul-Kopf- und Fußzeilen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.24. Angepasste CGI-Kopf- und Fußzeilen</th></tr>
+<tr><th colspan="3" align="center">7.24. Angepasste Classic UI-Modul-Kopf- und Fußzeilen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="checkscheduling.html">Zurück</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.24. Angepasste CGI-Kopf- und Fußzeilen">
+<div class="section" title="7.24. Angepasste Classic UI-Modul-Kopf- und Fußzeilen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiincludes"></a>7.24. Angepasste CGI-Kopf- und Fußzeilen</h2></div></div></div>
+<a name="cgiincludes"></a>7.24. Angepasste Classic UI-Modul-Kopf- und Fußzeilen</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">7.24.1. <a href="cgiincludes.html#introduction">Einführung</a></span></dt>
 <dt><span class="section">7.24.2. <a href="cgiincludes.html#howitworks">Wie funktioniert es?</a></span></dt>
@@ -40,21 +40,21 @@
 <a name="introduction"></a>7.24.1. Einführung</h3></div></div></div>
     
 
-    <p>Wenn Sie Icinga-Installationen für Kunden machen, dann möchten Sie vielleicht, dass in den <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a>
-    angepasste Kopf- und Fußzeilen angezeigt werden. Dies ist besonders dann nützlich, wenn Sie Support-Kontaktinformationen u.ä. für den
-    Endbenutzer anzeigen möchten.</p>
+    <p>Wenn Sie Icinga-Installationen für Kunden machen, dann möchten Sie vielleicht, dass in den <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die Classic UI-Module">Classic
+    UI-Modulen</a> (CGIs) angepasste Kopf- und Fußzeilen angezeigt werden. Dies ist besonders dann nützlich, wenn Sie
+    Support-Kontaktinformationen u.ä. für den Endbenutzer anzeigen möchten.</p>
 
     <p>Es ist wichtig anzumerken, dass angepasste Dateien mit Kopf- und Fußzeilen nicht in irgendeiner Form vorverarbeitet werden
     (solange es sich nicht um ausführbare Dateien handelt), bevor sie angezeigt werden. Der Inhalt der Kopf- und Fußzeilen wird ganz einfach
-    gelesen und in der CGI-Ausgabe angezeigt. Das bedeutet, dass diese Dateien lediglich Informationen enthalten können, die ein Web-Browser
-    versteht (HTML, JavaScript, usw.).</p>
+    gelesen und in der Modul-Ausgabe angezeigt. Das bedeutet, dass diese Dateien lediglich Informationen enthalten können, die ein
+    Web-Browser versteht (HTML, JavaScript, usw.).</p>
 
     <p>Wenn die angepassten Kopf- und Fußzeilendateien ausführbar sind, dann werden sie ausgeführt und die Ausgaben an den Benutzer
-    zurückgeliefert, so dass die Dateien gültigen HTML-Code enthalten sollten. Auf diese Weise können Sie Ihre eigenen CGIs nutzen, um Daten
-    in der Icinga-Anzeige auszugeben. Dies kann genutzt werden, um mit ddraw Grafiken aus rrdtool einzufügen und Befehlsmenüs im
-    Icinga-Fenster anzuzeigen. Die ausführbaren angepassten Kopf- und Fußzeilendateien werden mit der gleichen CGI-Umgebung
-    ausgeführt wie das Icinga-Haupt-CGI, so dass Ihre Dateien die Abfrageinformationen, Benutzerauthentifizierungsinformationen usw.
-    analysieren können, um entsprechende Ausgaben zu erzeugen.</p>
+    zurückgeliefert, so dass die Dateien gültigen HTML-Code enthalten sollten. Auf diese Weise können Sie Ihre eigenen Module nutzen, um
+    Daten in der Icinga-Anzeige auszugeben. Dies kann genutzt werden, um mit ddraw Grafiken aus rrdtool einzufügen und Befehlsmenüs
+    im Icinga-Fenster anzuzeigen. Die ausführbaren angepassten Kopf- und Fußzeilendateien werden mit der gleichen Modul-Umgebung
+    ausgeführt wie das Icinga-Haupt-Modul, so dass Ihre Dateien die Abfrageinformationen, Benutzerauthentifizierungsinformationen
+    usw. analysieren können, um entsprechende Ausgaben zu erzeugen.</p>
   </div>
 
   <div class="section" title="7.24.2. Wie funktioniert es?">
@@ -62,34 +62,34 @@
 <a name="howitworks"></a>7.24.2. Wie funktioniert es?</h3></div></div></div>
     
 
-    <p>Sie können angepasste Kopf- und Fußzeilen in die Ausgaben der CGIs einschließen, indem Sie entsprechend benannte HTML-Dateien im
+    <p>Sie können angepasste Kopf- und Fußzeilen in die Ausgaben der Module einschließen, indem Sie entsprechend benannte HTML-Dateien im
     <span class="emphasis"><em>ssi</em></span>-Unterverzeichnis des Icinga-HTML-Verzeichnisses (z.B. <span class="emphasis"><em>/usr/local/icinga/share/ssi</em></span>)
     ablegen.</p>
 
-    <p>Angepasste Kopfzeilen werden direkt hinter dem &lt;BODY&gt;-Tag in der CGI-Ausgabe eingefügt, während angepasste Fußzeilen direkt
-    vor dem schließenden &lt;/BODY&gt;-Tag eingefügt werden.</p>
+    <p>Angepasste Kopfzeilen werden direkt hinter dem &lt;BODY&gt;-Tag in der Modul-Ausgabe eingefügt, während angepasste Fußzeilen
+    direkt vor dem schließenden &lt;/BODY&gt;-Tag eingefügt werden.</p>
 
     <p>Es gibt zwei Arten von angepassten Kopf- und Fußzeilen:</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>Globale Kopf-/Fußzeilen: diese Dateien sollten <span class="emphasis"><em>common-header.ssi</em></span> und
-        <span class="emphasis"><em>common-footer.ssi</em></span> benannt werden. Wenn diese Dateien existieren, werden sie in die Ausgaben aller CGIs
+        <span class="emphasis"><em>common-footer.ssi</em></span> benannt werden. Wenn diese Dateien existieren, werden sie in die Ausgaben aller Module
         eingefügt.</p>
       </li>
 <li class="listitem">
-        <p>CGI-spezifische Kopf-/Fußzeilen: diese Dateinamen sollten im Format <span class="emphasis"><em>CGINAME-header.ssi</em></span> und
-        <span class="emphasis"><em>CGINAME-footer.ssi</em></span> benannt werden, wobei <span class="emphasis"><em>CGINAME</em></span> der (Datei-) Name des CGIs ohne die
-        .cgi-Erweiterung ist. Die Kopf- und Fußzeilendateien des <a class="link" href="cgis.html#cgis-summary_cgi">alert summary CGI</a> (summary.cgi)
+        <p>Modul-spezifische Kopf-/Fußzeilen: diese Dateinamen sollten im Format <span class="emphasis"><em>CGINAME-header.ssi</em></span> und
+        <span class="emphasis"><em>CGINAME-footer.ssi</em></span> benannt werden, wobei <span class="emphasis"><em>CGINAME</em></span> der (Datei-) Name des Moduls ohne die
+        .cgi-Erweiterung ist. Die Kopf- und Fußzeilendateien des <a class="link" href="cgis.html#cgis-summary_cgi">alert summary-Moduls</a> (summary.cgi)
         würden beispielsweise <span class="emphasis"><em>summary-header.ssi</em></span> und <span class="emphasis"><em>summary-footer.ssi</em></span> heißen.</p>
       </li>
 </ul></div>
 
     <p>Sie sind nicht gezwungen, irgendwelche angepassten Kopf- und Fußzeilen zu benutzen. Sie können nur eine globale Kopfzeile
-    benutzen, wenn Sie möchten. Sie können nur CGI-spezifische Kopfzeilen und eine globale Fußzeile benutzen, wenn Sie möchten. Ganz wie Sie
-    wollen. Wirklich.</p>
+    benutzen, wenn Sie möchten. Sie können nur Modul-spezifische Kopfzeilen und eine globale Fußzeile benutzen, wenn Sie möchten. Ganz wie
+    Sie wollen. Wirklich.</p>
 
-    <a class="indexterm" name="idp191481360"></a>
+    <a class="indexterm" name="idp191440480"></a>
   </div>
 </div>
 <div class="navfooter">

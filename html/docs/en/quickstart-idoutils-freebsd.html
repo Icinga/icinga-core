@@ -77,7 +77,7 @@
   <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
   started.</p>
 
-  <p>This guide will give you examples for installation on <a class="link" href="" target="_top">FreeBSD</a> 8.1-RELEASE. Thanks to <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> for the adapted instructions.</p>
+  <p>This guide will give you examples for installation on <a class="link" href="" target="_top">FreeBSD</a> 8.1-RELEASE. Thanks to <a class="link" href="http://www.monitoring-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> for the adapted instructions.</p>
 
   <p>Later distributions of FreeBSD may inherit from these examples.</p>
 
@@ -202,7 +202,7 @@
 
   <p><span class="bold"><strong>Install the packages</strong></span></p>
 
-  <p>You can install the packages from the ports or you take older packages (have a look at the <a class="link" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">FreeBSD quickstart quide</a>.</p>
+  <p>You can install the packages from the ports or you take older packages (have a look at the <a class="link" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">FreeBSD quickstart quide</a>).</p>
 
   <p><span class="bold"><strong>Install ports</strong></span></p>
 
@@ -274,7 +274,7 @@
 
   <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+  <p>Don't forget to download the <a class="link" href="https://www.monitoring-plugins.org" target="_top">Monitoring Plugins</a>.</p>
 
   <p><span class="bold"><strong>Compile and install Icinga and IDOUtils</strong></span></p>
 
@@ -462,21 +462,13 @@
       </td></tr>
 </table></div>
 
-      <pre class="screen"> #&gt; mysql -u root -p
+            <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
-   WITH MAX_QUERIES_PER_HOUR 0
-   MAX_CONNECTIONS_PER_HOUR 0
-   MAX_UPDATES_PER_HOUR 0;
+ 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga';
 
- GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
-   ON icinga.* TO 'icinga'@'localhost';
-
- FLUSH PRIVILEGES ;
-
- quit</pre>
+        quit</pre>
 
       <pre class="screen"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
  #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
@@ -551,9 +543,9 @@
 
   <pre class="screen"> #&gt; /usr/local/etc/rc.d/apache22 reload</pre>
 
-  <p><span class="bold"><strong>Compile and Install the Nagios-/Perl Plugins</strong></span></p>
+  <p><span class="bold"><strong>Compile and Install the Perl Plugins and Monitoring Plugins</strong></span></p>
 
-  <p>Extract the Nagios plugins source code tarball.</p>
+  <p>Extract the plugins source code tarball.</p>
 
   <pre class="screen"> #&gt; cd ~/src 
  #&gt; tar xvzf nagios-plugins-1.5.tar.gz
@@ -633,7 +625,7 @@
   <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
   explained here.</p>
 
-  <p>Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios Wiki</a> for more resources.</p>
+
 
   <p><span class="bold"><strong>You're Done</strong></span></p>
 
@@ -654,14 +646,14 @@
  --with-dbi-inc=/usr/local/include --with-dbu-lib=/usr/local/lib \
  CPPFLAGS=-I/usr/local/include CFLAGS=-fPIC</pre>
 
-  <p>Compiler options for Nagios plugins (ports)</p>
+  <p>Compiler options for Monitoring Plugins plugins (ports)</p>
 
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp177119600"></a>
+  <a class="indexterm" name="idp177370208"></a>
 
-  <a class="indexterm" name="idp177121328"></a>
+  <a class="indexterm" name="idp177370368"></a>
 </div>
 <div class="navfooter">
 <hr>

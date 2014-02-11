@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>6.4. Executing CGIs on the command line</title>
+<title>6.4. Executing Classic UI modules (CGIs) on the command line</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="cgiparams.html" title="6.3. Information On CGI parameters">
+<link rel="prev" href="cgiparams.html" title="6.3. Information On Classic UI parameters">
 <link rel="next" href="icinga-web-scratch.html" title="6.5. Installation of the Icinga Web Frontend">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">6.4. Executing CGIs on the command line</th></tr>
+<tr><th colspan="3" align="center">6.4. Executing Classic UI modules (CGIs) on the command line</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="cgiparams.html">Prev</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="6.4. Executing CGIs on the command line">
+<div class="section" title="6.4. Executing Classic UI modules (CGIs) on the command line">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgicmd"></a>6.4. <a name="cgi_cmd"></a>Executing CGIs on the command line</h2></div></div></div>
+<a name="cgicmd"></a>6.4. <a name="cgi_cmd"></a>Executing Classic UI modules (CGIs) on the command line</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">6.4.1. <a href="cgicmd.html#introduction">Introduction</a></span></dt>
 <dt><span class="section">6.4.2. <a href="cgicmd.html#prerequisites">Prerequisites</a></span></dt>
@@ -42,8 +42,8 @@
     
 
     <p>In most cases you will use your browser to retrieve the information you need. There may be situations where you want to process
-    the data with other tools to create wiki entries, send mails and so on. Together with the <a class="link" href="cgiparams.html" title="6.3. Information On CGI parameters">information on the
-    CGI parameters</a> you can call the CGIs from the command line.</p>
+    the data with other tools to create wiki entries, send mails and so on. Together with the <a class="link" href="cgiparams.html" title="6.3. Information On Classic UI parameters">information on the
+    CGI parameters</a> you can call the Classic UI modules from the command line.</p>
   </div>
 
   <div class="section" title="6.4.2. Prerequisites">
@@ -51,7 +51,7 @@
 <a name="prerequisites"></a>6.4.2. Prerequisites</h3></div></div></div>
     
 
-    <p>Before actually calling the CGIs you have to set three environment variables: </p>
+    <p>Before actually calling the modules you have to set three environment variables: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
           <p>REMOTE_USER</p>
@@ -67,7 +67,7 @@
 <li class="listitem">
           <p>QUERY_STRING</p>
 
-          <p>Instead of passing arguments to the CGIs via the command line you have to set the variable "QUERY_STRING" with the
+          <p>Instead of passing arguments to the modules via the command line you have to set the variable "QUERY_STRING" with the
           appropriate values.</p>
 
           <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -109,7 +109,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>The CGIs are called from within the folder which contains the *.cgi files (e.g. <code class="filename">/usr/local/icinga/sbin</code>).
+      <p>The modules are called from within the folder which contains the *.cgi files (e.g. <code class="filename">/usr/local/icinga/sbin</code>).
       This is not necessary but for the sake of simplicity. Unless otherwise specified the REQUEST_METHOD is set to 'GET'.</p>
     </td></tr>
 </table></div>
@@ -150,7 +150,7 @@
 
     <p>(to be continued)</p>
 
-    <a class="indexterm" name="idp188365584"></a>
+    <a class="indexterm" name="idp188655344"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -164,7 +164,7 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">6.3. Information On CGI parameters </td>
+<td width="40%" align="left" valign="top">6.3. Information On Classic UI parameters </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
 <td width="40%" align="right" valign="top"> 6.5. Installation of the Icinga Web Frontend</td>
 </tr>

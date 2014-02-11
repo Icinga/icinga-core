@@ -34,129 +34,122 @@
 <dt><span class="section">7.5.2. <a href="freshness.html#howitworks">How Does Freshness Checking Work?</a></span></dt>
 <dt><span class="section">7.5.3. <a href="freshness.html#enable">Enabling Freshness Checking</a></span></dt>
 <dt><span class="section">7.5.4. <a href="freshness.html#example">Example</a></span></dt>
+<dt><span class="section">7.5.5. <a href="freshness.html#stale">"Check results ... are stale. Forcing an immediate check ...</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.5.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.5.1. Introduction</h3></div></div></div>
-	  
+    
 
-  <p>Icinga supports a feature that does "freshness" checking on the results of host and service checks. The purpose of
-  freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
-  basis.</p>
+    <p>Icinga supports a feature that does "freshness" checking on the results of host and service checks. The purpose of
+    freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
+    basis.</p>
 
-  <p>Freshness checking is useful when you want to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> are being
-  received as frequently as you want. This can be very useful in <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">failover</a> monitoring environments.</p>
+    <p>Freshness checking is useful when you want to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> are being received
+    as frequently as you want. This can be very useful in <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">failover</a> monitoring environments.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/freshness.png"></span></p>
-
+    <p><span class="inlinemediaobject"><img src="../images/freshness.png"></span></p>
   </div>
 
   <div class="section" title="7.5.2. How Does Freshness Checking Work?">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="howitworks"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
-	  
+    
 
-  <p>Icinga periodically checks the freshness of the results for all hosts services that have freshness checking
-  enabled.</p>
+    <p>Icinga periodically checks the freshness of the results for all hosts services that have freshness checking enabled.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>A freshness threshold is calculated for each host or service.</p>
-    </li>
+        <p>A freshness threshold is calculated for each host or service.</p>
+      </li>
 <li class="listitem">
-      <p>For each host/service, the age of its last check result is compared with the freshness threshold.</p>
-    </li>
+        <p>For each host/service, the age of its last check result is compared with the freshness threshold.</p>
+      </li>
 <li class="listitem">
-      <p>If the age of the last check result is greater than the freshness threshold, the check result is considered
-      "stale".</p>
-    </li>
+        <p>If the age of the last check result is greater than the freshness threshold, the check result is considered "stale".</p>
+      </li>
 <li class="listitem">
-      <p>If the check results is found to be stale, Icinga will force an <a class="link" href="activechecks.html" title="5.6. Active Checks">active
-      check</a> of the host or service by executing the command specified by in the host or service definition.</p>
-    </li>
+        <p>If the check results is found to be stale, Icinga will force an <a class="link" href="activechecks.html" title="5.6. Active Checks">active check</a> of the
+        host or service by executing the command specified by in the host or service definition.</p>
+      </li>
 </ul></div>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>An active check is executed even if active checks are disabled on a program-wide or host- or service-specific
-    basis.</p>
-  </td></tr>
+      <p>An active check is executed even if active checks are disabled on a program-wide or host- or service-specific basis.</p>
+    </td></tr>
 </table></div>
 
-  <p>For example, if you have a freshness threshold of 60 for one of your services, Icinga will consider that service to
-  be stale if its last check result is older than 60 seconds.</p>
-
+    <p>For example, if you have a freshness threshold of 60 for one of your services, Icinga will consider that service to be
+    stale if its last check result is older than 60 seconds.</p>
   </div>
 
   <div class="section" title="7.5.3. Enabling Freshness Checking">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="enable"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
-	  
+    
 
-  <p>Here's what you need to do to enable freshness checking...</p>
+    <p>Here's what you need to do to enable freshness checking...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Enable freshness checking on a program-wide basis with the <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a> and <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a> directives.</p>
-    </li>
+        <p>Enable freshness checking on a program-wide basis with the <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a> and <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a> directives.</p>
+      </li>
 <li class="listitem">
-      <p>Use <a class="link" href="configmain.html#configmain-service_freshness_check_interval">service_freshness_check_interval</a> and <a class="link" href="configmain.html#configmain-host_freshness_check_interval">host_freshness_check_interval</a> options to tell Icinga how
-      often in should check the freshness of service and host results.</p>
-    </li>
+        <p>Use <a class="link" href="configmain.html#configmain-service_freshness_check_interval">service_freshness_check_interval</a> and <a class="link" href="configmain.html#configmain-host_freshness_check_interval">host_freshness_check_interval</a> options to tell Icinga how often in
+        should check the freshness of service and host results.</p>
+      </li>
 <li class="listitem">
-      <p>Enable freshness checking on a host- and service-specific basis by setting the <span class="emphasis"><em>check_freshness</em></span>
-      option in your host and service definitions to a value of 1.</p>
-    </li>
+        <p>Enable freshness checking on a host- and service-specific basis by setting the <span class="emphasis"><em>check_freshness</em></span> option in
+        your host and service definitions to a value of 1.</p>
+      </li>
 <li class="listitem">
-      <p>Configure freshness thresholds by setting the <span class="emphasis"><em>freshness_threshold</em></span> option in your host and service
-      definitions.</p>
-    </li>
+        <p>Configure freshness thresholds by setting the <span class="emphasis"><em>freshness_threshold</em></span> option in your host and service
+        definitions.</p>
+      </li>
 <li class="listitem">
-      <p>Configure the <span class="emphasis"><em>check_command</em></span> option in your host or service definitions to reflect a valid command
-      that should be used to actively check the host or service when it is detected as stale.</p>
-    </li>
+        <p>Configure the <span class="emphasis"><em>check_command</em></span> option in your host or service definitions to reflect a valid command that
+        should be used to actively check the host or service when it is detected as stale.</p>
+      </li>
 <li class="listitem">
-      <p>The <span class="emphasis"><em>check_period</em></span> option in your host and service definitions is used when Icinga
-      determines when a host or service can be checked for freshness, so make sure it is set to a valid timeperiod.</p>
-    </li>
+        <p>The <span class="emphasis"><em>check_period</em></span> option in your host and service definitions is used when Icinga determines when a
+        host or service can be checked for freshness, so make sure it is set to a valid timeperiod.</p>
+      </li>
 </ul></div>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you do not specify a host- or service-specific <span class="emphasis"><em>freshness_threshold</em></span> value (or you set it to
-    zero), Icinga will automatically calculate a threshold automatically, based on a how often you monitor that particular
-    host or service. We would recommend that you explicitly specify a freshness threshold, rather than let Icinga pick one
-    for you.</p>
-  </td></tr>
+      <p>If you do not specify a host- or service-specific <span class="emphasis"><em>freshness_threshold</em></span> value (or you set it to zero),
+      Icinga will automatically calculate a threshold automatically, based on a how often you monitor that particular host or
+      service. We would recommend that you explicitly specify a freshness threshold, rather than let Icinga pick one for you.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="7.5.4. Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="example"></a>7.5.4. Example</h3></div></div></div>
-	  
+    
 
-  <p>An example of a service that might require freshness checking might be one that reports the status of your nightly backup
-  jobs. Perhaps you have a external script that submit the results of the backup job to Icinga once the backup is
-  completed. In this case, all of the checks/results for the service are provided by an external application using passive checks.
-  In order to ensure that the status of the backup job gets reported every day, you may want to enable freshness checking for the
-  service. If the external script doesn't submit the results of the backup job, you can have Icinga fake a critical result
-  by doing something like this...</p>
+    <p>An example of a service that might require freshness checking might be one that reports the status of your nightly backup jobs.
+    Perhaps you have a external script that submit the results of the backup job to Icinga once the backup is completed. In this
+    case, all of the checks/results for the service are provided by an external application using passive checks. In order to ensure that
+    the status of the backup job gets reported every day, you may want to enable freshness checking for the service. If the external script
+    doesn't submit the results of the backup job, you can have Icinga fake a critical result by doing something like this...</p>
 
-  <p>Here's what the definition for the service might look like (some required options are omitted)...</p>
+    <p>Here's what the definition for the service might look like (some required options are omitted)...</p>
 
-  <pre class="programlisting"> define service{
+    <pre class="programlisting"> define service{
         host_name               backup-server
         service_description     ArcServe Backup Job
         active_checks_enabled   0               ; active checks are NOT enabled
@@ -167,24 +160,83 @@
         ...other options...
         }</pre>
 
-  <p>Notice that active checks are disabled for the service. This is because the results for the service are only made by an
-  external application using passive checks. Freshness checking is enabled and the freshness threshold has been set to 26 hours.
-  This is a bit longer than 24 hours because backup jobs sometimes run late from day to day (depending on how much data there is
-  to backup, how much network traffic is present, etc.). The <span class="emphasis"><em>no-backup-report</em></span> command is executed only if the
-  results of the service are determined to be stale. The definition of the <span class="emphasis"><em>no-backup-report</em></span> command might
-  look like this...</p>
+    <p>Notice that active checks are disabled for the service. This is because the results for the service are only made by an external
+    application using passive checks. Freshness checking is enabled and the freshness threshold has been set to 26 hours. This is a bit
+    longer than 24 hours because backup jobs sometimes run late from day to day (depending on how much data there is to backup, how much
+    network traffic is present, etc.). The <span class="emphasis"><em>no-backup-report</em></span> command is executed only if the results of the service are
+    determined to be stale. The definition of the <span class="emphasis"><em>no-backup-report</em></span> command might look like this...</p>
 
-  <pre class="programlisting"> define command{
+    <pre class="programlisting"> define command{
         command_name    no-backup-report
         command_line    /usr/local/icinga/libexec/check_dummy 2 "CRITICAL: Results of backup job were not reported!"
         }</pre>
 
-  <p>If Icinga detects that the service results are stale, it will run the <span class="emphasis"><em>no-backup-report</em></span> command
-  as an active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical
-  state to Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably
-  get notified of the problem.</p>
-  <a class="indexterm" name="idp190032288"></a>
-</div>
+    <p>If Icinga detects that the service results are stale, it will run the <span class="emphasis"><em>no-backup-report</em></span> command as an
+    active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical state to
+    Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably get notified of
+    the problem.</p>
+
+    <a class="indexterm" name="idp190321264"></a>
+  </div>
+
+  <div class="section" title='7.5.5. "Check results ... are stale. Forcing an immediate check ...'>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="stale"></a>7.5.5. "Check results ... are stale. Forcing an immediate check ...</h3></div></div></div>
+    
+
+    <p>Sometimes you might find messages like the following in <code class="filename">icinga.log</code>:</p>
+<pre class="screen"> Check results for service x on host y are stale by 0d 0h 0m 10s (threshold=0d 0h 10m 0s).
+ Forcing an immediate check of the service...</pre>
+
+    <p>This means that the service was checked in the past and the threshold time (e.g. 10m) has passed without any new check results so
+    a check is forced by the core.</p>
+
+    <p>The message results from the code fragment in <code class="filename">base/checks.c</code> (lines folded for better
+    readability)</p>
+<pre class="programlisting"> /* the results for the last check of this service are stale */
+    if (expiration_time &lt; current_time) {
+
+       get_time_breakdown((current_time - expiration_time), &amp;days, &amp;hours, &amp;minutes, &amp;seconds);
+       get_time_breakdown(freshness_threshold, &amp;tdays, &amp;thours, &amp;tminutes, &amp;tseconds);
+
+       /* log a warning */
+       if (log_this == TRUE)
+          logit(NSLOG_RUNTIME_WARNING, TRUE,
+             "Warning: The results of service '%s' on host '%s' are stale by %dd %dh %dm %ds (threshold=%dd %dh %dm %ds).
+             I'm forcing an immediate check of the service.\n",
+             temp_service-&gt;description, temp_service-&gt;host_name,
+             days, hours, minutes, seconds, tdays, thours, tminutes, tseconds
+          );
+
+       log_debug_info(DEBUGL_CHECKS, 1,
+          "Check results for service '%s' on host '%s' are stale by %dd %dh %dm %ds (threshold=%dd %dh %dm %ds).
+          Forcing an immediate check of the service...\n",
+          temp_service-&gt;description, temp_service-&gt;host_name,
+          days, hours, minutes, seconds, tdays, thours, tminutes, tseconds
+       );
+
+       return FALSE;
+    }</pre>
+<p>By default, the following applies</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p><code class="literal">expiration_time</code> = last_check + freshness threshold (e.g. 10m)</p>
+        </li>
+<li class="listitem">
+          <p>expiration_time is in the past (<code class="literal">&lt; current_time</code>) == stale</p>
+        </li>
+<li class="listitem">
+          <p>the difference between now and expiration time is shown in the log (e.g. 10s)</p>
+        </li>
+</ul></div>
+<p>If the service has not been checked now, but in the past (event_start &gt; last_check) and its freshness threshold is
+    0, max_service_check_spread multiplied by the interval is added as additional offset (happens during startup, in order to detect how
+    fast the initial service check (and state + output) must happen).</p>
+
+    <a class="indexterm" name="idp190333040"></a>
+
+    <a class="indexterm" name="idp190334560"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

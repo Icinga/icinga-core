@@ -43,268 +43,262 @@
   <div class="section" title="7.15.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.15.1. Introduction</h3></div></div></div>
-	  
+    
 
-  <p>Icinga is designed to allow <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> to return optional performance data in addition to normal
-  status data, as well as allow you to pass that performance data to external applications for processing. A description of the different
-  types of performance data, as well as information on how to go about processing that data is described below...</p>
-
+    <p>Icinga is designed to allow <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> to return optional performance data in addition to
+    normal status data, as well as allow you to pass that performance data to external applications for processing. A description of the
+    different types of performance data, as well as information on how to go about processing that data is described below...</p>
   </div>
 
   <div class="section" title="7.15.2. Types of Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="typesperfdata"></a>7.15.2. Types of Performance Data</h3></div></div></div>
-	  
+    
 
-  <p>There are two basic categories of performance data that can be obtained from Icinga:</p>
+    <p>There are two basic categories of performance data that can be obtained from Icinga:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Check performance data</p>
-    </li>
+        <p>Check performance data</p>
+      </li>
 <li class="listitem">
-      <p>Plugin performance data</p>
-    </li>
+        <p>Plugin performance data</p>
+      </li>
 </ol></div>
 
-  <p>Check performance data is internal data that relates to the actual execution of a host or service check. This might include things
-  like service check latency (i.e. how "late" was the service check from its scheduled execution time) and the number of seconds a host or
-  service check took to execute. This type of performance data is available for all checks that are performed. The <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a> and <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> can be used to determine the
-  number of seconds a host or service check was running and the <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a> and <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a> macros can be used to determine how "late" a regularly-scheduled host or
-  service check was.</p>
+    <p>Check performance data is internal data that relates to the actual execution of a host or service check. This might include things
+    like service check latency (i.e. how "late" was the service check from its scheduled execution time) and the number of seconds a host or
+    service check took to execute. This type of performance data is available for all checks that are performed. The <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a> and <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> can be used to determine the
+    number of seconds a host or service check was running and the <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a> and <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a> macros can be used to determine how "late" a regularly-scheduled host or
+    service check was.</p>
 
-  <p>Plugin performance data is external data specific to the plugin used to perform the host or service check. Plugin-specific data can
-  include things like percent packet loss, free disk space, processor load, number of current users, etc. - basically any type of metric
-  that the plugin is measuring when it executes. Plugin-specific performance data is optional and may not be supported by all plugins.
-  Plugin-specific performance data (if available) can be obtained by using the <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a>
-  and <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a>. Read on for more information
-  on how plugins can return performance data to Icinga for inclusion in the $HOSTPERFDATA$ and $SERVICEPERFDATA$ macros.</p>
-
+    <p>Plugin performance data is external data specific to the plugin used to perform the host or service check. Plugin-specific data
+    can include things like percent packet loss, free disk space, processor load, number of current users, etc. - basically any type of
+    metric that the plugin is measuring when it executes. Plugin-specific performance data is optional and may not be supported by all
+    plugins. Plugin-specific performance data (if available) can be obtained by using the <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a> and <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a>. Read on for more information on how plugins can return performance data to Icinga for inclusion
+    in the $HOSTPERFDATA$ and $SERVICEPERFDATA$ macros.</p>
   </div>
 
   <div class="section" title="7.15.3. Plugin Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="pluginperfdata"></a>7.15.3. Plugin Performance Data</h3></div></div></div>
-	  
+    
 
-  <p>At a minimum, Icinga plugins must return a single line of human-readable text that indicates the status of some type of
-  measurable data. For example, the check_ping plugin might return a line of text like the following:</p>
+    <p>At a minimum, Icinga plugins must return a single line of human-readable text that indicates the status of some type of
+    measurable data. For example, the check_ping plugin might return a line of text like the following:</p>
 
-  <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms </pre>
+    <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms </pre>
 
-  <p>With this simple type of output, the entire line of text is available in the $HOSTOUTPUT$ or $SERVICEOUTPUT$ <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> (depending on whether this plugin was used as a host check or service check).</p>
+    <p>With this simple type of output, the entire line of text is available in the $HOSTOUTPUT$ or $SERVICEOUTPUT$ <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> (depending on whether this plugin was used as a host check or service check).</p>
 
-  <p>Plugins can return optional performance data in their output by sending the normal, human-readable text string that they usually
-  would, followed by a pipe character (|), and then a string containing one or more performance data metrics. Let's take the check_ping
-  plugin as an example and assume that it has been enhanced to return percent packet loss and average round trip time as performance data
-  metrics. Sample output from the plugin might look like this:</p>
+    <p>Plugins can return optional performance data in their output by sending the normal, human-readable text string that they usually
+    would, followed by a pipe character (|), and then a string containing one or more performance data metrics. Let's take the check_ping
+    plugin as an example and assume that it has been enhanced to return percent packet loss and average round trip time as performance data
+    metrics. Sample output from the plugin might look like this:</p>
 
-  <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms | percent_packet_loss=0 rta=0.80</pre>
+    <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms | percent_packet_loss=0 rta=0.80</pre>
 
-  <p>When Icinga sees this plugin output format it will split the output into two parts:</p>
+    <p>When Icinga sees this plugin output format it will split the output into two parts:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Everything before the pipe character is considered to be the "normal" plugin output and will be stored in either the
-      $HOSTOUTPUT$ or $SERVICEOUTPUT$ macro</p>
-    </li>
+        <p>Everything before the pipe character is considered to be the "normal" plugin output and will be stored in either the
+        $HOSTOUTPUT$ or $SERVICEOUTPUT$ macro</p>
+      </li>
 <li class="listitem">
-      <p>Everything after the pipe character is considered to be the plugin-specific performance data and will be stored in the
-      $HOSTPERFDATA$ or $SERVICEPERFDATA$ macro</p>
-    </li>
+        <p>Everything after the pipe character is considered to be the plugin-specific performance data and will be stored in the
+        $HOSTPERFDATA$ or $SERVICEPERFDATA$ macro</p>
+      </li>
 </ol></div>
 
-  <p>In the example above, the $HOSTOUTPUT$ or $SERVICEOUTPUT$ macro would contain "<span class="emphasis"><em>PING ok - Packet loss = 0%, RTA = 0.80
-  ms</em></span>" (without quotes) and the $HOSTPERFDATA$ or $SERVICEPERFDATA$ macro would contain "<span class="emphasis"><em>percent_packet_loss=0
-  rta=0.80</em></span>" (without quotes).</p>
+    <p>In the example above, the $HOSTOUTPUT$ or $SERVICEOUTPUT$ macro would contain "<span class="emphasis"><em>PING ok - Packet loss = 0%, RTA = 0.80
+    ms</em></span>" (without quotes) and the $HOSTPERFDATA$ or $SERVICEPERFDATA$ macro would contain "<span class="emphasis"><em>percent_packet_loss=0
+    rta=0.80</em></span>" (without quotes).</p>
 
-  <p>Multiple lines of performance data (as well as normal text output) can be obtained from plugins, as described in the <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">plugin API documentation</a>.</p>
+    <p>Multiple lines of performance data (as well as normal text output) can be obtained from plugins, as described in the <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">plugin API documentation</a>.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The Icinga daemon doesn't directly process plugin performance data, so it doesn't really care what the performance data
-    looks like. The developer guidelines contain several rules (see <a class="link" href="perfdata.html#perfdata-format">performance data format</a> below for
-    details). However, if you are using an external addon to process the performance data (i.e. PerfParse), the addon may be expecting that
-    the plugin returns performance data in a specific format. Check the documentation that comes with the addon for more information.</p>
-  </td></tr>
+      <p>The Icinga daemon doesn't directly process plugin performance data, so it doesn't really care what the performance data
+      looks like. The developer guidelines contain several rules (see <a class="link" href="perfdata.html#perfdata-format">performance data format</a> below
+      for details). However, if you are using an external addon to process the performance data (i.e. PerfParse), the addon may be expecting
+      that the plugin returns performance data in a specific format. Check the documentation that comes with the addon for more
+      information.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="7.15.4. Processing Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="processing"></a>7.15.4. Processing Performance Data</h3></div></div></div>
-	  
+    
 
-  <p>If you want to process the performance data that is available from Icinga and the plugins, you'll need to do the
-  following:</p>
+    <p>If you want to process the performance data that is available from Icinga and the plugins, you'll need to do the
+    following:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Enable the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option.</p>
-    </li>
+        <p>Enable the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option.</p>
+      </li>
 <li class="listitem">
-      <p>Configure Icinga so that performance data is either written to files and/or processed by executing commands.</p>
-    </li>
+        <p>Configure Icinga so that performance data is either written to files and/or processed by executing commands.</p>
+      </li>
 </ol></div>
 
-  <p>Read on for information on how to process performance data by writing to files or executing commands.</p>
-
+    <p>Read on for information on how to process performance data by writing to files or executing commands.</p>
   </div>
 
   <div class="section" title="7.15.5. Processing Performance Data Using Commands">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="processingcommands"></a>7.15.5. Processing Performance Data Using Commands</h3></div></div></div>
-	  
+    
 
-  <p>The most flexible way to process performance data is by having Icinga execute commands (that you specify) to process or
-  redirect the data for later processing by external applications. The commands that Icinga executes to process host and service
-  performance data are determined by the <a class="link" href="configmain.html#configmain-host_perfdata_command">host_perfdata_command</a> and <a class="link" href="configmain.html#configmain-service_perfdata_command">service_perfdata_command</a> options, respectively.</p>
+    <p>The most flexible way to process performance data is by having Icinga execute commands (that you specify) to process or
+    redirect the data for later processing by external applications. The commands that Icinga executes to process host and service
+    performance data are determined by the <a class="link" href="configmain.html#configmain-host_perfdata_command">host_perfdata_command</a> and <a class="link" href="configmain.html#configmain-service_perfdata_command">service_perfdata_command</a> options, respectively.</p>
 
-  <p>An example command definition that redirects service check performance data to a text file for later processing by another
-  application is shown below:</p>
+    <p>An example command definition that redirects service check performance data to a text file for later processing by another
+    application is shown below:</p>
 
-  <pre class="programlisting"> define command{
+    <pre class="programlisting"> define command{
         command_name    store-service-perfdata
         command_line    /bin/echo -e "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$" &gt;&gt; /usr/local/icinga/var/service-perfdata.dat
         }</pre>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>This method, while flexible, comes with a relatively high CPU overhead. If you're processing performance data for a large number
-    of hosts and services, you'll probably want Icinga to write performance data to files instead. This method is described in the
-    next section.</p>
-  </td></tr>
+      <p>This method, while flexible, comes with a relatively high CPU overhead. If you're processing performance data for a large number
+      of hosts and services, you'll probably want Icinga to write performance data to files instead. This method is described in the
+      next section.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="7.15.6. Writing Performance Data To Files">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="writingtofiles"></a>7.15.6. Writing Performance Data To Files</h3></div></div></div>
-	  
+    
 
-  <p>You can have Icinga write all host and service performance data directly to text files using the <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a> options. The format in which host and service performance data is
-  written to those files is determined by the <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a> and
-  <a class="link" href="configmain.html#configmain-service_perfdata_file_template">service_perfdata_file_template</a> options.</p>
+    <p>You can have Icinga write all host and service performance data directly to text files using the <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a> options. The format in which host and service performance data
+    is written to those files is determined by the <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a>
+    and <a class="link" href="configmain.html#configmain-service_perfdata_file_template">service_perfdata_file_template</a> options.</p>
 
-  <p>An example file format template for service performance data might look like this:</p>
+    <p>An example file format template for service performance data might look like this:</p>
 
-  <pre class="programlisting"> service_perfdata_file_template=[SERVICEPERFDATA]\t$TIMET$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$
+    <pre class="programlisting"> service_perfdata_file_template=[SERVICEPERFDATA]\t$TIMET$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$
 </pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The above is just one example of how to define a template. This definition will NOT work for PNP!</p>
-  </td></tr>
+      <p>The above is just one example of how to define a template. This definition will NOT work for PNP!</p>
+    </td></tr>
 </table></div>
 
-  <p>By default, the text files will be opened in "append" mode. If you need to change the modes to "write" or "non-blocking read/write"
-  (useful when writing to pipes), you can use the <a class="link" href="configmain.html#configmain-host_perfdata_file_mode">host_perfdata_file_mode</a> and
-  <a class="link" href="configmain.html#configmain-service_perfdata_file_mode">service_perfdata_file_mode</a> options.</p>
+    <p>By default, the text files will be opened in "append" mode. If you need to change the modes to "write" or "non-blocking
+    read/write" (useful when writing to pipes), you can use the <a class="link" href="configmain.html#configmain-host_perfdata_file_mode">host_perfdata_file_mode</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file_mode">service_perfdata_file_mode</a> options.</p>
 
-  <p>Additionally, you can have Icinga periodically execute commands to periocially process the performance data files (e.g.
-  rotate them) using the <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_command">host_perfdata_file_processing_command</a> and
-  <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_command">service_perfdata_file_processing_command</a> options. The interval
-  at which these commands are executed are governed by the <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_interval">host_perfdata_file_processing_interval</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_interval">service_perfdata_file_processing_interval</a> options,
-  respectively.</p>
-
+    <p>Additionally, you can have Icinga periodically execute commands to periocially process the performance data files (e.g.
+    rotate them) using the <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_command">host_perfdata_file_processing_command</a> and
+    <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_command">service_perfdata_file_processing_command</a> options. The
+    interval at which these commands are executed are governed by the <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_interval">host_perfdata_file_processing_interval</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_interval">service_perfdata_file_processing_interval</a> options,
+    respectively.</p>
   </div>
 
   <div class="section" title="7.15.7. Performance Data Format">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="formatperfdata"></a>7.15.7. <a name="perfdata-format"></a>Performance Data Format</h3></div></div></div>
-	  
+    
 
-  <p>The Nagios Developer Guidelines (<a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">http://nagiosplug.sourceforge.net/developer-guidelines.html</a>)
-  contain in <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN201" target="_top">section 2.6</a> the specification and an
-  explanation of the format of performance data. It is repeated below for your convenience:</p>
+    <p>The Monitoring Plugins Developer Guidelines (<a class="link" href="https://www.monitoring-plugins.org/doc/guidelines.html" target="_top">https://www.monitoring-plugins.org/doc/guidelines.html</a>) contain in <a class="link" href="https://www.monitoring-plugins.org/doc/guidelines.html#AEN200" target="_top">section 2.6</a> the specification and an explanation of
+    the format of performance data. It is repeated below for your convenience:</p>
 
-  <p>----- 8&lt; -----</p>
+    <p>----- 8&lt; -----</p>
 
-  <p><span class="emphasis"><em>2.6.Performance data</em></span></p>
+    <p><span class="emphasis"><em>2.6.Performance data</em></span></p>
 
-  <p>Performance data is defined by Nagios as "everything after the | of the plugin output" - please refer to Nagios(/Icinga)
-  documentation for information on capturing this data to logfiles. However, it is the responsibility of the plugin writer to ensure the
-  performance data is in a "Nagios plugins" format. This is the expected format:</p>
+    <p>Nagios 3 and newer will concatenate the parts following a "|" in a) the first line output by the plugin, and b) in the second to
+    last line, into a string it passes to whatever performance data processing it has configured. (Note that it currently does not insert
+    additional whitespace between both, so the plugin needs to provide some to prevent the last pair of a) and the first of b) getting run
+    together.) Please refer to the Nagios documentation for information on how to configure such processing. However, it is the
+    responsibility of the plugin writer to ensure the performance data is in a "Nagios Plugins" format. This is the expected format:</p>
 
-  <p>'label'=value[UOM];[warn];[crit];[min];[max]</p>
+    <p>'label'=value[UOM];[warn];[crit];[min];[max]</p>
 
-  <p>Notes:</p>
+    <p>Notes:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>space separated list of label/value pairs</p>
-    </li>
+        <p>space separated list of label/value pairs</p>
+      </li>
 <li class="listitem">
-      <p>label can contain any characters</p>
-    </li>
+        <p>label can contain any characters</p>
+      </li>
 <li class="listitem">
-      <p>the single quotes for the label are optional. Required if spaces, = or ' are in the label</p>
-    </li>
+        <p>the single quotes for the label are optional. Required if spaces, = or ' are in the label</p>
+      </li>
 <li class="listitem">
-      <p>label length is arbitrary, but ideally the first 19 characters are unique (due to a limitation in RRD). Be aware of a limitation
-      in the amount of data that NRPE returns to Nagios</p>
-    </li>
+        <p>label length is arbitrary, but ideally the first 19 characters are unique (due to a limitation in RRD). Be aware of a
+        limitation in the amount of data that NRPE returns to Nagios</p>
+      </li>
 <li class="listitem">
-      <p>to specify a quote character, use two single quotes</p>
-    </li>
+        <p>to specify a quote character, use two single quotes</p>
+      </li>
 <li class="listitem">
-      <p>warn, crit, min, and/or max, respectively, may be null (for example, if the threshold is not defined or min and max do not
-      apply). Trailing unfilled semicolons can be dropped</p>
-    </li>
+        <p>warn, crit, min, and/or max, respectively, may be null (for example, if the threshold is not defined or min and max do not
+        apply). Trailing unfilled semicolons can be dropped</p>
+      </li>
 <li class="listitem">
-      <p>min and max are not required if UOM=%</p>
-    </li>
+        <p>min and max are not required if UOM=%</p>
+      </li>
 <li class="listitem">
-      <p>value, min and max in class [-0-9.]. Must all be the same UOM</p>
-    </li>
+        <p>value, min and max in class [-0-9.]. Must all be the same UOM</p>
+      </li>
 <li class="listitem">
-      <p>warn and crit are in the range format (see Section 2.5). Must be the same UOM</p>
-    </li>
+        <p>warn and crit are in the range format (see Section 2.5). Must be the same UOM</p>
+      </li>
 <li class="listitem">
-      <p>UOM (unit of measurement) is one of:</p>
+        <p>UOM (unit of measurement) is one of:</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          <p>no unit specified - assume a number (int or float) of things (eg, users, processes, load averages)</p>
-        </li>
+            <p>no unit specified - assume a number (int or float) of things (eg, users, processes, load averages)</p>
+          </li>
 <li class="listitem">
-          <p>s - seconds (also us, ms)</p>
-        </li>
+            <p>s - seconds (also us, ms)</p>
+          </li>
 <li class="listitem">
-          <p>% - percentage</p>
-        </li>
+            <p>% - percentage</p>
+          </li>
 <li class="listitem">
-          <p>B - bytes (also KB, MB, TB, GB?)</p>
-        </li>
+            <p>B - bytes (also KB, MB, TB, GB?)</p>
+          </li>
 <li class="listitem">
-          <p>c - a continous counter (such as bytes transmitted on an interface)</p>
-        </li>
+            <p>c - a continous counter (such as bytes transmitted on an interface)</p>
+          </li>
 </ul></div>
-    </li>
+      </li>
 </ol></div>
 
-  <p>It is up to third party programs to convert the Nagios plugins performance data into graphs.</p>
+    <p>It is up to third party programs to convert the Nagios plugins performance data into graphs.</p>
 
-  <p>----- 8&lt; -----</p>
+    <p>----- 8&lt; -----</p>
 
-  <p>Every now and then people are curious if their performance data is valid so we'll give some examples showing the data following the
-  pipe symbol:</p>
+    <p>Every now and then people are curious if their performance data is valid so we'll give some examples showing the data following
+    the pipe symbol:</p>
 
-  <pre class="screen"> loss=0 rta=0.80ms         # valid (rule 1,10)
+    <pre class="screen"> loss=0 rta=0.80ms         # valid (rule 1,10)
  loss=0, rta=0.80ms        # invalid (rule 1, no comma allowed)
  loss=0 rta=0,80ms         # invalid (rule 8, no comma allowed) *1
  packet loss=0 rta=0.80    # invalid (rule 3, single quotes needed)
@@ -316,25 +310,25 @@
  drum=153482pages          # invalid (rule 10, wrong UOM) *2
  temperature=23;;;20;30    # valid (rule 6)</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>*1: Having a decimal comma instead of a decimal point may be a result of using your local language settings. It might be fixed
-      internally by your graphing tool but don't rely on it.</p>
+        <p>*1: Having a decimal comma instead of a decimal point may be a result of using your local language settings. It might be fixed
+        internally by your graphing tool but don't rely on it.</p>
 
-      <p>*2: Having "pages" or other non-standard UOMs (e.g. °C/°F) will probably result in errors or discarded performance data when
-      using addon like <a class="link" href="http://docs.pnp4nagios.org/" target="_top">PNP4Nagios</a> or other tools which try to graph your performance
-      data.</p>
-    </td></tr>
+        <p>*2: Having "pages" or other non-standard UOMs (e.g. °C/°F) will probably result in errors or discarded performance data when
+        using addon like <a class="link" href="http://docs.pnp4nagios.org/" target="_top">PNP4Nagios</a> or other tools which try to graph your performance
+        data.</p>
+      </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp190750304"></a>
+    <a class="indexterm" name="idp191054208"></a>
 
-  <a class="indexterm" name="idp190751584"></a>
-</div>
+    <a class="indexterm" name="idp191055488"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
