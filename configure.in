@@ -9,9 +9,9 @@ AC_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.10.2"
+PKG_VERSION="1.10.3"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="12-05-2013"
+PKG_REL_DATE="02-11-2014"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
