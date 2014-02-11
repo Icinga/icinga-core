@@ -81,7 +81,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.9.4
+ICINGA_VERSION=1.9.5
 
 CP=@CP@
 
