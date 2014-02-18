@@ -117,6 +117,7 @@ extern int highlight_table_rows;
 extern int lock_author_names;
 extern int lowercase_user_name;
 extern int persistent_ack_comments;
+extern int read_gzip_logs;
 extern int refresh_rate;
 extern int refresh_type;
 extern int result_limit;
@@ -240,6 +241,7 @@ int org_highlight_table_rows;
 int org_lock_author_names;
 int org_lowercase_user_name;
 int org_persistent_ack_comments;
+int org_read_gzip_logs;
 int org_refresh_rate;
 int org_refresh_type;
 int org_result_limit;
@@ -4105,6 +4107,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(notes_url_target, org_notes_url_target)
 	PRINT_CONFIG_LINE_INT(persistent_ack_comments, org_persistent_ack_comments, "bool")
 	PRINT_CONFIG_LINE_STRING(physical_html_path, org_physical_html_path)
+	PRINT_CONFIG_LINE_INT(read_gzip_logs, org_read_gzip_logs, "bool")
 	PRINT_CONFIG_LINE_INT(refresh_rate, org_refresh_rate, "int")
 
 	// refresh_type
@@ -4547,6 +4550,7 @@ void store_default_settings(void) {
 	org_lock_author_names = lock_author_names;
 	org_lowercase_user_name = lowercase_user_name;
 	org_persistent_ack_comments = persistent_ack_comments;
+	org_read_gzip_logs = read_gzip_logs;
 	org_refresh_rate = refresh_rate;
 	org_refresh_type = refresh_type;
 	org_result_limit = result_limit;

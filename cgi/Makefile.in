@@ -90,8 +90,6 @@ CGILIBS=$(SRC_COMMON)/shared.o getcgi.o cgiutils.o cgiauth.o readlogs.o macros-c
 CGIHDRS=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/locations.h
 CGIDEPS=$(CGILIBS) $(ODATADEPS) $(SDATADEPS)
 
-
-MATHLIBS=-lm
 GDLIBS=@GDLIBS@
 
 
@@ -136,9 +134,6 @@ $(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
 
 avail.cgi: avail.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ avail.c $(CGILIBS) $(LIBS)
-
-checksanity.cgi: checksanity.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ checksanity.c $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
 
 cmd.cgi: cmd.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS) extcmd_list.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ cmd.c extcmd_list.o $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)

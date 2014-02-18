@@ -27,6 +27,7 @@ while ($f = shift @ARGV) {
 		s|\@localstatedir\@|@localstatedir@|g;
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@LOGDIR\@|@LOGDIR@|g;
+		s|\@DISABLECOMPRESSEDLOGS\@|@DISABLECOMPRESSEDLOGS@|g;
 		s|\@STATEDIR\@|@STATEDIR@|g;
 		s|\@ENABLECGILOG\@|@ENABLECGILOG@|g;
 		s|\@ENABLEPERFDATA\@|@ENABLEPERFDATA@|g;

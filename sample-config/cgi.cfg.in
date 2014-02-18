@@ -175,6 +175,16 @@ notes_url_target=main
 
 
 
+# READ GZIP LOGS
+# This option enables reading of gzipped log files. As this can
+# have a huge performance impact in big environments, this
+# option is disabled by default.
+# @DISABLECOMPRESSEDLOGS@
+
+read_gzip_logs=0
+
+
+
 
 ######################################
 #

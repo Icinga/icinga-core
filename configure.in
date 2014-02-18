@@ -390,6 +390,58 @@ fi
 AC_SUBST(ENABLEPERFDATA)
 
 
+dnl enable cgi zlib log support
+DISABLE_COMPRESSED_LOGS=no
+DISABLECOMPRESSEDLOGS=""
+AC_ARG_ENABLE(compressed-logs,AC_HELP_STRING([--disable-compressed-logs],[disable support for gzip compressed logs]), [
+	if test x$enableval = xno; then
+	        DISABLE_COMPRESSED_LOGS=yes
+	fi
+	],DISABLE_COMPRESSED_LOGS=no)
+
+if test x$DISABLE_COMPRESSED_LOGS = xno; then
+	AC_ARG_WITH(zlib,
+	[  --with-zlib[[=DIR]]       use libz in DIR],[
+		if test "$withval" != "no" -a "$withval" != "yes"; then
+			Z_DIR=$withval
+			CFLAGS="${CPPFLAGS} -I$withval/include"
+			LDFLAGS="${LDFLAGS} -L$withval/lib"
+		fi
+	])
+	if test "$with_zlib" = "no"; then
+		echo "Disabling support for gzip compressed logs"
+		DISABLE_COMPRESSED_LOGS=yes
+	else
+		AC_CHECK_HEADERS(zlib.h,
+			AC_CHECK_LIB(z, gzread,[
+				AC_DEFINE(HAVE_ZLIB,[],[Do we have zlib])
+				if test "x${Z_DIR}" != "x"; then
+					CFLAGS="$CFLAGS -I${Z_DIR}/include"
+					LIBS="$LIBS -L${Z_DIR}/lib -lz"
+					[case ${host} in
+						*-*-solaris*)
+							LIBS="$LIBS -L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
+							;;
+					esac]
+				else
+					LIBS="$LIBS -lz"
+				fi], [
+					echo "Disabling support for gzip compressed logs"
+					DISABLE_COMPRESSED_LOGS=yes
+				]
+			), [
+				echo "No zlib.h found, disabling support for gzip compressed logs"
+				DISABLE_COMPRESSED_LOGS=yes
+			]
+		)
+	fi
+fi
+
+if test x$DISABLE_COMPRESSED_LOGS = xyes; then
+	DISABLECOMPRESSEDLOGS="THIS OPTION WAS DISABLED DURING COMPILE TIME"
+fi
+AC_SUBST(DISABLECOMPRESSEDLOGS)
+
 
 dnl ################
 dnl LOG DIRS
@@ -1438,6 +1490,11 @@ if test x$USE_EVENTBROKER = xyes; then
 AC_MSG_RESULT([             Event Broker:  yes])
 else
 AC_MSG_RESULT([             Event Broker:  no])
+fi
+if test x$DISABLE_COMPRESSED_LOGS = xno; then
+AC_MSG_RESULT([   Enable compressed logs:  yes])
+else
+AC_MSG_RESULT([   Enable compressed logs:  no])
 fi
 if test x$ENABLE_PERFDATA = xyes; then
 AC_MSG_RESULT([  Enable Performance Data:  yes])

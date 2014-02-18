@@ -42,6 +42,7 @@ struct file_data {
 extern char	log_file[MAX_FILENAME_LENGTH];		/**< the full file name of the main icinga log file */
 extern char	log_archive_path[MAX_FILENAME_LENGTH];	/**< the full path to the archived log files */
 extern int	log_rotation_method;			/**< time interval of log rotation */
+extern int	read_gzip_logs;				/**< define if .log.gz files should be read */
 /** @} */
 
 
@@ -198,6 +199,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	int in_range = FALSE;
 	int return_val = READLOG_OK;
 	int data_found = FALSE;
+	int open_read_failed = FALSE;
 	short keep_entry = TRUE;
 	time_t timestamp = 0L;
 	time_t last_timestamp = 0L;
@@ -209,6 +211,12 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	DIR *dirp;
 	struct dirent *dptr;
 	struct file_data files[10000];
+#ifdef HAVE_ZLIB_H
+	gzFile gzfile = NULL;
+	char gz_buffer[MAX_COMMAND_BUFFER * 2];
+#else
+	read_gzip_logs = FALSE;
+#endif
 
 	/* empty error_text */
 	if (*error_text != NULL)
@@ -270,7 +278,8 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 
 			/* filter dir for icinga / nagios log files */
 			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) &&
-			    strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24)
+			    ((strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24 ) ||
+			    (read_gzip_logs == TRUE && strstr(dptr->d_name, ".log.gz") && strlen(dptr->d_name) == 27 )))
 				files[file_num++].file_name = strdup(dptr->d_name);
 		}
 		closedir(dirp);
@@ -303,7 +312,17 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			continue;
 
 		/* try to open log file, or throw error and try next log file */
-		if((file=open(log_file_name, O_RDONLY)) < -1) {
+		open_read_failed = FALSE;
+		if (read_gzip_logs == TRUE && strstr(log_file_name, ".log.gz")) {
+#ifdef HAVE_ZLIB_H
+			if ((gzfile = gzopen(log_file_name, "r")) == NULL)
+#endif
+				open_read_failed = TRUE;
+		} else {
+			if((file=open(log_file_name, O_RDONLY)) < -1)
+				open_read_failed = TRUE;
+		}
+		if(open_read_failed == TRUE) {
 
 			if (*error_text == NULL) {
 				asprintf(&temp_buffer, "Unable to open log file \"%s\" !!!", log_file_name);
@@ -317,7 +336,17 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		}
 
 		/* read first 16 bytes to get first timestamp, or throw error if data is not 16 bytes log (empty file) */
-		if(read(file,ts_buffer,16) != 16) {
+		open_read_failed = FALSE;
+		if (read_gzip_logs == TRUE && strstr(log_file_name, ".log.gz")) {
+#ifdef HAVE_ZLIB_H
+			if(gzread(gzfile,ts_buffer,16) != 16)
+#endif
+				open_read_failed = TRUE;
+		} else {
+			if(read(file,ts_buffer,16) != 16)
+				open_read_failed = TRUE;
+		}
+		if(open_read_failed == TRUE) {
 
 			if (*error_text == NULL) {
 				asprintf(&temp_buffer, "Log file \"%s\" invalid! No timestamp found within first 16 bytes!", log_file_name);
@@ -327,11 +356,21 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 
 			return_val = READLOG_ERROR_WARNING;
 
-			close(file);
+#ifdef HAVE_ZLIB_H
+			if (read_gzip_logs == TRUE && strstr(log_file_name, ".log.gz"))
+				gzclose(gzfile);
+			else
+#endif
+				close(file);
 			continue;
 		}
 
-		close(file);
+#ifdef HAVE_ZLIB_H
+		if (read_gzip_logs == TRUE && strstr(log_file_name, ".log.gz"))
+			gzclose(gzfile);
+		else
+#endif
+			close(file);
 
 		/* get first timestamp */
 		temp_buffer = strtok(ts_buffer, "]");
@@ -363,17 +402,37 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			continue;
 
 		/* try to open log file */
-		if ((thefile = mmap_fopen(files[i].file_name)) == NULL)
-			continue;
+		if (read_gzip_logs == TRUE && strstr(files[i].file_name, ".log.gz")) {
+#ifdef HAVE_ZLIB_H
+			if ((gzfile = gzopen(files[i].file_name, "r")) == NULL)
+#endif
+				continue;
+		} else {
+			if ((thefile = mmap_fopen(files[i].file_name)) == NULL)
+				continue;
+		}
 
 		while (1) {
 
 			/* free memory */
 			my_free(input);
 
-			if ((input = mmap_fgets(thefile)) == NULL)
-				break;
+			if (read_gzip_logs == TRUE && strstr(files[i].file_name, ".log.gz")) {
+#ifdef HAVE_ZLIB_H
+				if ((gzgets(gzfile, gz_buffer, MAX_COMMAND_BUFFER * 2 + 1)) == NULL)
+#endif
+					break;
+			} else {
+				if ((input = mmap_fgets(thefile)) == NULL)
+					break;
+			}
 
+#ifdef HAVE_ZLIB_H
+			if (read_gzip_logs == TRUE && strstr(files[i].file_name, ".log.gz")) {
+				gz_buffer[MAX_COMMAND_BUFFER * 2 - 1] = '\0';
+				input = strdup(gz_buffer);
+			}
+#endif
 			strip(input);
 
 			if ((int)strlen(input) == 0)
@@ -549,7 +608,12 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			}
 		}
 
-		mmap_fclose(thefile);
+#ifdef HAVE_ZLIB_H
+		if (read_gzip_logs == TRUE && strstr(files[i].file_name, ".log.gz"))
+			gzclose(gzfile);
+		else
+#endif
+			mmap_fclose(thefile);
 	}
 
 	for (i=0; i< file_num;i++)

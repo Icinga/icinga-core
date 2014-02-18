@@ -135,6 +135,7 @@ extern char 	*macro_user[MAX_USER_MACROS];
 int		log_rotation_method = LOG_ROTATION_NONE;
 char		log_file[MAX_INPUT_BUFFER];
 char		log_archive_path[MAX_INPUT_BUFFER];
+int		read_gzip_logs = FALSE;
 
 int		status_update_interval = 60;
 int             check_external_commands = 0;
@@ -694,6 +695,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "disable_cmd_cgi_csrf_protection"))
 			disable_cmd_cgi_csrf_protection = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "read_gzip_logs"))
+			read_gzip_logs = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "authorization_config_file")) {
 			authorization_config_file = strdup(val);
