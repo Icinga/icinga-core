@@ -13,30 +13,6 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
-1.10.3 - 11/02/2014
-
-ENHANCEMENTS
-
-* initscript: implement IcingaPrecacheFallback option for the init script (thx Immobilienscout24) #4968 - GB
-
-FIXES
-
-* core: fix passive host check commands check service's passive check acceptance (thx Naemon) #5568 - MF
-* core: fix host state translation for passive host check results #5575 - MF
-
-* classic ui: aggressively check for possible buffer overflows in cmd.cgi (thx GitHub) #5434 - MF
-* classic ui: add missing jquery and jquery-ui-timepicker-addon sources #5564 - MF
-
-* idoutils: wait for child processes on exit preventing zombies (thx Laurent Bigonville) #4427 - MF
-
-* initscript: fix ido2db returning invalid lsb codes (Marco Hoyer) #4825 - MF
-
-* spec: only add apache user to the icingacmd group if existing #5263 - MF
-* spec: fix usermod error on SUSE #5430 - GB
-* spec: backport fedora spec file fixes (thx Fedora & Shawn Starr) #5545 - MF
-	** Import iconset from fedora into sample config objects.
-	** Also use the Apache 2.4 RequireAll authorization container.
-
 
 1.11.0 - 13/03/2014
 
@@ -80,6 +56,31 @@ CHANGES
 	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
 	   otherwise the command will be rejected if csrf protection is enabled.
 * classic ui: added current_notification_number to host and service status in status.cgi #5370
+
+
+1.10.3 - 11/02/2014
+
+ENHANCEMENTS
+
+* initscript: implement IcingaPrecacheFallback option for the init script (thx Immobilienscout24) #4968 - GB
+
+FIXES
+
+* core: fix passive host check commands check service's passive check acceptance (thx Naemon) #5568 - MF
+* core: fix host state translation for passive host check results #5575 - MF
+
+* classic ui: aggressively check for possible buffer overflows in cmd.cgi (thx GitHub) #5434 - MF
+* classic ui: add missing jquery and jquery-ui-timepicker-addon sources #5564 - MF
+
+* idoutils: wait for child processes on exit preventing zombies (thx Laurent Bigonville) #4427 - MF
+
+* initscript: fix ido2db returning invalid lsb codes (Marco Hoyer) #4825 - MF
+
+* spec: only add apache user to the icingacmd group if existing #5263 - MF
+* spec: fix usermod error on SUSE #5430 - GB
+* spec: backport fedora spec file fixes (thx Fedora & Shawn Starr) #5545 - MF
+	** Import iconset from fedora into sample config objects.
+	** Also use the Apache 2.4 RequireAll authorization container.
 
 
 1.10.2 - 05/12/2013
