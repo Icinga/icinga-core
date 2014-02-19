@@ -86,6 +86,12 @@ if [ ! -f $Ido2dbCfgFile ]; then
     exit 1
 fi
 
+# Check that
+if [ ! -d $Ido2dbLockDir ]; then
+    echo "Lockfile dir $Ido2dbLockDir not found.  Exiting."
+    exit 1
+fi
+
 ## helper functions ##
 
 # checks status if ido2db daemon
@@ -95,9 +101,9 @@ fi
 # return 4 if the state is unknown
 status_ido2db ()
 {
-    if pid_ido2db && status_ido2db_process; then
+    if pid_ido2db && process_ido2db; then
         return 0
-    elif ! pid_ido2db && ! status_ido2db_process; then
+    elif ! pid_ido2db && ! process_ido2db; then
         return 3
     elif pid_ido2db; then
         return 1
@@ -106,8 +112,23 @@ status_ido2db ()
     fi
 }
 
+# print human readable output of service status
+printstatus_ido2db()
+{
+    status_ido2db $1 $2
+    STATUS=$?
+    if [ $STATUS -eq 0 ]; then
+        echo "Ido2db (pid $Ido2dbPID) is running..."
+    elif [ $STATUS -eq 1 ]; then
+        echo "Ido2db is not running but subsystem locked"
+    else
+        echo "Ido2db is not running"
+    fi
+    exit $STATUS
+}
+
 # check if process is running
-status_ido2db_process ()
+process_ido2db ()
 {
     if ps -p $Ido2dbPID > /dev/null 2>&1; then
         return 0
@@ -127,26 +148,9 @@ pid_ido2db ()
     fi
 }
 
-# print human readable output of service status
-printstatus_ido2db()
-{
-    status_ido2db $1 $2
-    STATUS=$?
-    if [ $STATUS -eq 0 ]; then
-        echo "$servicename (pid $Ido2dbPID) is running..."
-    elif [ $STATUS -eq 1 ]; then
-        echo "$servicename is not running but subsystem locked"
-    else
-        echo "$servicename is not running"
-    fi
-    exit $STATUS
-}
-
 killproc_ido2db ()
 {
-	if status_ido2db $1 $2; then
-		kill $Ido2dbPID
-	fi
+	kill $Ido2dbPID
 
 }
 
@@ -156,69 +160,78 @@ killproc9_ido2db ()
 
 }
 
+remove_run_files ()
+{
+    rm -f $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile
+}
+
 ## MAIN ##
 # See how we were called.
 case "$1" in
 
 	start)
 		#check if ido2db is already running
-		$0 status > /dev/null
-		if [ $? -eq 0 ]; then
-			pid_ido2db
-			# check if pid can be found running
-			if status_ido2db > /dev/null; then
-				echo "$servicename is already running. PID: $Ido2dbPID"
-				exit 0
-			else
-				echo "$servicename PID $Ido2dbPID not running. Removing lockfile."
-				rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
-			fi
+		status_ido2db
+		STATUS=$?
+		if test $STATUS -eq 0; then
+            echo "Ido2db is already running. PID: $Ido2dbPID"
+			exit 0
+		elif test $STATUS -eq 1; then
+			echo "Ido2db PID $Ido2dbPID not running. Removing lockfile."
+			remove_run_files
 		fi
-		printf "Starting $servicename:"
+
+		printf "Starting Ido2db:"
 		# remove leftover sockfile, from a system crash
 		rm -f $Ido2dbSockFile
+
+        # precreate runfile and handover it to ido2db runuser and group
 		touch $Ido2dbRunFile
-		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
+        chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
+
+        # start ido2db daemon
 		$Ido2dbBin -c $Ido2dbCfgFile
 		bin_exit=$?
-		if [ -d $Ido2dbLockDir ]; then touch $Ido2dbLockDir/$Ido2dbLockFile; fi
+		touch $Ido2dbLockDir/$Ido2dbLockFile
 		echo " done."
 		exit $bin_exit
 		;;
 
 	stop)
-		printf "Stopping $servicename: "
+	    if status_ido2db; then
+	        printf "Stopping Ido2db: "
+        	killproc_ido2db
 
-		pid_ido2db
-		killproc_ido2db
-
- 		# now we have to wait for ido2db to exit and remove its
- 		# own Ido2dbRunFile, otherwise a following "start" could
- 		# happen, and then the exiting ido2db will remove the
- 		# new Ido2dbRunFile, allowing multiple ido2db daemons
- 		# to (sooner or later) run - John Sellens
- 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
- 		    if status_ido2db > /dev/null; then
- 			printf '.'
- 			sleep 1
- 		    else
- 			break
- 		    fi
- 		done
- 		if status_ido2db > /dev/null; then
- 		    echo ''
- 		    echo "Warning - $servicename did not exit in a timely manner. Sending kill -9"
-		    kill9proc_ido2db
- 		else
- 		    echo "done."
-		    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
- 		fi
-
+         	# now we have to wait for ido2db to exit and remove its
+         	# own Ido2dbRunFile, otherwise a following "start" could
+         	# happen, and then the exiting ido2db will remove the
+         	# new Ido2dbRunFile, allowing multiple ido2db daemons
+         	# to (sooner or later) run - John Sellens
+         	for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+         	    if status_ido2db; then
+         		printf '.'
+         		sleep 1
+         	    else
+         		break
+         	    fi
+         	done
+         	if status_ido2db; then
+         	    echo ''
+         	    echo "Warning - Ido2db did not exit in a timely manner. Sending kill -9"
+        	    kill9proc_ido2db
+         	else
+         	    remove_run_files
+         	    echo "done."
+         	fi
+	    else
+	        echo "Ido2db is already stopped!"
+	        exit 0
+	    fi
 		;;
 
     status)
-		printstatus_ido2db ido2db
-                ;;
+		printstatus_ido2db
+        ;;
 
 	restart)
 		$0 stop
