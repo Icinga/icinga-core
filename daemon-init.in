@@ -57,71 +57,90 @@ if [ ! -f $IcingaCfgFile ]; then
     exit 1
 fi
 
+# Check that lockdir exists.
+if [ ! -d $IcingaLockDir ]; then
+    echo "Lockfile dir $IcingaLockDir not found.  Exiting."
+    exit 1
+fi
 
 ## helper functions ##
-check_pid_file_exists ()
-{
-        if test ! -f $IcingaRunFile; then
-                return 1;
-        fi
 
-        return 0
-}
-
+# check status if icinga daemon
+# return 0 if running
+# return 1 if dead but pidfile exists
+# return 3 if daemon is not running
+# return 4 if the state is unknown
 status_icinga ()
 {
-
-	if ps -p $IcingaPID > /dev/null 2>&1; then
-	        return 0
-	else
-		return 1
-	fi
-
-	return 1
+    if pid_icinga && process_icinga; then
+        return 0
+    elif ! pid_icinga && ! process_icinga; then
+        return 3
+    elif pid_icinga; then
+        return 1
+    else
+        return 4
+    fi
 }
 
-
-checkstatus_icinga()
+# print human readable output of service status
+printstatus_icinga()
 {
-        if check_pid_file_exists > /dev/null; then
-                pid_icinga
-                if status_icinga $1 $2; then
-                        echo "icinga (pid $IcingaPID) is running..."
-                        exit 0
-                else
-                        echo "icinga is not running. removing $IcingaRunFile"
-                        # pid file exists, but daemon is dead
-                        rm -f $IcingaRunFile
-                        exit 1
-                fi
-        else
-                # daemon not running
-                echo "icinga is not running"
-                exit 3
-        fi
+    status_icinga
+    STATUS=$?
+    if test $STATUS -eq 0; then
+        echo "Icinga (pid $IcingaPID) is running..."
+    elif test $STATUS -eq 1; then
+        echo "Icinga is not running but subsystem locked"
+    else
+        echo "Icinga is not running"
+    fi
+    exit $STATUS
 }
 
-killproc_icinga ()
+# check if process is running
+process_icinga ()
 {
-	if kill -0  $IcingaPID  >/dev/null 2>&1; then
-		kill $2 $IcingaPID
-	fi
+    if ps -p $IcingaPID > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
 }
 
-kill9proc_icinga()
-{
-	kill -9 $IcingaPID
-}
-
+# check pidfile for existence
 pid_icinga ()
 {
+    if test -f $IcingaRunFile; then
+        IcingaPID=`head -n 1 $IcingaRunFile`
+        return 0
+    else
+        return 1
+    fi
+}
 
-	if test ! -f $IcingaRunFile; then
-		echo "Icinga not running. No lock file found in $IcingaRunFile"
-		exit 1
-	fi
+# send HUP signal
+reload_icinga ()
+{
+	kill -1 $IcingaPID
+}
 
-	IcingaPID=`head -n 1 $IcingaRunFile`
+# send TERM signal
+killproc_icinga ()
+{
+	kill $IcingaPID
+}
+
+# send KILL signal
+killproc9_icinga ()
+{
+    kill -9 $IcingaPID
+
+}
+
+remove_run_files ()
+{
+    rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
 }
 
 chk_config ()
@@ -150,24 +169,24 @@ chk_config ()
 
 start(){
 	# Check if icinga is already running
-	$0 status > /dev/null
-	if [ $? -eq 0 ]; then
-		pid_icinga
-		# check if pid can be found running
-		if status_icinga > /dev/null; then
-			echo "Icinga is already running. PID: $IcingaPID"
-				exit 0
-			else
-				echo "Icinga PID $IcingaPID not running. Removing lockfile."
-				rm -f $IcingaRunFile $IcingaLockDir/$IcingaLockFile
-		fi
+	status_icinga
+	STATUS=$?
+	if test $STATUS -eq 0; then
+        echo "Icinga is already running. PID: $IcingaPID"
+		exit 0
+	elif test $STATUS -eq 1; then
+		echo "Icinga with PID $IcingaPID not running. Removing lockfile."
+		remove_run_files
 	fi
 
 	printf "Starting icinga: "
 	rm -f $IcingaCommandFile
+
+	# precreate runfile and handover it to icinga runuser and group
 	touch $IcingaRunFile
 	chown $IcingaUser:$IcingaGroup $IcingaRunFile
 
+	# start icinga daemon
 	if test "x$1" = "xprecache"; then
 		$IcingaBin -d -u $IcingaCfgFile
 		bin_exit=$?
@@ -175,11 +194,9 @@ start(){
 		$IcingaBin -d $IcingaCfgFile
 		bin_exit=$?
 	fi
-
-	if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
+	touch $IcingaLockDir/$IcingaLockFile
 	echo "Starting icinga done."
 	exit $bin_exit
-
 }
 
 
@@ -192,7 +209,7 @@ case "$1" in
 			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
 
 			if test $? != 0; then
-				exit 1
+				exit 6
 			fi
 
 			start
@@ -217,45 +234,48 @@ case "$1" in
 		;;
 
 	stop)
-		printf "Stopping icinga: "
+		if status_icinga; then
 
-		pid_icinga
-		killproc_icinga icinga
+            printf "Stopping Icinga: "
+            killproc_icinga
 
- 		# now we have to wait for icinga to exit and remove its
- 		# own IcingaRunFile, otherwise a following "start" could
- 		# happen, and then the exiting icinga will remove the
- 		# new IcingaRunFile, allowing multiple icinga daemons
- 		# to (sooner or later) run - John Sellens
-		#printf 'Waiting for icinga to exit .'
- 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
- 		    if status_icinga > /dev/null; then
- 			printf '.'
- 			sleep 1
- 		    else
- 			break
- 		    fi
- 		done
- 		if status_icinga > /dev/null; then
- 		    echo ''
- 		    echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
-		    kill9proc_icinga
- 		else
- 		    echo 'Stopping icinga done.'
-                    rm -f $IcingaRunFile $IcingaLockDir/$IcingaLockFile
- 		fi
-
+     		# now we have to wait for icinga to exit and remove its
+     		# own IcingaRunFile, otherwise a following "start" could
+     		# happen, and then the exiting icinga will remove the
+     		# new IcingaRunFile, allowing multiple icinga daemons
+     	    # to (sooner or later) run - John Sellens
+    	    printf 'Waiting for icinga to exit .'
+   		    for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+   		        if status_icinga; then
+   			        printf '.'
+   			        sleep 1
+   		        else
+   		            break
+     		    fi
+     		done
+     		if status_icinga; then
+     		    echo ''
+     		    echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
+    		    kill9proc_icinga
+     		else
+     		    echo 'Stopping icinga done.'
+                remove_run_files
+     		fi
+        else
+            echo "Ido2db is already stopped!"
+            exit 0
+        fi
 		;;
 
 	status)
-		checkstatus_icinga icinga
+		printstatus_icinga
 		;;
 
 	checkconfig)
 		chk_config " CONFIG ERROR!  See $IcingaChkFile for details."
 
 		if test $? != 0; then
-			exit 1
+			exit 6
 		fi
 		;;
 
@@ -263,7 +283,7 @@ case "$1" in
 		chk_config
 
 		if test $? != 0; then
-			exit 1
+			exit 6
 		fi
 		;;
 
@@ -272,7 +292,7 @@ case "$1" in
 			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
 
 			if test $? != 0; then
-				exit 1
+				exit 6
 			fi
 		fi
 
@@ -282,25 +302,19 @@ case "$1" in
 
 	reload|force-reload)
 		if test $IcingaPrecacheFallback != 1; then
-			chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
+		    chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
 
-			if test $? != 0; then
-				exit 1
+		    if test $? != 0; then
+				exit 6
 			fi
 		fi
 
-		if test ! -f $IcingaRunFile; then
-			$0 start
+		if status_icinga; then
+		    printf "Reloading icinga configuration..."
+			reload_icinga
+			echo "done"
 		else
-			pid_icinga
-			if status_icinga > /dev/null; then
-				printf "Reloading icinga configuration..."
-				killproc_icinga icinga -HUP
-				echo "done"
-			else
-				$0 stop
-				$0 start
-			fi
+		    $0 start
 		fi
 		;;
 
