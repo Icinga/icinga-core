@@ -2274,8 +2274,6 @@ alter sequence SEQ_SERVICE_CONTACTS cache 5;
 alter sequence SEQ_SLAHISTORY cache 20;
 alter sequence SEQ_STATEHISTORY cache 50; 
 alter sequence SEQ_SYSTEMCOMMANDS cache 5; 
-alter sequence SEQ_TIMEDEVENTQUEUE cache 10;
-alter sequence SEQ_TIMEDEVENTS cache 10; 
 alter sequence SEQ_TIMEPERIODS nocache; 
 alter sequence SEQ_TIMEP_TIMER cache 5;
 
