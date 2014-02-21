@@ -77,6 +77,7 @@ command *global_host_event_handler_ptr;
 int sync_state_information(void) {}
 int log_passive_checks = DEFAULT_LOG_PASSIVE_CHECKS;
 int log_external_commands = DEFAULT_LOG_EXTERNAL_COMMANDS;
+int log_anonymized_external_command_author = DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR;
 
 time_t disable_notifications_expire_time = 0L;
 //void enable_all_notifications() {}
