@@ -67,6 +67,7 @@ extern int      process_performance_data;
 
 extern int      log_external_commands;
 extern int      log_passive_checks;
+extern int      log_anonymized_external_command_author;
 
 extern unsigned long    modified_host_process_attributes;
 extern unsigned long    modified_service_process_attributes;
@@ -235,11 +236,14 @@ int process_external_commands_from_file(char *fname, int delete_file) {
 /* top-level external command processor */
 int process_external_command1(char *cmd) {
 	char *temp_buffer = NULL;
+	char *temp_buffer2 = NULL;
 	char *command_id = NULL;
 	char *args = NULL;
 	time_t entry_time = 0L;
 	int command_type = CMD_NONE;
 	char *temp_ptr = NULL;
+	int author_position = 0;
+	int position = 1;
 	int result = OK;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "process_external_command1()\n");
@@ -374,9 +378,10 @@ int process_external_command1(char *cmd) {
 	/**** HOST-RELATED COMMANDS ****/
 	/*******************************/
 
-	else if (!strcmp(command_id, "ADD_HOST_COMMENT"))
+	else if (!strcmp(command_id, "ADD_HOST_COMMENT")) {
 		command_type = CMD_ADD_HOST_COMMENT;
-	else if (!strcmp(command_id, "DEL_HOST_COMMENT"))
+		author_position = 3;
+	} else if (!strcmp(command_id, "DEL_HOST_COMMENT"))
 		command_type = CMD_DEL_HOST_COMMENT;
 	else if (!strcmp(command_id, "DEL_ALL_HOST_COMMENTS"))
 		command_type = CMD_DEL_ALL_HOST_COMMENTS;
@@ -419,11 +424,13 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "SCHEDULE_FORCED_HOST_SVC_CHECKS"))
 		command_type = CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS;
 
-	else if (!strcmp(command_id, "ACKNOWLEDGE_HOST_PROBLEM"))
+	else if (!strcmp(command_id, "ACKNOWLEDGE_HOST_PROBLEM")) {
 		command_type = CMD_ACKNOWLEDGE_HOST_PROBLEM;
-	else if (!strcmp(command_id, "ACKNOWLEDGE_HOST_PROBLEM_EXPIRE"))
+		author_position = 5;
+	} else if (!strcmp(command_id, "ACKNOWLEDGE_HOST_PROBLEM_EXPIRE")) {
 		command_type = CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE;
-	else if (!strcmp(command_id, "REMOVE_HOST_ACKNOWLEDGEMENT"))
+		author_position = 6;
+	} else if (!strcmp(command_id, "REMOVE_HOST_ACKNOWLEDGEMENT"))
 		command_type = CMD_REMOVE_HOST_ACKNOWLEDGEMENT;
 
 	else if (!strcmp(command_id, "ENABLE_HOST_EVENT_HANDLER"))
@@ -441,11 +448,13 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "SCHEDULE_FORCED_HOST_CHECK"))
 		command_type = CMD_SCHEDULE_FORCED_HOST_CHECK;
 
-	else if (!strcmp(command_id, "SCHEDULE_HOST_DOWNTIME"))
+	else if (!strcmp(command_id, "SCHEDULE_HOST_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_HOST_DOWNTIME;
-	else if (!strcmp(command_id, "SCHEDULE_HOST_SVC_DOWNTIME"))
+		author_position = 7;
+	} else if (!strcmp(command_id, "SCHEDULE_HOST_SVC_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_HOST_SVC_DOWNTIME;
-	else if (!strcmp(command_id, "DEL_HOST_DOWNTIME"))
+		author_position = 7;
+	} else if (!strcmp(command_id, "DEL_HOST_DOWNTIME"))
 		command_type = CMD_DEL_HOST_DOWNTIME;
 	else if (!strcmp(command_id, "DEL_DOWNTIME_BY_HOST_NAME"))
 		command_type = CMD_DEL_DOWNTIME_BY_HOST_NAME;
@@ -478,13 +487,15 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "CHANGE_MAX_HOST_CHECK_ATTEMPTS"))
 		command_type = CMD_CHANGE_MAX_HOST_CHECK_ATTEMPTS;
 
-	else if (!strcmp(command_id, "SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME"))
+	else if (!strcmp(command_id, "SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
+		author_position = 7;
 
-	else if (!strcmp(command_id, "SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME"))
+	} else if (!strcmp(command_id, "SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
+		author_position = 7;
 
-	else if (!strcmp(command_id, "SET_HOST_NOTIFICATION_NUMBER"))
+	} else if (!strcmp(command_id, "SET_HOST_NOTIFICATION_NUMBER"))
 		command_type = CMD_SET_HOST_NOTIFICATION_NUMBER;
 
 	else if (!strcmp(command_id, "CHANGE_HOST_CHECK_TIMEPERIOD"))
@@ -493,10 +504,11 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "CHANGE_CUSTOM_HOST_VAR"))
 		command_type = CMD_CHANGE_CUSTOM_HOST_VAR;
 
-	else if (!strcmp(command_id, "SEND_CUSTOM_HOST_NOTIFICATION"))
+	else if (!strcmp(command_id, "SEND_CUSTOM_HOST_NOTIFICATION")) {
 		command_type = CMD_SEND_CUSTOM_HOST_NOTIFICATION;
+		author_position = 3;
 
-	else if (!strcmp(command_id, "CHANGE_HOST_NOTIFICATION_TIMEPERIOD"))
+	} else if (!strcmp(command_id, "CHANGE_HOST_NOTIFICATION_TIMEPERIOD"))
 		command_type = CMD_CHANGE_HOST_NOTIFICATION_TIMEPERIOD;
 
 	else if (!strcmp(command_id, "CHANGE_HOST_MODATTR"))
@@ -537,19 +549,23 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "DISABLE_HOSTGROUP_PASSIVE_SVC_CHECKS"))
 		command_type = CMD_DISABLE_HOSTGROUP_PASSIVE_SVC_CHECKS;
 
-	else if (!strcmp(command_id, "SCHEDULE_HOSTGROUP_HOST_DOWNTIME"))
+	else if (!strcmp(command_id, "SCHEDULE_HOSTGROUP_HOST_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME;
-	else if (!strcmp(command_id, "SCHEDULE_HOSTGROUP_SVC_DOWNTIME"))
+		author_position = 7;
+	} else if (!strcmp(command_id, "SCHEDULE_HOSTGROUP_SVC_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME;
+		author_position = 7;
+	}
 
 
 	/**********************************/
 	/**** SERVICE-RELATED COMMANDS ****/
 	/**********************************/
 
-	else if (!strcmp(command_id, "ADD_SVC_COMMENT"))
+	else if (!strcmp(command_id, "ADD_SVC_COMMENT")) {
 		command_type = CMD_ADD_SVC_COMMENT;
-	else if (!strcmp(command_id, "DEL_SVC_COMMENT"))
+		author_position = 4;
+	} else if (!strcmp(command_id, "DEL_SVC_COMMENT"))
 		command_type = CMD_DEL_SVC_COMMENT;
 	else if (!strcmp(command_id, "DEL_ALL_SVC_COMMENTS"))
 		command_type = CMD_DEL_ALL_SVC_COMMENTS;
@@ -591,16 +607,18 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "DISABLE_SVC_FLAP_DETECTION"))
 		command_type = CMD_DISABLE_SVC_FLAP_DETECTION;
 
-	else if (!strcmp(command_id, "SCHEDULE_SVC_DOWNTIME"))
+	else if (!strcmp(command_id, "SCHEDULE_SVC_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_SVC_DOWNTIME;
-	else if (!strcmp(command_id, "DEL_SVC_DOWNTIME"))
+		author_position = 8;
+	} else if (!strcmp(command_id, "DEL_SVC_DOWNTIME"))
 		command_type = CMD_DEL_SVC_DOWNTIME;
-
-	else if (!strcmp(command_id, "ACKNOWLEDGE_SVC_PROBLEM"))
+	else if (!strcmp(command_id, "ACKNOWLEDGE_SVC_PROBLEM")) {
 		command_type = CMD_ACKNOWLEDGE_SVC_PROBLEM;
-	else if (!strcmp(command_id, "ACKNOWLEDGE_SVC_PROBLEM_EXPIRE"))
+		author_position = 6;
+	} else if (!strcmp(command_id, "ACKNOWLEDGE_SVC_PROBLEM_EXPIRE")) {
 		command_type = CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE;
-	else if (!strcmp(command_id, "REMOVE_SVC_ACKNOWLEDGEMENT"))
+		author_position = 7;
+	} else if (!strcmp(command_id, "REMOVE_SVC_ACKNOWLEDGEMENT"))
 		command_type = CMD_REMOVE_SVC_ACKNOWLEDGEMENT;
 
 	else if (!strcmp(command_id, "START_OBSESSING_OVER_SVC"))
@@ -633,10 +651,11 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "CHANGE_CUSTOM_CONTACT_VAR"))
 		command_type = CMD_CHANGE_CUSTOM_CONTACT_VAR;
 
-	else if (!strcmp(command_id, "SEND_CUSTOM_SVC_NOTIFICATION"))
+	else if (!strcmp(command_id, "SEND_CUSTOM_SVC_NOTIFICATION")) {
 		command_type = CMD_SEND_CUSTOM_SVC_NOTIFICATION;
+		author_position = 4;
 
-	else if (!strcmp(command_id, "CHANGE_SVC_NOTIFICATION_TIMEPERIOD"))
+	} else if (!strcmp(command_id, "CHANGE_SVC_NOTIFICATION_TIMEPERIOD"))
 		command_type = CMD_CHANGE_SVC_NOTIFICATION_TIMEPERIOD;
 
 	else if (!strcmp(command_id, "CHANGE_SVC_MODATTR"))
@@ -677,10 +696,13 @@ int process_external_command1(char *cmd) {
 	else if (!strcmp(command_id, "DISABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS"))
 		command_type = CMD_DISABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS;
 
-	else if (!strcmp(command_id, "SCHEDULE_SERVICEGROUP_HOST_DOWNTIME"))
+	else if (!strcmp(command_id, "SCHEDULE_SERVICEGROUP_HOST_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME;
-	else if (!strcmp(command_id, "SCHEDULE_SERVICEGROUP_SVC_DOWNTIME"))
+		author_position = 7;
+	} else if (!strcmp(command_id, "SCHEDULE_SERVICEGROUP_SVC_DOWNTIME")) {
 		command_type = CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME;
+		author_position = 7;
+	}
 
 
 	/**********************************/
@@ -758,8 +780,30 @@ int process_external_command1(char *cmd) {
 	/* update statistics for external commands */
 	update_check_stats(EXTERNAL_COMMAND_STATS, time(NULL));
 
-	/* log the external command */
-	asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
+	if (log_anonymized_external_command_author == TRUE && author_position != 0) {
+		position = 1;
+		for (temp_ptr = my_strtok(args, ";"); temp_ptr != NULL; temp_ptr = my_strtok(NULL, ";")) {
+
+			if (position == 1) {
+				temp_buffer2 = strdup((position == author_position) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : temp_ptr);
+			} else {
+				asprintf(&temp_buffer, "%s;%s", (temp_buffer2 != NULL) ? temp_buffer2 : "", (position == author_position) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : temp_ptr);
+				my_free(temp_buffer2);
+				temp_buffer2 = strdup(temp_buffer);
+				my_free(temp_buffer);
+			}
+			position++;
+		}
+
+		/* log the external command */
+		asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, (temp_buffer2 != NULL) ? temp_buffer2 : "");
+		my_free(temp_buffer2);
+
+	} else {
+
+		/* log the external command */
+		asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
+	}
 
 	if (command_type == CMD_PROCESS_SERVICE_CHECK_RESULT || command_type == CMD_PROCESS_HOST_CHECK_RESULT) {
 		/* passive checks are logged in checks.c as well, as some my bypass external commands by getting dropped in checkresults dir */

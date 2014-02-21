@@ -52,6 +52,8 @@ extern char            *generic_summary;
 
 extern int		enable_state_based_escalation_ranges;
 
+extern int		log_anonymized_external_command_author;
+
 int check_escalation_condition(escalation_condition*);
 
 const char *notification_reason_name (unsigned int reason_type) {
@@ -862,10 +864,10 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 		if (log_notifications == TRUE) {
 			switch (type) {
 			case NOTIFICATION_CUSTOM:
-				asprintf(&temp_buffer, "SERVICE NOTIFICATION: %s;%s;%s;CUSTOM ($SERVICESTATE$);%s;$SERVICEOUTPUT$;$NOTIFICATIONAUTHOR$;$NOTIFICATIONCOMMENT$\n", cntct->name, svc->host_name, svc->description, command_name_ptr);
+				asprintf(&temp_buffer, "SERVICE NOTIFICATION: %s;%s;%s;CUSTOM ($SERVICESTATE$);%s;$SERVICEOUTPUT$;%s;$NOTIFICATIONCOMMENT$\n", cntct->name, svc->host_name, svc->description, command_name_ptr, (log_anonymized_external_command_author == TRUE) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : "$NOTIFICATIONAUTHOR$");
 				break;
 			case NOTIFICATION_ACKNOWLEDGEMENT:
-				asprintf(&temp_buffer, "SERVICE NOTIFICATION: %s;%s;%s;ACKNOWLEDGEMENT ($SERVICESTATE$);%s;$SERVICEOUTPUT$;$NOTIFICATIONAUTHOR$;$NOTIFICATIONCOMMENT$\n", cntct->name, svc->host_name, svc->description, command_name_ptr);
+				asprintf(&temp_buffer, "SERVICE NOTIFICATION: %s;%s;%s;ACKNOWLEDGEMENT ($SERVICESTATE$);%s;$SERVICEOUTPUT$;%s;$NOTIFICATIONCOMMENT$\n", cntct->name, svc->host_name, svc->description, command_name_ptr, (log_anonymized_external_command_author == TRUE) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : "$NOTIFICATIONAUTHOR$");
 				break;
 			case NOTIFICATION_FLAPPINGSTART:
 				asprintf(&temp_buffer, "SERVICE NOTIFICATION: %s;%s;%s;FLAPPINGSTART ($SERVICESTATE$);%s;$SERVICEOUTPUT$\n", cntct->name, svc->host_name, svc->description, command_name_ptr);
@@ -1980,10 +1982,10 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 		if (log_notifications == TRUE) {
 			switch (type) {
 			case NOTIFICATION_CUSTOM:
-				asprintf(&temp_buffer, "HOST NOTIFICATION: %s;%s;CUSTOM ($HOSTSTATE$);%s;$HOSTOUTPUT$;$NOTIFICATIONAUTHOR$;$NOTIFICATIONCOMMENT$\n", cntct->name, hst->name, command_name_ptr);
+				asprintf(&temp_buffer, "HOST NOTIFICATION: %s;%s;CUSTOM ($HOSTSTATE$);%s;$HOSTOUTPUT$;%s;$NOTIFICATIONCOMMENT$\n", cntct->name, hst->name, command_name_ptr, (log_anonymized_external_command_author == TRUE) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : "$NOTIFICATIONAUTHOR$");
 				break;
 			case NOTIFICATION_ACKNOWLEDGEMENT:
-				asprintf(&temp_buffer, "HOST NOTIFICATION: %s;%s;ACKNOWLEDGEMENT ($HOSTSTATE$);%s;$HOSTOUTPUT$;$NOTIFICATIONAUTHOR$;$NOTIFICATIONCOMMENT$\n", cntct->name, hst->name, command_name_ptr);
+				asprintf(&temp_buffer, "HOST NOTIFICATION: %s;%s;ACKNOWLEDGEMENT ($HOSTSTATE$);%s;$HOSTOUTPUT$;%s;$NOTIFICATIONCOMMENT$\n", cntct->name, hst->name, command_name_ptr, (log_anonymized_external_command_author == TRUE) ? DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME : "$NOTIFICATIONAUTHOR$");
 				break;
 			case NOTIFICATION_FLAPPINGSTART:
 				asprintf(&temp_buffer, "HOST NOTIFICATION: %s;%s;FLAPPINGSTART ($HOSTSTATE$);%s;$HOSTOUTPUT$\n", cntct->name, hst->name, command_name_ptr);

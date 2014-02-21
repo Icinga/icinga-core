@@ -77,6 +77,7 @@ extern int      log_event_handlers;
 extern int      log_external_commands;
 extern int      log_passive_checks;
 extern int      log_long_plugin_output;
+extern int      log_anonymized_external_command_author;
 
 extern int      service_check_timeout;
 extern int      service_check_timeout_state;
@@ -691,6 +692,17 @@ int read_main_config_file(char *main_config_file) {
 			}
 
 			log_current_states = (atoi(value) > 0) ? TRUE : FALSE;
+		}
+
+		else if (!strcmp(variable, "log_anonymized_external_command_author")) {
+
+			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+				asprintf(&error_message, "Illegal value for log_anonymized_external_command_author");
+				error = TRUE;
+				break;
+			}
+
+			log_anonymized_external_command_author = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
 		else if (!strcmp(variable, "retain_state_information")) {

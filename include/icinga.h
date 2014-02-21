@@ -103,6 +103,8 @@ extern "C" {
 #define DEFAULT_LOG_EXTERNAL_COMMANDS_USER			0	/* log external commands user*/
 #define DEFAULT_LOG_PASSIVE_CHECKS				1	/* log passive service checks */
 #define DEFAULT_LOG_LONG_PLUGIN_OUTPUT				0	/* don't log long plugin output */
+#define DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR		0	/* don't anonymize external command author in log files */
+#define DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR_NAME	"<anon>"	/* string is used as anonymized user name */
 
 #define DEFAULT_DEBUG_LEVEL                                     0       /* don't log any debugging information */
 #define DEFAULT_DEBUG_VERBOSITY                                 1
