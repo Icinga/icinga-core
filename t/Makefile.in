@@ -11,7 +11,7 @@ ENABLE_DEBUG=@ENABLE_DEBUG@
 
 # Compiler flags for use with Valgrind - set when debug is enabled
 ifeq ('$(ENABLE_DEBUG)', 'yes')
-        CFLAGS=-O0 -g -Wall
+        CFLAGS+=-O0 -g
 endif
 
 all:
