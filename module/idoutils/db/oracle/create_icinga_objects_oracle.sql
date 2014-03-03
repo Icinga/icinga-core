@@ -248,7 +248,6 @@ CREATE TABLE acknowledgements (
   is_sticky integer default 0 ,
   persistent_comment integer default 0 ,
   notify_contacts integer default 0,
-  icinga_node varchar2(255) default NULL,
   end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') 
 ) tablespace &&DATATBS ;
 
@@ -295,7 +294,6 @@ CREATE TABLE commenthistory (
   expires integer default 0 ,
   expiration_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   deletion_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  icinga_node varchar2(255) default NULL,
   deletion_time_usec integer default 0 
 )tablespace &&DATATBS;
 
@@ -504,7 +502,6 @@ CREATE TABLE contactnotifications (
   instance_id integer default 0 ,
   notification_id integer default 0 ,
   contact_object_id integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
   end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
@@ -675,7 +672,6 @@ CREATE TABLE downtimehistory (
   actual_end_time_usec integer default 0 ,
   was_cancelled integer default 0, 
   is_in_effect integer default 0,
-  icinga_node varchar2(255) default NULL,
   trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') 
 )tablespace &&DATATBS;
 
@@ -709,7 +705,6 @@ CREATE TABLE eventhandlers (
   early_timeout integer default 0 ,
   execution_time number default 0 ,
   return_code integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   output clob,
   long_output clob
 )
@@ -732,7 +727,6 @@ CREATE TABLE externalcommands (
   id integer ,
   instance_id integer default 0 ,
   entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  icinga_node varchar2(255) default NULL,
   command_type integer default 0 ,
   command_name varchar2(128),
   command_args varchar2(1024)
@@ -762,7 +756,6 @@ CREATE TABLE flappinghistory (
   low_threshold number default 0 ,
   high_threshold number default 0 ,
   comment_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  icinga_node varchar2(255) default NULL,
   internal_comment_id integer default 0 
 )
 tablespace &&DATATBS;
@@ -849,7 +842,6 @@ CREATE TABLE hostchecks (
   execution_time number default 0 ,
   latency number default 0 ,
   return_code integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   output clob,
   long_output clob,
   perfdata clob)
@@ -1162,7 +1154,6 @@ CREATE TABLE logentries (
   logentry_data clob,
   realtime_data integer default 0 ,
   inferred_data_extracted integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   object_id integer default NULL
 )
 lob (logentry_data) store as logentries_data_lob(tablespace &&LOBTBS)
@@ -1192,7 +1183,6 @@ CREATE TABLE notifications (
   output clob,
   long_output clob,
   escalated integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   contacts_notified integer default 0 
 )
 lob (output) store as notifications_outp_lob(tablespace &&LOBTBS)
@@ -1241,7 +1231,6 @@ CREATE TABLE processevents (
   event_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   event_time_usec integer default 0 ,
   process_id integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   program_name varchar2(16),
   program_version varchar2(20),
   program_date varchar2(10)
@@ -1406,7 +1395,6 @@ CREATE TABLE servicechecks (
   execution_time number default 0 ,
   latency number default 0 ,
   return_code integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   output clob,
   long_output clob,
   perfdata clob
@@ -1701,8 +1689,7 @@ CREATE TABLE statehistory (
   last_hard_state integer default -1 ,
   output clob,
   long_output clob,
-  icinga_node varchar2(255) default NULL,
-  check_source varchar2(255) default NULL,
+  check_source varchar2(255)
 )
 lob (output) store as statehistory_outp_lob(tablespace &&LOBTBS)
 lob (long_output) store as statehistory_loutp_lob(tablespace &&LOBTBS)
@@ -1730,7 +1717,6 @@ CREATE TABLE systemcommands (
   early_timeout integer default 0 ,
   execution_time number default 0 ,
   return_code integer default 0 ,
-  icinga_node varchar2(255) default NULL,
   output clob,
   long_output clob
 )
