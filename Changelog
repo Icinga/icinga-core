@@ -40,6 +40,7 @@ FIXES
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
 * classic ui: fix timepicker is resetting time in input field #5239 - RB
+* classic ui: fix small buffer overflows when checking strlen against MAX_INPUT_BUFFER #5663
 
 * idoutils: wait for child processes on exit preventing zombies (Laurent Bigonville) #4427 - MF
 * idoutils: fix bad update performance with large commenthistory table (thx tgelf) #4985 - MF
