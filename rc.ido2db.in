@@ -86,12 +86,6 @@ if [ ! -f $Ido2dbCfgFile ]; then
 	exit 1
 fi
 
-# Check that
-if [ ! -d $Ido2dbLockDir ]; then
-	echo "Lockfile dir $Ido2dbLockDir not found.  Exiting."
-	exit 1
-fi
-
 ## helper functions ##
 
 # checks status if ido2db daemon
@@ -192,7 +186,7 @@ case "$1" in
 		# start ido2db daemon
 		$Ido2dbBin -c $Ido2dbCfgFile
 		bin_exit=$?
-		touch $Ido2dbLockDir/$Ido2dbLockFile
+		if [ -d $Ido2dbLockDir ]; then touch $Ido2dbLockDir/$Ido2dbLockFile; fi
 		echo " done."
 		exit $bin_exit
 		;;
