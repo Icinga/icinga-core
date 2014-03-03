@@ -61,35 +61,35 @@ export LD_LIBRARY_PATH
 
 # load extra environment variables
 if [ -f /etc/sysconfig/ido2db ]; then
-    . /etc/sysconfig/ido2db
+	. /etc/sysconfig/ido2db
 fi
 
 
 # Source function library
 # Solaris doesn't have an rc.d directory, so do a test first
 if [ -f /etc/rc.d/init.d/functions ]; then
-    . /etc/rc.d/init.d/functions
+	. /etc/rc.d/init.d/functions
 elif [ -f /etc/init.d/functions ]; then
-    . /etc/init.d/functions
+	. /etc/init.d/functions
 fi
 
 
 # Check that ido2db exists.
 if [ ! -f $Ido2dbBin ]; then
-    echo "Executable file $Ido2dbBin not found.  Exiting."
-    exit 1
+	echo "Executable file $Ido2dbBin not found.  Exiting."
+	exit 1
 fi
 
 # Check that ido2db.cfg exists.
 if [ ! -f $Ido2dbCfgFile ]; then
-    echo "Configuration file $Ido2dbCfgFile not found.  Exiting."
-    exit 1
+	echo "Configuration file $Ido2dbCfgFile not found.  Exiting."
+	exit 1
 fi
 
 # Check that
 if [ ! -d $Ido2dbLockDir ]; then
-    echo "Lockfile dir $Ido2dbLockDir not found.  Exiting."
-    exit 1
+	echo "Lockfile dir $Ido2dbLockDir not found.  Exiting."
+	exit 1
 fi
 
 ## helper functions ##
@@ -101,51 +101,51 @@ fi
 # return 4 if the state is unknown
 status_ido2db ()
 {
-    if pid_ido2db && process_ido2db; then
-        return 0
-    elif ! pid_ido2db && ! process_ido2db; then
-        return 3
-    elif pid_ido2db; then
-        return 1
-    else
-        return 4
-    fi
+	if pid_ido2db && process_ido2db; then
+		return 0
+	elif ! pid_ido2db && ! process_ido2db; then
+		return 3
+	elif pid_ido2db; then
+		return 1
+	else
+		return 4
+	fi
 }
 
 # print human readable output of service status
 printstatus_ido2db()
 {
-    status_ido2db $1 $2
-    STATUS=$?
-    if [ $STATUS -eq 0 ]; then
-        echo "Ido2db (pid $Ido2dbPID) is running..."
-    elif [ $STATUS -eq 1 ]; then
-        echo "Ido2db is not running but subsystem locked"
-    else
-        echo "Ido2db is not running"
-    fi
-    exit $STATUS
+	status_ido2db $1 $2
+	STATUS=$?
+	if [ $STATUS -eq 0 ]; then
+		echo "Ido2db (pid $Ido2dbPID) is running..."
+	elif [ $STATUS -eq 1 ]; then
+		echo "Ido2db is not running but subsystem locked"
+	else
+		echo "Ido2db is not running"
+	fi
+	exit $STATUS
 }
 
 # check if process is running
 process_ido2db ()
 {
-    if ps -p $Ido2dbPID > /dev/null 2>&1; then
-        return 0
-    else
-        return 1
-    fi
+	if ps -p $Ido2dbPID > /dev/null 2>&1; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 # check pidfile for existence
 pid_ido2db ()
 {
-    if test -f $Ido2dbRunFile; then
-        Ido2dbPID=`head -n 1 $Ido2dbRunFile`
-        return 0
-    else
-        return 1
-    fi
+	if test -f $Ido2dbRunFile; then
+		Ido2dbPID=`head -n 1 $Ido2dbRunFile`
+		return 0
+	else
+		return 1
+	fi
 }
 
 killproc_ido2db ()
@@ -156,13 +156,13 @@ killproc_ido2db ()
 
 killproc9_ido2db ()
 {
-    kill -9 $Ido2dbPID
+	kill -9 $Ido2dbPID
 
 }
 
 remove_run_files ()
 {
-    rm -f $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile
+	rm -f $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile
 }
 
 ## MAIN ##
@@ -174,7 +174,7 @@ case "$1" in
 		status_ido2db
 		STATUS=$?
 		if test $STATUS -eq 0; then
-            echo "Ido2db is already running. PID: $Ido2dbPID"
+			echo "Ido2db is already running. PID: $Ido2dbPID"
 			exit 0
 		elif test $STATUS -eq 1; then
 			echo "Ido2db PID $Ido2dbPID not running. Removing lockfile."
@@ -185,11 +185,11 @@ case "$1" in
 		# remove leftover sockfile, from a system crash
 		rm -f $Ido2dbSockFile
 
-        # precreate runfile and handover it to ido2db runuser and group
+		# precreate runfile and handover it to ido2db runuser and group
 		touch $Ido2dbRunFile
-        chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
+		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
 
-        # start ido2db daemon
+		# start ido2db daemon
 		$Ido2dbBin -c $Ido2dbCfgFile
 		bin_exit=$?
 		touch $Ido2dbLockDir/$Ido2dbLockFile
@@ -198,40 +198,40 @@ case "$1" in
 		;;
 
 	stop)
-	    if status_ido2db; then
-	        printf "Stopping Ido2db: "
-        	killproc_ido2db
+		if status_ido2db; then
+			printf "Stopping Ido2db: "
+			killproc_ido2db
 
-         	# now we have to wait for ido2db to exit and remove its
-         	# own Ido2dbRunFile, otherwise a following "start" could
-         	# happen, and then the exiting ido2db will remove the
-         	# new Ido2dbRunFile, allowing multiple ido2db daemons
-         	# to (sooner or later) run - John Sellens
-         	for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
-         	    if status_ido2db; then
-         		printf '.'
-         		sleep 1
-         	    else
-         		break
-         	    fi
-         	done
-         	if status_ido2db; then
-         	    echo ''
-         	    echo "Warning - Ido2db did not exit in a timely manner. Sending kill -9"
-        	    kill9proc_ido2db
-         	else
-         	    remove_run_files
-         	    echo "done."
-         	fi
-	    else
-	        echo "Ido2db is already stopped!"
-	        exit 0
-	    fi
+			# now we have to wait for ido2db to exit and remove its
+			# own Ido2dbRunFile, otherwise a following "start" could
+			# happen, and then the exiting ido2db will remove the
+			# new Ido2dbRunFile, allowing multiple ido2db daemons
+			# to (sooner or later) run - John Sellens
+			for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+				if status_ido2db; then
+					printf '.'
+					sleep 1
+				else
+					break
+				fi
+			done
+			if status_ido2db; then
+				echo ''
+				echo "Warning - Ido2db did not exit in a timely manner. Sending kill -9"
+				kill9proc_ido2db
+			else
+				remove_run_files
+				echo "done."
+			fi
+		else
+			echo "Ido2db is already stopped!"
+			exit 0
+		fi
 		;;
 
-    status)
+	status)
 		printstatus_ido2db
-        ;;
+		;;
 
 	restart)
 		$0 stop
@@ -243,6 +243,6 @@ case "$1" in
 		exit 1
 		;;
 
-esac
-  
-# End of this script
+	esac
+
+	# End of this script
