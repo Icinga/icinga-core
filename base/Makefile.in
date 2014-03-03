@@ -19,7 +19,7 @@ ENABLE_DEBUG=@ENABLE_DEBUG@
 
 # Compiler flags for use with Valgrind - set when debug is enabled
 ifeq ('$(ENABLE_DEBUG)', 'yes')
-	CFLAGS=-O0 -g -Wall -DHAVE_CONFIG_H -DNSCORE
+	CFLAGS+=-O0 -g -DHAVE_CONFIG_H -DNSCORE
 endif
 
 # Compiler flags for use with gprof
@@ -27,10 +27,10 @@ endif
 #CFLAGS += -pg -ftest-coverage
 
 # Compiler flags for optimization (overrides default)
-#CFLAGS=-O3 -Wall -fno-strict-aliasing -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -DHAVE_CONFIG_H -DNSCORE
+#CFLAGS=-O3 -fno-strict-aliasing -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -DHAVE_CONFIG_H -DNSCORE
 
 # Compiler flags for optimization (complements default)
-#CFLAGS_WARN=-Wall -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs
+#CFLAGS_WARN= -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs
 #CFLAGS_DEBUG=-ggdb3 -g3
 #CFLAGS_GPROF=-pg
 #CFLAGS+=$(CFLAGS_WARN) $(CFLAGS_DEBUG) $(CFLAGS_GPROF)
