@@ -1145,15 +1145,16 @@ static int ido2db_proxy_flush_buffer(void **buffer, size_t *size, size_t *iostat
 
 static void ido2db_proxy_free(ido2db_proxy *proxy) {
 	int refs;
+	if (proxy != NULL) {
+		pthread_mutex_lock(&(proxy->mutex));
+		proxy->refs--;
+		refs = proxy->refs;
+		pthread_mutex_unlock(&(proxy->mutex));
 
-	pthread_mutex_lock(&(proxy->mutex));
-	proxy->refs--;
-	refs = proxy->refs;
-	pthread_mutex_unlock(&(proxy->mutex));
-
-	if (refs == 0) {
-		pthread_mutex_destroy(&(proxy->mutex));
-		free(proxy);
+		if (refs == 0) {
+			pthread_mutex_destroy(&(proxy->mutex));
+			free(proxy);
+		}
 	}
 }
 
