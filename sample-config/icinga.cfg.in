@@ -397,6 +397,17 @@ log_external_commands=1
 
 
 
+# LOG ANONYMIZED EXTERNAL COMMAND AUTHOR !!EXPERIMENTAL!!
+# This option substitutes the user name on external commands with
+# the string "<anon>" if the command gets logged. It is
+# anonymized in log files only. This option was added to make
+# icinga compliant with data retention laws on various countries.
+# This option is disabled by default.
+
+log_anonymized_external_command_author=0
+
+
+
 # PASSIVE CHECKS LOGGING OPTION
 # If you don't want Icinga to log passive host and service checks, set
 # this value to 0.  If passive checks should be logged, set

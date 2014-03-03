@@ -19,6 +19,7 @@ UPGRADE NOTES
 ENHANCEMENTS
 
 * core: add statehistory entries for newly added services (checkresult with OK state) #3854 - MF
+* core: add option to anonymize external command user in icinga log #5689 - RB
 
 * classic ui: add status.cgi modifed_attributes filter parameter #4880 - RB
 * classic ui: add "current_notification_number" to jsonoutput of hosts and services in status.cgi #5370 - RB

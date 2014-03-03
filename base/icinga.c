@@ -94,6 +94,7 @@ int             log_current_states = DEFAULT_LOG_CURRENT_STATES;
 int             log_external_commands = DEFAULT_LOG_EXTERNAL_COMMANDS;
 int             log_passive_checks = DEFAULT_LOG_PASSIVE_CHECKS;
 int             log_long_plugin_output = DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
+int             log_anonymized_external_command_author = DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR;
 
 unsigned long   logging_options = 0;
 unsigned long   syslog_options = 0;

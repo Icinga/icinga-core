@@ -83,6 +83,7 @@ int             log_event_handlers = DEFAULT_LOG_EVENT_HANDLERS;
 int             log_initial_states = DEFAULT_LOG_INITIAL_STATES;
 int             log_external_commands = DEFAULT_LOG_EXTERNAL_COMMANDS;
 int             log_passive_checks = DEFAULT_LOG_PASSIVE_CHECKS;
+int             log_anonymized_external_command_author = DEFAULT_LOG_ANONYMIZED_EXTERNAL_COMMAND_AUTHOR;
 
 unsigned long   logging_options = 0;
 unsigned long   syslog_options = 0;
