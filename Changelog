@@ -34,6 +34,8 @@ FIXES
 
 * core: allow exclude (!) to work for regexp matches for hosts (Franky Van Liedekerke) #5324 - MF
 * core: fix retained host check attempts being 0/1 #5061 - MF
+* core: fix passive check result processing for host checks is not working (Marco Hoyer) #5671 - MF
+* core: fix service escalations with no host mapping are not accepted (Tomas Dubec) #5687 - MF
 
 * classic ui: getcgivars() fails to produce proper key/value list causing a potential buffer-overflow condition #5276 - CF
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 - RB
@@ -41,6 +43,8 @@ FIXES
 
 * idoutils: wait for child processes on exit preventing zombies (Laurent Bigonville) #4427 - MF
 * idoutils: fix bad update performance with large commenthistory table (thx tgelf) #4985 - MF
+* idoutils: fix errors in oracle.sql with timedevent sequences #5688 - TD
+* idoutils: fix SEGV in ido2db in solaris #5687 - TD
 
 * initscript: handle binary return codes gracefully #5412 - MF
 
@@ -52,6 +56,12 @@ SUPPORT
 
 * core: merge xdata/x{c,d}ddefault.c back into common/{comment,downtime}.c #4815 - MF
 * core: remove unused netutils.c #5195 - MF
+
+* packages: fix gpl license text, wrong file encoding (Tim Hardeck) #5698 - MF
+
+* initscript: refactor initscripts (Marco Hoyer) #5684 - MF
+
+* install: fix --enable-debug overwrites CFLAG settings in Makefile #5691 - TD
 
 CHANGES
 * classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346
