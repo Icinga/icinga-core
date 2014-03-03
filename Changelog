@@ -18,6 +18,7 @@ UPGRADE NOTES
 
 ENHANCEMENTS
 
+* core: add commands for {en,dis}able freshness checks per host/service (Philip Matuskiewicz) #5422 #4430 - MF
 * core: add statehistory entries for newly added services (checkresult with OK state) #3854 - MF
 * core: add option to anonymize external command user in icinga log #5689 - RB
 
