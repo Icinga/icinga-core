@@ -131,6 +131,7 @@ typedef struct ido2db_dbconfig_struct{
 #define IDO2DB_OBJECTTYPE_CONTACT             10
 #define IDO2DB_OBJECTTYPE_CONTACTGROUP        11
 #define IDO2DB_OBJECTTYPE_COMMAND             12
+#define IDO2DB_OBJECTTYPE_ENDPOINT            13 	/* reserved for Icinga 2 */
 
 
 
