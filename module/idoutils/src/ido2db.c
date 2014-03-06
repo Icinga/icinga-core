@@ -114,6 +114,8 @@ int main(int argc, char **argv) {
 	dbi_driver driver;
 	int numdrivers;
 
+	ido2db_idi idi_schema;
+
 	driver = NULL;
 #endif
 #ifdef USE_ORACLE
@@ -298,7 +300,6 @@ int main(int argc, char **argv) {
 
 	/******************************/
 	/* check db schema version */
-	ido2db_idi idi_schema;
         ido2db_idi_init(&idi_schema);
         ido2db_db_init(&idi_schema);
 
