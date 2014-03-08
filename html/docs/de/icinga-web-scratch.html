@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgicmd.html" title="6.4. Ausführen von Classic UI-Modulen (CGIs) auf der Kommandozeile">
 <link rel="next" href="icinga-web-config.html" title="6.6. Konfigurationsübersicht Icinga Web">
@@ -70,6 +70,25 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-mysql php5-ldap php-soap php5-gd php5-mysql</pre>
+
+            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+              <p>Neuere PHP-Versionen (&gt;= 5.5) werden (aus Lizenzgründen) mit einem separaten JSON-Paket ausgeliefert, so dass Sie das
+              Paket separat installieren müssen.</p>
+
+              <p>Prüfen Sie, ob das Modul bereits vorhanden ist:</p>
+
+              <pre class="programlisting"> #&gt; php -m | grep -i json</pre>
+
+              <p>Falls dort kein Modul ausgegeben wird, installieren Sie das Modul:</p>
+
+              <pre class="programlisting"> #&gt; apt-get install php5-json</pre>
+            </td></tr>
+</table></div>
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -179,18 +198,19 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Laden Sie das Archiv herunter von <a class="link" href="http://www.icinga.org/download/" target="_top">http://www.icinga.org/download/</a>. Falls Sie eine
-        Funktion benötigen, die nur in der aktuellen Entwicklerversion vorhanden ist, dann klonen Sie von icinga-web.git:</p>
+        <p>Laden Sie das Archiv herunter von <a class="link" href="http://www.icinga.org/download/" target="_top">http://www.icinga.org/download/</a>.
+        Falls Sie eine Funktion benötigen, die nur in der aktuellen Entwicklerversion vorhanden ist, dann klonen Sie von
+        icinga-web.git:</p>
 
         <pre class="screen"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
         <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-        <pre class="screen"> #&gt; tar xzvf icinga-web-1.10.0.tar.gz</pre>
+        <pre class="screen"> #&gt; tar xzvf icinga-web-1.11.tar.gz</pre>
 
         <p>Wechseln Sie in das Verzeichnis:</p>
 
-        <pre class="screen"> #&gt; cd icinga-web-1.10.0</pre>
+        <pre class="screen"> #&gt; cd icinga-web-1.11</pre>
 
         <p>Icinga Web stellt verschiedene configure-Optionen zur Verfügung z.B.</p>
 
@@ -292,6 +312,42 @@
         <pre class="screen"> #&gt; make icinga-reset-password</pre>
 
         <p>Setzt das Passwort für jeden Account auf icinga-web zurück.</p>
+      </li>
+<li class="listitem">
+<a name="selinuxsettings"></a>
+        <span style="color: red">&lt;title&gt;Anpassen der SELinux-Einstellungen&lt;/title&gt;</span>
+
+        <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
+        Enhanced Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie
+        versuchen, die Icinga-CGIs aufzurufen.</p>
+
+        <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+
+        <pre class="screen"> #&gt; getenforce</pre>
+
+        <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
+
+        <pre class="screen"> #&gt; setenforce 0</pre>
+
+        <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
+        System neustarten.</p>
+
+        <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen,
+        um die CGIs im Enforcing/Targeted-Modus laufen zu lassen. Der <span class="emphasis"><em>semanage</em></span>-Befehl wird automatisch Einträge in die
+        Datei <code class="filename">/etc/selinux/targeted/contexts/files/file_contexts.local</code> einfügen:</p>
+
+        <pre class="programlisting"> #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/app(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/lib(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/pub(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga-web/app/cache(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga-web/log(/.*)?'</pre>
+
+        <p>Sobald Sie die notwendigen Kontexte definiert haben, müssen die Einträge aktiviert werden.</p>
+
+        <pre class="programlisting"> #&gt; chcon -R /usr/local/icinga-web</pre>
+
+        <p>Einzelheiten finden Sie unter <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>
+        (englisch).</p>
       </li>
 <li class="listitem">
         <p><span class="bold"><strong>PHP-Abhängigkeiten</strong></span></p>
@@ -928,9 +984,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp188671440"></a>
+    <a class="indexterm" name="idp190061840"></a>
 
-    <a class="indexterm" name="idp188672752"></a>
+    <a class="indexterm" name="idp190063152"></a>
   </div>
 </div>
 <div class="navfooter">

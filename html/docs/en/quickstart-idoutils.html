@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">
 <link rel="next" href="quickstart-idoutils-freebsd.html" title="2.6. Icinga and IDOUtils Quickstart on FreeBSD">
@@ -573,8 +573,8 @@
     <p>Extract the Icinga source code tarball</p>
 
     <pre class="screen"> #&gt; cd /usr/src/ 
- #&gt; tar xvzf icinga-1.10.tar.gz 
- #&gt; cd icinga-1.10</pre>
+ #&gt; tar xvzf icinga-1.11.tar.gz 
+ #&gt; cd icinga-1.11</pre>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -826,7 +826,7 @@
 
         <p>Create Database, User, Grants:</p>
 
-            <pre class="screen"> # mysql -u root -p
+        <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
@@ -1065,13 +1065,19 @@
     system.</p>
 
     <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs in
-    enforcing/targeted mode:</p>
+    enforcing/targeted mode. The <span class="emphasis"><em>semanage</em></span> command will automatically add entries to
+    <code class="filename">/etc/selinux/targeted/contexts/files/file_contexts.local</code>.</p>
+<pre class="programlisting"> #&gt; semanage fcontext -a -t httpd_sys_script_exec_t '/usr/local/icinga/sbin(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga/share(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga/var(/.*)?'</pre>
 
-    <pre class="screen"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
- #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
- #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
+    <p>Once you have defined the necessary contexts you have to apply the settings:</p>
 
-    <p>Alternatively you may want to take a look at <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>.</p>
+    <pre class="programlisting"> #&gt; chcon -R /usr/local/icinga/sbin
+ #&gt; chcon -R /usr/local/icinga/share
+ #&gt; chcon -R /usr/local/icinga/var/rw</pre>
+
+    <p>For details please take a look at <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>.</p>
   </div>
 
   <div class="section" title="2.5.15. Start IDOUtils and Icinga">
@@ -1193,9 +1199,9 @@
     You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp177233984"></a>
+    <a class="indexterm" name="idp178124656"></a>
 
-    <a class="indexterm" name="idp177235376"></a>
+    <a class="indexterm" name="idp178126256"></a>
   </div>
 </div>
 <div class="navfooter">

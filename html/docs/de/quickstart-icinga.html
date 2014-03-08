@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">
 <link rel="next" href="quickstart-icinga-freebsd.html" title="2.4. Icinga-Schnellstart auf FreeBSD">
@@ -328,8 +328,8 @@
     <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
     <pre class="programlisting"> #&gt; cd /usr/src/
- #&gt; tar xvzf icinga-1.10.tar.gz
- #&gt; cd icinga-1.10</pre>
+ #&gt; tar xvzf icinga-1.11.tar.gz
+ #&gt; cd icinga-1.11</pre>
 
     <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -547,14 +547,21 @@
     System neustarten.</p>
 
     <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um
-    die CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
+    die CGIs im Enforcing/Targeted-Modus laufen zu lassen. Der <span class="emphasis"><em>semanage</em></span>-Befehl wird automatisch Einträge in die Datei
+    <code class="filename">/etc/selinux/targeted/contexts/files/file_contexts.local</code> einfügen:</p>
 
-    <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
- #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
- #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
+    <pre class="programlisting"> #&gt; semanage fcontext -a -t httpd_sys_script_exec_t '/usr/local/icinga/sbin(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga/share(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga/var(/.*)?'</pre>
 
-    <p>Eine alternative Vorgehensweise wird unter <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>
-    beschrieben (englisch).</p>
+    <p>Sobald Sie die notwendigen Kontexte definiert haben, müssen die Einträge aktiviert werden.</p>
+
+    <pre class="programlisting"> #&gt; chcon -R /usr/local/icinga/sbin
+ #&gt; chcon -R /usr/local/icinga/share
+ #&gt; chcon -R /usr/local/icinga/var</pre>
+
+    <p>Einzelheiten finden Sie unter <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>
+    (englisch).</p>
   </div>
 
   <div class="section" title="2.3.11. Icinga starten">
@@ -639,9 +646,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp176843600"></a>
+    <a class="indexterm" name="idp178192672"></a>
 
-    <a class="indexterm" name="idp176845328"></a>
+    <a class="indexterm" name="idp178194400"></a>
   </div>
 </div>
 <div class="navfooter">

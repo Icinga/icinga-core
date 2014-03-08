@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="configobject.html" title="3.3. Überblick Objektkonfiguration">
 <link rel="next" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">
@@ -62,7 +62,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Wenn Sie Konfigurationsdateien anlegen und/oder editieren, dann behalten Sie das Folgende im Hinterkopf:</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie Konfigurationsdateien anlegen und/oder editieren, dann behalten Sie das Folgende im Hinterkopf:</p>
+  </td></tr>
 </table></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -112,11 +114,11 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Beispielobjektkonfigurationsdateien werden im <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis
-  installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
+    <p>Beispielobjektkonfigurationsdateien werden im <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis installiert, wenn Sie der
+    <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
 
-  <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
-</td></tr>
+    <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Objekttypen</strong></span></p>
@@ -149,9 +151,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="idp180455936"></a>
+  <a class="indexterm" name="idp181807568"></a>
 
-  <a class="indexterm" name="idp180457152"></a>
+  <a class="indexterm" name="idp181808784"></a>
 
   <div class="section" title="3.4.1. Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -305,7 +307,7 @@
 <tr>
 <td><p></p></td>
 <td><p>flap_detection_options</p></td>
-<td><p>[o,d,u]</p></td>
+<td><p>[o,d,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -355,7 +357,7 @@
 <tr>
 <td><p></p></td>
 <td><p>notification_options</p></td>
-<td><p>[d,u,r,f,s]</p></td>
+<td><p>[d,u,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -365,7 +367,7 @@
 <tr>
 <td><p></p></td>
 <td><p>stalking_options</p></td>
-<td><p>[o,d,u]</p></td>
+<td><p>[o,d,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -508,7 +510,7 @@
 <td align="left" valign="top"><p><span class="bold"><strong>initial_state</strong></span>:</p></td>
 <td><p>Als Default nimmt Icinga an, dass sich alle Hosts im UP-Zustand befinden, wenn es startet. Sie können mit
             dieser Direktive den initialen Zustand eines Hosts übersteuern. Gültige Optionen sind: <span class="bold"><strong>o</strong></span> = UP,
-            <span class="bold"><strong>d</strong></span> = DOWN und <span class="bold"><strong>u</strong></span> = UNREACHABLE.</p></td>
+            <span class="bold"><strong>d</strong></span> = DOWN und <span class="bold"><strong>u</strong></span> = UNREACHABLE. Default: o.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>max_check_attempts</strong></span>:</p></td>
@@ -521,7 +523,7 @@
 <td align="left" valign="top"><p><span class="bold"><strong>check_interval</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Anzahl von "Zeiteinheiten" zwischen regelmäßig geplanten Prüfungen zu
             definieren. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert
-            von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
+            von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation. Fließkommazahlen sind erlaubt. Default: 5.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -530,17 +532,39 @@
             einen nicht-UP-Zustand gewechselt ist. Sobald der Host <span class="bold"><strong>max_check_attempts</strong></span>-Mal ohne eine
             Zustandsänderung geprüft wurde, wird die Planung zum "normalen" Wert zurückkehren, der durch den <span class="bold"><strong>check_interval</strong></span>-Wert angegeben wird. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert von 60 nicht verändert haben, wird
             diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check
-            scheduling</a>-Dokumentation.</p></td>
+            scheduling</a>-Dokumentation. Fließkommazahlen sind erlaubt. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>active_checks_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob aktive Prüfungen (entweder regelmäßig geplant oder nach Bedarf)
-            für diesen Host aktiviert sind oder nicht. Werte: 0 = keine aktiven Host-Prüfungen, 1 = aktive Host-Prüfungen.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob aktive Prüfungen (entweder regelmäßig geplant oder nach Bedarf)
+            für diesen Host aktiviert sind oder nicht. Werte: 0 = keine aktiven Host-Prüfungen, 1 = aktive Host-Prüfungen. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-execute_host_checks">execute_host_checks</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>passive_checks_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob passive Prüfungen für diesen Host aktiviert sind oder nicht.
-            Werte: 0 = passive Host-Prüfungen deaktivieren, 1 = passive Host-Prüfungen aktivieren</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob passive Prüfungen für diesen Host aktiviert sind oder nicht.
+            Werte: 0 = passive Host-Prüfungen deaktivieren, 1 = passive Host-Prüfungen aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-accept_passive_host_checks">accept_passive_host_checks</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_period</strong></span>:</p></td>
@@ -549,19 +573,30 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>obsess_over_host *</strong></span>:</p></td>
-<td><p>Diese Direktive legt fest, ob Prüfungen für den Host über <a class="link" href="configmain.html#configmain-ochp_command">ochp_command</a> "verfolgt" werden sollen.</p></td>
+<td><p>Diese Direktive legt fest, ob Prüfungen für den Host über <a class="link" href="configmain.html#configmain-ochp_command">ochp_command</a> "verfolgt" werden sollen. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
-            checks) für diesen Host aktiviert sind oder nicht. Werte: 0 = Frische-Prüfungen deaktivieren, 1 = Frische-Prüfungen
-            aktivieren.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
+            checks) für diesen Host aktiviert sind oder nicht. Werte: 0 = Frische-Prüfungen deaktivieren, 1 = Frische-Prüfungen aktivieren.
+            Default: 0.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-check_host_freshness">enable_freshness</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>freshness_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den Frische-Schwellwert (freshness threshold) (in Sekunden) für diesen Host
             festzulegen. Wenn Sie einen Wert von Null für diese Direktive setzen, wird Icinga automatisch einen Frische-Schwellwert
-            festlegen.</p></td>
+            festlegen. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
@@ -571,53 +606,88 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob der Eventhandler für diesen Host aktiviert ist oder nicht. Werte:
-            0 = Host-Eventhandler deaktivieren, 1 = Host-Eventhandler aktivieren</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob der Eventhandler für diesen Host aktiviert ist oder nicht. Werte:
+            0 = Host-Eventhandler deaktivieren, 1 = Host-Eventhandler aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den unteren Zustandsänderungsschwellwert zu definieren, der in der
-            Flattererkennung für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a>-Direktive benutzt.</p></td>
+            Flattererkennung für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a>-Direktive benutzt. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den oberen Zustandsänderungsschwellwert zu definieren, der in der Flattererkennung
             für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie
-            diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_host_flap_threshold">high_host_flap_threshold</a>-Direktive benutzt.</p></td>
+            diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_host_flap_threshold">high_host_flap_threshold</a>-Direktive benutzt. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Host aktiviert ist. Mehr Informationen
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Host aktiviert ist. Mehr Informationen
             zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Host-Flattererkennung deaktivieren, 1 =
-            Host-Flattererkennung aktivieren.</p></td>
+            Host-Flattererkennung aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, welche Host-Zustände die <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Host benutzen wird. Gültige Optionen sind Kombinationen von einem
             oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = UP-Zustände, <span class="bold"><strong>d</strong></span> =
-            DOWN-Zustände, <span class="bold"><strong>u</strong></span> = UNREACHABLE-Zustände.</p></td>
+            DOWN-Zustände, <span class="bold"><strong>u</strong></span> = UNREACHABLE-Zustände. Default: o,d,u.</p></td>
 </tr>
 <tr>
 <td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob Fehlervorhersage für diesen Host aktiviert ist. Werte: 0 =
-            Fehlervorhersage deaktivieren, 1 = Fehlervorhersage aktivieren.</p></td>
+            Fehlervorhersage deaktivieren, 1 = Fehlervorhersage aktivieren. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Host aktiviert
-            ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten aktiviert.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Host aktiviert
+            ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten aktiviert. Default:
+            1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob zustandsbezogene Informationen zu diesem Host über
             Programmneustarts hinweg aufbewahrt wird. Das ist nur sinnvoll, wenn Sie Statusaufbewahrung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren.</p></td>
+            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob nicht-zustandsbezogene Informationen zu diesem Host über
             Programmneustarts hinweg aufbewahrt wird. Das ist nur sinnvoll, wenn Sie Statusaufbewahrung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren.</p></td>
+            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren. Default:
+            1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
@@ -641,14 +711,14 @@
             Solange Sie nicht die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive auf einen anderen als den
             Standardwert von 60 verändert haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga die
             Kontakte <span class="emphasis"><em>nicht</em></span> erneut über Probleme dieses Hosts informieren - nur eine Problembenachrichtigung wird
-            versandt.</p></td>
+            versandt. Fließkommazahlen sind erlaubt. Default: 30.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_notification_delay</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Anzahl von "Zeiteinheiten" anzugeben, die gewartet werden soll, bevor die
             erste Problembenachrichtigung versandt wird, wenn dieser Host in einen nicht-UP-Zustand wechselt. Solange Sie nicht die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive auf einen anderen als den Standardwert von 60 verändert
-            haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga sofort Benachrichtigungen
-            versenden.</p></td>
+            haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga sofort Benachrichtigungen versenden.
+            Fließkommazahlen sind erlaubt. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_period</strong></span>:</p></td>
@@ -668,19 +738,31 @@
             (none) als Option angeben, werden keine Host-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
             angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
             Sie <span class="bold"><strong>d,r</strong></span> in diesem Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Host in
-            einen DOWN-Zustand geht und sich wieder von einem DOWN-Zustand erholt.</p></td>
+            einen DOWN-Zustand geht und sich wieder von einem DOWN-Zustand erholt. Default: d,u,r,f,s.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob Benachrichtigungen für diesen Host aktiviert sind oder nicht.
-            Werte: 0 = Host-Benachrichtigungen deaktivieren, 1 = Host-Benachrichtigungen aktivieren.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob Benachrichtigungen für diesen Host aktiviert sind oder nicht.
+            Werte: 0 = Host-Benachrichtigungen deaktivieren, 1 = Host-Benachrichtigungen aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>stalking_options</strong></span>:</p></td>
 <td><p>Diese Direktive legt fest, für welche Host-Zustände "Verfolgung" (stalking) aktiviert ist. Gültige Optionen sind
             eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = verfolgen von UP-Zuständen,
             <span class="bold"><strong>d</strong></span> = verfolgen von DOWN-Zuständen und <span class="bold"><strong>u</strong></span> = verfolgen von
-            UNREACHABLE-Zuständen. Mehr Informationen zur Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.14. Status Stalking">hier</a>.</p></td>
+            UNREACHABLE-Zuständen. Mehr Informationen zur Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.14. Status Stalking">hier</a>. Default:
+            o,d,u.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -760,9 +842,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp180568288"></a>
+    <a class="indexterm" name="idp181919488"></a>
 
-    <a class="indexterm" name="idp180758992"></a>
+    <a class="indexterm" name="idp182121296"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgruppen-Definition">
@@ -895,9 +977,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp180823088"></a>
+    <a class="indexterm" name="idp182185520"></a>
 
-    <a class="indexterm" name="idp180824096"></a>
+    <a class="indexterm" name="idp182186528"></a>
   </div>
 
   <div class="section" title="3.4.3. Service-Definition">
@@ -1048,7 +1130,7 @@
 <tr>
 <td><p></p></td>
 <td><p>flap_detection_options</p></td>
-<td><p>[o,w,c,u]</p></td>
+<td><p>[o,w,c,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1088,7 +1170,7 @@
 <tr>
 <td><p></p></td>
 <td><p>notification_options</p></td>
-<td><p>[w,u,c,r,f,s]</p></td>
+<td><p>[w,u,c,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1108,7 +1190,7 @@
 <tr>
 <td><p></p></td>
 <td><p>stalking_options</p></td>
-<td><p>[o,w,u,c]</p></td>
+<td><p>[o,w,u,c,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1205,7 +1287,7 @@
             normalerweise <span class="emphasis"><em>nicht</em></span> sprunghaft. Mehr Informationen zu sprunghaften Services und wie sie sich von normalen
             Services unterscheiden, finden Sie <a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">hier</a>. Werte: 0 = Service ist nicht sprunghaft, 1 =
             Service ist sprunghaft, 2 = Service ist sprunghaft, respektiert aber die Einstellung der Direktive notification_interval bei
-            erneuten Benachrichtigungen (Option "2" gibt es seit Icinga 1.0.2).</p></td>
+            erneuten Benachrichtigungen (Option "2" gibt es seit Icinga 1.0.2). Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_command</strong></span>:</p></td>
@@ -1217,7 +1299,7 @@
 <td><p>Als Default nimmt Icinga an, dass sich alle Services im OK-Zustand befinden, wenn es startet. Sie können mit
             dieser Direktive den initialen Zustand eines Service übersteuern. Gültige Optionen sind: <span class="bold"><strong>o</strong></span> =
             OK, <span class="bold"><strong>w</strong></span> = WARNING, <span class="emphasis"><em>u</em></span> = UNKNOWN und <span class="bold"><strong>c</strong></span> =
-            CRITICAL.</p></td>
+            CRITICAL. Default: o.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>max_check_attempts</strong></span>:</p></td>
@@ -1229,10 +1311,10 @@
 <td align="left" valign="top"><p><span class="bold"><strong>check_interval</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Anzahl von "Zeiteinheiten" zwischen "regulär" geplanten Prüfungen zu
             definieren. "Reguläre" Prüfungen sind solche, die stattfinden, wenn sich der Service in einem OK-Zustand befindet oder wenn sich
-            der Service in einem nicht-OK-Zustand befindet, aber mehr als <span class="bold"><strong>max_check_attemps</strong></span>-mal erneut
+            der Service in einem nicht-OK-Zustand befindet, aber mehr als <span class="bold"><strong>max_check_attempts</strong></span>-mal erneut
             geprüft wurde. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem
             Default-Wert von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der
-            <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
+            <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation. Fließkommazahlen sind erlaubt. Default: 5.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -1241,18 +1323,40 @@
             diese in einen nicht-OK-Zustand gewechselt sind. Sobald der Service <span class="bold"><strong>max_check_attempts</strong></span>-Mal ohne
             eine Zustandsänderung geprüft wurde, wird die Planung zum "normalen" Wert zurückkehren, der durch den <span class="bold"><strong>check_interval</strong></span>-Wert angegeben wird. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert von 60 nicht verändert haben, wird
             diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">check
-            scheduling</a>-Dokumentation.</p></td>
+            scheduling</a>-Dokumentation. Fließkommazahlen sind erlaubt. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>active_checks_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob aktive Prüfungen (entweder regelmäßig geplant oder nach Bedarf)
-            für diesen Service aktiviert sind oder nicht. Werte: 0 = keine aktiven Service-Prüfungen, 1 = aktive
-            Service-Prüfungen.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob aktive Prüfungen (entweder regelmäßig geplant oder nach Bedarf)
+            für diesen Service aktiviert sind oder nicht. Werte: 0 = keine aktiven Service-Prüfungen, 1 = aktive Service-Prüfungen. Default:
+            1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>passive_checks_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob passive Prüfungen für diesen Service aktiviert sind oder nicht.
-            Werte: 0 = passive Service-Prüfungen deaktivieren, 1 = passive Service-Prüfungen aktivieren</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob passive Prüfungen für diesen Service aktiviert sind oder nicht.
+            Werte: 0 = passive Service-Prüfungen deaktivieren, 1 = passive Service-Prüfungen aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_period</strong></span>:</p></td>
@@ -1261,19 +1365,30 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>obsess_over_service *</strong></span>:</p></td>
-<td><p>Diese Direktive legt fest, ob Prüfungen für den Service über <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> "verfolgt" werden sollen.</p></td>
+<td><p>Diese Direktive legt fest, ob Prüfungen für den Service über <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> "verfolgt" werden sollen. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
             checks) für diesen Service aktiviert sind oder nicht. Werte: 0 = Frische-Prüfungen deaktivieren, 1 = Frische-Prüfungen
-            aktivieren.</p></td>
+            aktivieren. Default: 0.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-check_service_freshness">enable_freshness</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>freshness_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den Frische-Schwellwert (freshness threshold) (in Sekunden) für diesen Service
             festzulegen. Wenn Sie einen Wert von Null für diese Direktive setzen, wird Icinga automatisch einen Frische-Schwellwert
-            festlegen.</p></td>
+            festlegen. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
@@ -1283,32 +1398,55 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob der Eventhandler für diesen Service aktiviert ist oder nicht.
-            Werte: 0 = Service-Eventhandler deaktivieren, 1 = Service-Eventhandler aktivieren</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob der Eventhandler für diesen Service aktiviert ist oder nicht.
+            Werte: 0 = Service-Eventhandler deaktivieren, 1 = Service-Eventhandler aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den unteren Zustandsänderungsschwellwert zu definieren, der in der
-            Flattererkennung für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>-Direktive benutzt.</p></td>
+            Flattererkennung für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>-Direktive benutzt. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den oberen Zustandsänderungsschwellwert zu definieren, der in der Flattererkennung
             für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn
-            Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_service_flap_threshold">high_service_flap_threshold</a>-Direktive benutzt.</p></td>
+            Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_service_flap_threshold">high_service_flap_threshold</a>-Direktive benutzt. Default:
+            0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Service aktiviert ist. Mehr
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Service aktiviert ist. Mehr
             Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Service-Flattererkennung
-            deaktivieren, 1 = Service-Flattererkennung aktivieren.</p></td>
+            deaktivieren, 1 = Service-Flattererkennung aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, welche Service-Zustände die <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Service benutzen wird. Gültige Optionen sind Kombinationen von einem
             oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = OK-Zustände, <span class="bold"><strong>w</strong></span> =
-            WARNING-Zustände, <span class="bold"><strong>c</strong></span> = CRITICAL-Zustände, <span class="bold"><strong>u</strong></span> =
-            UNKNOWN-Zustände.</p></td>
+            WARNING-Zustände, <span class="bold"><strong>c</strong></span> = CRITICAL-Zustände, <span class="bold"><strong>u</strong></span> = UNKNOWN-Zustände.
+            Default: o,w,u,c.</p></td>
 </tr>
 <tr>
 <td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
@@ -1317,21 +1455,33 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Service
-            aktiviert ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten
-            aktiviert.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Service
+            aktiviert ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten aktiviert.
+            Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob zustandsbezogene Informationen zu diesem Service über
             Programmneustarts hinweg aufbewahrt werden. Das ist nur sinnvoll, wenn Sie Statusaufbewahrung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren.</p></td>
+            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob nicht-zustandsbezogene Informationen zu diesem Service über
             Programmneustarts hinweg aufbewahrt werden. Das ist nur sinnvoll, wenn Sie Status-Beibehaltung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren.</p></td>
+            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren. Default:
+            1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_interval</strong></span>:</p></td>
@@ -1340,14 +1490,14 @@
             ist. Solange Sie nicht die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive auf einen anderen als den
             Standardwert von 60 verändert haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga die
             Kontakte <span class="emphasis"><em>nicht</em></span> erneut über Probleme dieses Service informieren - nur eine Problembenachrichtigung wird
-            versandt.</p></td>
+            versandt. Fließkommazahlen sind erlaubt. Default: 30.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_notification_delay</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Anzahl von "Zeiteinheiten" anzugeben, die gewartet werden soll, bevor die
             erste Problembenachrichtigung versandt wird, wenn dieser Service in einen nicht-OK-Zustand wechselt. Solange Sie nicht die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive auf einen anderen als den Standardwert von 60 verändert
-            haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga sofort Benachrichtigungen
-            versenden.</p></td>
+            haben, bedeutet diese Zahl Minuten. Wenn Sie diesen Wert auf 0 setzen, wird Icinga sofort Benachrichtigungen versenden.
+            Fließkommazahlen sind erlaubt. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_period</strong></span>:</p></td>
@@ -1366,12 +1516,23 @@
             (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
             angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
             Sie <span class="bold"><strong>w,r</strong></span> in diesem Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Service
-            in einen WARNING-Zustand geht und sich wieder von einem WARNING-Zustand erholt.</p></td>
+            in einen WARNING-Zustand geht und sich wieder von einem WARNING-Zustand erholt. Default: u,w,c,r,f,s.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob Benachrichtigungen für diesen Service aktiviert sind oder nicht.
-            Werte: 0 = Service-Benachrichtigungen deaktivieren, 1 = Service-Benachrichtigungen aktivieren.</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob Benachrichtigungen für diesen Service aktiviert sind oder nicht.
+            Werte: 0 = Service-Benachrichtigungen deaktivieren, 1 = Service-Benachrichtigungen aktivieren. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
@@ -1394,7 +1555,7 @@
             eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = verfolgen von OK-Zuständen,
             <span class="bold"><strong>w</strong></span> = verfolgen von WARNING-Zuständen, <span class="bold"><strong>c</strong></span> = verfolgen von
             CRITICAL-Zuständen und <span class="bold"><strong>u</strong></span> = verfolgen von UNKNOWN-Zuständen. Mehr Informationen zur
-            Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.14. Status Stalking">hier</a>.</p></td>
+            Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.14. Status Stalking">hier</a>. Default: n.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -1453,9 +1614,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp180932768"></a>
+    <a class="indexterm" name="idp182295200"></a>
 
-    <a class="indexterm" name="idp181109376"></a>
+    <a class="indexterm" name="idp182482608"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegruppen-Definition">
@@ -1594,9 +1755,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181174000"></a>
+    <a class="indexterm" name="idp182547232"></a>
 
-    <a class="indexterm" name="idp181175008"></a>
+    <a class="indexterm" name="idp182548240"></a>
   </div>
 
   <div class="section" title="3.4.5. Kontakt-Definition">
@@ -1764,13 +1925,35 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_notifications_enabled</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob der Kontakt Benachrichtigungen über Host-Probleme und Erholungen
-            bekommt. Werte: 0 = keine Benachrichtigungen versenden, 1 = Benachrichtigungen versenden</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob der Kontakt Benachrichtigungen über Host-Probleme und Erholungen
+            bekommt. Werte: 0 = keine Benachrichtigungen versenden, 1 = Benachrichtigungen versenden. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notifications_enabled</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob der Kontakt Benachrichtigungen über Service-Probleme und
-            Erholungen bekommt. Werte: 0 = keine Benachrichtigungen versenden, 1 = Benachrichtigungen versenden</p></td>
+<td>
+<p>Diese Direktive wird benutzt, um festzulegen, ob der Kontakt Benachrichtigungen über Service-Probleme und
+            Erholungen bekommt. Werte: 0 = keine Benachrichtigungen versenden, 1 = Benachrichtigungen versenden. Default: 1.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Der Wert hat keine Auswirkung, wenn <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0.</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_notification_period</strong></span>:</p></td>
@@ -1800,8 +1983,8 @@
             Benachrichtigungen bei einem UNREACHABLE-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei
             Erholungen (UP-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden,
             wenn eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn
-            Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Host-Benachrichtigungen
-            versandt.</font></span></p></td>
+            Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Host-Benachrichtigungen versandt.</font></span>
+            Default: <span class="bold"><strong>n</strong></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_options</strong></span>:</p></td>
@@ -1810,7 +1993,8 @@
             Benachrichtigungen bei einem CRITICAL-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem
             UNKNOWN-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden,
             <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattern</a>
-            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span></p></td>
+            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span> Default:
+            <span class="bold"><strong>n</strong></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_commands</strong></span>:</p></td>
@@ -1849,21 +2033,22 @@
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob zustandsbezogene Informationen zu diesem Kontakt über
             Programmneustarts hinweg aufbewahrt wird. Das ist nur sinnvoll, wenn Sie Statusaufbewahrung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren.</p></td>
+            von Statusinformationen deaktivieren, 1 = Aufbewahrung von Statusinformationen aktivieren. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob nicht-zustandsbezogene Informationen zu diesem Kontakt über
             Programmneustarts hinweg aufbewahrt wird. Das ist nur sinnvoll, wenn Sie Statusaufbewahrung über die <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>-Direktive aktiviert haben. Werte: 0 = Aufbewahrung
-            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren.</p></td>
+            von nicht-Statusinformationen deaktivieren, 1 = Aufbewahrung von nicht-Statusinformationen aktivieren. Default:
+            1.</p></td>
 </tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idp181319728"></a>
+    <a class="indexterm" name="idp182697856"></a>
 
-    <a class="indexterm" name="idp181320736"></a>
+    <a class="indexterm" name="idp182698736"></a>
   </div>
 
   <div class="section" title="3.4.6. Kontaktgruppen-Definition">
@@ -1960,9 +2145,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181366256"></a>
+    <a class="indexterm" name="idp182744368"></a>
 
-    <a class="indexterm" name="idp181367264"></a>
+    <a class="indexterm" name="idp182745376"></a>
   </div>
 
   <div class="section" title="3.4.7. Zeitfenster-Definition (timeperiod)">
@@ -2115,9 +2300,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181420368"></a>
+    <a class="indexterm" name="idp182796304"></a>
 
-    <a class="indexterm" name="idp181421376"></a>
+    <a class="indexterm" name="idp182799120"></a>
   </div>
 
   <div class="section" title="3.4.8. Befehls-Definition (command)">
@@ -2214,9 +2399,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181468384"></a>
+    <a class="indexterm" name="idp182846304"></a>
 
-    <a class="indexterm" name="idp181469392"></a>
+    <a class="indexterm" name="idp182847312"></a>
   </div>
 
   <div class="section" title="3.4.9. Service-Abhängigkeits-Definition (servicedependency)">
@@ -2361,7 +2546,8 @@
 <td align="left" valign="top"><p><span class="bold"><strong>inherits_parent</strong></span>:</p></td>
 <td><p>Diese Direktive gibt an, ob die abhängige Definition Abhängigkeiten von dem Service erbt, von dem sie
             <span class="emphasis"><em>abhängt</em></span> (auch als Master-Service bezeichnet). In anderen Worten, wenn der Master-Service von anderen
-            Services abhängt und eine der Abhängigkeiten fehlschlägt, dann wird auch diese Abhängigkeit fehlschlagen.</p></td>
+            Services abhängt und eine der Abhängigkeiten fehlschlägt, dann wird auch diese Abhängigkeit fehlschlagen. Default:
+            0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>execution_failure_criteria</strong></span>:</p></td>
@@ -2399,9 +2585,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181569600"></a>
+    <a class="indexterm" name="idp182948288"></a>
 
-    <a class="indexterm" name="idp181570880"></a>
+    <a class="indexterm" name="idp182949296"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceeskalations-Definition">
@@ -2626,7 +2812,7 @@
             Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>r</strong></span> = eskalieren bei
             einem OK-(Erholungs)-Zustand, <span class="bold"><strong>w</strong></span> = eskalieren bei einem WARNING-Zustand, <span class="bold"><strong>u</strong></span> = eskalieren bei einem UNKNOWN-Zustand, und <span class="bold"><strong>c</strong></span> = eskalieren bei einem
             CRITICAL-Zustand. Beispiel: wenn Sie <span class="bold"><strong>w</strong></span> in diesem Feld angeben, dann wird die Eskalation nur
-            benutzt, wenn sich der Service in einem WARNING-Zustand befindet.</p></td>
+            benutzt, wenn sich der Service in einem WARNING-Zustand befindet. Default: w,u,c,r.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
@@ -2681,9 +2867,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181708320"></a>
+    <a class="indexterm" name="idp183086240"></a>
 
-    <a class="indexterm" name="idp181709328"></a>
+    <a class="indexterm" name="idp183087248"></a>
   </div>
 
   <div class="section" title="3.4.11. Host-Abhängigkeits-Definition (hostdependency)">
@@ -2803,7 +2989,7 @@
 <td align="left" valign="top"><p><span class="bold"><strong>inherits_parent</strong></span>:</p></td>
 <td><p>Diese Direktive gibt an, ob die abhängige Definition Abhängigkeiten von dem Host erbt, von dem sie
             <span class="emphasis"><em>abhängt</em></span> (auch als Master-Host bezeichnet). In anderen Worten, wenn der Master-Host von anderen Hosts
-            abhängt und eine der Abhängigkeiten fehlschlägt, dann wird auch diese Abhängigkeit fehlschlagen.</p></td>
+            abhängt und eine der Abhängigkeiten fehlschlägt, dann wird auch diese Abhängigkeit fehlschlagen. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>execution_failure_criteria</strong></span>:</p></td>
@@ -2836,9 +3022,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181792064"></a>
+    <a class="indexterm" name="idp183169888"></a>
 
-    <a class="indexterm" name="idp181793072"></a>
+    <a class="indexterm" name="idp183170896"></a>
   </div>
 
   <div class="section" title="3.4.12. Host-Eskalations-Definition">
@@ -3030,7 +3216,8 @@
             Direktive nicht in einer Host-Eskalation angegeben wird, ist die Eskalation für alle Host-Zustände gültig. Gültige Optionen sind
             eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>r</strong></span> = eskalieren bei einem
             UP-(Erholungs)-Zustand, <span class="bold"><strong>d</strong></span> = eskalieren bei einem DOWN-Zustand und <span class="bold"><strong>u</strong></span> = eskalieren bei einem UNREACHABLE-Zustand. Beispiel: wenn Sie <span class="bold"><strong>d</strong></span> in
-            diesem Feld angeben, dann wird die Eskalation nur benutzt, wenn sich der Host in einem DOWN-Zustand befindet.</p></td>
+            diesem Feld angeben, dann wird die Eskalation nur benutzt, wenn sich der Host in einem DOWN-Zustand befindet. Default:
+            d,u,r.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
@@ -3070,9 +3257,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181903936"></a>
+    <a class="indexterm" name="idp183281920"></a>
 
-    <a class="indexterm" name="idp181904944"></a>
+    <a class="indexterm" name="idp183282928"></a>
   </div>
 
   <div class="section" title="3.4.13. erweiterte Hostinformations-Definition (hostextinfo)">
@@ -3268,9 +3455,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181995856"></a>
+    <a class="indexterm" name="idp183373840"></a>
 
-    <a class="indexterm" name="idp181997104"></a>
+    <a class="indexterm" name="idp183375088"></a>
   </div>
 
   <div class="section" title="3.4.14. erweiterte Serviceinformations-Definition (serviceextinfo)">
@@ -3443,9 +3630,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182077760"></a>
+    <a class="indexterm" name="idp183455744"></a>
 
-    <a class="indexterm" name="idp182078976"></a>
+    <a class="indexterm" name="idp183456960"></a>
   </div>
 
   <div class="section" title="3.4.15. Module-Definition">
@@ -3570,11 +3757,11 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Die Nutzung von Templates sollte möglich sind, aber das wurde noch nicht ausgiebing mit Icinga 1.4 getestet.</p>
+      <p>Die Nutzung von Templates sollte möglich sind, aber das wurde noch nicht ausgiebig mit Icinga 1.4 getestet.</p>
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp182125136"></a>
+    <a class="indexterm" name="idp183503120"></a>
   </div>
 </div>
 <div class="navfooter">

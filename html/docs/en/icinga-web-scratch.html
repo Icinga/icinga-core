@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="cgicmd.html" title="6.4. Executing Classic UI modules (CGIs) on the command line">
 <link rel="next" href="upgrading_icingaweb.html" title="6.6. Upgrading Icinga Web and Icinga Web Database">
@@ -70,6 +70,23 @@
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
             <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-mysql php-soap php5-gd php5-ldap php5-mysql</pre>
+
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+              <p>Newer PHP versions (&gt;= 5.5) are delivered with a separate JSON package (due to licensing reasons) so you might have
+              to install that as well.</p>
+
+              <p>Check if the module is already there: </p>
+<pre class="programlisting"> #&gt; php -m | grep -i json</pre>
+<p><em class="parameter"><code>If the
+              above statement doesn't show a module please issue:</code></em></p>
+<pre class="programlisting"> #&gt; apt-get install php5-json</pre>
+            </td></tr>
+</table></div>
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
@@ -181,18 +198,19 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Please download the archive from <a class="link" href="http://www.icinga.org/download/" target="_top">http://www.icinga.org/download/</a>. If your need a
-        function only available in the latest developer version then clone from the icinga-web.git to get the freshest branch:</p>
+        <p>Please download the archive from <a class="link" href="http://www.icinga.org/download/" target="_top">http://www.icinga.org/download/</a>. If
+        your need a function only available in the latest developer version then clone from the icinga-web.git to get the freshest
+        branch:</p>
 
         <pre class="screen"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
         <p>Unpack your tarball:</p>
 
-        <pre class="screen"> #&gt; tar xzvf icinga-web-1.10.0.tar.gz</pre>
+        <pre class="screen"> #&gt; tar xzvf icinga-web-1.11.tar.gz</pre>
 
         <p>Then change to the directory:</p>
 
-        <pre class="screen"> #&gt; cd icinga-web-1.10.0</pre>
+        <pre class="screen"> #&gt; cd icinga-web-1.11</pre>
 
         <p>Icinga Web provides several configure options e.g.</p>
 
@@ -272,7 +290,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          Starting with Apache 2.4 (testing versions of 
+           Starting with Apache 2.4 (testing versions of 
 
           Debian
 
@@ -280,9 +298,11 @@
 
           Ubuntu
 
-          ) you have to enable the module
+           ) you have to enable the module 
 
           <pre class="screen">#&gt; a2enconf icinga-web</pre>
+
+           
         </td></tr>
 </table></div>
 
@@ -298,7 +318,41 @@
 
         <p>Other useful target: </p>
 <pre class="screen"> #&gt; make icinga-reset-password</pre>
-<p> Reset password for any account on icinga-web.</p>
+<p>Reset password for any account on icinga-web.</p>
+      </li>
+<li class="listitem">
+<a name="selinuxsettings"></a>
+        <span style="color: red">&lt;title&gt;Adjusting the SELinux settings&lt;/title&gt;</span>
+
+        <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
+        Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
+        Icinga-CGIs.</p>
+
+        <p>Check if SELinux runs in enforcing mode</p>
+
+        <pre class="screen"> #&gt; getenforce</pre>
+
+        <p>Set SELinux in "permissive" mode</p>
+
+        <pre class="screen"> #&gt; setenforce 0</pre>
+
+        <p>To make this change permanent you have to adjust this setting in <span class="emphasis"><em>/etc/selinux/config</em></span> and restart the
+        system.</p>
+
+        <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs
+        in enforcing/targeted mode. The <span class="emphasis"><em>semanage</em></span> command will automatically add entries to
+        <code class="filename">/etc/selinux/targeted/contexts/files/file_contexts.local</code>.</p>
+<pre class="programlisting"> #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/app(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/lib(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_content_t '/usr/local/icinga-web/pub(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga-web/app/cache(/.*)?'
+ #&gt; semanage fcontext -a -t httpd_sys_rw_content_t '/usr/local/icinga-web/log(/.*)?'</pre>
+
+        <p>Once you have defined the necessary contexts you have to apply the settings:</p>
+
+        <pre class="programlisting"> #&gt; chcon -R /usr/local/icinga-web</pre>
+
+        <p>For details please take a look at <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>.</p>
       </li>
 <li class="listitem">
         <p><span class="bold"><strong>PHP dependencies</strong></span></p>
@@ -351,7 +405,7 @@
 
  mysql&gt; CREATE DATABASE icinga_web;
 
- 	   GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
+    GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
 
         quit</pre>
           </li>
@@ -933,11 +987,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp188837040"></a>
+    <a class="indexterm" name="idp189760928"></a>
 
-    <a class="indexterm" name="idp188838592"></a>
+    <a class="indexterm" name="idp189762480"></a>
 
-    <a class="indexterm" name="idp188837168"></a>
+    <a class="indexterm" name="idp189761056"></a>
   </div>
 </div>
 <div class="navfooter">

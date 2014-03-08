@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.10 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="configobject.html" title="3.3. Object Configuration Overview">
 <link rel="next" href="customobjectvars.html" title="3.5. Custom Object Variables">
@@ -148,9 +148,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="idp180648304"></a>
+  <a class="indexterm" name="idp181533648"></a>
 
-  <a class="indexterm" name="idp180649552"></a>
+  <a class="indexterm" name="idp181534896"></a>
 
   <div class="section" title="3.4.1. Host definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -311,7 +311,7 @@
 <tr>
 <td><p></p></td>
 <td><p>flap_detection_options</p></td>
-<td><p>[o,d,u]</p></td>
+<td><p>[o,d,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -345,7 +345,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">notification_interval</font></span></td>
+<td><span class="color"><font color="red"><span class="emphasis"><em>notification_interval</em></span></font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -355,13 +355,13 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">notification_period</font></span></td>
+<td><span class="color"><font color="red"><span class="emphasis"><em>notification_period</em></span></font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notification_options</p></td>
-<td><p>[d,u,r,f,s]</p></td>
+<td><p>[d,u,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -371,7 +371,7 @@
 <tr>
 <td><p></p></td>
 <td><p>stalking_options</p></td>
-<td><p>[o,d,u]</p></td>
+<td><p>[o,d,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -540,14 +540,14 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>initial_state</strong></span>:</p></td>
 <td><p>By default Icinga will assume that all hosts are in UP states when in starts. You can override the initial
-            state for a host by using this directive. Valid options are: <span class="bold"><strong>o</strong></span> = UP, <span class="bold"><strong>d</strong></span> = DOWN, and <span class="bold"><strong>u</strong></span> = UNREACHABLE.</p></td>
+            state for a host by using this directive. Valid options are: <span class="bold"><strong>o</strong></span> = UP, <span class="bold"><strong>d</strong></span> = DOWN, and <span class="bold"><strong>u</strong></span> = UNREACHABLE. Default: o.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>max_check_attempts</strong></span>:</p></td>
 <td>
 <p>This directive is used to define the number of times that Icinga will retry the host check command if it
-            returns any state other than an OK state. Setting this value to 1 will cause Icinga to generate an alert without retrying
-            the host check again. </p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+            returns any state other than an OK state. This value will cause Icinga to generate an alert without retrying the host
+            check again. </p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
@@ -564,7 +564,7 @@
 <td><p>This directive is used to define the number of "time units" between regularly scheduled checks of the host. Unless
             you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60,
             this number will mean minutes. More information on this value can be found in the <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">check
-            scheduling</a> documentation.</p></td>
+            scheduling</a> documentation. Floating point values are allowed. Default: 5.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -572,17 +572,39 @@
             Hosts are rescheduled at the retry interval when they have changed to a non-UP state. Once the host has been retried <span class="bold"><strong>max_check_attempts</strong></span> times without a change in its status, it will revert to being scheduled at its
             "normal" rate as defined by the <span class="bold"><strong>check_interval</strong></span> value. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. More information on this value can be found in the <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">check scheduling</a>
-            documentation.</p></td>
+            documentation. Floating point values are allowed. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>active_checks_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not active checks (either regularly scheduled or on-demand) of this
-            host are enabled. Values: 0 = disable active host checks, 1 = enable active host checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not active checks (either regularly scheduled or on-demand) of this
+            host are enabled. Values: 0 = disable active host checks, 1 = enable active host checks. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-execute_host_checks">execute_host_checks</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>passive_checks_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not passive checks are enabled for this host. Values: 0 = disable
-            passive host checks, 1 = enable passive host checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not passive checks are enabled for this host. Values: 0 = disable
+            passive host checks, 1 = enable passive host checks. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-accept_passive_host_checks">accept_passive_host_checks</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_period</strong></span>:</p></td>
@@ -591,17 +613,28 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>obsess_over_host *</strong></span>:</p></td>
-<td><p>This directive determines whether or not checks for the host will be "obsessed" over using the <a class="link" href="configmain.html#configmain-ochp_command">ochp_command</a>.</p></td>
+<td><p>This directive determines whether or not checks for the host will be "obsessed" over using the <a class="link" href="configmain.html#configmain-ochp_command">ochp_command</a>. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checks</a> are enabled
-            for this host. Values: 0 = disable freshness checks, 1 = enable freshness checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checks</a> are enabled
+            for this host. Values: 0 = disable freshness checks, 1 = enable freshness checks. Default: 0.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>freshness_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the freshness threshold (in seconds) for this host. If you set this directive to
-            a value of 0, Icinga will determine a freshness threshold to use automatically.</p></td>
+            a value of 0, Icinga will determine a freshness threshold to use automatically. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
@@ -613,57 +646,90 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the event handler for this host is enabled. Values: 0 = disable
-            host event handler, 1 = enable host event handler.</p></td>
+<td>
+<p>This directive is used to determine whether or not the event handler for this host is enabled. Values: 0 = disable
+            host event handler, 1 = enable host event handler. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the low state change threshold used in flap detection for this host. More
             information on flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. If you set this directive to a value of 0, the
             program-wide value specified by the <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a> directive
-            will be used.</p></td>
+            will be used. Floating point values are allowed. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the high state change threshold used in flap detection for this host. More
             information on flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. If you set this directive to a value of 0, the
             program-wide value specified by the <a class="link" href="configmain.html#configmain-high_host_flap_threshold">high_host_flap_threshold</a>
-            directive will be used.</p></td>
+            directive will be used. Floating point values are allowed. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not flap detection is enabled for this host. More information on
+<td>
+<p>This directive is used to determine whether or not flap detection is enabled for this host. More information on
             flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. Values: 0 = disable host flap detection, 1 = enable host flap
-            detection.</p></td>
+            detection. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_flap_detection">flap_detection</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
 <td><p>This directive is used to determine what host states the <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flap detection logic</a> will
             use for this host. Valid options are a combination of one or more of the following: <span class="bold"><strong>o</strong></span> = UP
-            states, <span class="bold"><strong>d</strong></span> = DOWN states, <span class="bold"><strong>u</strong></span> = UNREACHABLE
-            states.</p></td>
+            states, <span class="bold"><strong>d</strong></span> = DOWN states, <span class="bold"><strong>u</strong></span> = UNREACHABLE states. Default:
+            o,d,u.</p></td>
 </tr>
 <tr>
 <td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not failure prediction is enabled for this host. Values: 0 = disable
-            host failure prediction, 1 = enable host failure prediction. </p></td>
+            host failure prediction, 1 = enable host failure prediction. Default: 1. </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the processing of performance data is enabled for this host.
-            Values: 0 = disable performance data processing, 1 = enable performance data processing.</p></td>
+<td>
+<p>This directive is used to determine whether or not the processing of performance data is enabled for this host.
+            Values: 0 = disable performance data processing, 1 = enable performance data processing. Default: 1</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not status-related information about the host is retained across
             program restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable status information
-            retention, 1 = enable status information retention.</p></td>
+            retention, 1 = enable status information retention. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not non-status information about the host is retained across program
             restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable non-status
-            information retention, 1 = enable non-status information retention.</p></td>
+            information retention, 1 = enable non-status information retention. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
@@ -684,13 +750,14 @@
 <td><p>This directive is used to define the number of "time units" to wait before re-notifying a contact that this host is
             <span class="emphasis"><em>still</em></span> down or unreachable. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. If you set this value to 0, Icinga will <span class="emphasis"><em>not</em></span> re-notify contacts about problems for this host
-            - only one problem notification will be sent out.</p></td>
+            - only one problem notification will be sent out. Floating point values are allowed. Default: 30.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_notification_delay</strong></span>:</p></td>
 <td><p>This directive is used to define the number of "time units" to wait before sending out the first problem
             notification when this host enters a non-UP state. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
-            minutes. If you set this value to 0, Icinga will start sending out notifications immediately.</p></td>
+            minutes. If you set this value to 0, Icinga will start sending out notifications immediately. Floating point values are
+            allowed. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_period</strong></span>:</p></td>
@@ -706,19 +773,30 @@
             on recoveries (OK state), <span class="bold"><strong>f</strong></span> = send notifications when the host starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a> starts and ends. <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, no host notifications will be sent out.</font></span> If you do not specify any
             notification options, Icinga will assume that you want notifications to be sent out for all possible states. Example: If
             you specify <span class="bold"><strong>d,r</strong></span> in this field, notifications will only be sent out when the host goes DOWN and
-            when it recovers from a DOWN state.</p></td>
+            when it recovers from a DOWN state. Default: d,u,r,f,s.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not notifications for this host are enabled. Values: 0 = disable
-            host notifications, 1 = enable host notifications.</p></td>
+<td>
+<p>This directive is used to determine whether or not notifications for this host are enabled. Values: 0 = disable
+            host notifications, 1 = enable host notifications. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>stalking_options</strong></span>:</p></td>
 <td><p>This directive determines which host states "stalking" is enabled for. Valid options are a combination of one or
             more of the following: <span class="bold"><strong>o</strong></span> = stalk on UP states, <span class="bold"><strong>d</strong></span> = stalk on
             DOWN states, and <span class="bold"><strong>u</strong></span> = stalk on UNREACHABLE states. More information on state stalking can be
-            found <a class="link" href="stalking.html" title="7.14. State Stalking">here</a>.</p></td>
+            found <a class="link" href="stalking.html" title="7.14. State Stalking">here</a>. Default: n.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -807,9 +885,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp180763920"></a>
+    <a class="indexterm" name="idp181649584"></a>
 
-    <a class="indexterm" name="idp180955648"></a>
+    <a class="indexterm" name="idp181852160"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgroup Definition">
@@ -948,9 +1026,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181021184"></a>
+    <a class="indexterm" name="idp181918048"></a>
 
-    <a class="indexterm" name="idp181022192"></a>
+    <a class="indexterm" name="idp181919152"></a>
   </div>
 
   <div class="section" title="3.4.3. Service Definition">
@@ -1109,7 +1187,7 @@
 <tr>
 <td><p></p></td>
 <td><p>flap_detection_options</p></td>
-<td><p>[o,w,c,u]</p></td>
+<td><p>[o,w,c,u,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1149,7 +1227,7 @@
 <tr>
 <td><p></p></td>
 <td><p>notification_options</p></td>
-<td><p>[w,u,c,r,f,s]</p></td>
+<td><p>[w,u,c,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1169,7 +1247,7 @@
 <tr>
 <td><p></p></td>
 <td><p>stalking_options</p></td>
-<td><p>[o,w,u,c]</p></td>
+<td><p>[o,w,u,c,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1272,7 +1350,8 @@
 <td align="left" valign="top"><p><span class="bold"><strong>is_volatile</strong></span>:</p></td>
 <td><p>This directive is used to denote whether the service is "volatile". Services are normally <span class="emphasis"><em>not</em></span>
             volatile. More information on volatile service and how they differ from normal services can be found <a class="link" href="volatileservices.html" title="7.4. Volatile Services">here</a>. Value: 0 = service is not volatile, 1 = service is volatile, 2 = service is volatile but
-            will respect the re-notification interval for notifications (option "2" was introduced in Icinga 1.0.2).</p></td>
+            will respect the re-notification interval for notifications (option "2" was introduced in Icinga 1.0.2). Default:
+            0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_command</strong></span>:</p></td>
@@ -1283,13 +1362,13 @@
 <td align="left" valign="top"><p><span class="bold"><strong>initial_state</strong></span>:</p></td>
 <td><p>By default Icinga will assume that all services are in OK states when in starts. You can override the
             initial state for a service by using this directive. Valid options are: <span class="bold"><strong>o</strong></span> = OK, <span class="bold"><strong>w</strong></span> = WARNING, <span class="bold"><strong>u</strong></span> = UNKNOWN, and <span class="bold"><strong>c</strong></span> =
-            CRITICAL.</p></td>
+            CRITICAL. Default: o.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>max_check_attempts</strong></span>:</p></td>
 <td><p>This directive is used to define the number of times that Icinga will retry the service check command if it
-            returns any state other than an OK state. Setting this value to 1 will cause Icinga to generate an alert without retrying
-            the service check again.</p></td>
+            returns any state other than an OK state. This value will cause Icinga to generate an alert without retrying the service
+            check again.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_interval</strong></span>:</p></td>
@@ -1298,7 +1377,7 @@
             but has already been rechecked <span class="bold"><strong>max_check_attempts</strong></span> number of times. Unless you've changed the
             <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. More information on this value can be found in the <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">check scheduling</a>
-            documentation.</p></td>
+            documentation. Floating point values are allowed. Default: 5.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -1307,17 +1386,39 @@
             <span class="bold"><strong>max_check_attempts</strong></span> times without a change in its status, it will revert to being scheduled at
             its "normal" rate as defined by the <span class="bold"><strong>check_interval</strong></span> value. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. More information on this value can be found in the <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">check scheduling</a>
-            documentation.</p></td>
+            documentation. Floating point values are allowed. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>active_checks_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not active checks of this service are enabled. Values: 0 = disable
-            active service checks, 1 = enable active service checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not active checks of this service are enabled. Values: 0 = disable
+            active service checks, 1 = enable active service checks. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>passive_checks_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not passive checks of this service are enabled. Values: 0 = disable
-            passive service checks, 1 = enable passive service checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not passive checks of this service are enabled. Values: 0 = disable
+            passive service checks, 1 = enable passive service checks. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_period</strong></span>:</p></td>
@@ -1330,13 +1431,24 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checks</a> are enabled
-            for this service. Values: 0 = disable freshness checks, 1 = enable freshness checks.</p></td>
+<td>
+<p>This directive is used to determine whether or not <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checks</a> are enabled
+            for this service. Values: 0 = disable freshness checks, 1 = enable freshness checks. Default: 0.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>freshness_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the freshness threshold (in seconds) for this service. If you set this directive
-            to a value of 0, Icinga will determine a freshness threshold to use automatically.</p></td>
+            to a value of 0, Icinga will determine a freshness threshold to use automatically. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
@@ -1348,34 +1460,56 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the event handler for this service is enabled. Values: 0 =
-            disable service event handler, 1 = enable service event handler.</p></td>
+<td>
+<p>This directive is used to determine whether or not the event handler for this service is enabled. Values: 0 =
+            disable service event handler, 1 = enable service event handler. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the low state change threshold used in flap detection for this service. More
             information on flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. If you set this directive to a value of 0, the
             program-wide value specified by the <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>
-            directive will be used.</p></td>
+            directive will be used. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>This directive is used to specify the high state change threshold used in flap detection for this service. More
             information on flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. If you set this directive to a value of 0, the
             program-wide value specified by the <a class="link" href="configmain.html#configmain-high_service_flap_threshold">high_service_flap_threshold</a>
-            directive will be used.</p></td>
+            directive will be used. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not flap detection is enabled for this service. More information on
+<td>
+<p>This directive is used to determine whether or not flap detection is enabled for this service. More information on
             flap detection can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>. Values: 0 = disable service flap detection, 1 = enable service
-            flap detection.</p></td>
+            flap detection. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
 <td><p>This directive is used to determine what service states the <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flap detection logic</a>
             will use for this service. Valid options are a combination of one or more of the following: <span class="bold"><strong>o</strong></span> =
-            OK states, <span class="bold"><strong>w</strong></span> = WARNING states, <span class="bold"><strong>c</strong></span> = CRITICAL states, <span class="bold"><strong>u</strong></span> = UNKNOWN states.</p></td>
+            OK states, <span class="bold"><strong>w</strong></span> = WARNING states, <span class="bold"><strong>c</strong></span> = CRITICAL states, <span class="bold"><strong>u</strong></span> = UNKNOWN states. Default: o,w,u,c.</p></td>
 </tr>
 <tr>
 <td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
@@ -1384,33 +1518,45 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the processing of performance data is enabled for this service.
-            Values: 0 = disable performance data processing, 1 = enable performance data processing.</p></td>
+<td>
+<p>This directive is used to determine whether or not the processing of performance data is enabled for this service.
+            Values: 0 = disable performance data processing, 1 = enable performance data processing. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not status-related information about the service is retained across
             program restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable status information
-            retention, 1 = enable status information retention.</p></td>
+            retention, 1 = enable status information retention. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not non-status information about the service is retained across
             program restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable non-status
-            information retention, 1 = enable non-status information retention.</p></td>
+            information retention, 1 = enable non-status information retention. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_interval</strong></span>:</p></td>
 <td><p>This directive is used to define the number of "time units" to wait before re-notifying a contact that this service
             is <span class="emphasis"><em>still</em></span> in a non-OK state. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. If you set this value to 0, Icinga will <span class="emphasis"><em>not</em></span> re-notify contacts about problems for this
-            service - only one problem notification will be sent out.</p></td>
+            service - only one problem notification will be sent out. Floating point values are allowed. Default: 30.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_notification_delay</strong></span>:</p></td>
 <td><p>This directive is used to define the number of "time units" to wait before sending out the first problem
             notification when this service enters a non-OK state. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
-            minutes. If you set this value to 0, Icinga will start sending out notifications immediately.</p></td>
+            minutes. If you set this value to 0, Icinga will start sending out notifications immediately.Floating point values are
+            allowed. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_period</strong></span>:</p></td>
@@ -1428,13 +1574,24 @@
             <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, no service
             notifications will be sent out.</font></span> If you do not specify any notification options, Icinga will assume that you
             want notifications to be sent out for all possible states. Example: If you specify <span class="bold"><strong>w,r</strong></span> in this
-            field, notifications will only be sent out when the service goes into a WARNING state and when it recovers from a WARNING
-            state.</p></td>
+            field, notifications will only be sent out when the service goes into a WARNING state and when it recovers from a WARNING state.
+            Default: u,w,c,r,f,s</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not notifications for this service are enabled. Values: 0 = disable
-            service notifications, 1 = enable service notifications.</p></td>
+<td>
+<p>This directive is used to determine whether or not notifications for this service are enabled. Values: 0 = disable
+            service notifications, 1 = enable service notifications. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
@@ -1455,7 +1612,8 @@
 <td><p>This directive determines which service states "stalking" is enabled for. Valid options are a combination of one or
             more of the following: <span class="bold"><strong>o</strong></span> = stalk on OK states, <span class="bold"><strong>w</strong></span> = stalk on
             WARNING states, <span class="bold"><strong>u</strong></span> = stalk on UNKNOWN states, and <span class="bold"><strong>c</strong></span> = stalk on
-            CRITICAL states. More information on state stalking can be found <a class="link" href="stalking.html" title="7.14. State Stalking">here</a>.</p></td>
+            CRITICAL states. More information on state stalking can be found <a class="link" href="stalking.html" title="7.14. State Stalking">here</a>. Default:
+            n.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -1517,9 +1675,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181131824"></a>
+    <a class="indexterm" name="idp182028080"></a>
 
-    <a class="indexterm" name="idp181312224"></a>
+    <a class="indexterm" name="idp182219344"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegroup Definition">
@@ -1664,9 +1822,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181377488"></a>
+    <a class="indexterm" name="idp182284512"></a>
 
-    <a class="indexterm" name="idp181378496"></a>
+    <a class="indexterm" name="idp182285520"></a>
   </div>
 
   <div class="section" title="3.4.5. Contact Definition">
@@ -1841,13 +1999,35 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_notifications_enabled</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the contact will receive notifications about host problems and
-            recoveries. Values: 0 = don't send notifications, 1 = send notifications.</p></td>
+<td>
+<p>This directive is used to determine whether or not the contact will receive notifications about host problems and
+            recoveries. Values: 0 = don't send notifications, 1 = send notifications. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notifications_enabled</strong></span>:</p></td>
-<td><p>This directive is used to determine whether or not the contact will receive notifications about service problems
-            and recoveries. Values: 0 = don't send notifications, 1 = send notifications.</p></td>
+<td>
+<p>This directive is used to determine whether or not the contact will receive notifications about service problems
+            and recoveries. Values: 0 = don't send notifications, 1 = send notifications. Default: 1.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>This value will have no effect if "<a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>=0".</p>
+              </td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_notification_period</strong></span>:</p></td>
@@ -1874,8 +2054,8 @@
 <td><p>This directive is used to define the host states for which notifications can be sent out to this contact. Valid
             options are a combination of one or more of the following: <span class="bold"><strong>d</strong></span> = notify on DOWN host states,
             <span class="bold"><strong>u</strong></span> = notify on UNREACHABLE host states, <span class="bold"><strong>r</strong></span> = notify on host
-            recoveries (UP states), <span class="bold"><strong>f</strong></span> = notify when the host starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when host or service <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a> starts and ends. <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not receive any type of host
-            notifications.</font></span></p></td>
+            recoveries (UP states), <span class="bold"><strong>f</strong></span> = notify when the host starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when host or service <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a> starts and ends. <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not receive any type of host notifications.</font></span> Default:
+            <span class="bold"><strong>n</strong></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_options</strong></span>:</p></td>
@@ -1883,7 +2063,7 @@
             options are a combination of one or more of the following: <span class="bold"><strong>w</strong></span> = notify on WARNING service
             states, <span class="bold"><strong>u</strong></span> = notify on UNKNOWN service states, <span class="bold"><strong>c</strong></span> = notify on
             CRITICAL service states, <span class="bold"><strong>r</strong></span> = notify on service recoveries (OK states), and <span class="bold"><strong>f</strong></span> = notify when the service starts and stops <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">flapping</a>.<span class="color"><font color="red"> If you specify <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not
-            receive any type of service notifications.</font></span></p></td>
+            receive any type of service notifications.</font></span> Default: <span class="bold"><strong>n</strong></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_commands</strong></span>:</p></td>
@@ -1920,21 +2100,21 @@
 <td align="left" valign="top"><p><span class="bold"><strong>retain_status_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not status-related information about the contact is retained across
             program restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable status information
-            retention, 1 = enable status information retention.</p></td>
+            retention, 1 = enable status information retention. Default: 1.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retain_nonstatus_information</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not non-status information about the contact is retained across
             program restarts. This is only useful if you have enabled state retention using the <a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a> directive. Value: 0 = disable non-status
-            information retention, 1 = enable non-status information retention.</p></td>
+            information retention, 1 = enable non-status information retention. Default: 1.</p></td>
 </tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idp181521600"></a>
+    <a class="indexterm" name="idp182430976"></a>
 
-    <a class="indexterm" name="idp181522608"></a>
+    <a class="indexterm" name="idp182434288"></a>
   </div>
 
   <div class="section" title="3.4.6. Contactgroup Definition">
@@ -2038,9 +2218,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181568736"></a>
+    <a class="indexterm" name="idp182480592"></a>
 
-    <a class="indexterm" name="idp181569744"></a>
+    <a class="indexterm" name="idp182481600"></a>
   </div>
 
   <div class="section" title="3.4.7. Timeperiod Definition">
@@ -2204,9 +2384,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181624224"></a>
+    <a class="indexterm" name="idp182536080"></a>
 
-    <a class="indexterm" name="idp181625232"></a>
+    <a class="indexterm" name="idp182537088"></a>
   </div>
 
   <div class="section" title="3.4.8. Command Definition">
@@ -2309,9 +2489,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181668592"></a>
+    <a class="indexterm" name="idp182580448"></a>
 
-    <a class="indexterm" name="idp181673120"></a>
+    <a class="indexterm" name="idp182584976"></a>
   </div>
 
   <div class="section" title="3.4.9. Servicedependency Definition">
@@ -2442,25 +2622,25 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_name</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host(s)</a> that the service <span class="emphasis"><em>that is being depended upon</em></span> (also referred
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host(s)</a> that the service<span class="emphasis"><em> that is being depended upon</em></span> (also referred
             to as the master service) "runs" on or is associated with. Multiple hosts should be separated by commas.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">hostgroup(s)</a> that the service <span class="emphasis"><em>that is being depended upon</em></span> (also
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">hostgroup(s)</a> that the service<span class="emphasis"><em> that is being depended upon</em></span> (also
             referred to as the master service) "runs" on or is associated with. Multiple hostgroups should be separated by commas. The
             hostgroup_name may be used instead of, or in addition to, the host_name directive.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_description</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>description</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a><span class="emphasis"><em>that is being depended upon</em></span> (also referred to as the
+<td><p>This directive is used to identify the <span class="emphasis"><em>description</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a><span class="emphasis"><em> that is being depended upon</em></span> (also referred to as the
             master service).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>inherits_parent</strong></span>:</p></td>
-<td><p>This directive indicates whether or not the dependency inherits dependencies of the service <span class="emphasis"><em>that is being
+<td><p>This directive indicates whether or not the dependency inherits dependencies of the service<span class="emphasis"><em> that is being
             depended upon</em></span> (also referred to as the master service). In other words, if the master service is dependent upon other
-            services and any one of those dependencies fail, this dependency will also fail.</p></td>
+            services and any one of those dependencies fail, this dependency will also fail. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>execution_failure_criteria</strong></span>:</p></td>
@@ -2499,9 +2679,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181774192"></a>
+    <a class="indexterm" name="idp182684816"></a>
 
-    <a class="indexterm" name="idp181775200"></a>
+    <a class="indexterm" name="idp182684944"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceescalation Definition">
@@ -2742,7 +2922,7 @@
             escalation, the escalation is considered to be valid during all service states. Valid options are a combination of one or more
             of the following: <span class="bold"><strong>r</strong></span> = escalate on an OK (recovery) state, <span class="bold"><strong>w</strong></span> =
             escalate on a WARNING state, <span class="bold"><strong>u</strong></span> = escalate on an UNKNOWN state, and <span class="bold"><strong>c</strong></span> = escalate on a CRITICAL state. Example: If you specify <span class="bold"><strong>w</strong></span> in this
-            field, the escalation will only be used if the service is in a WARNING state.</p></td>
+            field, the escalation will only be used if the service is in a WARNING state. Default: w,u,c,r.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
@@ -2791,9 +2971,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181914272"></a>
+    <a class="indexterm" name="idp182826224"></a>
 
-    <a class="indexterm" name="idp181915280"></a>
+    <a class="indexterm" name="idp182827232"></a>
   </div>
 
   <div class="section" title="3.4.11. Hostdependency Definition">
@@ -2908,20 +3088,20 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_name</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host(s)</a><span class="emphasis"><em>that is being depended upon</em></span> (also referred to as the master
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host(s)</a><span class="emphasis"><em> that is being depended upon</em></span> (also referred to as the master
             host). Multiple hosts should be separated by commas.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">hostgroup(s)</a><span class="emphasis"><em>that is being depended upon</em></span> (also referred to as the
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">hostgroup(s)</a><span class="emphasis"><em> that is being depended upon</em></span> (also referred to as the
             master host). Multiple hostgroups should be separated by commas. The hostgroup_name may be used instead of, or in addition to,
             the host_name directive.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>inherits_parent</strong></span>:</p></td>
-<td><p>This directive indicates whether or not the dependency inherits dependencies of the host <span class="emphasis"><em>that is being
+<td><p>This directive indicates whether or not the dependency inherits dependencies of the host<span class="emphasis"><em> that is being
             depended upon</em></span> (also referred to as the master host). In other words, if the master host is dependent upon other hosts
-            and any one of those dependencies fail, this dependency will also fail.</p></td>
+            and any one of those dependencies fail, this dependency will also fail. Default: 0.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>execution_failure_criteria</strong></span>:</p></td>
@@ -2956,9 +3136,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181997408"></a>
+    <a class="indexterm" name="idp182911232"></a>
 
-    <a class="indexterm" name="idp181999888"></a>
+    <a class="indexterm" name="idp182912240"></a>
   </div>
 
   <div class="section" title="3.4.12. Hostescalation Definition">
@@ -3162,8 +3342,8 @@
             escalation, the escalation is considered to be valid during all host states. Valid options are a combination of one or more of
             the following: <span class="bold"><strong>r</strong></span> = escalate on an UP (recovery) state, <span class="bold"><strong>d</strong></span> =
             escalate on a DOWN state, and <span class="bold"><strong>u</strong></span> = escalate on an UNREACHABLE state. Example: If you specify
-            <span class="bold"><strong>d</strong></span> in this field, the escalation will only be used if the host is in a DOWN
-            state.</p></td>
+            <span class="bold"><strong>d</strong></span> in this field, the escalation will only be used if the host is in a DOWN state. Default:
+            d,u,r.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_down_notification</strong></span>:</p></td>
@@ -3195,9 +3375,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182106736"></a>
+    <a class="indexterm" name="idp183018656"></a>
 
-    <a class="indexterm" name="idp182107744"></a>
+    <a class="indexterm" name="idp183019664"></a>
   </div>
 
   <div class="section" title="3.4.13. Hostextinfo Definition">
@@ -3400,9 +3580,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182191888"></a>
+    <a class="indexterm" name="idp183103808"></a>
 
-    <a class="indexterm" name="idp182195760"></a>
+    <a class="indexterm" name="idp183107680"></a>
   </div>
 
   <div class="section" title="3.4.14. Serviceextinfo Definition">
@@ -3573,9 +3753,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182272512"></a>
+    <a class="indexterm" name="idp183184432"></a>
 
-    <a class="indexterm" name="idp182273728"></a>
+    <a class="indexterm" name="idp183185648"></a>
   </div>
 
   <div class="section" title="3.4.15. Module Definition">
@@ -3710,7 +3890,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp182319424"></a>
+    <a class="indexterm" name="idp183231344"></a>
   </div>
 </div>
 <div class="navfooter">
