@@ -46,6 +46,7 @@ FIXES
 * idoutils: fix bad update performance with large commenthistory table (thx tgelf) #4985 - MF
 * idoutils: fix errors in oracle.sql with timedevent sequences #5688 - TD
 * idoutils: fix SEGV in ido2db in solaris #5687 - TD
+* idoutils: allow agent_version to store more than 16 chars #5731 - MF
 
 * initscript: handle binary return codes gracefully #5412 - MF
 

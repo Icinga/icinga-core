@@ -51,6 +51,13 @@ CREATE INDEX commenthistory_delete_idx ON commenthistory (instance_id, comment_t
 -- -----------------------------------------
 ALTER TABLE statehistory ADD check_source varchar2(255) default NULL;
 
+-- -----------------------------------------
+-- #5731
+-- -----------------------------------------
+ALTER TABLE conninfo MODIFY agent_version VARCHAR2(32);
+ALTER TABLE conninfo MODIFY disposition VARCHAR2(32);
+ALTER TABLE conninfo MODIFY connect_source VARCHAR2(32);
+ALTER TABLE conninfo MODIFY connect_type VARCHAR2(32);
 
 -- -----------------------------------------
 -- finally update dbversion
