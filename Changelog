@@ -47,6 +47,7 @@ FIXES
 * idoutils: fix errors in oracle.sql with timedevent sequences #5688 - TD
 * idoutils: fix SEGV in ido2db in solaris #5687 - TD
 * idoutils: allow agent_version to store more than 16 chars #5731 - MF
+* idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732 - MF
 
 * initscript: handle binary return codes gracefully #5412 - MF
 
@@ -71,6 +72,8 @@ CHANGES
 	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
 	   otherwise the command will be rejected if csrf protection is enabled.
 * classic ui: added current_notification_number to host and service status in status.cgi #5370
+
+* idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732
 
 
 1.10.3 - 11/02/2014

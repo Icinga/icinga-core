@@ -56,7 +56,7 @@ int idomod_config_output_options = IDOMOD_CONFIG_DUMP_ALL;
 unsigned long idomod_sink_buffer_slots = 5000;
 idomod_sink_buffer sinkbuf;
 
-int dump_customvar_status = IDO_FALSE;
+int dump_customvar_status = IDO_TRUE;
 
 char *idomod_debug_file = NULL;
 int idomod_debug_level = IDOMOD_DEBUGL_NONE;

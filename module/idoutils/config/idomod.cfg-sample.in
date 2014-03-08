@@ -217,13 +217,14 @@ config_output_options=2
 # but also during runtime (there may be modifications via external commands).
 # Since these updates happen on each host/service/contact status update without
 # any possibility to filter via data_processing_options, this is made a seperate
-# config option. In most scenarios, those updates are not required, therefore
-# the default option is disabled.
+# config option.
+# Icinga Web (2) will require the data for its feature set, so it's enabled by
+# default.
 #
-# Values: 0 = disabled (default)
-# 	  1 = enabled
+# Values: 0 = disabled
+#         1 = enabled (default)
 
-dump_customvar_status=0
+dump_customvar_status=1
 
 
 
