@@ -4589,6 +4589,11 @@ int idomod_open_debug_log(void) {
 	if (idomod_debug_level == IDOMOD_DEBUGL_NONE)
 		return IDO_OK;
 
+	if (idomod_debug_file == NULL) {
+		syslog(LOG_ERR, "Warning: Null pointer passed as logfile name to idomod_open_debug_log()");
+		return IDO_ERROR;
+	}
+
 	if ((idomod_debug_file_fp = fopen(idomod_debug_file, "a+")) == NULL) {
 		syslog(LOG_ERR, "Warning: Could not open debug file '%s' - '%s'", idomod_debug_file, strerror(errno));
 		return IDO_ERROR;

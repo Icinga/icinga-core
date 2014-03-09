@@ -48,6 +48,7 @@ FIXES
 * idoutils: fix SEGV in ido2db in solaris #5687 - TD
 * idoutils: allow agent_version to store more than 16 chars #5731 - MF
 * idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732 - MF
+* idoutils: fix SEGV in idomod syslog call on Solaris #5686 - CF
 
 * initscript: handle binary return codes gracefully #5412 - MF
 
