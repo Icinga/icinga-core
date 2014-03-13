@@ -256,7 +256,7 @@ case "$1" in
 				remove_run_files
 			fi
 		else
-			echo "Ido2db is already stopped!"
+			echo "icinga is already stopped!"
 			exit 0
 		fi
 		;;
