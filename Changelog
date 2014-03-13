@@ -14,6 +14,13 @@ UPGRADE NOTES
 * package locations may differ!
 
 
+NEWS
+
+* Releases are now hosted at GitHub. Please check https://www.icinga.org/download for details!
+
+* Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
+
+
 1.11.0 - 13/03/2014
 
 ENHANCEMENTS
@@ -29,6 +36,11 @@ ENHANCEMENTS
 * classic ui: add Support for gzip compressed logs #4519 - RB
 
 * idoutils: ido2db should check db schema on startup, and bail early on errors #5272 - MF
+
+* docs: Define SELinux contexts rather than using chcon command #3555 - WN
+* docs: explain "Check results for service x on host y are stale by 0d 0h 0m 10s (threshold=0d 0h 10m 0s). Forcing an immediate check of the service..." #5252 - WN
+* docs: addons: suggest nsca-ng as nsca alternative #5253 - WN
+* docs: rename nagios plugins to monitoring plugins #5460 - WN/MF
 
 FIXES
 
@@ -49,6 +61,11 @@ FIXES
 * idoutils: allow agent_version to store more than 16 chars #5731 - MF
 * idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732 - MF
 * idoutils: fix SEGV in idomod syslog call on Solaris #5686 - CF
+
+* docs: icinga web rest api updates #4970 - WN
+* docs: add new cg.cfg option "disable_cmd_cgi_csrf_protection" #5377 - WN
+* docs: clean mysql creation commands #5426 - MF
+* docs: replace sourceforge download links with github releases #5429 - WN/MF
 
 * initscript: handle binary return codes gracefully #5412 - MF
 
@@ -75,6 +92,9 @@ CHANGES
 * classic ui: added current_notification_number to host and service status in status.cgi #5370
 
 * idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732
+
+* docs: rename nagios plugins to monitoring plugins #5460
+* docs: replace sourceforge download links with github releases #5429
 
 
 1.10.3 - 11/02/2014

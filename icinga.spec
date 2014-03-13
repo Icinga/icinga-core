@@ -588,6 +588,9 @@ fi
 
 
 %changelog
+* Thu Mar 13 2014 Michael Friedrich <michael.friedrich@netways.de> - 1.11.0-1
+- bump 1.11.0
+
 * Tue Feb 11 2014 Michael Friedrich <michael.friedrich@netways.de> - 1.10.3-1
 - bump 1.10.3
 

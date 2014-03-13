@@ -30,123 +30,119 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>1.2. What's New in Icinga 1.11</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">1.2.1. <a href="whatsnew.html#changes">CHANGES</a></span></dt>
-<dt><span class="section">1.2.2. <a href="whatsnew.html#core">Core</a></span></dt>
-<dt><span class="section">1.2.3. <a href="whatsnew.html#classicui">Classic UI</a></span></dt>
-<dt><span class="section">1.2.4. <a href="whatsnew.html#idoutils">IDOutils</a></span></dt>
+<dt><span class="section">1.2.1. <a href="whatsnew.html#whatsnew-changes">CHANGES</a></span></dt>
+<dt><span class="section">1.2.2. <a href="whatsnew.html#whatsnew-core">Core</a></span></dt>
+<dt><span class="section">1.2.3. <a href="whatsnew.html#whatsnew-classicui">Classic UI</a></span></dt>
+<dt><span class="section">1.2.4. <a href="whatsnew.html#whatsnew-idoutils">IDOutils</a></span></dt>
 <dt><span class="section">1.2.5. <a href="whatsnew.html#whatsnew-web">Icinga-Web</a></span></dt>
-<dt><span class="section">1.2.6. <a href="whatsnew.html#reporting">Icinga-Reporting</a></span></dt>
-<dt><span class="section">1.2.7. <a href="whatsnew.html#docs">Docs</a></span></dt>
-<dt><span class="section">1.2.8. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
+<dt><span class="section">1.2.6. <a href="whatsnew.html#docs">Docs</a></span></dt>
+<dt><span class="section">1.2.7. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
 </dl></div>
   
 
-  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.8. More information">Changelog</a> as well if you are
+  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.7. More information">Changelog</a> as well if you are
   missing something.</p>
 
-  <a class="indexterm" name="idp177808576"></a>
+  <a class="indexterm" name="idp177210256"></a>
 
   <div class="section" title="1.2.1. CHANGES">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="changes"></a>1.2.1. CHANGES</h3></div></div></div>
+<a name="whatsnew-changes"></a>1.2.1. CHANGES</h3></div></div></div>
     
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Icinga Classic UI adds on-demand filter popup and livesearch for better usability #852 #1657</p>
+        <p>Releases are now hosted at <a class="link" href="https://www.icinga.org/download" target="_top">GitHub</a>!</p>
       </li>
 <li class="listitem">
-        <p>custom vars are now visible in Icinga Classic UI. Filter them using 'exclude_customvar_{name,value}' #4390</p>
+        <p>Mailinglists have been migrated to <a class="link" href="https://www.icinga.org/support" target="_top">lists.icinga.org</a>!</p>
       </li>
 <li class="listitem">
-        <p>remove slahistory, timedevents functionality #4363 #4482 </p>
+	<p>docs: rename nagios plugins to monitoring plugins #5460</p>
       </li>
 <li class="listitem">
-        <p>IDOUtils clean_{config,realtime}_tables_on_core_startup config options DEPRECATED #4791 </p>
+        <p>classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 requires HTTP_REFFERER on the cmd line</p>
       </li>
 <li class="listitem">
-        <p>External Business Process Cronk removed from Icinga Web tarball #4818</p>
+        <p>idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732</p>
       </li>
 <li class="listitem">
-        <p>All Flash components removed from the Icinga Web tarball. (#3474 #4806)</p>
-      </li>
-<li class="listitem">
-        <p>Icinga Web 1.10 requires an IDOUtils schema version of &gt;= 1.10</p>
-      </li>
-<li class="listitem">
-        <p>Icinga Web and IDOUtils schema upgrades to 1.10 required.</p>
+        <p>Icinga Web 1.11 requires IDO schema version &gt;= 1.11</p>
       </li>
 </ul></div>
+
   </div>
 
   <div class="section" title="1.2.2. Core">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="core"></a>1.2.2. Core</h3></div></div></div>
+<a name="whatsnew-core"></a>1.2.2. Core</h3></div></div></div>
     
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>allow exclude (!) to work for regexp matches as well #3720 </p>
+       <p>Added commands for {en,dis}able freshness checks per host/service (thanks Philip Matuskiewicz) #5422 #4430</p>
       </li>
 <li class="listitem">
-	      <p>add check source to checkresult/status data #4709  </p>
+        <p>Added state history entries for newly added services (check result with OK state) #3854</p>
       </li>
 <li class="listitem">
-        <p>multiple idomod modules: only first gets data from registered callback functions #4199  </p>
+        <p>Added option to make external command user in Icinga log anonymous #5689</p>
       </li>
 <li class="listitem">
-        <p>add manpages from debian upstream #4055  </p>
+        <p>Allow exclude (!) to work for regexp matches for hosts (thanks Franky Van Liedekerke) #5324</p>
       </li>
 <li class="listitem">
-        <p>add vim highlight script for Icinga syntax #4150  </p>
+        <p>Fixed passive check result processing for host checks (Marco Hoyer) #5671</p>
+      </li>
+<li class="listitem">
+        <p>Accept service escalations without host mapping (Tomas Dubec) #5697</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.3. Classic UI">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="classicui"></a>1.2.3. Classic UI</h3></div></div></div>
+<a name="whatsnew-classicui"></a>1.2.3. Classic UI</h3></div></div></div>
     
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add display filter modification for status.cgi #852  </p>
+        <p>Added status.cgi modifed_attributes filter parameter #4880</p>
       </li>
 <li class="listitem">
-        <p>added live search #1657  </p>
+        <p>Added "current_notification_number" to JSON output of hosts and services in status.cgi #5370</p>
       </li>
 <li class="listitem">
-        <p>show custom variables in extended info #4390  </p>
+        <p>Added group notes and action URL links to status summary, overview and grid #5301</p>
       </li>
 <li class="listitem">
-	      <p>allow to exclude custom variable name/value based on pattern #4390  </p>
+        <p>Integrated a range of logos #4057</p>
       </li>
 <li class="listitem">
-        <p>added option for partial servicegroups #2740  </p>
+        <p>Added support for gzip compressed logs #4519</p>
       </li>
 <li class="listitem">
-        <p>show check source in extinfo #4709  </p>
+        <p>Time picker no longer resets time in input field #5239</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.4. IDOutils">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idoutils"></a>1.2.4. IDOutils</h3></div></div></div>
+<a name="whatsnew-idoutils"></a>1.2.4. IDOutils</h3></div></div></div>
     
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add a table trimming option for 'downtime history' #3989  </p>
+        <p>ido2db should check database schema on start up, and bail early on errors #5272</p>
       </li>
 <li class="listitem">
-        <p>allow to disable customvar status updates with dump_customvar_status=0|1 in idomod.cfg #4479  </p>
+        <p>Wait for child processes on exit preventing zombies (Laurent Bigonville) #4427</p>
       </li>
 <li class="listitem">
-	      <p>add object_id (host, service) to logentries status updates/state changes #4754  </p>
+        <p>Fixed errors in oracle.sql with timed event sequences #5688</p>
       </li>
 <li class="listitem">
-        <p>remove slahistory, timedevents functionality #4363 #4482  </p>
+        <p>Fixed SEGV in ido2db and idomod syslog call in Solaris - #5687, #5686</p>
+      </li>
+<li class="listitem">
+        <p>Allow agent_version to store more than 16 chars #5731</p>
       </li>
 </ul></div>
   </div>
@@ -155,70 +151,57 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="whatsnew-web"></a>1.2.5. Icinga-Web</h3></div></div></div>
     
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>menu categories split and layout changed #4807 #4691 </p>
+        <p>Timezone handling has been fixed for duration and command fields. #5713</p>
       </li>
 <li class="listitem">
-        <p>all problem cronks for hosts, services and split view #4167</p>
+        <p>Added reload progress bar (Immobilienscout24) #5098 #5107</p>
       </li>
 <li class="listitem">
-	      <p>instance cronk is more useful and disable all notifications
-	        with expire time #3956 #3888</p>
+        <p> Expanded macros in action_url and notes_url #1882</p>
       </li>
 <li class="listitem">
-	      <p>delete all comments of a host/service #2636 </p>
+        <p>Added jump links to host and service status from performance view - #4984</p>
       </li>
 <li class="listitem">
-	      <p>add state_type shown in problems to all grids #3529 </p>
+        <p>ExtJS framework has been updated to 3.4.1.1 #5620</p>
       </li>
 </ul></div>
   </div>
 
-  <div class="section" title="1.2.6. Icinga-Reporting">
+  <div class="section" title="1.2.6. Docs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="reporting"></a>1.2.6. Icinga-Reporting</h3></div></div></div>
+<a name="docs"></a>1.2.6. Docs</h3></div></div></div>
     
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>minor sql fixes for templates in postgresql #1880</p>
-      </li></ul></div>
-  </div>
-
-  <div class="section" title="1.2.7. Docs">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="docs"></a>1.2.7. Docs</h3></div></div></div>
-    
-
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add samples files for reference #4422 </p>
+        <p>Define SELinux contexts rather than using chcon command #3555</p>
       </li>
 <li class="listitem">
-        <p>update pnp screenshots, explain icinga web expander icon #4527 #4288 </p>
+        <p>explain "Check results for service x on host y are stale by 0d 0h 0m 10s (threshold=0d 0h 10m 0s). Forcing an immediate check of the service..." #5252</p>
       </li>
 <li class="listitem">
-        <p>add hint to views.xml config file #4690 </p>
+        <p>addons: suggest nsca-ng as nsca alternative #5253</p>
       </li>
 <li class="listitem">
-        <p>add "show_partial_servicegroups" to cgi.cfg #4730 </p>
+        <p>rename nagios plugins to monitoring plugins #5460</p>
       </li>
 <li class="listitem">
-        <p>add "dump_customvar_status" to idomod.cfg #4705 </p>
+        <p>icinga web rest api updates #4970</p>
       </li>
 <li class="listitem">
-        <p>remove enable_sla, timedevent* from idoutils docs #4487 </p>
+        <p>clean mysql creation commands #5426</p>
       </li>
 <li class="listitem">
-        <p>update icinga web troubleshooting for timezones #4554 </p>
+        <p>replace sourceforge download links with github releases #5429</p>
       </li>
 </ul></div>
   </div>
 
-  <div class="section" title="1.2.8. More information">
+  <div class="section" title="1.2.7. More information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="moreinfo"></a>1.2.8. More information</h3></div></div></div>
+<a name="moreinfo"></a>1.2.7. More information</h3></div></div></div>
     
 
     <p><a class="link" href="https://wiki.icinga.org/display/Dev/Changelogs" target="_top">More at Icinga Wiki</a></p>

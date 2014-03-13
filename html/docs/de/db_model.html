@@ -33,7 +33,7 @@
 <dt><span class="section">12.5.1. <a href="db_model.html#centraltables">Central Tables</a></span></dt>
 <dt><span class="section">12.5.2. <a href="db_model.html#debuggingtables">Debugging Tables</a></span></dt>
 <dt><span class="section">12.5.3. <a href="db_model.html#historicaltables">Historical Tables</a></span></dt>
-<dt><span class="section">12.5.4. <a href="db_model.html#statustables">Current Status Tables</a></span></dt>
+<dt><span class="section">12.5.4. <a href="db_model.html#statustables"> Current Status Tables</a></span></dt>
 <dt><span class="section">12.5.5. <a href="db_model.html#configtables">Configuration Tables</a></span></dt>
 </dl></div>
   
@@ -55,6 +55,15 @@
   doubt please take a look at the actual code.</p></td></tr>
 </table></div>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>The data types and field lenghts mentioned throughout the following documentation show the definitions for MySQL.
+    Oracle and PostgreSQL use other data types and field lengths.</p></td></tr>
+</table></div>
+ 
   <p><span class="bold"><strong>Table Names</strong></span></p>
 
   <p>The IDOUtils addon allows users to specify a custom prefix to each table name in the database. By default, this prefix is set to
@@ -109,7 +118,7 @@
 <a name="centraltables"></a>12.5.1. Central Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="idp195390976"></a>
+    <a class="indexterm" name="idp194794080"></a>
 
     <p>There are two "core" or "central" tables, described below, that are referenced by nearly every table in the database. Read below
     for more information.</p>
@@ -128,7 +137,7 @@
     <p><span class="emphasis"><em>Relationship Diagram</em></span></p>
 
     <div class="figure">
-<a name="idp195396064"></a><p class="title"><b>Abbildung 12.14. Relationship of Central Tables</b></p>
+<a name="idp194799360"></a><p class="title"><b>Abbildung 12.14. Relationship of Central Tables</b></p>
 <div class="figure-contents">
       
 
@@ -139,7 +148,7 @@
 
     <a name="dbm_instances"></a>
 
-    <a class="indexterm" name="idp195400400"></a>
+    <a class="indexterm" name="idp194803696"></a>
 
     <p><span class="emphasis"><em>Instance Table</em></span></p>
 
@@ -188,7 +197,7 @@
 
     <a name="dbm_objects"></a>
 
-    <a class="indexterm" name="idp195414848"></a>
+    <a class="indexterm" name="idp194818144"></a>
 
     <p><span class="emphasis"><em>Objects Table</em></span></p>
 
@@ -293,7 +302,7 @@
 <a name="debuggingtables"></a>12.5.2. Debugging Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="idp195444624"></a>
+    <a class="indexterm" name="idp194847920"></a>
 
     <p>There is currently only one table in the database that is used to hold information that might be useful for debugging purposes.
     Read below for more information.</p>
@@ -307,7 +316,7 @@
     <p>Relationship Diagram</p>
 
     <div class="figure">
-<a name="idp195449504"></a><p class="title"><b>Abbildung 12.15. Relationship of Debugging Tables</b></p>
+<a name="idp194852800"></a><p class="title"><b>Abbildung 12.15. Relationship of Debugging Tables</b></p>
 <div class="figure-contents">
       
 
@@ -318,7 +327,7 @@
 
     <a name="dbm_conninfo"></a>
 
-    <a class="indexterm" name="idp195452416"></a>
+    <a class="indexterm" name="idp194855712"></a>
 
     <p><span class="emphasis"><em>Conninfo Table</em></span></p>
 
@@ -482,7 +491,7 @@
 <a name="historicaltables"></a>12.5.3. Historical Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="idp195506480"></a>
+    <a class="indexterm" name="idp194909344"></a>
 
     <p><span class="bold"><strong>Historical Data Tables</strong></span></p>
 
@@ -548,7 +557,7 @@
     please excuse the mess. :-)</p>
 
     <div class="figure">
-<a name="idp195532016"></a><p class="title"><b>Abbildung 12.16. Relationship of Historical Tables</b></p>
+<a name="idp194934656"></a><p class="title"><b>Abbildung 12.16. Relationship of Historical Tables</b></p>
 <div class="figure-contents">
       
 
@@ -559,7 +568,7 @@
 
     <a name="dbm_acknowledgements"></a>
 
-    <a class="indexterm" name="idp195534912"></a>
+    <a class="indexterm" name="idp194937760"></a>
 
     <p><span class="emphasis"><em>Acknowledgements Table</em></span></p>
 
@@ -704,7 +713,7 @@
 
     <a name="dbm_commenthistory"></a>
 
-    <a class="indexterm" name="idp195581152"></a>
+    <a class="indexterm" name="idp194984400"></a>
 
     <p><span class="emphasis"><em>Commenthistory Table</em></span></p>
 
@@ -878,7 +887,7 @@
 
     <a name="dbm_contactnotifications"></a>
 
-    <a class="indexterm" name="idp195637648"></a>
+    <a class="indexterm" name="idp195040752"></a>
 
     <p><span class="emphasis"><em>Contactnotifications Table</em></span></p>
 
@@ -993,7 +1002,7 @@
 
     <a name="dbm_dbversion"></a>
 
-    <a class="indexterm" name="idp195673200"></a>
+    <a class="indexterm" name="idp195076800"></a>
 
     <p><span class="emphasis"><em>Dbversion Table</em></span></p>
 
@@ -1044,7 +1053,7 @@
 
     <a name="dbm_contactnotificationsmethods"></a>
 
-    <a class="indexterm" name="idp195688544"></a>
+    <a class="indexterm" name="idp195091984"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -1166,7 +1175,7 @@
 
     <a name="dbm_downtimehistory"></a>
 
-    <a class="indexterm" name="idp195726800"></a>
+    <a class="indexterm" name="idp195130160"></a>
 
     <p><span class="emphasis"><em>Downtimehistory Table</em></span></p>
 
@@ -1363,7 +1372,7 @@
 
     <a name="dbm_eventhandlers"></a>
 
-    <a class="indexterm" name="idp195790544"></a>
+    <a class="indexterm" name="idp195194336"></a>
 
     <p><span class="emphasis"><em>Eventhandlers Table</em></span></p>
 
@@ -1550,7 +1559,7 @@
 
     <a name="dbm_externalcommands"></a>
 
-    <a class="indexterm" name="idp195851552"></a>
+    <a class="indexterm" name="idp195255008"></a>
 
     <p><span class="emphasis"><em>Externalcommands Table</em></span></p>
 
@@ -1643,7 +1652,7 @@
 
     <a name="dbm_flappinghistory"></a>
 
-    <a class="indexterm" name="idp195879088"></a>
+    <a class="indexterm" name="idp195282544"></a>
 
     <p><span class="emphasis"><em>Flappinghistory Table</em></span></p>
 
@@ -1789,7 +1798,7 @@
 
     <a name="dbm_hostchecks"></a>
 
-    <a class="indexterm" name="idp195925792"></a>
+    <a class="indexterm" name="idp195329248"></a>
 
     <p><span class="emphasis"><em>Hostchecks Table</em></span></p>
 
@@ -2024,7 +2033,7 @@
 
     <a name="dbm_logentries"></a>
 
-    <a class="indexterm" name="idp196002384"></a>
+    <a class="indexterm" name="idp195406592"></a>
 
     <p><span class="emphasis"><em>Logentries Table</em></span></p>
 
@@ -2149,7 +2158,7 @@
 
     <a name="dbm_notifications"></a>
 
-    <a class="indexterm" name="idp196040848"></a>
+    <a class="indexterm" name="idp195444128"></a>
 
     <p><span class="emphasis"><em>Notifications Table</em></span></p>
 
@@ -2305,7 +2314,7 @@
 
     <a name="dbm_processevents"></a>
 
-    <a class="indexterm" name="idp196091248"></a>
+    <a class="indexterm" name="idp195494416"></a>
 
     <p><span class="emphasis"><em>Processevents Table</em></span></p>
 
@@ -2420,7 +2429,7 @@
 
     <a name="dbm_servicechecks"></a>
 
-    <a class="indexterm" name="idp196125856"></a>
+    <a class="indexterm" name="idp195529344"></a>
 
     <p><span class="emphasis"><em>Servicechecks Table</em></span></p>
 
@@ -2643,7 +2652,7 @@
 
     <a name="dbm_statehistory"></a>
 
-    <a class="indexterm" name="idp196198912"></a>
+    <a class="indexterm" name="idp195602656"></a>
 
     <p><span class="emphasis"><em>Statehistory Table</em></span></p>
 
@@ -2797,7 +2806,7 @@
 
     <a name="dbm_systemcommands"></a>
 
-    <a class="indexterm" name="idp196248576"></a>
+    <a class="indexterm" name="idp195651952"></a>
 
     <p><span class="emphasis"><em>Systemcommands Table</em></span></p>
 
@@ -2942,10 +2951,10 @@
 
   <div class="section" title="12.5.4. Current Status Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="statustables"></a>12.5.4. Current Status Tables</h3></div></div></div>
+<a name="statustables"></a>12.5.4. <a name="dbm_cu"></a> Current Status Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="idp196293344"></a>
+    <a class="indexterm" name="idp195697088"></a>
 
     <p>There are several tables in the database which are used to hold current status information on the Icinga process and all
     hosts and services that it is monitoring. Entries in these tables are cleared whenever the Icinga daemon (belonging to the same
@@ -2984,7 +2993,7 @@
     related) is not shown.</p>
 
     <div class="figure">
-<a name="idp196305904"></a><p class="title"><b>Abbildung 12.17. Relationship of Current Status Tables</b></p>
+<a name="idp195711344"></a><p class="title"><b>Abbildung 12.17. Relationship of Current Status Tables</b></p>
 <div class="figure-contents">
       
 
@@ -2995,7 +3004,7 @@
 
     <a name="dbm_comments"></a>
 
-    <a class="indexterm" name="idp196310512"></a>
+    <a class="indexterm" name="idp195714256"></a>
 
     <p><span class="emphasis"><em>Comments Table</em></span></p>
 
@@ -3155,7 +3164,7 @@
 
     <a name="dbm_customvariablestatus"></a>
 
-    <a class="indexterm" name="idp196361936"></a>
+    <a class="indexterm" name="idp195765744"></a>
 
     <p><span class="emphasis"><em>Customvariablestatus Table</em></span></p>
 
@@ -3260,7 +3269,7 @@
 
     <a name="dbm_hoststatus"></a>
 
-    <a class="indexterm" name="idp196394272"></a>
+    <a class="indexterm" name="idp195798080"></a>
 
     <p><span class="emphasis"><em>Hoststatus Table</em></span></p>
 
@@ -3651,7 +3660,7 @@
 
     <a name="dbm_programstatus"></a>
 
-    <a class="indexterm" name="idp196528048"></a>
+    <a class="indexterm" name="idp195931856"></a>
 
     <p><span class="emphasis"><em>Programstatus Table</em></span></p>
 
@@ -3876,7 +3885,7 @@
 
     <a name="dbm_runtimevariables"></a>
 
-    <a class="indexterm" name="idp196604816"></a>
+    <a class="indexterm" name="idp196008128"></a>
 
     <p><span class="emphasis"><em>Runtimevariables Table</em></span></p>
 
@@ -3956,7 +3965,7 @@
 
     <a name="dbm_scheduleddowntime"></a>
 
-    <a class="indexterm" name="idp196627504"></a>
+    <a class="indexterm" name="idp196031152"></a>
 
     <p><span class="emphasis"><em>Scheduleddowntime Table</em></span></p>
 
@@ -4132,7 +4141,7 @@
 
     <a name="dbm_servicestatus"></a>
 
-    <a class="indexterm" name="idp196682752"></a>
+    <a class="indexterm" name="idp196086480"></a>
 
     <p><span class="emphasis"><em>Servicestatus Table</em></span></p>
 
@@ -4540,7 +4549,7 @@
 
     <a name="dbm_contactstatus"></a>
 
-    <a class="indexterm" name="idp196821952"></a>
+    <a class="indexterm" name="idp196225680"></a>
 
     <p><span class="emphasis"><em>Contactstatus Table</em></span></p>
 
@@ -4672,7 +4681,7 @@
 <a name="configtables"></a>12.5.5. Configuration Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="idp196866352"></a>
+    <a class="indexterm" name="idp196270080"></a>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -4788,7 +4797,7 @@
 </ul></div>
 
     <div class="figure">
-<a name="idp196870224"></a><p class="title"><b>Abbildung 12.18. Relationship of Configuration Tables</b></p>
+<a name="idp196273952"></a><p class="title"><b>Abbildung 12.18. Relationship of Configuration Tables</b></p>
 <div class="figure-contents">
       
 
@@ -4799,7 +4808,7 @@
 
     <a name="dbm_commands"></a>
 
-    <a class="indexterm" name="idp196913792"></a>
+    <a class="indexterm" name="idp196317520"></a>
 
     <p><span class="emphasis"><em>Commands Table</em></span></p>
 
@@ -4864,7 +4873,7 @@
 
     <a name="dbm_configfiles"></a>
 
-    <a class="indexterm" name="idp196934160"></a>
+    <a class="indexterm" name="idp196337888"></a>
 
     <p><span class="emphasis"><em>Configfiles Table</em></span></p>
 
@@ -4922,7 +4931,7 @@
 
     <a name="dbm_configfilevariables"></a>
 
-    <a class="indexterm" name="idp196951904"></a>
+    <a class="indexterm" name="idp196355632"></a>
 
     <p><span class="emphasis"><em>Configfilevariables Table</em></span></p>
 
@@ -4987,7 +4996,7 @@
 
     <a name="dbm_contact_addresses"></a>
 
-    <a class="indexterm" name="idp196971392"></a>
+    <a class="indexterm" name="idp196375120"></a>
 
     <p><span class="emphasis"><em>Contact_addresses Table</em></span></p>
 
@@ -5052,7 +5061,7 @@
 
     <a name="dbm_contact_notificationcommands"></a>
 
-    <a class="indexterm" name="idp196991472"></a>
+    <a class="indexterm" name="idp196395200"></a>
 
     <p><span class="emphasis"><em>Contact_notificationcommands Table</em></span></p>
 
@@ -5124,7 +5133,7 @@
 
     <a name="dbm_contactgroup_members"></a>
 
-    <a class="indexterm" name="idp197013792"></a>
+    <a class="indexterm" name="idp196417728"></a>
 
     <p><span class="emphasis"><em>Contactgroup_members Table</em></span></p>
 
@@ -5182,7 +5191,7 @@
 
     <a name="dbm_contactgroups"></a>
 
-    <a class="indexterm" name="idp197031392"></a>
+    <a class="indexterm" name="idp196435680"></a>
 
     <p><span class="emphasis"><em>Contactgroups Table</em></span></p>
 
@@ -5247,7 +5256,7 @@
 
     <a name="dbm_contactnotificationmethods"></a>
 
-    <a class="indexterm" name="idp197051472"></a>
+    <a class="indexterm" name="idp196456192"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -5340,7 +5349,7 @@
 
     <a name="dbm_contacts"></a>
 
-    <a class="indexterm" name="idp197080560"></a>
+    <a class="indexterm" name="idp196484368"></a>
 
     <p><span class="emphasis"><em>Contacts Table</em></span></p>
 
@@ -5531,7 +5540,7 @@
 
     <a name="dbm_customvariables"></a>
 
-    <a class="indexterm" name="idp197146832"></a>
+    <a class="indexterm" name="idp196550704"></a>
 
     <p><span class="emphasis"><em>customvariables Table</em></span></p>
 
@@ -5610,7 +5619,7 @@
 
     <a name="dbm_host_contactgroups"></a>
 
-    <a class="indexterm" name="idp197171776"></a>
+    <a class="indexterm" name="idp196575648"></a>
 
     <p><span class="emphasis"><em>Host_contactgroups Table</em></span></p>
 
@@ -5668,7 +5677,7 @@
 
     <a name="dbm_host_contacts"></a>
 
-    <a class="indexterm" name="idp197189488"></a>
+    <a class="indexterm" name="idp196593360"></a>
 
     <p><span class="emphasis"><em>Host_contacts Table</em></span></p>
 
@@ -5726,7 +5735,7 @@
 
     <a name="dbm_hostescalation_contactgroups"></a>
 
-    <a class="indexterm" name="idp197207056"></a>
+    <a class="indexterm" name="idp196610928"></a>
 
     <p><span class="emphasis"><em>Hostescalation_contactgroups Table</em></span></p>
 
@@ -5784,7 +5793,7 @@
 
     <a name="dbm_hostescalation_contacts"></a>
 
-    <a class="indexterm" name="idp197224656"></a>
+    <a class="indexterm" name="idp196628528"></a>
 
     <p><span class="emphasis"><em>Hostescalation_contacts Table</em></span></p>
 
@@ -5842,7 +5851,7 @@
 
     <a name="dbm_host_parenthosts"></a>
 
-    <a class="indexterm" name="idp197242400"></a>
+    <a class="indexterm" name="idp196646272"></a>
 
     <p><span class="emphasis"><em>Host_parenthosts Table</em></span></p>
 
@@ -5900,7 +5909,7 @@
 
     <a name="dbm_hostdependencies"></a>
 
-    <a class="indexterm" name="idp197260096"></a>
+    <a class="indexterm" name="idp196663968"></a>
 
     <p><span class="emphasis"><em>Hostdependencies Table</em></span></p>
 
@@ -6007,7 +6016,7 @@
 
     <a name="dbm_hostescalations"></a>
 
-    <a class="indexterm" name="idp197296464"></a>
+    <a class="indexterm" name="idp196700336"></a>
 
     <p><span class="emphasis"><em>Hostescalations Table</em></span></p>
 
@@ -6114,7 +6123,7 @@
 
     <a name="dbm_hostgroup_members"></a>
 
-    <a class="indexterm" name="idp197330352"></a>
+    <a class="indexterm" name="idp196734224"></a>
 
     <p><span class="emphasis"><em>Hostgroup_members Table</em></span></p>
 
@@ -6172,7 +6181,7 @@
 
     <a name="dbm_hostgroups"></a>
 
-    <a class="indexterm" name="idp197347920"></a>
+    <a class="indexterm" name="idp196751792"></a>
 
     <p><span class="emphasis"><em>Hostgroups Table</em></span></p>
 
@@ -6237,7 +6246,7 @@
 
     <a name="dbm_hosts"></a>
 
-    <a class="indexterm" name="idp197367840"></a>
+    <a class="indexterm" name="idp196771712"></a>
 
     <p><span class="emphasis"><em>Hosts Table</em></span></p>
 
@@ -6680,7 +6689,7 @@
 
     <a name="dbm_service_contactgroups"></a>
 
-    <a class="indexterm" name="idp197508784"></a>
+    <a class="indexterm" name="idp196912656"></a>
 
     <p><span class="emphasis"><em>Service_contactgroups Table</em></span></p>
 
@@ -6738,7 +6747,7 @@
 
     <a name="dbm_service_contacts"></a>
 
-    <a class="indexterm" name="idp197526368"></a>
+    <a class="indexterm" name="idp196930240"></a>
 
     <p><span class="emphasis"><em>Service_contacts Table</em></span></p>
 
@@ -6796,7 +6805,7 @@
 
     <a name="dbm_servicedependencies"></a>
 
-    <a class="indexterm" name="idp197544240"></a>
+    <a class="indexterm" name="idp196948112"></a>
 
     <p><span class="emphasis"><em>Servicedependencies Table</em></span></p>
 
@@ -6858,15 +6867,15 @@
 <tr>
 <td>dependency_type</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates the type of the dependency</td>
+<td>1 = Notification dependency, 2 = Execution dependency</td>
 <td>UK5</td>
 </tr>
 <tr>
 <td>inherits_parent</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates whether or not the service will inherit dependencies from parent services</td>
+<td>0 = do not inherit dependencies, 1 = inherit dependencies</td>
 <td>UK6</td>
 </tr>
 <tr>
@@ -6879,29 +6888,29 @@
 <tr>
 <td>fail_on_ok</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates whether or not the service will be checked if the master service is OK</td>
+<td>0 = check service, 1 = do not check service</td>
 <td>UK7</td>
 </tr>
 <tr>
 <td>fail_on_warning</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates whether or not the service will be checked if the master service is WARNIING</td>
+<td>0 = check service, 1 = do not check service</td>
 <td>UK8</td>
 </tr>
 <tr>
 <td>fail_on_unknown</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates whether or not the service will be checked if the master service is UNKNOWN</td>
+<td>0 = check service, 1 = do not check service</td>
 <td>UK9</td>
 </tr>
 <tr>
 <td>fail_on_critical</td>
 <td>SMALLINT</td>
-<td> </td>
-<td> </td>
+<td>Indicates whether or not the service will be checked if the master service is CRITICAL</td>
+<td>0 = check service, 1 = do not check service</td>
 <td>UK10</td>
 </tr>
 </tbody>
@@ -6910,7 +6919,7 @@
 
     <a name="dbm_serviceescalation_contactgroups"></a>
 
-    <a class="indexterm" name="idp197580944"></a>
+    <a class="indexterm" name="idp196987312"></a>
 
     <p><span class="emphasis"><em>Serviceescalation_contactgroups Table</em></span></p>
 
@@ -6968,7 +6977,7 @@
 
     <a name="dbm_serviceescalation_contacts"></a>
 
-    <a class="indexterm" name="idp197598976"></a>
+    <a class="indexterm" name="idp197004880"></a>
 
     <p><span class="emphasis"><em>Serviceescalation_contacts Table</em></span></p>
 
@@ -7026,7 +7035,7 @@
 
     <a name="dbm_serviceescalations"></a>
 
-    <a class="indexterm" name="idp197616816"></a>
+    <a class="indexterm" name="idp197022608"></a>
 
     <p><span class="emphasis"><em>Serviceescalations Table</em></span></p>
 
@@ -7140,7 +7149,7 @@
 
     <a name="dbm_servicegroup_members"></a>
 
-    <a class="indexterm" name="idp197653296"></a>
+    <a class="indexterm" name="idp197058800"></a>
 
     <p><span class="emphasis"><em>Servicegroup_members Table</em></span></p>
 
@@ -7198,7 +7207,7 @@
 
     <a name="dbm_servicegroups"></a>
 
-    <a class="indexterm" name="idp197670160"></a>
+    <a class="indexterm" name="idp197076384"></a>
 
     <p><span class="emphasis"><em>Servicegroups Table</em></span></p>
 
@@ -7263,7 +7272,7 @@
 
     <a name="dbm_services"></a>
 
-    <a class="indexterm" name="idp197690368"></a>
+    <a class="indexterm" name="idp197096608"></a>
 
     <p><span class="emphasis"><em>Services Table</em></span></p>
 
@@ -7657,7 +7666,7 @@
 
     <a name="dbm_timeperiod_timeranges"></a>
 
-    <a class="indexterm" name="idp197815280"></a>
+    <a class="indexterm" name="idp197221520"></a>
 
     <p><span class="emphasis"><em>Timeperiod_timeranges Table</em></span></p>
 
@@ -7729,7 +7738,7 @@
 
     <a name="dbm_timeperiods"></a>
 
-    <a class="indexterm" name="idp197837424"></a>
+    <a class="indexterm" name="idp197243856"></a>
 
     <p><span class="emphasis"><em>Timeperiods Table</em></span></p>
 
