@@ -4413,7 +4413,7 @@ int ido2db_oci_prepared_statement_programstatus_progress(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_progress() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET config_dump_in_progress=:X1, "
+	             "UPDATE %s SET config_dump_in_progress=:X1 "
 	             "WHERE instance_id=:X2",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
 		buf = NULL;
