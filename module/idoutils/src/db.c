@@ -92,6 +92,7 @@ int ido2db_oci_prepared_statement_objects_update_inactive(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_objects_update_active(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_object_enable_disable(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_programstatus_progress(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_comment_history_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtimehistory_update_stop(ido2db_idi *idi);
@@ -992,6 +993,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
+	/* programstatus progress */
+	if (ido2db_oci_prepared_statement_programstatus_progress(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus_progress() failed\n");
+		return IDO_ERROR;
+	}
+
 	/* comment history update  */
 	if (ido2db_oci_prepared_statement_comment_history_update(idi) == IDO_ERROR) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
@@ -1210,6 +1217,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_logentries_select, "oci_statement_logentries_select");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus_update, "oci_statement_programstatus_update");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus_progress, "oci_statement_programstatus_progress");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comment_history_update, "oci_statement_comment_history_update");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comments_delete, "oci_statement_comments_delete");
@@ -2871,30 +2879,52 @@ int ido2db_db_tx_commit(ido2db_idi *idi) {
 int ido2db_db_update_config_dump(ido2db_idi *idi, int in_progress) {
 	int result = IDO_ERROR;
 	char * buf = NULL;
-
+	int progress = 0;
+	unsigned int instance_id;
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_update_config_dump() in_progress=%d\n", in_progress);
+	progress=(in_progress == IDO_TRUE) ? 1 : 0;
+	instance_id=idi->dbinfo.instance_id;
 
+#ifdef USE_LIBDBI
 	/* commit before query if within transaction*/
 	if (idi->in_transaction == IDO_TRUE)
 		ido2db_db_tx_commit(idi);
-
 	if (asprintf(&buf, "UPDATE %s SET config_dump_in_progress=%d WHERE instance_id=%lu",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
-		     (in_progress == IDO_TRUE) ? 1 : 0,
-		     idi->dbinfo.instance_id) == -1)
+		     progress,
+		     instance_id) == -1)
 		buf = NULL;
 
 	result = ido2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
 
 	free(buf);
-
 	if (result == IDO_OK) {
 		/* force commit */
 		result = ido2db_db_tx_commit(idi);
 	}
 
 	return result;
+#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* commit before query if within transaction*/
+	OCI_Commit(idi->dbinfo.oci_connection);
+	if (!OCI_BindInt(idi->dbinfo.oci_statement_programstatus_progress, MT(":X1"), (int *) &progress)) {
+		return IDO_ERROR;
+	}
+	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_programstatus_progress, MT(":X2"), (uint *) &instance_id)){
+		return IDO_ERROR;
+	}
+	if (!OCI_Execute(idi->dbinfo.oci_statement_programstatus_progress)) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_programmstatus_progress execute error\n");
+		return IDO_ERROR;
+	}
+	/* force commit */
+	OCI_Commit(idi->dbinfo.oci_connection);
+#endif /* Oracle ocilib specific */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_programmstatus_progress end\n");
+	return IDO_OK;
 }
 
 /************************************/
@@ -4343,7 +4373,7 @@ int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi) {
 
 	char *buf = NULL;
 
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_update() start\n");
 
 	if (asprintf(&buf,
 	             "UPDATE %s SET program_end_time=unixts2localts(:X1), "
@@ -4353,7 +4383,7 @@ int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi) {
 		buf = NULL;
 	}
 
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_update() query: %s\n", buf);
 
 	if (idi->dbinfo.oci_connection) {
 
@@ -4363,6 +4393,42 @@ int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi) {
 		OCI_AllowRebinding(idi->dbinfo.oci_statement_programstatus_update, 1);
 
 		if (!OCI_Prepare(idi->dbinfo.oci_statement_programstatus_update, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+int ido2db_oci_prepared_statement_programstatus_progress(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_progress() start\n");
+
+	if (asprintf(&buf,
+	             "UPDATE %s SET config_dump_in_progress=:X1 "
+	             "WHERE instance_id=:X2",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_programstatus_progress = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_programstatus_progress, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_programstatus_progress, MT(buf))) {
 			free(buf);
 			return IDO_ERROR;
 		}

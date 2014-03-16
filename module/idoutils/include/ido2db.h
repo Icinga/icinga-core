@@ -165,6 +165,7 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_objects_update_active;
 	OCI_Statement* oci_statement_object_enable_disable;
 	OCI_Statement* oci_statement_programstatus_update;
+	OCI_Statement* oci_statement_programstatus_progress;
 	OCI_Statement* oci_statement_comment_history_update;
 	OCI_Statement* oci_statement_downtimehistory_update_start;
 	OCI_Statement* oci_statement_scheduleddowntime_update_start;

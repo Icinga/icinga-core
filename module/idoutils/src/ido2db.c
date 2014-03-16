@@ -113,11 +113,9 @@ int main(int argc, char **argv) {
 #ifdef USE_LIBDBI
 	dbi_driver driver;
 	int numdrivers;
-
-	ido2db_idi idi_schema;
-
 	driver = NULL;
 #endif
+ido2db_idi idi_schema;
 #ifdef USE_ORACLE
 	unsigned int v1,v2;
 #endif
