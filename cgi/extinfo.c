@@ -1562,6 +1562,14 @@ void show_host_info(void) {
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
+			/* Icinga 2 */
+			if (temp_hoststatus->check_service != NULL) {
+				printf("<tr><td class='dataVar' nowrap>Check Service:</td><td class='dataVal'>");
+				printf("%s", temp_hoststatus->check_service);
+				printf("</td></tr>\n");
+			}
+
+			/* Icinga 2 */
 			printf("<tr><td class='dataVar' nowrap>Check Source:</td><td class='dataVal'>");
 			if (temp_hoststatus->check_source != NULL)
 				printf("%s", temp_hoststatus->check_source);
