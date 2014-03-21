@@ -21,6 +21,19 @@ NEWS
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
 
+1.11.1 - XX/YY/2014
+
+ENHANCEMENTS
+
+* classic ui: add 'check_service' attribute to extinfo details (Icinga 2 only) #5841 - MF
+
+
+FIXES
+
+* idoutils: oracle: fix missing programstatus config_dump_in_progress #5080 #5776 - TD
+* idoutils: oracle: fix missing symbol for startup schema checks #5777 - TD
+
+
 1.11.0 - 13/03/2014
 
 ENHANCEMENTS

@@ -1002,6 +1002,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 				if (temp_hoststatus != NULL) {
 					if (!strcmp(var, "host_name"))
 						temp_hoststatus->host_name = (char *)strdup(val);
+					else if (!strcmp(var, "check_service")) /* Icinga 2 */
+						temp_hoststatus->check_service = (char *)strdup(val);
 					else if (!strcmp(var, "has_been_checked"))
 						temp_hoststatus->has_been_checked = (atoi(val) > 0) ? TRUE : FALSE;
 					else if (!strcmp(var, "should_be_scheduled"))

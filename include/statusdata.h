@@ -109,6 +109,7 @@ typedef struct hoststatus_struct{
 	char	*check_source;
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
+	char	*check_service;	/* Icinga 2 */
         }hoststatus;
 
 
