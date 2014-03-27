@@ -16,7 +16,7 @@ UPGRADE NOTES
 1.9.6 - 28/03/2014
 
 FIXES
-* classic ui: CVE-2014-2386: fix small buffer overflows when checking strlen against MAX_INPUT_BUFFER #5873 - RB
+* classic ui: CVE-2014-2386: fix small buffer overflows when checking strlen against MAX_INPUT_BUFFER (Tim Landscheidt, Wikimedia) #5873 - RB
 
 
 1.9.5 - 11/02/2014
