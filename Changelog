@@ -19,7 +19,7 @@ FIXES
 
 * core: fix passive check result processing for host checks is not working (Marco Hoyer) #5671 - MF
 
-* classic ui: CVE-2014-2386: fix small buffer overflows when checking strlen against MAX_INPUT_BUFFER #5873 - RB
+* classic ui: CVE-2014-2386: fix small buffer overflows when checking strlen against MAX_INPUT_BUFFER (Tim Landscheidt, Wikimedia) #5873 - RB
 
 * idoutils: oracle: fix missing programstatus config_dump_in_progress #5080 #5776 - TD
 * idoutils: oracle: fix missing symbol for startup schema checks #5777 - TD
