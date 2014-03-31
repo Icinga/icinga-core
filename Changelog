@@ -21,6 +21,13 @@ NEWS
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
 
+1.11.2 - XX/YY/2014
+
+FIXES
+
+* core: fix regex using servicegroup members *,service fails to expand after lookup (Ricardo Melo) #3881 - MF
+
+
 1.11.1 - 28/03/2014
 
 ENHANCEMENTS
