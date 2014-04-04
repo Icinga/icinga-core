@@ -26,6 +26,7 @@ NEWS
 FIXES
 
 * core: fix regex using servicegroup members *,service fails to expand after lookup (Ricardo Melo) #3881 - MF
+* classic ui: fix parser bailing on command object custom variables (Icinga 2 only) #5940 - MF
 
 
 1.11.1 - 28/03/2014

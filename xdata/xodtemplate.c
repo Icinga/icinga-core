@@ -1404,7 +1404,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 				result = ERROR;
 		} else if (!strcmp(variable, "register"))
 			temp_command->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in command object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid command object directive '%s'.\n", variable);
 			return ERROR;
 		}
