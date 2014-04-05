@@ -294,6 +294,7 @@ int check_exclude_customvar(customvariablesmember *customvariable) {
 
 /* reset all variables used by the CGIs */
 void reset_cgi_vars(void) {
+	const char *path;
 
 	strcpy(main_config_file, "");
 
@@ -312,7 +313,10 @@ void reset_cgi_vars(void) {
 	strcpy(log_archive_path, DEFAULT_LOG_ARCHIVE_PATH);
 	if (log_archive_path[strlen(log_archive_path) - 1] != '/' && strlen(log_archive_path) < sizeof(log_archive_path) - 2)
 		strcat(log_archive_path, "/");
-	strcpy(command_file, get_cmd_file_location());
+
+	path = get_cmd_file_location();
+	if (path)
+		strcpy(command_file, path);
 
 	strcpy(nagios_check_command, "");
 	strcpy(nagios_process_info, "");
@@ -394,18 +398,14 @@ char * get_cgi_config_location(void) {
 
 /* read the command file location from an environment variable */
 char * get_cmd_file_location(void) {
-	static char *cmdloc = NULL;
+	char *cmdloc;
 
+	cmdloc = getenv("ICINGA_COMMAND_FILE");
 	if (!cmdloc) {
-		cmdloc = getenv("ICINGA_COMMAND_FILE");
-		if (!cmdloc) {
-			/* stay compatible */
-			cmdloc = getenv("NAGIOS_COMMAND_FILE");
-			if (!cmdloc) {
-				cmdloc = command_file;
-			}
-		}
+		/* stay compatible */
+		cmdloc = getenv("NAGIOS_COMMAND_FILE");
 	}
+
 	return cmdloc;
 }
 

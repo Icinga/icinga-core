@@ -290,6 +290,7 @@ int process_cgivars(void);
 /** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
+	const char *path;
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -316,7 +317,9 @@ int main(void) {
 	}
 
 	/* read environment var ICINGA_COMMAND_FILE */
-	strcpy(command_file, get_cmd_file_location());
+	path = get_cmd_file_location();
+	if (path)
+		strcpy(command_file, path);
 
 	/* This requires the date_format parameter in the main config file */
 	if (strcmp(start_time_string, ""))
