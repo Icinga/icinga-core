@@ -1404,7 +1404,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 				result = ERROR;
 		} else if (!strcmp(variable, "register"))
 			temp_command->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in command object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid command object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -8209,6 +8213,10 @@ int xodtemplate_recombobulate_servicegroups(void) {
 	char *temp_ptr = NULL;
 	char *temp_ptr2 = NULL;
 	char *new_members = NULL;
+	char *temp_members = NULL;
+	char *temp_members2 = NULL;
+	regex_t preg;
+        regex_t preg2;
 
 	/* This should happen before we expand servicegroup members, to avoid duplicate service memberships 01/07/2006 EG */
 	/* process all services that have servicegroup directives */
@@ -8281,6 +8289,100 @@ int xodtemplate_recombobulate_servicegroups(void) {
 		if (temp_servicegroup->register_object == FALSE)
 			continue;
 
+                /* Expand regex on hostname values. fix #3833 */
+                if (use_regexp_matches == TRUE && (use_true_regexp_matching == TRUE || strstr(temp_servicegroup->members, "*") || strstr(temp_servicegroup->members, "?") || strstr(temp_servicegroup->members, "+") || strstr(temp_servicegroup->members, "\\."))){
+
+                        for (temp_ptr = temp_servicegroup->members; temp_ptr; temp_ptr = strchr(temp_ptr + 1, ',')) {
+                                /* this is the host name */
+                                if (host_name == NULL)
+                                        host_name = (char *)strdup((temp_ptr[0] == ',') ? temp_ptr + 1 : temp_ptr);
+
+                                /* this is the service description */
+                                else {
+                                        service_description = (char *)strdup(temp_ptr + 1);
+
+                                        /* strsep and strtok cannot be used, as they're used in expand_servicegroups...() */
+                                        temp_ptr2 = strchr(host_name, ',');
+                                        if (temp_ptr2)
+                                                temp_ptr2[0] = '\x0';
+                                        temp_ptr2 = strchr(service_description, ',');
+                                        if (temp_ptr2)
+                                                temp_ptr2[0] = '\x0';
+
+                                        /* strip trailing spaces */
+                                        strip(host_name);
+                                        strip(service_description);
+                                        if (strstr(host_name, "*") || strstr(host_name, "?") || strstr(host_name, "+") || strstr(host_name, "\\.") || strstr(service_description, "?") || strstr(service_description, "+") || strstr(service_description, "\\.")){
+
+                                                /* compile regular expression */
+                                                if (regcomp(&preg, host_name, REG_EXTENDED)) {
+                                                        logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid regular expression '%s' found while expanding members in service group '%s'.\n", host_name, temp_servicegroup->name);
+                                                        my_free(host_name);
+                                                        my_free(service_description);
+                                                        return ERROR;
+                                                }
+                                                if (regcomp(&preg2, service_description, REG_EXTENDED)) {
+                                                        logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid regular expression '%s' found while expanding members in service group '%s'.\n", service_description, temp_servicegroup->name);
+                                                        my_free(host_name);
+                                                        my_free(service_description);
+                                                        return ERROR;
+                                                }
+                                                for (temp_service = xodtemplate_service_list; temp_service != NULL; temp_service = temp_service->next) {
+
+                                                        /* skip services without servicegroup directives or service names */
+                                                        if (temp_service->host_name == NULL || temp_service->service_description == NULL)
+                                                                continue;
+
+                                                        /* skip services that shouldn't be registered */
+                                                        if (temp_service->register_object == FALSE)
+                                                                continue;
+
+                                                        /* skip this contactgroup if it did not match the expression */
+                                                        if ((regexec(&preg, temp_service->host_name, 0, NULL, 0)) || (regexec(&preg2, temp_service->service_description, 0, NULL, 0)))
+                                                                continue;
+
+                                                        temp_members2=(char *)malloc(strlen(temp_service->host_name)+strlen(temp_service->service_description)+2);
+                                                        strcpy(temp_members2,temp_service->host_name);
+                                                        strcat(temp_members2,",");
+                                                        strcat(temp_members2,temp_service->service_description);
+                                                        if (temp_members == NULL)
+                                                                temp_members=(char *)strdup(temp_members2);
+                                                        else{
+                                                                temp_members=(char *)realloc(temp_members, strlen(temp_members)+strlen(temp_members2)+2);
+                                                                strcat(temp_members,",");
+                                                                strcat(temp_members,temp_members2);
+                                                        }
+                                                        my_free(temp_members2);
+
+                                                }
+                                                /* free memory allocated to compiled regexp */
+                                                regfree(&preg);
+                                        } else {
+                                                temp_members2=(char *)malloc(strlen(host_name)+strlen(service_description)+2);
+                                                strcpy(temp_members2,host_name);
+                                                strcat(temp_members2,",");
+                                                strcat(temp_members2,service_description);
+                                                if (temp_members == NULL)
+                                                        temp_members=(char *)strdup(temp_members2);
+                                                else {
+                                                        temp_members=(char *)realloc(temp_members, strlen(temp_members)+strlen(temp_members2)+2);
+                                                        strcat(temp_members,",");
+                                                        strcat(temp_members,temp_members2);
+                                                }
+                                                my_free(temp_members2);
+                                        }
+
+                                        my_free(host_name);
+                                        my_free(service_description);
+                                }
+                        }
+                        if (temp_members != NULL){
+                                my_free(temp_servicegroup->members);
+                                temp_servicegroup->members=temp_members;
+                                temp_members=NULL;
+                        }
+
+                }
 		member_names = temp_servicegroup->members;
 		temp_servicegroup->members = NULL;
 
