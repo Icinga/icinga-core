@@ -20,13 +20,18 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.12.0
 
-1.11.2 - XX/YY/2014
+ENHANCEMENTS
+
+* classic ui: start with unhandled problems view instead of TAC #4817 - MF
 
 FIXES
 
-* core: fix regex using servicegroup members *,service fails to expand after lookup (Ricardo Melo) #3881 - MF
-* classic ui: fix parser bailing on command object custom variables (Icinga 2 only) #5940 - MF
+CHANGES
+
+* classic ui: start with unhandled problems view instead of TAC #4817
+	** can be overridden on configure using '--with-mainurl='
 
 
 1.11.1 - 28/03/2014

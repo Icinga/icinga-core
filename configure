@@ -6331,7 +6331,7 @@ fi
 if test "${with_mainurl+set}" = set; then :
   withval=$with_mainurl; mainurl=$withval
 else
-  mainurl=$cgiurl/tac.cgi
+  mainurl=$cgiurl/status.cgi?allunhandledproblems
 fi
 
 
