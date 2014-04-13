@@ -145,7 +145,7 @@ char performance_data[MAX_INPUT_BUFFER] = "";	/**< plugin performance data for p
 int notification_delay = 0;			/**< delay for submitted notification in minutes */
 int schedule_delay = 0;				/**< delay for sheduled actions in minutes (Icinga restart, Notfications enable/disable)
 							!not implemented in GUI! */
-int persistent_comment = FALSE;			/**< bool if omment should survive Icinga restart */
+int persistent_comment = FALSE;			/**< bool if comment should survive Icinga restart */
 int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
 int send_notification = FALSE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
