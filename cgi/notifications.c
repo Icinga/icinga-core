@@ -3,7 +3,7 @@
  * NOTIFICATIONS.C - Icinga Notifications CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  * This CGI program will display the notification events for
  * a given host or contact or for all contacts/hosts.

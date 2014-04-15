@@ -4,7 +4,7 @@
 -- icinga DB object definition for Oracle
 -- called and defines set from oracle.sql
 --
--- Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 */

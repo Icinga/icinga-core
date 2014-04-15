@@ -1,5 +1,5 @@
 // Written by Ricardo Bartels
-// Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+// Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
 
