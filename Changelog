@@ -21,12 +21,14 @@ NEWS
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
 
-1.11.2 - XX/YY/2014
+1.11.2 - 24/04/2014
 
 FIXES
 
 * core: fix regex using servicegroup members *,service fails to expand after lookup (Ricardo Melo) #3881 - MF
+
 * classic ui: fix parser bailing on command object custom variables (Icinga 2 only) #5940 - MF
+* classic ui: fix CGIs don't work on OS X #5943 - GB
 * classic ui: drop experimental 'check_service' attribute (Icinga 2 only) #5841 - MF
 
 
