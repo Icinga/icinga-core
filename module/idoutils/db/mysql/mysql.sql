@@ -600,6 +600,9 @@ CREATE TABLE IF NOT EXISTS icinga_hostgroups (
   config_type smallint default 0,
   hostgroup_object_id bigint unsigned default 0,
   alias TEXT character set latin1  default '',
+  notes TEXT character set latin1  default NULL,
+  notes_url TEXT character set latin1  default NULL,
+  action_url TEXT character set latin1  default NULL,
   PRIMARY KEY  (hostgroup_id),
   UNIQUE KEY instance_id (instance_id,hostgroup_object_id)
 ) ENGINE=InnoDB  COMMENT='Hostgroup definitions';
@@ -1086,6 +1089,9 @@ CREATE TABLE IF NOT EXISTS icinga_servicegroups (
   config_type smallint default 0,
   servicegroup_object_id bigint unsigned default 0,
   alias TEXT character set latin1  default '',
+  notes TEXT character set latin1  default NULL,
+  notes_url TEXT character set latin1  default NULL,
+  action_url TEXT character set latin1  default NULL,
   PRIMARY KEY  (servicegroup_id),
   UNIQUE KEY instance_id (instance_id,config_type,servicegroup_object_id)
 ) ENGINE=InnoDB  COMMENT='Servicegroup definitions';
@@ -1592,6 +1598,6 @@ CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, co
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.11.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.11.0', modify_time=NOW();
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.11.3', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.11.3', modify_time=NOW();
 
 
