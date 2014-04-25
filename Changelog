@@ -26,6 +26,7 @@ NEWS
 FIXES
 
 * core: fix regex using servicegroup members *,service fails to expand after lookup (Ricardo Melo) #3881 - MF
+* core: fix hostgroup with members regex fails config check even with allow_empty_hostgroups=1 #5991 - MF
 
 * classic ui: fix parser bailing on command object custom variables (Icinga 2 only) #5940 - MF
 * classic ui: fix CGIs don't work on OS X #5943 - GB
