@@ -1565,7 +1565,7 @@ void show_host_info(void) {
 			/* Icinga 2 */
 			printf("<tr><td class='dataVar' nowrap>Check Source / Reachability:</td><td class='dataVal'>");
 			if (temp_hoststatus->check_source != NULL)
-				printf("%s / %s", temp_hoststatus->check_source, (temp_hoststatus->is_reachable == TRUE) ? "true" : "false"));
+				printf("%s / %s", temp_hoststatus->check_source, (temp_hoststatus->is_reachable == TRUE) ? "true" : "false");
 			else
 				printf("N/A");
 
@@ -2047,7 +2047,7 @@ void show_service_info(void) {
 			/* Icinga 2 */
 			printf("<tr><td class='dataVar' nowrap>Check Source / Reachability:</td><td class='dataVal'>");
 			if (temp_svcstatus->check_source != NULL)
-				printf("%s / %s", temp_svcstatus->check_source, (temp_svcstatus->is_reachable == TRUE) ? "true" : "false"));
+				printf("%s / %s", temp_svcstatus->check_source, (temp_svcstatus->is_reachable == TRUE) ? "true" : "false");
 			else
 				printf("N/A");
 
