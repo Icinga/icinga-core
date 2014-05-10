@@ -28,9 +28,12 @@ ENHANCEMENTS
 
 FIXES
 
+* core: Revert "add colon to illegal_object_name_chars" (#4227) #5931 - MF
+
 
 CHANGES
 
+* core: Revert "add colon to illegal_object_name_chars" (#4227) 
 * idoutils: Add {host,service}{groups,status] columns: notes, notes_url, action_url, is_reachable. (Icinga 2) #6060
 	** bump schema version to 1.11.3
 
