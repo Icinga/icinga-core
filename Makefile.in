@@ -17,8 +17,6 @@ SRC_COMMON=@srcdir@/common
 SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
-SRC_TTAP=@srcdir@/t-tap
-SRC_TAP=@srcdir@/tools/libtap
 SRC_T=@srcdir@/t
 SRC_DOCBOOK=@srcdir@/docbook
 SRC_DOCBOOK_IMAGES=@srcdir@/docbook/images
@@ -304,13 +302,6 @@ devclean: distclean
 
 test:
 	$(MAKE) test-perl
-	$(MAKE) test-tap
-
-test-tap: tools/libtap/tap.o icinga cgis
-	cd $(SRC_TTAP) && $(MAKE) test;
-
-tools/libtap/tap.o:
-	cd tools/libtap && $(MAKE)
 
 test-perl: icinga cgis
 	cd t && $(MAKE) test

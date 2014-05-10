@@ -1211,13 +1211,6 @@ AC_TRY_COMPILE([#ifdef __STDC__
 [AC_MSG_RESULT(yes)],
 [AC_DEFINE(NEED_VA_LIST,,[defined if va_list fails to compile]) AC_MSG_RESULT(no)])
 
-dnl libtap is now from https://github.com/zorgnax/libtap, no configure needed anymore - FIXME in 1.8
-AC_ARG_ENABLE(libtap,
-  AC_HELP_STRING([--enable-libtap],
-                [this is deprecated, libtap is built with make test]),
-        [enable_libtap=$enableval],
-        [enable_libtap=yes])
-
 dnl Environment Prefix
 env_prefix="ICINGA_"
 AC_ARG_ENABLE(nagiosenv,
@@ -1413,7 +1406,7 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
 
 
 dnl OUTPUT
-AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
+AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
 
 perl subst $srcdir/include/locations.h
 

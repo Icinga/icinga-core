@@ -13,7 +13,7 @@ More information about testing can be found in the Icinga Wiki: https://wiki.ici
 = Build Tests
 =====================================================================================================================
 
-t/ and t-tap/ for cgis and core functionality
+t/ for cgis and core functionality
 
 RHEL
 $ sudo yum install perl-HTML-Lint
