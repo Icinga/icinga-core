@@ -28,6 +28,13 @@ ENHANCEMENTS
 
 FIXES
 
+
+CHANGES
+
+* idoutils: Add {host,service}{groups,status] columns: notes, notes_url, action_url, is_reachable. (Icinga 2) #6060
+	** bump schema version to 1.11.3
+
+
 1.11.2 - 24/04/2014
 
 FIXES
