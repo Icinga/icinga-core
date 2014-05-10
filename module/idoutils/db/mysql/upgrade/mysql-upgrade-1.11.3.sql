@@ -7,8 +7,6 @@
 -- Please check http://docs.icinga.org for upgrading information!
 -- -----------------------------------------
 
-ALTER TABLE icinga_hosts ADD COLUMN check_service_object_id bigint default NULL;
-
 ALTER TABLE icinga_hostgroups ADD COLUMN notes TEXT character set latin1  default NULL;
 ALTER TABLE icinga_hostgroups ADD COLUMN notes_url TEXT character set latin1  default NULL;
 ALTER TABLE icinga_hostgroups ADD COLUMN action_url TEXT character set latin1  default NULL;
