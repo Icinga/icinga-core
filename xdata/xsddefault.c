@@ -1096,6 +1096,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_hoststatus->scheduled_downtime_depth = atoi(val);
 					else if (!strcmp(var, "modified_attributes"))
 						temp_hoststatus->modified_attributes = strtoul(val, NULL, 10);
+					else if (!strcmp(var, "is_reachable"))
+						temp_hoststatus->is_reachable = (atoi(val) > 0) ? TRUE : FALSE;
 					/*
 					else if(!strcmp(var,"state_history")){
 						temp_ptr=val;
@@ -1210,6 +1212,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_servicestatus->scheduled_downtime_depth = atoi(val);
 					else if (!strcmp(var, "modified_attributes"))
 						temp_servicestatus->modified_attributes = strtoul(val, NULL, 10);
+					else if (!strcmp(var, "is_reachable"))
+						temp_servicestatus->is_reachable = (atoi(val) > 0) ? TRUE : FALSE;
 					/*
 					else if(!strcmp(var,"state_history")){
 						temp_ptr=val;
