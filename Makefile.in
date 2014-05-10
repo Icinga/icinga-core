@@ -88,7 +88,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.11.2
+ICINGA_VERSION=1.11.3
 
 CP=@CP@
 
@@ -265,9 +265,7 @@ clean:
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
-	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
@@ -282,9 +280,7 @@ distclean: clean
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
-	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db ido2db-systemd icinga-systemd sysconfig-env
