@@ -30,25 +30,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plugins"></a>5.1. <a name="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.1.1. <a href="plugins.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">5.1.2. <a href="plugins.html#overview">What Are Plugins?</a></span></dt>
+<dt><span class="section">5.1.1. <a href="plugins.html#introduction_plugins">Introduction</a></span></dt>
+<dt><span class="section">5.1.2. <a href="plugins.html#plugins-overview">What Are Plugins?</a></span></dt>
 <dt><span class="section">5.1.3. <a href="plugins.html#abstractionlayer">Plugins As An Abstraction Layer</a></span></dt>
-<dt><span class="section">5.1.4. <a href="plugins.html#available">What Plugins Are Available?</a></span></dt>
-<dt><span class="section">5.1.5. <a href="plugins.html#obtaining">Obtaining Plugins</a></span></dt>
-<dt><span class="section">5.1.6. <a href="plugins.html#hints">Switch to the Icinga user</a></span></dt>
-<dt><span class="section">5.1.7. <a href="plugins.html#extending">Extending the environment</a></span></dt>
-<dt><span class="section">5.1.8. <a href="plugins.html#howto">How Do I Use Plugin X?</a></span></dt>
-<dt><span class="section">5.1.9. <a href="plugins.html#newplugins">Integrating a new plugin</a></span></dt>
-<dt><span class="section">5.1.10. <a href="plugins.html#rawcommandline">Raw command line</a></span></dt>
-<dt><span class="section">5.1.11. <a href="plugins.html#thresholdranges">Threshold and ranges</a></span></dt>
-<dt><span class="section">5.1.12. <a href="plugins.html#errors">Activating the definition</a></span></dt>
+<dt><span class="section">5.1.4. <a href="plugins.html#plugins-available">What Plugins Are Available?</a></span></dt>
+<dt><span class="section">5.1.5. <a href="plugins.html#plugins-obtaining">Obtaining Plugins</a></span></dt>
+<dt><span class="section">5.1.6. <a href="plugins.html#plugins-hints">Switch to the Icinga user</a></span></dt>
+<dt><span class="section">5.1.7. <a href="plugins.html#plugins-extending">Extending the environment</a></span></dt>
+<dt><span class="section">5.1.8. <a href="plugins.html#plugins-howto">How Do I Use Plugin X?</a></span></dt>
+<dt><span class="section">5.1.9. <a href="plugins.html#plugins-new_plugin">Integrating a new plugin</a></span></dt>
+<dt><span class="section">5.1.10. <a href="plugins.html#plugins-rawcommandline">Raw command line</a></span></dt>
+<dt><span class="section">5.1.11. <a href="plugins.html#plugins-thresholdranges">Threshold and ranges</a></span></dt>
+<dt><span class="section">5.1.12. <a href="plugins.html#plugins-errors">Activating the definition</a></span></dt>
 <dt><span class="section">5.1.13. <a href="plugins.html#pluginsapi">Plugin API</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.1.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>5.1.1. Introduction</h3></div></div></div>
+<a name="introduction_plugins"></a>5.1.1. Introduction</h3></div></div></div>
     
 
     <p>Unlike many other monitoring tools, Icinga does not include any internal mechanisms for checking the status of hosts and
@@ -57,7 +57,7 @@
 
   <div class="section" title="5.1.2. What Are Plugins?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>5.1.2. What Are Plugins?</h3></div></div></div>
+<a name="plugins-overview"></a>5.1.2. What Are Plugins?</h3></div></div></div>
     
 
     <p>Plugins are compiled executables or scripts (Perl scripts, shell scripts, etc.) that can be run from a command line to check the
@@ -93,7 +93,7 @@
 
   <div class="section" title="5.1.4. What Plugins Are Available?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="available"></a>5.1.4. What Plugins Are Available?</h3></div></div></div>
+<a name="plugins-available"></a>5.1.4. What Plugins Are Available?</h3></div></div></div>
     
 
     <p>There are plugins currently available to monitor many different kinds of devices and services, including:</p>
@@ -119,7 +119,7 @@
 
   <div class="section" title="5.1.5. Obtaining Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="obtaining"></a>5.1.5. Obtaining Plugins</h3></div></div></div>
+<a name="plugins-obtaining"></a>5.1.5. Obtaining Plugins</h3></div></div></div>
     
 
     <p>Plugins are not distributed with Icinga, but you can download the official Nagios plugins and many additional
@@ -130,7 +130,7 @@
         <p>Monitoring Plugins Project: <a class="link" href="https://www.monitoring-plugins.org" target="_top">https://www.monitoring-plugins.org</a></p>
       </li>
 <li class="listitem">
-	 <p>Monitoring Plugins Downloads Page: <a class="link" href="https://www.monitoring-plugins.org/download.html" target="_top">https://www.monitoring-plugins.org/download.html</a></p>
+        <p>Monitoring Plugins Downloads Page: <a class="link" href="https://www.monitoring-plugins.org/download.html" target="_top">https://www.monitoring-plugins.org/download.html</a></p>
       </li>
 <li class="listitem">
         <p>MonitoringExchange.org: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
@@ -167,7 +167,7 @@
 
   <div class="section" title="5.1.6. Switch to the Icinga user">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="hints"></a>5.1.6. Switch to the Icinga user</h3></div></div></div>
+<a name="plugins-hints"></a>5.1.6. Switch to the Icinga user</h3></div></div></div>
     
 
     <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -225,7 +225,7 @@
 
   <div class="section" title="5.1.7. Extending the environment">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="extending"></a>5.1.7. Extending the environment</h3></div></div></div>
+<a name="plugins-extending"></a>5.1.7. Extending the environment</h3></div></div></div>
     
 
     <p>Several checks (like check_oracle_health) depend on various environment variables to be set. Don't put these in
@@ -249,7 +249,7 @@
 
   <div class="section" title="5.1.8. How Do I Use Plugin X?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="howto"></a>5.1.8. How Do I Use Plugin X?</h3></div></div></div>
+<a name="plugins-howto"></a>5.1.8. How Do I Use Plugin X?</h3></div></div></div>
     
 
     <p>Nearly all plugins will display basic usage information when you execute them using '<code class="code">-h</code>' or '<code class="code">--help</code>' on
@@ -261,10 +261,10 @@
 
   <div class="section" title="5.1.9. Integrating a new plugin">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="newplugins"></a>5.1.9. Integrating a new plugin</h3></div></div></div>
+<a name="plugins-new_plugin"></a>5.1.9. Integrating a new plugin</h3></div></div></div>
     
 
-    <p>After the installation of the plugin (see "<a class="link" href="plugins.html#obtaining" title="5.1.5. Obtaining Plugins">Obtaining plugins</a>") call it from the command
+    <p>After the installation of the plugin (see "<a class="link" href="plugins.html#plugins-obtaining" title="5.1.5. Obtaining Plugins">Obtaining plugins</a>") call it from the command
     line using the appropriate options. If this works then you can integrate it into Icinga.</p>
 
     <p>Let's imagine you used the following call on the command line</p>
@@ -388,7 +388,7 @@ results in:
 
   <div class="section" title="5.1.10. Raw command line">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="rawcommandline"></a>5.1.10. Raw command line</h3></div></div></div>
+<a name="plugins-rawcommandline"></a>5.1.10. Raw command line</h3></div></div></div>
     
 
     <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
@@ -410,7 +410,7 @@ results in:
 
   <div class="section" title="5.1.11. Threshold and ranges">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="thresholdranges"></a>5.1.11. Threshold and ranges</h3></div></div></div>
+<a name="plugins-thresholdranges"></a>5.1.11. Threshold and ranges</h3></div></div></div>
     
 
     <p>Some plugins support specifying ranges for the warning and critical values. Please check the documentation if this is the case for
@@ -563,7 +563,7 @@ results in:
 
   <div class="section" title="5.1.12. Activating the definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="errors"></a>5.1.12. <a name="plugins-errors"></a>Activating the definition</h3></div></div></div>
+<a name="plugins-errors"></a>5.1.12. Activating the definition</h3></div></div></div>
     
 
     <p>Check the configuration using "/etc/init.d/icinga show-errors" and resolve any errors before issuing "/etc/init.d/icinga restart".
@@ -606,25 +606,25 @@ results in:
 
     <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">here</a>.</p>
 
-    <a class="indexterm" name="idp184428768"></a>
+    <a class="indexterm" name="idp173063888"></a>
 
-    <a class="indexterm" name="idp184430560"></a>
+    <a class="indexterm" name="idp173065936"></a>
 
-    <a class="indexterm" name="idp184431568"></a>
+    <a class="indexterm" name="idp173067072"></a>
 
-    <a class="indexterm" name="idp184433248"></a>
+    <a class="indexterm" name="idp173068720"></a>
 
-    <a class="indexterm" name="idp184434736"></a>
+    <a class="indexterm" name="idp173070208"></a>
 
-    <a class="indexterm" name="idp184436496"></a>
+    <a class="indexterm" name="idp173071968"></a>
 
-    <a class="indexterm" name="idp184437984"></a>
+    <a class="indexterm" name="idp173073456"></a>
 
-    <a class="indexterm" name="idp184439616"></a>
+    <a class="indexterm" name="idp173075088"></a>
 
-    <a class="indexterm" name="idp184441376"></a>
+    <a class="indexterm" name="idp173076848"></a>
 
-    <a class="indexterm" name="idp184442896"></a>
+    <a class="indexterm" name="idp173078368"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -644,6 +644,6 @@ results in:
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -7,7 +7,7 @@ use warnings;
 use Carp;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( run_cgi run_cgi_json get_body run_cmd slurp_file );
+our @EXPORT_OK = qw( run_cgi get_body run_cmd slurp_file );
 
 use IPC::Run3 qw( run3 );
 
@@ -17,7 +17,6 @@ use Env qw( DEBUG );
 my $topdir = "$Bin/..";
 my $cgi_dir = "$topdir/cgi";
 my $cgi = "$cgi_dir/status.cgi";
-my $json_checker = "./JSON_checker";
 
 sub run_cgi ($$$$) {
     my ($config, $method, $query_string, $cgi) = @_;
@@ -28,24 +27,6 @@ sub run_cgi ($$$$) {
         $method,
         $query_string,
         "$cgi_dir/$cgi"
-    );
-    print STDERR "\nDEBUG: execute $cmd\n", if $DEBUG;
-    my ($in, $out, $err) = '';
-    run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
-    print STDERR "\nError executing $cmd: \n $err\n" if $err;
-    return $out;
-}
-
-sub run_cgi_json ($$$$$) {
-    my ($config, $user, $method, $query_string, $cgi) = @_;
-    chdir $Bin or die "Cannot chdir";
-
-    my $cmd = sprintf("ICINGA_CGI_CONFIG='%s' REMOTE_USER=%s REQUEST_METHOD='%s' QUERY_STRING='jsonoutput&%s' %s",
-        $config,
-	$user,
-        $method,
-        $query_string,
-        "$cgi_dir/$cgi | $json_checker"
     );
     print STDERR "\nDEBUG: execute $cmd\n", if $DEBUG;
     my ($in, $out, $err) = '';

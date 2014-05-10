@@ -148,9 +148,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="idp181398288"></a>
+  <a class="indexterm" name="idp170029328"></a>
 
-  <a class="indexterm" name="idp181399536"></a>
+  <a class="indexterm" name="idp170030544"></a>
 
   <div class="section" title="3.4.1. Host definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -885,9 +885,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181514224"></a>
+    <a class="indexterm" name="idp170144352"></a>
 
-    <a class="indexterm" name="idp181716800"></a>
+    <a class="indexterm" name="idp170347216"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgroup Definition">
@@ -1026,9 +1026,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181782688"></a>
+    <a class="indexterm" name="idp170412880"></a>
 
-    <a class="indexterm" name="idp181783792"></a>
+    <a class="indexterm" name="idp170413984"></a>
   </div>
 
   <div class="section" title="3.4.3. Service Definition">
@@ -1675,9 +1675,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181892880"></a>
+    <a class="indexterm" name="idp170523248"></a>
 
-    <a class="indexterm" name="idp182084048"></a>
+    <a class="indexterm" name="idp170714736"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegroup Definition">
@@ -1822,9 +1822,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182149216"></a>
+    <a class="indexterm" name="idp170779520"></a>
 
-    <a class="indexterm" name="idp182150224"></a>
+    <a class="indexterm" name="idp170780528"></a>
   </div>
 
   <div class="section" title="3.4.5. Contact Definition">
@@ -2112,9 +2112,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182295680"></a>
+    <a class="indexterm" name="idp170928336"></a>
 
-    <a class="indexterm" name="idp182298992"></a>
+    <a class="indexterm" name="idp170929344"></a>
   </div>
 
   <div class="section" title="3.4.6. Contactgroup Definition">
@@ -2218,9 +2218,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182345296"></a>
+    <a class="indexterm" name="idp170975456"></a>
 
-    <a class="indexterm" name="idp182346304"></a>
+    <a class="indexterm" name="idp170976592"></a>
   </div>
 
   <div class="section" title="3.4.7. Timeperiod Definition">
@@ -2384,9 +2384,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182400784"></a>
+    <a class="indexterm" name="idp171030848"></a>
 
-    <a class="indexterm" name="idp182401792"></a>
+    <a class="indexterm" name="idp171031856"></a>
   </div>
 
   <div class="section" title="3.4.8. Command Definition">
@@ -2489,9 +2489,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182445152"></a>
+    <a class="indexterm" name="idp171078992"></a>
 
-    <a class="indexterm" name="idp182449680"></a>
+    <a class="indexterm" name="idp171080112"></a>
   </div>
 
   <div class="section" title="3.4.9. Servicedependency Definition">
@@ -2536,6 +2536,11 @@
 <td><p></p></td>
 <td>dependent_hostgroup_name</td>
 <td><p>hostgroup_name</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>dependent_servicegroup_name</td>
+<td><p>servicegroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -2617,8 +2622,13 @@
             addition to, the dependent_host directive.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>dependent_servicegroup_name</strong></span>:</p></td>
+<td><p>This directive is used to specify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup(s)</a> that the <span class="emphasis"><em>dependent</em></span> services belongs to.
+            Multiple servicegroups should be separated by commas.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>dependent_service_description</strong></span>:</p></td>
-<td><p>This directive is used to identify the <span class="emphasis"><em>description</em></span> of the <span class="emphasis"><em>dependent</em></span><a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a>.</p></td>
+<td><p>This directive is used to identify the <span class="emphasis"><em>description</em></span> of the <span class="emphasis"><em>dependent</em></span> <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_name</strong></span>:</p></td>
@@ -2679,9 +2689,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182549520"></a>
+    <a class="indexterm" name="idp171187008"></a>
 
-    <a class="indexterm" name="idp182549648"></a>
+    <a class="indexterm" name="idp171187888"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceescalation Definition">
@@ -2971,9 +2981,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182690928"></a>
+    <a class="indexterm" name="idp171327008"></a>
 
-    <a class="indexterm" name="idp182691936"></a>
+    <a class="indexterm" name="idp171328016"></a>
   </div>
 
   <div class="section" title="3.4.11. Hostdependency Definition">
@@ -3136,9 +3146,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182775936"></a>
+    <a class="indexterm" name="idp171411664"></a>
 
-    <a class="indexterm" name="idp182776944"></a>
+    <a class="indexterm" name="idp171412944"></a>
   </div>
 
   <div class="section" title="3.4.12. Hostescalation Definition">
@@ -3375,9 +3385,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182883392"></a>
+    <a class="indexterm" name="idp171519904"></a>
 
-    <a class="indexterm" name="idp182884400"></a>
+    <a class="indexterm" name="idp171520912"></a>
   </div>
 
   <div class="section" title="3.4.13. Hostextinfo Definition">
@@ -3580,9 +3590,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182968544"></a>
+    <a class="indexterm" name="idp171604464"></a>
 
-    <a class="indexterm" name="idp182972416"></a>
+    <a class="indexterm" name="idp171608336"></a>
   </div>
 
   <div class="section" title="3.4.14. Serviceextinfo Definition">
@@ -3753,9 +3763,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp183049168"></a>
+    <a class="indexterm" name="idp171685088"></a>
 
-    <a class="indexterm" name="idp183050384"></a>
+    <a class="indexterm" name="idp171686304"></a>
   </div>
 
   <div class="section" title="3.4.15. Module Definition">
@@ -3890,7 +3900,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp183096080"></a>
+    <a class="indexterm" name="idp171731888"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -3910,6 +3920,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

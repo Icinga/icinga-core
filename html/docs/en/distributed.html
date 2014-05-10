@@ -133,6 +133,16 @@
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>Only those services and hosts which are being monitored directly by the distributed server are defined in the <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration file</a>.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>Although "obsess_over_service" is enabled per default in the object definition it may have been
+            <span class="emphasis"><em>dis</em></span>abled via a template so make please sure to <span class="emphasis"><em>en</em></span>able it where you need it.</p>
+          </td></tr>
+</table></div>
       </li>
 <li class="listitem">
         <p>The distributed server has its <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a> directive set to 0.
@@ -304,9 +314,9 @@ esac
 <a name="problemspassive"></a>7.6.9. Problems With Passive Checks</h3></div></div></div>
     
 
-    <p>For all intents and purposes we can say that the central server is relying solely on passive checks for monitoring. The main problem
-    with relying completely on passive checks for monitoring is the fact that Icinga must rely on something else to provide the
-    monitoring data. What if the remote host that is sending in passive check results goes down or becomes unreachable? If Icinga
+    <p>For all intents and purposes we can say that the central server is relying solely on passive checks for monitoring. The main
+    problem with relying completely on passive checks for monitoring is the fact that Icinga must rely on something else to provide
+    the monitoring data. What if the remote host that is sending in passive check results goes down or becomes unreachable? If Icinga
     isn't actively checking the services on the host, how will it know that there is a problem?</p>
 
     <p>Fortunately, there is a way we can handle these types of problems...</p>
@@ -399,6 +409,16 @@ esac
       </li>
 <li class="listitem">
         <p>The distributed server is configured to <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess over hosts</a>.</p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>Although "obsess_over_host" is enabled per default in the object definition it may have been <span class="emphasis"><em>dis</em></span>abled
+            via a template so make please sure to <span class="emphasis"><em>en</em></span>able it where you need it.</p>
+          </td></tr>
+</table></div>
       </li>
 <li class="listitem">
         <p>The distributed server has an <a class="link" href="configmain.html#configmain-ochp_command">ochp command</a> defined.</p>
@@ -409,7 +429,7 @@ esac
     for processing service check results (see documentation above). In order to make sure passive host check results are up to date, you'll
     want to enable <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checking</a> for hosts (similiar to what is described above for services).</p>
 
-    <a class="indexterm" name="idp191229376"></a>
+    <a class="indexterm" name="idp179868224"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -429,6 +449,6 @@ esac
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

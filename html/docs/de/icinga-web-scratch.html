@@ -314,8 +314,7 @@
         <p>Setzt das Passwort für jeden Account auf icinga-web zurück.</p>
       </li>
 <li class="listitem">
-<a name="selinuxsettings"></a>
-        <span style="color: red">&lt;title&gt;Anpassen der SELinux-Einstellungen&lt;/title&gt;</span>
+        <p><a name="selinuxsettings"></a><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
         <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
         Enhanced Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie
@@ -674,25 +673,10 @@
 
         <p>Voraussetzungen:</p>
 
-        <div class="itemizedlist">
-<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-            <p>In 1.9 wurde die Datei <code class="filename">.htaccess</code> entfernt und die Optionen sind nun in der Apache-Konfiguration zu
-            finden.</p>
-          </td></tr>
-</table></div>
-<ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
             <p>mod_rewrite, vielleicht müssen Sie einen Verweis erstellen:</p>
 
-            <p>
-              </p>
-<pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
-<p>
-            </p>
+            <pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
             <p>Bei OpenSuSE und SLES können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der
             Datei <code class="filename">/etc/sysconfig/apache2</code> die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden
@@ -701,8 +685,18 @@
             <p>Bei Debian und Ubuntu können Sie das Modul ebenfalls mit "a2enmod rewrite" aktivieren.</p>
 
             <p>Bei RHEL/Fedora/CentOS ist die Unterstützung bereits im httpd enthalten.</p>
-          </li></ul>
-</div>
+          </li></ul></div>
+
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>In 1.9 wurde die Datei <code class="filename">.htaccess</code> entfernt und die Optionen sind nun in der Apache-Konfiguration zu
+          finden.</p>
+        </td></tr>
+</table></div>
 
         <p>Bitte wechseln Sie in das Konfigurationsverzeichnis Ihres Webservers. Überprüfen Sie, ob die mit <span class="bold"><strong>make
         install-apache-config</strong></span> erstellte Konfiguration Ihren Anforderungen entspricht, oder erstellen Sie noch einen neuen Alias
@@ -984,9 +978,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp189464288"></a>
+    <a class="indexterm" name="idp180843552"></a>
 
-    <a class="indexterm" name="idp189465600"></a>
+    <a class="indexterm" name="idp180844800"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1006,6 +1000,6 @@ Alias /icinga-web /usr/local/icinga-web/pub
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

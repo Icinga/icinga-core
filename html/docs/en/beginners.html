@@ -40,17 +40,7 @@
   depending on the number of things to be monitored and the complexity of your environment. Once you become familiar with how it works and
   what it can do for you, you'll never want to be without it. :-) Here are some important things to keep in mind for first-time
   Icinga users:</p>
-<div class="orderedlist">
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>If you installed a package then the sample files might be missing. The contents is listed <a class="link" href="sample-config.html" title="13.1. Sample configuration files and definitions">here</a> for reference.</p>
-      </td></tr>
-</table></div>
-<ol class="orderedlist" type="1">
+<div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
         <p><span class="bold"><strong>Relax - it's going to take some time.</strong></span> Don't expect to be able to get things working exactly
         the way you want them right off the bat. It's not that easy. Setting up Icinga can involve a bit of work - partly because of
@@ -93,8 +83,19 @@
         the list archives can be found at <a class="link" href="http://www.icinga.org/support/" target="_top">https://support.icinga.org</a>. Another source of
         information is the <a class="link" href="https://wiki.icinga.org/display/howtos/Home" target="_top">how to wiki section</a>.</p>
       </li>
-</ol>
-</div>
+</ol></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If you installed a package then the sample files might be missing. The contents is listed <a class="link" href="sample-config.html" title="13.1. Sample configuration files and definitions">here</a> for reference.</p>
+  </td></tr>
+</table></div>
+
+  <a class="indexterm" name="idp165951808"></a>
 
   <div class="section" title="2.1.1. Icinga Overview">
 <div class="titlepage"><div><div><h3 class="title">
@@ -148,8 +149,8 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="icinga_gui_comparison"></a>2.1.2. <a name="icinga-gui-comparison"></a>Icinga web GUI comparison</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.1.2.1. <a href="beginners.html#idp177343456">Icinga Classic Web</a></span></dt>
-<dt><span class="section">2.1.2.2. <a href="beginners.html#idp177390416">Icinga New Web</a></span></dt>
+<dt><span class="section">2.1.2.1. <a href="beginners.html#idp165971328">Icinga Classic Web</a></span></dt>
+<dt><span class="section">2.1.2.2. <a href="beginners.html#idp166015456">Icinga New Web</a></span></dt>
 </dl></div>
   
 
@@ -159,9 +160,7 @@
 
   <div class="section" title="2.1.2.1. Icinga Classic Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp177343456"></a>2.1.2.1. Icinga Classic Web</h4></div></div></div>
-    <a name="icinga_gui_classic"></a>
-
+<a name="idp165971328"></a>2.1.2.1. <a name="icinga_gui_classic"></a>Icinga Classic Web</h4></div></div></div>
     
 
     <p>Traditional in look and feel, this is Icinga’s interface for those who like the familiar single window format as in Nagios,
@@ -201,106 +200,104 @@
       </li>
 </ul></div>
 
-    <p>Because Icinga Classic Web receives continuous development, you can rest assured that any addons you are accostumed to use with
+    <p>Because Icinga Classic Web receives continuous development, you can rest assured that any addons you are accustomed to use with
     Nagios can be used with Icinga too.</p>
 
-    <table border="1" id="idp177356336">
+    <table border="1" id="idp165983616">
       <caption>Table 2.1. Screenshots Icinga classic web</caption>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_TacticalOverview.png" width="100%"></td></tr></table>
-<div class="caption">Tactical Overview</div>
+<div class="caption">
+                <p>Tactical Overview</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_HostGroup.png" width="100%"></td></tr></table>
-<div class="caption">Host Groups</div>
+<div class="caption">
+                <p>Host Groups</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_ServiceStatus.png" width="100%"></td></tr></table>
-<div class="caption">Service Status</div>
+<div class="caption">
+                <p>Service Status</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Commands.png" width="100%"></td></tr></table>
-<div class="caption">Commands</div>
+<div class="caption">
+                <p>Commands</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_CGIConfig.png" width="100%"></td></tr></table>
-<div class="caption">CGI Config</div>
+<div class="caption">
+                <p>CGI Config</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Downtimes.png" width="100%"></td></tr></table>
-<div class="caption">Downtimes</div>
+<div class="caption">
+                <p>Downtimes</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_DatePicker.png" width="100%"></td></tr></table>
-<div class="caption">Date Picker</div>
+<div class="caption">
+                <p>Date Picker</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_PaginationLogs.png" width="100%"></td></tr></table>
-<div class="caption">Paginated Logs</div>
+<div class="caption">
+                <p>Paginated Logs</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Trending.png" width="100%"></td></tr></table>
-<div class="caption">Trending</div>
+<div class="caption">
+                <p>Trending</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
     </table>
   </div>
 
   <div class="section" title="2.1.2.2. Icinga New Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp177390416"></a>2.1.2.2. Icinga New Web</h4></div></div></div>
-    <a name="icinga_gui_new_web"></a>
-
+<a name="idp166015456"></a>2.1.2.2. <a name="icinga_gui_new_web"></a>Icinga New Web</h4></div></div></div>
     
 
     <p>Dynamic and user-friendly, this is Icinga’s Agavi based, Ajax driven, Web 2.0 inspired frontend.</p>
@@ -317,9 +314,7 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>
-          <span class="bold"><strong>View your monitoring as you like it</strong></span>
-        </p>
+        <p><span class="bold"><strong>View your monitoring as you like it</strong></span></p>
 
         <p>Icinga New Web displays real-time status data in a configurable spreadsheet, so you can:</p>
 
@@ -339,27 +334,21 @@
 </ul></div>
       </li>
 <li class="listitem">
-        <p>
-          <span class="bold"><strong>Search with Ajax ease</strong></span>
-        </p>
+        <p><span class="bold"><strong>Search with Ajax ease</strong></span></p>
 
         <p>The powerful Ajax search tool allows you to type in the first few letters of a string, to choose from results listed by host,
         service or group complete with colour-coded status. Needless to say, the tool only displays results which meet your user rights and
         permissions – ideal for the larger enterprise.</p>
       </li>
 <li class="listitem">
-        <p>
-          <span class="bold"><strong>Customize-a-Cronk ‘n’ Dashboard</strong></span>
-        </p>
+        <p><span class="bold"><strong>Customize-a-Cronk ‘n’ Dashboard</strong></span></p>
 
         <p>A library of Cronks (widgets) offer various views which can be dragged and dropped around the screen, customized, minimized,
         resized and categorized. As changes are persistent, you can come back to your tailored Cronk or arrangement of Cronks in the panels
         and tabs of your personal dashboard.</p>
       </li>
 <li class="listitem">
-        <p>
-          <span class="bold"><strong>Manage user rights meticulously</strong></span>
-        </p>
+        <p><span class="bold"><strong>Manage user rights meticulously</strong></span></p>
 
         <p>Beyond the standard contact group restriction, user settings can be individualized to limit access to certain host or service
         groups, remove the ability to send commands and even limit the display of custom variables such as specific hosts or services. All
@@ -367,164 +356,162 @@
       </li>
 </ul></div>
 
-    <table border="1" id="idp177407360">
+    <table border="1" id="idp166033504">
       <caption>Table 2.2. Screenshots Icinga new web</caption>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Portal2.png" width="100%"></td></tr></table>
-<div class="caption">Portal View</div>
+<div class="caption">
+                <p>Portal View</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_TacticalOverview.png" width="100%"></td></tr></table>
-<div class="caption">Tactical Overview</div>
+<div class="caption">
+                <p>Tactical Overview</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_OpenProblems.png" width="100%"></td></tr></table>
-<div class="caption">Open Problems</div>
+<div class="caption">
+                <p>Open Problems</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_HostStatus_Events.png" width="100%"></td></tr></table>
-<div class="caption">Host Status Events</div>
+<div class="caption">
+                <p>Host Status Events</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Host_filtered.png" width="100%"></td></tr></table>
-<div class="caption">Host filtered</div>
+<div class="caption">
+                <p>Host filtered</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Downtimes.png" width="100%"></td></tr></table>
-<div class="caption">Downtimes</div>
+<div class="caption">
+                <p>Downtimes</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Search.png" width="100%"></td></tr></table>
-<div class="caption">Search</div>
+<div class="caption">
+                <p>Search</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Commands.png" width="100%"></td></tr></table>
-<div class="caption">Commands</div>
+<div class="caption">
+                <p>Commands</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Reporting.png" width="100%"></td></tr></table>
-<div class="caption">Reporting</div>
+<div class="caption">
+                <p>Reporting</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_BusinessProcess.png" width="100%"></td></tr></table>
-<div class="caption">Business Process</div>
+<div class="caption">
+                <p>Business Process</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_LogViewer.png" width="100%"></td></tr></table>
-<div class="caption">Log Viewer</div>
+<div class="caption">
+                <p>Log Viewer</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_UserAdmin.png" width="100%"></td></tr></table>
-<div class="caption">User Admin</div>
+<div class="caption">
+                <p>User Admin</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
 
       <tr>
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_CronkBuilder.png" width="100%"></td></tr></table>
-<div class="caption">Cronk Builder</div>
+<div class="caption">
+                <p>Cronk Builder</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Cronk_Configuration.png" width="100%"></td></tr></table>
-<div class="caption">Cronk Configuration</div>
+<div class="caption">
+                <p>Cronk Configuration</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
 
-        <td>
-          <div class="screenshot">
+        <td><div class="screenshot">
             <div class="mediaobject">
 <table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_StatusMap.png" width="100%"></td></tr></table>
-<div class="caption">Status Map</div>
+<div class="caption">
+                <p>Status Map</p>
+              </div>
 </div>
-          </div>
-        </td>
+          </div></td>
       </tr>
     </table>
+
+    <a class="indexterm" name="idp166086864"></a>
+
+    <a class="indexterm" name="idp166090368"></a>
+
+    <a class="indexterm" name="idp166091856"></a>
   </div>
-
-  <a class="indexterm" name="idp177464080"></a>
-
-  <a class="indexterm" name="idp177465424"></a>
-
-  <a class="indexterm" name="idp177467088"></a>
 </div>
-
-  <a class="indexterm" name="idp177468880"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -543,6 +530,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

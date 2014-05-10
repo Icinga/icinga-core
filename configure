@@ -831,7 +831,6 @@ with_libdbi_driver_dir
 enable_embedded_perl
 with_perlcache
 enable_cygwin
-enable_libtap
 enable_nagiosenv
 enable_ssl
 with_ssl
@@ -1477,7 +1476,6 @@ Optional Features:
                           implemented! enables idoutils with libpq and pgsql
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
-  --enable-libtap         this is deprecated, libtap is built with make test
   --enable-nagiosenv      expose Icinga Environment variables as NAGIOS_*)
   --enable-ssl            enables native SSL support
 
@@ -2509,9 +2507,9 @@ ac_config_headers="$ac_config_headers include/config.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.11.1"
+PKG_VERSION="1.11.3"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="03-28-2014"
+PKG_REL_DATE="05-10-2014"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -7122,14 +7120,6 @@ $as_echo "no" >&6; }
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 
-# Check whether --enable-libtap was given.
-if test "${enable_libtap+set}" = set; then :
-  enableval=$enable_libtap; enable_libtap=$enableval
-else
-  enable_libtap=yes
-fi
-
-
 env_prefix="ICINGA_"
 # Check whether --enable-nagiosenv was given.
 if test "${enable_nagiosenv+set}" = set; then :
@@ -7394,7 +7384,7 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
         esac
 
 
-ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
+ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db icinga-systemd sysconfig-env ido2db-systemd module/idoutils/src/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
 
 
 
@@ -8021,7 +8011,6 @@ do
     "sysconfig-env") CONFIG_FILES="$CONFIG_FILES sysconfig-env" ;;
     "ido2db-systemd") CONFIG_FILES="$CONFIG_FILES ido2db-systemd" ;;
     "module/idoutils/src/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/src/Makefile" ;;
-    "t-tap/Makefile") CONFIG_FILES="$CONFIG_FILES t-tap/Makefile" ;;
     "t/Makefile") CONFIG_FILES="$CONFIG_FILES t/Makefile" ;;
     "module/idoutils/db/scripts/installdb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/scripts/installdb" ;;
     "module/idoutils/db/scripts/upgradedb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/scripts/upgradedb" ;;

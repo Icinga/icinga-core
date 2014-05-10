@@ -4,7 +4,7 @@
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -8089,7 +8089,7 @@ int xodtemplate_recombobulate_hostgroups(void) {
 		result = xodtemplate_expand_hostgroups_and_hosts(&temp_memberlist, NULL, temp_hostgroup->members, temp_hostgroup->_config_file, temp_hostgroup->_start_line);
 
 		/* add all members to the host group */
-		if (result != OK || (temp_memberlist == NULL && allow_empty_hostgroup_assignment == 0)) {
+		if ((result != OK || temp_memberlist == NULL) && allow_empty_hostgroup_assignment == 0) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand members specified in hostgroup (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
 			return ERROR;
 		}

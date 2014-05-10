@@ -3,7 +3,7 @@
  * EXTINFO.C -  Icinga Extended Information CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -1563,18 +1563,12 @@ void show_host_info(void) {
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
 			/* Icinga 2 */
-			if (temp_hoststatus->check_service != NULL) {
-				printf("<tr><td class='dataVar' nowrap>Check Service:</td><td class='dataVal'>");
-				printf("%s", temp_hoststatus->check_service);
-				printf("</td></tr>\n");
-			}
-
-			/* Icinga 2 */
-			printf("<tr><td class='dataVar' nowrap>Check Source:</td><td class='dataVal'>");
+			printf("<tr><td class='dataVar' nowrap>Check Source / Reachability:</td><td class='dataVal'>");
 			if (temp_hoststatus->check_source != NULL)
-				printf("%s", temp_hoststatus->check_source);
+				printf("%s / %s", temp_hoststatus->check_source, (temp_hoststatus->is_reachable == TRUE) ? "true" : "false");
 			else
 				printf("N/A");
+
 			printf("</td></tr>\n");
 
 			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");
@@ -2050,11 +2044,13 @@ void show_service_info(void) {
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
-			printf("<tr><td class='dataVar' nowrap>Check Source:</td><td class='dataVal'>");
+			/* Icinga 2 */
+			printf("<tr><td class='dataVar' nowrap>Check Source / Reachability:</td><td class='dataVal'>");
 			if (temp_svcstatus->check_source != NULL)
-				printf("%s", temp_svcstatus->check_source);
+				printf("%s / %s", temp_svcstatus->check_source, (temp_svcstatus->is_reachable == TRUE) ? "true" : "false");
 			else
 				printf("N/A");
+
 			printf("</td></tr>\n");
 
 			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");

@@ -4,7 +4,7 @@
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -27,8 +27,8 @@
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
 #define PROGRAM_NAME_LC "icinga"
-#define PROGRAM_VERSION "1.11.1"
-#define PROGRAM_MODIFICATION_DATE "03-28-2014"
+#define PROGRAM_VERSION "1.11.3"
+#define PROGRAM_MODIFICATION_DATE "05-10-2014"
 
 /*#define DEBUG_CHECK_IPC 1 */
 /*#define DEBUG_CHECK_IPC2 1*/

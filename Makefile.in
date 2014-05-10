@@ -17,8 +17,6 @@ SRC_COMMON=@srcdir@/common
 SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
-SRC_TTAP=@srcdir@/t-tap
-SRC_TAP=@srcdir@/tools/libtap
 SRC_T=@srcdir@/t
 SRC_DOCBOOK=@srcdir@/docbook
 SRC_DOCBOOK_IMAGES=@srcdir@/docbook/images
@@ -90,7 +88,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.11.1
+ICINGA_VERSION=1.11.3
 
 CP=@CP@
 
@@ -267,9 +265,7 @@ clean:
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
-	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
@@ -284,9 +280,7 @@ distclean: clean
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
-	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db ido2db-systemd icinga-systemd sysconfig-env
@@ -304,13 +298,6 @@ devclean: distclean
 
 test:
 	$(MAKE) test-perl
-	$(MAKE) test-tap
-
-test-tap: tools/libtap/tap.o icinga cgis
-	cd $(SRC_TTAP) && $(MAKE) test;
-
-tools/libtap/tap.o:
-	cd tools/libtap && $(MAKE)
 
 test-perl: icinga cgis
 	cd t && $(MAKE) test

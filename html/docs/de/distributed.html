@@ -136,6 +136,17 @@
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>Nur die direkt durch den verteilten Server zu überwachenden Services werden in der <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> definiert.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>Obwohl "obsess_over_service" per Standard in der Objektdefinition aktiviert ist, kann es ggf. durch Templates
+            <span class="emphasis"><em>de</em></span>aktiviert sein, so dass Sie sicherstellen sollten, dass diese Direktive aktiviert ist, wie sie benötigt
+            wird.</p>
+          </td></tr>
+</table></div>
       </li>
 <li class="listitem">
         <p>Die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive auf dem verteilten Server wird auf 0
@@ -403,6 +414,17 @@
       </li>
 <li class="listitem">
         <p>dass auf dem verteilten Server <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess over hosts</a> aktiviert ist.</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>Obwohl "obsess_over_host" per Standard in der Objektdefinition aktiviert ist, kann es ggf. durch Templates
+            <span class="emphasis"><em>de</em></span>aktiviert sein, so dass Sie sicherstellen sollten, dass diese Direktive aktiviert ist, wie sie benötigt
+            wird.</p>
+          </td></tr>
+</table></div>
       </li>
 <li class="listitem">
         <p>dass auf dem verteilten Server ein <a class="link" href="configmain.html#configmain-ochp_command">ochp command</a> definiert ist.</p>
@@ -414,7 +436,7 @@
     sollten Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter oben für Services
     beschrieben wird).</p>
 
-    <a class="indexterm" name="idp191087472"></a>
+    <a class="indexterm" name="idp182469472"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -434,6 +456,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

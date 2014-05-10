@@ -30,7 +30,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.23.1. <a href="checkscheduling.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.23.1. <a href="checkscheduling.html#introduction_checkscheduling">Introduction</a></span></dt>
 <dt><span class="section">7.23.2. <a href="checkscheduling.html#configurationoptions">Configuration Options</a></span></dt>
 <dt><span class="section">7.23.3. <a href="checkscheduling.html#initialscheduling">Initial Scheduling</a></span></dt>
 <dt><span class="section">7.23.4. <a href="checkscheduling.html#serviceintercheckdelay">Inter-Check Delay</a></span></dt>
@@ -49,7 +49,7 @@
 
   <div class="section" title="7.23.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>7.23.1. Introduction</h3></div></div></div>
+<a name="introduction_checkscheduling"></a>7.23.1. Introduction</h3></div></div></div>
     
 
     <p>There were a lot of questions regarding how service checks are scheduled in certain situations, along with how the scheduling
@@ -169,7 +169,7 @@
 
   <div class="section" title="7.23.5. Service Interleaving">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="serviceinterleaving"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service Interleaving</h3></div></div></div>
+<a name="serviceinterleaving"></a>7.23.5. Service Interleaving</h3></div></div></div>
     
 
     <p>As discussed above, the inter-check delay helps to equalize the load that Icinga imposes on the local host. What about
@@ -336,10 +336,11 @@
     the service at a frequency determined by the <span class="emphasis"><em>check_interval</em></span> option.</p>
 
     <p>As always, there are exceptions to the rules. When a service check results in a non-OK state, Icinga will check the host
-    that the service is associated with to determine whether or not is up (see the note <a class="link" href="checkscheduling.html#hostcheckscheduling" title="7.23.10. Host Checks">below</a> for info on how this is done). If the host is not up (i.e. it is either down or
-    unreachable), Icinga will immediately put the service into a hard non-OK state and it will reset the current attempt number to 1.
-    Since the service is in a hard non-OK state, the service check will be rescheduled at the normal frequency specified by the
-    <span class="emphasis"><em>check_interval</em></span> option instead of the <span class="emphasis"><em>retry_interval</em></span> option.</p>
+    that the service is associated with to determine whether or not is up (see the note <a class="link" href="checkscheduling.html#hostcheckscheduling" title="7.23.10. Host Checks">below</a> for
+    info on how this is done). If the host is not up (i.e. it is either down or unreachable), Icinga will immediately put the service
+    into a hard non-OK state and it will reset the current attempt number to 1. Since the service is in a hard non-OK state, the service
+    check will be rescheduled at the normal frequency specified by the <span class="emphasis"><em>check_interval</em></span> option instead of the
+    <span class="emphasis"><em>retry_interval</em></span> option.</p>
   </div>
 
   <div class="section" title="7.23.10. Host Checks">
@@ -435,39 +436,39 @@
 <a name="todo"></a>7.23.14. TODO</h3></div></div></div>
     
 
-    <p><a name="checkscheduling-host_inter_check_delay"></a><span class="bold"><strong>Host Check Directives</strong></span></p>
+    <p><a name="hostintercheckdelay"></a><span class="bold"><strong>Host Check Directives</strong></span></p>
 
     <p>Most of the above applies to host checks as well.</p>
 
     <p>This documentation is being rewritten. Stay tuned for more information in a later beta release...</p>
 
-    <a class="indexterm" name="idp192300272"></a>
+    <a class="indexterm" name="idp180936512"></a>
 
-    <a class="indexterm" name="idp192301664"></a>
+    <a class="indexterm" name="idp180940336"></a>
 
-    <a class="indexterm" name="idp192303392"></a>
+    <a class="indexterm" name="idp180942064"></a>
 
-    <a class="indexterm" name="idp192305024"></a>
+    <a class="indexterm" name="idp180943584"></a>
 
-    <a class="indexterm" name="idp192306736"></a>
+    <a class="indexterm" name="idp180945344"></a>
 
-    <a class="indexterm" name="idp192308128"></a>
+    <a class="indexterm" name="idp180946864"></a>
 
-    <a class="indexterm" name="idp192309920"></a>
+    <a class="indexterm" name="idp180948624"></a>
 
-    <a class="indexterm" name="idp192311568"></a>
+    <a class="indexterm" name="idp180950112"></a>
 
-    <a class="indexterm" name="idp192312960"></a>
+    <a class="indexterm" name="idp180951872"></a>
 
-    <a class="indexterm" name="idp192314624"></a>
+    <a class="indexterm" name="idp180953392"></a>
 
-    <a class="indexterm" name="idp192316256"></a>
+    <a class="indexterm" name="idp180955120"></a>
 
-    <a class="indexterm" name="idp192317888"></a>
+    <a class="indexterm" name="idp180956640"></a>
 
-    <a class="indexterm" name="idp192319520"></a>
+    <a class="indexterm" name="idp180958400"></a>
 
-    <a class="indexterm" name="idp192321152"></a>
+    <a class="indexterm" name="idp180959984"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -487,6 +488,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -290,19 +290,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-           Starting with Apache 2.4 (testing versions of 
-
-          Debian
-
-           / 
-
-          Ubuntu
-
-           ) you have to enable the module 
-
-          <pre class="screen">#&gt; a2enconf icinga-web</pre>
-
-           
+          <p>Starting with Apache 2.4 (testing versions of Debian / Ubuntu ) you have to enable the module </p>
+<pre class="screen">#&gt; a2enconf icinga-web</pre>
         </td></tr>
 </table></div>
 
@@ -321,8 +310,9 @@
 <p>Reset password for any account on icinga-web.</p>
       </li>
 <li class="listitem">
-<a name="selinuxsettings"></a>
-        <span style="color: red">&lt;title&gt;Adjusting the SELinux settings&lt;/title&gt;</span>
+        <a name="selinuxsettings"></a>
+
+        <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
 
         <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
         Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
@@ -687,25 +677,10 @@
 
         <p>This should be prepared:</p>
 
-        <div class="itemizedlist">
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-            <p>The file <code class="filename">.htaccess</code> has been removed in 1.9 and the options have been moved to the Apache
-            configuration file.</p>
-          </td></tr>
-</table></div>
-<ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
             <p>mod_rewrite enabled, maybe you have to create a link:</p>
 
-            <p>
-              </p>
-<pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
-<p>
-            </p>
+            <pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
             <p>Using OpenSuSE or SLES you can use "a2enmod rewrite" to activate the module. If that doesn't work you have to edit the
             file "<code class="filename">/etc/sysconfig/apache2</code>". The module "rewrite" has to be appended to the line
@@ -714,8 +689,18 @@
             <p>Using Debian or Ubuntu "a2enmod rewrite" activates the module as well.</p>
 
             <p>The httpd of RHEL / Fedora / CentOS already supports rewriting so you don't have to change anything in this regard.</p>
-          </li></ul>
-</div>
+          </li></ul></div>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>The file <code class="filename">.htaccess</code> has been removed in 1.9 and the options have been moved to the Apache configuration
+          file.</p>
+        </td></tr>
+</table></div>
 
         <p>Go to the webservers configuration directory. Look if the created config by <span class="bold"><strong>make
         install-apache-config</strong></span> suits to your configuration. Or create new aliases (maybe in
@@ -987,11 +972,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp189625872"></a>
+    <a class="indexterm" name="idp178261520"></a>
 
-    <a class="indexterm" name="idp189627424"></a>
+    <a class="indexterm" name="idp178262800"></a>
 
-    <a class="indexterm" name="idp189626000"></a>
+    <a class="indexterm" name="idp178263968"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1011,6 +996,6 @@ Alias /icinga-web /usr/local/icinga-web/pub
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -30,7 +30,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cachedchecks"></a>7.21. <a name="cached_checks"></a>Cached Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.21.1. <a href="cachedchecks.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#introduction_cachedchecks">Introduction</a></span></dt>
 <dt><span class="section">7.21.2. <a href="cachedchecks.html#ondemandchecks">For On-Demand Checks Only</a></span></dt>
 <dt><span class="section">7.21.3. <a href="cachedchecks.html#howitworks">How Caching Works</a></span></dt>
 <dt><span class="section">7.21.4. <a href="cachedchecks.html#whatthismeans">What This Really Means</a></span></dt>
@@ -41,209 +41,204 @@
 
   <div class="section" title="7.21.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>7.21.1. Introduction</h3></div></div></div>
-	  
+<a name="introduction_cachedchecks"></a>7.21.1. Introduction</h3></div></div></div>
+    
 
-  <p><span class="inlinemediaobject"><img src="../images/cachedchecks1.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/cachedchecks1.png"></span></p>
 
-  <p>The performance of Icinga' monitoring logic can be significantly improved by implementing the use of cached checks. Cached
-  checks allow Icinga to forgo executing a host or service check command if it determines a relatively recent check result will do
-  instead.</p>
-
+    <p>The performance of Icinga' monitoring logic can be significantly improved by implementing the use of cached checks. Cached
+    checks allow Icinga to forgo executing a host or service check command if it determines a relatively recent check result will do
+    instead.</p>
   </div>
 
   <div class="section" title="7.21.2. For On-Demand Checks Only">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ondemandchecks"></a>7.21.2. For On-Demand Checks Only</h3></div></div></div>
-	  
+    
 
-  <p>Regularly scheduled host and service checks will not see a performance improvement with use of cached checks. Cached checks are only
-  useful for improving the performance of on-demand host and service checks. Scheduled checks help to ensure that host and service states
-  are updated regularly, which may result in a greater possibility their results can be used as cached checks in the future.</p>
+    <p>Regularly scheduled host and service checks will not see a performance improvement with use of cached checks. Cached checks are
+    only useful for improving the performance of on-demand host and service checks. Scheduled checks help to ensure that host and service
+    states are updated regularly, which may result in a greater possibility their results can be used as cached checks in the future.</p>
 
-  <p>For reference, on-demand host checks occur...</p>
+    <p>For reference, on-demand host checks occur...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>When a service associated with the host changes state.</p>
-    </li>
+        <p>When a service associated with the host changes state.</p>
+      </li>
 <li class="listitem">
-      <p>As needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
-    </li>
+        <p>As needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+      </li>
 <li class="listitem">
-      <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
-    </li>
+        <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
+      </li>
 </ul></div>
 
-  <p>And on-demand service checks occur...</p>
+    <p>And on-demand service checks occur...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive service dependency checks</a>.</p>
-    </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive service dependency checks</a>.</p>
+      </li></ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Unless you make use of service dependencies, Icinga will not be able to use cached check results to improve the performance
-    of service checks. Don't worry about that - its normal. Cached host checks are where the big performance improvements lie, and everyone
-    should see a benefit there.</p>
-  </td></tr>
+      <p>Unless you make use of service dependencies, Icinga will not be able to use cached check results to improve the
+      performance of service checks. Don't worry about that - its normal. Cached host checks are where the big performance improvements lie,
+      and everyone should see a benefit there.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="7.21.3. How Caching Works">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="howitworks"></a>7.21.3. How Caching Works</h3></div></div></div>
-	  
+    
 
-  <p><span class="inlinemediaobject"><img src="../images/cachedchecks.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/cachedchecks.png"></span></p>
 
-  <p>When Icinga needs to perform an on-demand host or service check, it will make a determination as to whether it can used a
-  cached check result or if it needs to perform an actual check by executing a plugin. It does this by checking to see if the last check of
-  the host or service occured within the last X minutes, where X is the cached host or service check horizon.</p>
+    <p>When Icinga needs to perform an on-demand host or service check, it will make a determination as to whether it can used a
+    cached check result or if it needs to perform an actual check by executing a plugin. It does this by checking to see if the last check
+    of the host or service occured within the last X minutes, where X is the cached host or service check horizon.</p>
 
-  <p>If the last check was performed within the timeframe specified by the cached check horizon variable, Icinga will use the
-  result of the last host or service check and will <span class="emphasis"><em>not</em></span> execute a new check. If the host or service has not yet been
-  checked, or if the last check falls outside of the cached check horizon timeframe, Icinga will execute a new host or service check
-  by running a plugin.</p>
-
+    <p>If the last check was performed within the timeframe specified by the cached check horizon variable, Icinga will use the
+    result of the last host or service check and will <span class="emphasis"><em>not</em></span> execute a new check. If the host or service has not yet been
+    checked, or if the last check falls outside of the cached check horizon timeframe, Icinga will execute a new host or service
+    check by running a plugin.</p>
   </div>
 
   <div class="section" title="7.21.4. What This Really Means">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="whatthismeans"></a>7.21.4. What This Really Means</h3></div></div></div>
-	  
+    
 
-  <p>Icinga performs on-demand checks because it need to know the current state of a host or service <span class="emphasis"><em>at that exact
-  moment</em></span> in time. Utilizing cached checks allows you to make Icinga think that recent check results are "good enough" for
-  determining the current state of hosts, and that it doesn't need to go out and actually re-check the status of that host or
-  service.</p>
+    <p>Icinga performs on-demand checks because it need to know the current state of a host or service <span class="emphasis"><em>at that exact
+    moment</em></span> in time. Utilizing cached checks allows you to make Icinga think that recent check results are "good enough"
+    for determining the current state of hosts, and that it doesn't need to go out and actually re-check the status of that host or
+    service.</p>
 
-  <p>The cached check horizon tells Icinga how recent check results must be in order to reliably reflect the current state of a
-  host or service. For example, with a cached check horizon of 30 seconds, you are telling Icinga that if a host's state was checked
-  sometime in the last 30 seconds, the result of that check should still be considered the current state of the host.</p>
+    <p>The cached check horizon tells Icinga how recent check results must be in order to reliably reflect the current state of a
+    host or service. For example, with a cached check horizon of 30 seconds, you are telling Icinga that if a host's state was
+    checked sometime in the last 30 seconds, the result of that check should still be considered the current state of the host.</p>
 
-  <p>The number of cached check results that Icinga can use versus the number of on-demand checks it has to actually execute can
-  be considered the cached check "hit" rate. By increasing the cached check horizon to equal the regular check interval of a host, you could
-  theoretically achieve a cache hit rate of 100%. In that case all on-demand checks of that host would use cached check results. What a
-  performance improvement! But is it really? Probably not.</p>
+    <p>The number of cached check results that Icinga can use versus the number of on-demand checks it has to actually execute can
+    be considered the cached check "hit" rate. By increasing the cached check horizon to equal the regular check interval of a host, you
+    could theoretically achieve a cache hit rate of 100%. In that case all on-demand checks of that host would use cached check results.
+    What a performance improvement! But is it really? Probably not.</p>
 
-  <p>The reliability of cached check result information decreases over time. Higher cache hit rates require that previous check results
-  are considered "valid" for longer periods of time. Things can change quickly in any network scenario, and there's no guarantee that a
-  server that was functioning properly 30 seconds ago isn't on fire right now. There's the tradeoff - reliability versus speed. If you have
-  a large cached check horizon, you risk having unreliable check result values being used in the monitoring logic.</p>
+    <p>The reliability of cached check result information decreases over time. Higher cache hit rates require that previous check results
+    are considered "valid" for longer periods of time. Things can change quickly in any network scenario, and there's no guarantee that a
+    server that was functioning properly 30 seconds ago isn't on fire right now. There's the tradeoff - reliability versus speed. If you
+    have a large cached check horizon, you risk having unreliable check result values being used in the monitoring logic.</p>
 
-  <p>Icinga will eventually determine the correct state of all hosts and services, so even if cached check results prove to
-  unreliably represent their true value, Icinga will only work with incorrect information for a short period of time. Even short
-  periods of unreliable status information can prove to be a nuisance for admins, as they may receive notifications about problems which no
-  longer exist.</p>
+    <p>Icinga will eventually determine the correct state of all hosts and services, so even if cached check results prove to
+    unreliably represent their true value, Icinga will only work with incorrect information for a short period of time. Even short
+    periods of unreliable status information can prove to be a nuisance for admins, as they may receive notifications about problems which
+    no longer exist.</p>
 
-  <p>There is no standard cached check horizon or cache hit rate that will be acceptable to every Icinga user. Some people will
-  want a short horizon timeframe and a low cache hit rate, while others will want a larger horizon timeframe and a larger cache hit rate
-  (with a low reliability rate). Some users may even want to disable cached checks altogether to obtain a 100% reliability rate. Testing
-  different horizon timeframes, and their effect on the reliability of status information, is the only want that an individual user will
-  find the "right" value for their situation. More information on this is discussed below.</p>
-
+    <p>There is no standard cached check horizon or cache hit rate that will be acceptable to every Icinga user. Some people will
+    want a short horizon timeframe and a low cache hit rate, while others will want a larger horizon timeframe and a larger cache hit rate
+    (with a low reliability rate). Some users may even want to disable cached checks altogether to obtain a 100% reliability rate. Testing
+    different horizon timeframes, and their effect on the reliability of status information, is the only want that an individual user will
+    find the "right" value for their situation. More information on this is discussed below.</p>
   </div>
 
   <div class="section" title="7.21.5. Configuration Variables">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="configvars"></a>7.21.5. Configuration Variables</h3></div></div></div>
-	  
+    
 
-  <p>The following variables determine the timeframes in which a previous host or service check result may be used as a cached host or
-  service check result:</p>
+    <p>The following variables determine the timeframes in which a previous host or service check result may be used as a cached host or
+    service check result:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> variable controls cached host
-      checks.</p>
-    </li>
+        <p>The <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> variable controls cached host
+        checks.</p>
+      </li>
 <li class="listitem">
-      <p>The <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a> variable controls cached service
-      checks.</p>
-    </li>
+        <p>The <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a> variable controls cached
+        service checks.</p>
+      </li>
 </ul></div>
-
   </div>
 
   <div class="section" title="7.21.6. Optimizing Cache Effectiveness">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="optimizeeffectiveness"></a>7.21.6. Optimizing Cache Effectiveness</h3></div></div></div>
-	  
-
-  <p>In order to make the most effective use of cached checks, you should:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>Schedule regular checks of your hosts</p>
-    </li>
-<li class="listitem">
-      <p>Use <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a> to graph statistics for 1) on-demand checks
-      and 2) cached checks</p>
-    </li>
-<li class="listitem">
-      <p>Adjust cached check horizon variables to fit your needs</p>
-    </li>
-</ul></div>
-
-  <p>You can schedule regular checks of your hosts by specifying a value greater than 0 for <span class="emphasis"><em>check_interval</em></span> option in
-  your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. If you do this, make sure that you set the
-  <span class="emphasis"><em>max_check_attempts</em></span> option to a value greater than 1, or it will cause a big performance hit. This potential
-  performance hit is described in detail <a class="link" href="hostchecks.html" title="5.4. Host Checks">here</a>.</p>
-
-  <div class="figure">
-<a name="idp192120576"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
-<div class="figure-contents">
     
 
-    <p><span class="inlinemediaobject"><img src="../images/perfdata_cached2.png" alt="Cached checks"></span></p>
-  </div>
+    <p>In order to make the most effective use of cached checks, you should:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>Schedule regular checks of your hosts</p>
+      </li>
+<li class="listitem">
+        <p>Use <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a> to graph statistics for 1) on-demand checks
+        and 2) cached checks</p>
+      </li>
+<li class="listitem">
+        <p>Adjust cached check horizon variables to fit your needs</p>
+      </li>
+</ul></div>
+
+    <p>You can schedule regular checks of your hosts by specifying a value greater than 0 for <span class="emphasis"><em>check_interval</em></span> option
+    in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. If you do this, make sure that you set the
+    <span class="emphasis"><em>max_check_attempts</em></span> option to a value greater than 1, or it will cause a big performance hit. This potential
+    performance hit is described in detail <a class="link" href="hostchecks.html" title="5.4. Host Checks">here</a>.</p>
+
+    <div class="figure">
+<a name="idp180759424"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
+<div class="figure-contents">
+      
+
+      <p><span class="inlinemediaobject"><img src="../images/perfdata_cached2.png" alt="Cached checks"></span></p>
+    </div>
 </div>
 <br class="figure-break">
 
-  <p>A good way to determine the proper value for the cached check horizon option is to compare how many on-demand checks Icinga
-  has to actually run versus how may it can use cached values for. The <a class="link" href="icingastats.html" title="8.6. Using The Icingastats Utility">icingastats</a> utility can produce
-  information on cached checks, which can then be <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">graphed with PNP4Nagios</a>. An example graph that compares
-  cached vs. actual on-demand checks is shown above.</p>
+    <p>A good way to determine the proper value for the cached check horizon option is to compare how many on-demand checks Icinga
+    has to actually run versus how may it can use cached values for. The <a class="link" href="icingastats.html" title="8.6. Using The Icingastats Utility">icingastats</a> utility can produce
+    information on cached checks, which can then be <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">graphed with PNP4Nagios</a>. An example graph that
+    compares cached vs. actual on-demand checks is shown above.</p>
 
-  <p>The monitoring installation which produced the graphs had:</p>
+    <p>The monitoring installation which produced the graphs had:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>A total of 110 hosts, all of which were checked at regular intervals</p>
-    </li>
+        <p>A total of 110 hosts, all of which were checked at regular intervals</p>
+      </li>
 <li class="listitem">
-      <p>An average (regularly scheduled) host check interval of 30 minutes with a 5 minute retry interval</p>
-    </li>
+        <p>An average (regularly scheduled) host check interval of 30 minutes with a 5 minute retry interval</p>
+      </li>
 <li class="listitem">
-      <p>A <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> of 15 seconds</p>
-    </li>
+        <p>A <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> of 15 seconds</p>
+      </li>
 </ul></div>
 
-  <p>The graph shows how many regularly scheduled host checks compared to how many cached host checks have occurred. In this example, an
-  average of 77 host checks occur every five minutes. 59 of these (76%) are on-demand checks.</p>
+    <p>The graph shows how many regularly scheduled host checks compared to how many cached host checks have occurred. In this example,
+    an average of 77 host checks occur every five minutes. 59 of these (76%) are on-demand checks.</p>
 
-  <p>It also shows how many cached host checks have occurred over time. In this example an average of 21 cached host checks occurs every
-  five minutes.</p>
+    <p>It also shows how many cached host checks have occurred over time. In this example an average of 21 cached host checks occurs
+    every five minutes.</p>
 
-  <p>Remember, cached checks are only available for on-demand checks. Based on the 5 minute averages from the graphs, we see that
-  Icinga is able to used cached host check results every 21 out of 59 times an on-demand check has to be run. That may not seem much,
-  but these graphs represent a small monitoring environment. Consider that 21 out of 59 is nearly 36% and you can start to see how this
-  could significantly help improve host check performance in large environments. That percentage could be higher if the cached host check
-  horizon variable value was increased, but that would reduce the reliability of the cached host state information.</p>
+    <p>Remember, cached checks are only available for on-demand checks. Based on the 5 minute averages from the graphs, we see that
+    Icinga is able to used cached host check results every 21 out of 59 times an on-demand check has to be run. That may not seem
+    much, but these graphs represent a small monitoring environment. Consider that 21 out of 59 is nearly 36% and you can start to see how
+    this could significantly help improve host check performance in large environments. That percentage could be higher if the cached host
+    check horizon variable value was increased, but that would reduce the reliability of the cached host state information.</p>
 
-  <p>Once you've had a few hours or days worth of PNP4Nagios graphs, you should see how many host and service checks were done by
-  executing plugins versus those that used cached check results. Use that information to adjust the cached check horizon variables
-  appropriately for your situation. Continue to monitor the PNP4Nagios graphs over time to see how changing the horizon variables affected
-  cached check statistics. Rinse and repeat as necessary.</p>
+    <p>Once you've had a few hours or days worth of PNP4Nagios graphs, you should see how many host and service checks were done by
+    executing plugins versus those that used cached check results. Use that information to adjust the cached check horizon variables
+    appropriately for your situation. Continue to monitor the PNP4Nagios graphs over time to see how changing the horizon variables affected
+    cached check statistics. Rinse and repeat as necessary.</p>
 
-  <a class="indexterm" name="idp192133232"></a>
-</div>
+    <a class="indexterm" name="idp180772032"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
@@ -262,6 +257,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

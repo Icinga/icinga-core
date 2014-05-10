@@ -4,7 +4,7 @@
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-present Icinga Development Team
+ * Copyright (c) 2009-2014 Icinga Development Team
  *
  * License:
  *

@@ -30,7 +30,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-printers"></a>2.15. <a name="monitoring_printers"></a>Monitoring Network Printers</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction_printers">Introduction</a></span></dt>
 <dt><span class="section">2.15.2. <a href="monitoring-printers.html#overview">Overview</a></span></dt>
 <dt><span class="section">2.15.3. <a href="monitoring-printers.html#steps">Steps</a></span></dt>
 <dt><span class="section">2.15.4. <a href="monitoring-printers.html#whatsdone">What's Already Done For You</a></span></dt>
@@ -39,187 +39,182 @@
 <dt><span class="section">2.15.7. <a href="monitoring-printers.html#restarticinga">Restarting Icinga</a></span></dt>
 </dl></div>
   
-  <a class="indexterm" name="idp178600784"></a>
 
-<div class="section" title="2.15.1. Introduction">
+  <a class="indexterm" name="idp167233968"></a>
+
+  <div class="section" title="2.15.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.15.1. Introduction</h3></div></div></div>
-  
+<a name="introduction_printers"></a>2.15.1. Introduction</h3></div></div></div>
+    
 
-  <div class="informalfigure">
-      <div class="mediaobject"><img src="../images/printer.png"></div>
-    </div>
+    <div class="informalfigure">
+        <div class="mediaobject"><img src="../images/printer.png"></div>
+      </div>
 
-  <p>This document describes how you can monitor the status of networked printers. Specifically, HP printers that have
-  internal/external JetDirect cards/devices, or other print servers (like the Troy PocketPro 100S or the Netgear PS101) that
-  support the JetDirect protocol.</p>
+    <p>This document describes how you can monitor the status of networked printers. Specifically, HP printers that have
+    internal/external JetDirect cards/devices, or other print servers (like the Troy PocketPro 100S or the Netgear PS101) that support the
+    JetDirect protocol.</p>
 
-  <p>The <span class="emphasis"><em>check_hpjd</em></span> plugin (which is part of the standard Nagios plugins distribution) allows you
-  to monitor the status of JetDirect-capable printers which have SNMP enabled. The plugin is capable of detecting the following
-  printer states:</p>
+    <p>The <span class="emphasis"><em>check_hpjd</em></span> plugin (which is part of the standard Nagios plugins distribution) allows you to
+    monitor the status of JetDirect-capable printers which have SNMP enabled. The plugin is capable of detecting the following printer
+    states:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Paper Jam</p>
-    </li>
+        <p>Paper Jam</p>
+      </li>
 <li class="listitem">
-      <p>Out of Paper</p>
-    </li>
+        <p>Out of Paper</p>
+      </li>
 <li class="listitem">
-      <p>Printer Offline</p>
-    </li>
+        <p>Printer Offline</p>
+      </li>
 <li class="listitem">
-      <p>Intervention Required</p>
-    </li>
+        <p>Intervention Required</p>
+      </li>
 <li class="listitem">
-      <p>Toner Low</p>
-    </li>
+        <p>Toner Low</p>
+      </li>
 <li class="listitem">
-      <p>Insufficient Memory</p>
-    </li>
+        <p>Insufficient Memory</p>
+      </li>
 <li class="listitem">
-      <p>Open Door</p>
-    </li>
+        <p>Open Door</p>
+      </li>
 <li class="listitem">
-      <p>Output Tray is Full</p>
-    </li>
+        <p>Output Tray is Full</p>
+      </li>
 <li class="listitem">
-      <p>and more...</p>
-    </li>
+        <p>and more...</p>
+      </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
-    guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
-    (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the
-    quickstart.</p>
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
+      (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the quickstart.</p>
 
-    <p>If you installed a package then the sample files might be missing. The contents is listed <a class="link" href="sample-config.html" title="13.1. Sample configuration files and definitions">here</a> for reference.</p>
-  </td></tr>
+      <p>If you installed a package then the sample files might be missing. The contents is listed <a class="link" href="sample-config.html" title="13.1. Sample configuration files and definitions">here</a> for reference.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="2.15.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="overview"></a>2.15.2. Overview</h3></div></div></div>
-  	
+    
 
-  <div class="informalfigure">
-      <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
-    </div>
+    <div class="informalfigure">
+        <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
+      </div>
 
-  <p>Monitoring the status of a networked printer is pretty simple. JetDirect-enabled printers usually have SNMP enabled, which
-  allows Icinga to monitor their status using the <span class="emphasis"><em>check_hpjd</em></span> plugin.</p>
+    <p>Monitoring the status of a networked printer is pretty simple. JetDirect-enabled printers usually have SNMP enabled, which allows
+    Icinga to monitor their status using the <span class="emphasis"><em>check_hpjd</em></span> plugin.</p>
 
-  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>The <span class="emphasis"><em>check_hpjd</em></span> plugin will only get compiled and installed if you have the net-snmp and
-  net-snmp-utils packages installed on your system. Make sure the plugin exists in <span class="emphasis"><em>/usr/local/icinga/libexec</em></span> before you
-  continue. If it doesn't, install net-snmp and net-snmp-utils and recompile/reinstall the Nagios plugins after issuing "make clean"
-  in the source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="2.3. Icinga Quickstart">Quickstart Guide</a> for details.
-  </p></td></tr>
+<tr><td align="left" valign="top">
+      <p>The <span class="emphasis"><em>check_hpjd</em></span> plugin will only get compiled and installed if you have the net-snmp and net-snmp-utils
+      packages installed on your system. Make sure the plugin exists in <span class="emphasis"><em>/usr/local/icinga/libexec</em></span> before you continue.
+      If it doesn't, install net-snmp and net-snmp-utils and recompile/reinstall the Nagios plugins after issuing "make clean" in the
+      source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="2.3. Icinga Quickstart">Quickstart Guide</a> for details.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="2.15.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="steps"></a>2.15.3. Steps</h3></div></div></div>
-  	
+    
 
-  <p>There are several steps you'll need to follow in order to monitor a new network printer. They are:</p>
+    <p>There are several steps you'll need to follow in order to monitor a new network printer. They are:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Perform first-time prerequisites</p>
-    </li>
+        <p>Perform first-time prerequisites</p>
+      </li>
 <li class="listitem">
-      <p>Create new host and service definitions for monitoring the printer</p>
-    </li>
+        <p>Create new host and service definitions for monitoring the printer</p>
+      </li>
 <li class="listitem">
-      <p>Restart the Icinga daemon</p>
-    </li>
+        <p>Restart the Icinga daemon</p>
+      </li>
 </ol></div>
-
   </div>
 
   <div class="section" title="2.15.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="whatsdone"></a>2.15.4. What's Already Done For You</h3></div></div></div>
-  	
+    
 
-  <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
+    <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>A <span class="emphasis"><em>check_hpjd</em></span> command definition has been added to the <span class="emphasis"><em>commands.cfg</em></span> file.
-      This allows you to use the <span class="emphasis"><em>check_hpjd</em></span> plugin to monitor network printers.</p>
-    </li>
+        <p>A <span class="emphasis"><em>check_hpjd</em></span> command definition has been added to the <span class="emphasis"><em>commands.cfg</em></span> file. This allows
+        you to use the <span class="emphasis"><em>check_hpjd</em></span> plugin to monitor network printers.</p>
+      </li>
 <li class="listitem">
-      <p>A printer host template (called <span class="emphasis"><em>generic-printer</em></span>) has already been created in the
-      <span class="emphasis"><em>templates.cfg</em></span> file. This allows you to add new printer host definitions in a simple manner.</p>
-    </li>
+        <p>A printer host template (called <span class="emphasis"><em>generic-printer</em></span>) has already been created in the
+        <span class="emphasis"><em>templates.cfg</em></span> file. This allows you to add new printer host definitions in a simple manner.</p>
+      </li>
 </ul></div>
 
-  <p>The above-mentioned config files can be found in the <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> directory. You
-  can modify the definitions in these and other definitions to suit your needs better if you'd like. However, we'd recommend
-  waiting until you're more familiar with configuring Icinga before doing so. For the time being, just follow the
-  directions outlined below and you'll be monitoring your network printers in no time.</p>
-
+    <p>The above-mentioned config files can be found in the <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> directory. You can modify
+    the definitions in these and other definitions to suit your needs better if you'd like. However, we'd recommend waiting until you're
+    more familiar with configuring Icinga before doing so. For the time being, just follow the directions outlined below and you'll
+    be monitoring your network printers in no time.</p>
   </div>
 
   <div class="section" title="2.15.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="prerequisites"></a>2.15.5. Prerequisites</h3></div></div></div>
-  	
+    
 
-  <p>The first time you configure Icinga to monitor a network printer, you'll need to do a bit of extra work. Remember,
-  you only need to do this for the *first* printer you monitor.</p>
+    <p>The first time you configure Icinga to monitor a network printer, you'll need to do a bit of extra work. Remember, you only
+    need to do this for the *first* printer you monitor.</p>
 
-  <p>Edit the main Icinga config file.</p>
+    <p>Edit the main Icinga config file.</p>
 
-  <pre class="screen">#&gt; vi /usr/local/icinga/etc/icinga.cfg</pre>
+    <pre class="screen">#&gt; vi /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p>Remove the leading hash (#) sign from the following line in the main configuration file:</p>
+    <p>Remove the leading hash (#) sign from the following line in the main configuration file:</p>
 
-  <pre class="programlisting"> #cfg_file=/usr/local/icinga/etc/objects/printer.cfg</pre>
+    <pre class="programlisting"> #cfg_file=/usr/local/icinga/etc/objects/printer.cfg</pre>
 
-  <p>Save the file and exit.</p>
+    <p>Save the file and exit.</p>
 
-  <p>What did you just do? You told Icinga to look to the <span class="emphasis"><em>/usr/local/icinga/etc/objects/printer.cfg</em></span>
-  to find additional object definitions. That's where you'll be adding host and service definitions for the printer. That
-  configuration file already contains some sample host, hostgroup, and service definitions. For the *first* printer you monitor,
-  you can simply modify the sample host and service definitions in that file, rather than creating new ones.</p>
-
+    <p>What did you just do? You told Icinga to look to the <span class="emphasis"><em>/usr/local/icinga/etc/objects/printer.cfg</em></span> to find
+    additional object definitions. That's where you'll be adding host and service definitions for the printer. That configuration file
+    already contains some sample host, hostgroup, and service definitions. For the *first* printer you monitor, you can simply modify the
+    sample host and service definitions in that file, rather than creating new ones.</p>
   </div>
 
   <div class="section" title="2.15.6. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="configicinga"></a>2.15.6. Configuring Icinga</h3></div></div></div>
-  	
+    
 
-  <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new
-  printer.</p>
+    <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new printer.</p>
 
-  <p>Open the <span class="emphasis"><em>printer.cfg</em></span> file for editing.</p>
+    <p>Open the <span class="emphasis"><em>printer.cfg</em></span> file for editing.</p>
 
-  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/printer.cfg</pre>
+    <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/printer.cfg</pre>
 
-  <p>Add a new <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> definition for the networked printer that you're going to
-  monitor. If this is the *first* printer you're monitoring, you can simply modify the sample host definition in
-  <span class="emphasis"><em>printer.cfg</em></span>. Change the <span class="emphasis"><em>host_name</em></span>, <span class="emphasis"><em>alias</em></span>, and
-  <span class="emphasis"><em>address</em></span> fields to appropriate values for the printer.</p>
+    <p>Add a new <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> definition for the networked printer that you're going to monitor. If
+    this is the *first* printer you're monitoring, you can simply modify the sample host definition in <span class="emphasis"><em>printer.cfg</em></span>.
+    Change the <span class="emphasis"><em>host_name</em></span>, <span class="emphasis"><em>alias</em></span>, and <span class="emphasis"><em>address</em></span> fields to appropriate values for
+    the printer.</p>
 
-  <pre class="programlisting"> define host{
+    <pre class="programlisting"> define host{
         use             generic-printer ; Inherit default values from a template
         host_name       hplj2605dn      ; The name we're giving to this printer
         alias           HP LaserJet 2605dn      ; A longer name associated with the printer
@@ -227,26 +222,25 @@
         hostgroups      allhosts                ; Host groups this printer is associated with
         }</pre>
 
-  <p>Now you can add some service definitions (to the same configuration file) to monitor different aspects of the printer. If
-  this is the *first* printer you're monitoring, you can simply modify the sample service definition in
-  <span class="emphasis"><em>printer.cfg</em></span>.</p>
+    <p>Now you can add some service definitions (to the same configuration file) to monitor different aspects of the printer. If this is
+    the *first* printer you're monitoring, you can simply modify the sample service definition in <span class="emphasis"><em>printer.cfg</em></span>.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Replace "<span class="emphasis"><em>hplj2605dn</em></span>" in the example definitions below with the name you specified in the
-    <span class="emphasis"><em>host_name</em></span> directive of the host definition you just added.</p>
-  </td></tr>
+      <p>Replace "<span class="emphasis"><em>hplj2605dn</em></span>" in the example definitions below with the name you specified in the
+      <span class="emphasis"><em>host_name</em></span> directive of the host definition you just added.</p>
+    </td></tr>
 </table></div>
 
-  <p>Add the following service definition to check the status of the printer. The service uses the
-  <span class="emphasis"><em>check_hpjd</em></span> plugin to check the status of the printer every 10 minutes by default. The SNMP community string
-  used to query the printer is "public" in this example.</p>
+    <p>Add the following service definition to check the status of the printer. The service uses the <span class="emphasis"><em>check_hpjd</em></span>
+    plugin to check the status of the printer every 10 minutes by default. The SNMP community string used to query the printer is "public"
+    in this example.</p>
 
-  <pre class="programlisting"> define service{
+    <pre class="programlisting"> define service{
         use                   generic-service   ; Inherit values from a template
         host_name             hplj2605dn        ; The name of the host the service is associated with
         service_description   Printer Status    ; The service description
@@ -255,10 +249,10 @@
         retry_interval        1       ; Re-check every minute until its final/hard state is determined
         }</pre>
 
-  <p>Add the following service definition to ping the printer every 10 minutes by default. This is useful for monitoring RTA,
-  packet loss, and general network connectivity.</p>
+    <p>Add the following service definition to ping the printer every 10 minutes by default. This is useful for monitoring RTA, packet
+    loss, and general network connectivity.</p>
 
-  <pre class="programlisting"> define service{
+    <pre class="programlisting"> define service{
         use                     generic-service
         host_name               hplj2605dn
         service_description     PING
@@ -267,21 +261,20 @@
         retry_interval          1
         }</pre>
 
-  <p>Save the file.</p>
-
+    <p>Save the file.</p>
   </div>
 
   <div class="section" title="2.15.7. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="restarticinga"></a>2.15.7. Restarting Icinga</h3></div></div></div>
-  	
+    
 
-  <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>printer.cfg</em></span> file, you're ready to start
-  monitoring the printer. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart Icinga</a>.</p>
+    <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>printer.cfg</em></span> file, you're ready to start
+    monitoring the printer. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart Icinga</a>.</p>
 
-  <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
-  you don't (re)start Icinga until the verification process completes without any errors!</p>
-</div>
+    <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that you don't
+    (re)start Icinga until the verification process completes without any errors!</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
@@ -300,6 +293,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -151,9 +151,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="idp181210048"></a>
+  <a class="indexterm" name="idp172586640"></a>
 
-  <a class="indexterm" name="idp181211264"></a>
+  <a class="indexterm" name="idp172587776"></a>
 
   <div class="section" title="3.4.1. Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -842,9 +842,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181322464"></a>
+    <a class="indexterm" name="idp172698480"></a>
 
-    <a class="indexterm" name="idp181523856"></a>
+    <a class="indexterm" name="idp172899952"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgruppen-Definition">
@@ -977,9 +977,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181588080"></a>
+    <a class="indexterm" name="idp172964352"></a>
 
-    <a class="indexterm" name="idp181589088"></a>
+    <a class="indexterm" name="idp172965520"></a>
   </div>
 
   <div class="section" title="3.4.3. Service-Definition">
@@ -1614,9 +1614,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181697760"></a>
+    <a class="indexterm" name="idp173073200"></a>
 
-    <a class="indexterm" name="idp181885136"></a>
+    <a class="indexterm" name="idp173261312"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegruppen-Definition">
@@ -1755,9 +1755,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp181949760"></a>
+    <a class="indexterm" name="idp173325568"></a>
 
-    <a class="indexterm" name="idp181950768"></a>
+    <a class="indexterm" name="idp173326576"></a>
   </div>
 
   <div class="section" title="3.4.5. Kontakt-Definition">
@@ -2046,9 +2046,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182100384"></a>
+    <a class="indexterm" name="idp173476000"></a>
 
-    <a class="indexterm" name="idp182101264"></a>
+    <a class="indexterm" name="idp173477008"></a>
   </div>
 
   <div class="section" title="3.4.6. Kontaktgruppen-Definition">
@@ -2145,9 +2145,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182146896"></a>
+    <a class="indexterm" name="idp173522800"></a>
 
-    <a class="indexterm" name="idp182147904"></a>
+    <a class="indexterm" name="idp173523936"></a>
   </div>
 
   <div class="section" title="3.4.7. Zeitfenster-Definition (timeperiod)">
@@ -2300,9 +2300,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182198832"></a>
+    <a class="indexterm" name="idp173576624"></a>
 
-    <a class="indexterm" name="idp182201648"></a>
+    <a class="indexterm" name="idp173577632"></a>
   </div>
 
   <div class="section" title="3.4.8. Befehls-Definition (command)">
@@ -2399,9 +2399,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182248832"></a>
+    <a class="indexterm" name="idp173624560"></a>
 
-    <a class="indexterm" name="idp182249840"></a>
+    <a class="indexterm" name="idp173625568"></a>
   </div>
 
   <div class="section" title="3.4.9. Service-Abhängigkeits-Definition (servicedependency)">
@@ -2439,6 +2439,11 @@
 <td><p></p></td>
 <td><p>dependent_hostgroup_name</p></td>
 <td>hostgroup_name</td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>dependent_servicegroup_name</td>
+<td><p>servicegroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -2521,8 +2526,13 @@
             dependent_hostgroup-Direktive kann statt der (oder zusätzlich zur) dependent_host-Direktive benutzt werden.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>dependent_servicegroup</strong></span>:</p></td>
+<td><p>Diese Direktive wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegruppe(n)</a> anzugeben, zu der/denen die <span class="emphasis"><em>abhängigen</em></span>
+            Services gehören. Mehrere Servicegruppen werden durch Kommata voneinander getrennt.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>dependent_service_description</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um die <span class="emphasis"><em>Beschreibung</em></span> des <span class="emphasis"><em>abhängigen</em></span><a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a> anzugeben.</p></td>
+<td><p>Diese Direktive wird benutzt, um die <span class="emphasis"><em>Beschreibung</em></span> des <span class="emphasis"><em>abhängigen</em></span> <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a> anzugeben.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_name</strong></span>:</p></td>
@@ -2585,9 +2595,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182350048"></a>
+    <a class="indexterm" name="idp173732240"></a>
 
-    <a class="indexterm" name="idp182351328"></a>
+    <a class="indexterm" name="idp173733248"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceeskalations-Definition">
@@ -2867,9 +2877,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182488784"></a>
+    <a class="indexterm" name="idp173870528"></a>
 
-    <a class="indexterm" name="idp182489792"></a>
+    <a class="indexterm" name="idp173871536"></a>
   </div>
 
   <div class="section" title="3.4.11. Host-Abhängigkeits-Definition (hostdependency)">
@@ -3022,9 +3032,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182572432"></a>
+    <a class="indexterm" name="idp173955040"></a>
 
-    <a class="indexterm" name="idp182573440"></a>
+    <a class="indexterm" name="idp173956048"></a>
   </div>
 
   <div class="section" title="3.4.12. Host-Eskalations-Definition">
@@ -3257,9 +3267,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182684464"></a>
+    <a class="indexterm" name="idp174066544"></a>
 
-    <a class="indexterm" name="idp182685472"></a>
+    <a class="indexterm" name="idp174067552"></a>
   </div>
 
   <div class="section" title="3.4.13. erweiterte Hostinformations-Definition (hostextinfo)">
@@ -3455,9 +3465,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182776576"></a>
+    <a class="indexterm" name="idp174156224"></a>
 
-    <a class="indexterm" name="idp182777680"></a>
+    <a class="indexterm" name="idp174159296"></a>
   </div>
 
   <div class="section" title="3.4.14. erweiterte Serviceinformations-Definition (serviceextinfo)">
@@ -3630,9 +3640,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp182858144"></a>
+    <a class="indexterm" name="idp174240336"></a>
 
-    <a class="indexterm" name="idp182859360"></a>
+    <a class="indexterm" name="idp174241552"></a>
   </div>
 
   <div class="section" title="3.4.15. Module-Definition">
@@ -3761,7 +3771,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp182905536"></a>
+    <a class="indexterm" name="idp174287520"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -3781,6 +3791,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

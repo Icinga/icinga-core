@@ -2,7 +2,7 @@
  * LOG2IDO.C - Sends archived logs files to IDO2DB daemon
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 

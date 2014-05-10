@@ -3,7 +3,7 @@
 -- oracle.sql
 -- DB definition for Oracle
 --
--- Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
 --
 -- requires ocilib, oracle client (instantclient or full client/server) libs+sdk to work
 -- requires Oracle 10+ on server, 
@@ -17,7 +17,7 @@
 -- -- --------------------------------------------------------
 */
 
-DEFINE ICINGA_VERSION=1.11.0
+DEFINE ICINGA_VERSION=1.11.3
 
 -- -----------------------------------------
 -- set defines

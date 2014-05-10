@@ -2,7 +2,7 @@
 -- mysql.sql
 -- DB definition for MySQL
 --
--- Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 
@@ -600,6 +600,9 @@ CREATE TABLE IF NOT EXISTS icinga_hostgroups (
   config_type smallint default 0,
   hostgroup_object_id bigint unsigned default 0,
   alias TEXT character set latin1  default '',
+  notes TEXT character set latin1  default NULL,
+  notes_url TEXT character set latin1  default NULL,
+  action_url TEXT character set latin1  default NULL,
   PRIMARY KEY  (hostgroup_id),
   UNIQUE KEY instance_id (instance_id,hostgroup_object_id)
 ) ENGINE=InnoDB  COMMENT='Hostgroup definitions';
@@ -744,6 +747,7 @@ CREATE TABLE IF NOT EXISTS icinga_hoststatus (
   normal_check_interval double  default '0',
   retry_check_interval double  default '0',
   check_timeperiod_object_id bigint unsigned default 0,
+  is_reachable smallint default 0,
   PRIMARY KEY  (hoststatus_id),
   UNIQUE KEY object_id (host_object_id)
 ) ENGINE=InnoDB  COMMENT='Current host status information';
@@ -1086,6 +1090,9 @@ CREATE TABLE IF NOT EXISTS icinga_servicegroups (
   config_type smallint default 0,
   servicegroup_object_id bigint unsigned default 0,
   alias TEXT character set latin1  default '',
+  notes TEXT character set latin1  default NULL,
+  notes_url TEXT character set latin1  default NULL,
+  action_url TEXT character set latin1  default NULL,
   PRIMARY KEY  (servicegroup_id),
   UNIQUE KEY instance_id (instance_id,config_type,servicegroup_object_id)
 ) ENGINE=InnoDB  COMMENT='Servicegroup definitions';
@@ -1224,6 +1231,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicestatus (
   normal_check_interval double  default '0',
   retry_check_interval double  default '0',
   check_timeperiod_object_id bigint unsigned default 0,
+  is_reachable smallint default 0,
   PRIMARY KEY  (servicestatus_id),
   UNIQUE KEY object_id (service_object_id)
 ) ENGINE=InnoDB  COMMENT='Current service status information';
@@ -1593,6 +1601,6 @@ CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, co
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.11.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.11.0', modify_time=NOW();
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.11.3', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.11.3', modify_time=NOW();
 
 

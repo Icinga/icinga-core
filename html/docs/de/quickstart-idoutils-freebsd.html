@@ -436,21 +436,15 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-     
-
     <p>Unter normalen Umständen gibt es im <code class="filename">modules</code>-Unterverzeichnis bereits die folgende module-Definition, so dass
-    Sie keine Änderungen an der Hauptkonfigurationsdatei vornehmen müssen.</p>
-
-     
-
-    <pre class="screen"> define module{
+    Sie keine Änderungen an der Hauptkonfigurationsdatei vornehmen müssen. </p>
+<pre class="programlisting"> define module{
         module_name    ido_mod
         path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
-
-     Das bedeutet auch, dass ein entsprechender broker_module-Eintrag nicht aktiviert werden darf! 
+<p> Das bedeutet auch, dass ein entsprechender broker_module-Eintrag nicht aktiviert werden darf!</p>
   </td></tr>
 </table></div>
 
@@ -471,7 +465,7 @@
   </td></tr>
 </table></div>
 
-            <pre class="screen"> # mysql -u root -p
+  <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
@@ -517,9 +511,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei <code class="filename">htpasswd.users</code>, die Anmeldeinformationen
-    für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen können. Das Passwort lautet
-    <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei <code class="filename">htpasswd.users</code>,
+    die Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen
+    können. Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
   </td></tr>
 </table></div>
 
@@ -643,9 +637,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp178099072"></a>
+  <a class="indexterm" name="idp169452432"></a>
 
-  <a class="indexterm" name="idp178100976"></a>
+  <a class="indexterm" name="idp169452560"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -664,6 +658,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -47,6 +47,8 @@
 </dl></div>
   
 
+  <a class="indexterm" name="idp183436096"></a>
+
   <div class="section" title="7.23.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.23.1. Einführung</h3></div></div></div>
@@ -68,19 +70,13 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>
-          <span class="emphasis"><em>check_interval</em></span>
-        </p>
+        <p><span class="emphasis"><em>check_interval</em></span></p>
       </li>
 <li class="listitem">
-        <p>
-          <span class="emphasis"><em>retry_interval</em></span>
-        </p>
+        <p><span class="emphasis"><em>retry_interval</em></span></p>
       </li>
 <li class="listitem">
-        <p>
-          <span class="emphasis"><em>check_period</em></span>
-        </p>
+        <p><span class="emphasis"><em>check_period</em></span></p>
       </li>
 </ul></div>
 
@@ -89,32 +85,17 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>
-          <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">
-            <span class="emphasis"><em>service_inter_check_delay_method</em></span>
-          </a>
-        </p>
+        <p><a class="link" href="configmain.html#configmain-service_inter_check_delay_method"> <span class="emphasis"><em>service_inter_check_delay_method</em></span>
+        </a></p>
       </li>
 <li class="listitem">
-        <p>
-          <a class="link" href="configmain.html#configmain-service_interleave_factor">
-            <span class="emphasis"><em>service_interleave_factor</em></span>
-          </a>
-        </p>
+        <p><a class="link" href="configmain.html#configmain-service_interleave_factor"> <span class="emphasis"><em>service_interleave_factor</em></span> </a></p>
       </li>
 <li class="listitem">
-        <p>
-          <a class="link" href="configmain.html#configmain-max_concurrent_checks">
-            <span class="emphasis"><em>max_concurrent_checks</em></span>
-          </a>
-        </p>
+        <p><a class="link" href="configmain.html#configmain-max_concurrent_checks"> <span class="emphasis"><em>max_concurrent_checks</em></span> </a></p>
       </li>
 <li class="listitem">
-        <p>
-          <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">
-            <span class="emphasis"><em>check_result_reaper_frequency</em></span>
-          </a>
-        </p>
+        <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency"> <span class="emphasis"><em>check_result_reaper_frequency</em></span> </a></p>
       </li>
 </ul></div>
 
@@ -130,6 +111,8 @@
 
     <p>Wir werden nun mehr ins Detail gehen, wie all diese Optionen die Service-Prüfungsplaung beeinflussen. Lassen Sie uns zuerst
     betrachten, wie Services beim ersten (Neu-)Start von Icinga eingeplant werden...</p>
+
+    <a class="indexterm" name="idp183456320"></a>
   </div>
 
   <div class="section" title="7.23.3. Initiale Planung">
@@ -162,6 +145,8 @@
       starten, wenn diese Option benutzt wird.</p>
     </td></tr>
 </table></div>
+
+    <a class="indexterm" name="idp183463856"></a>
   </div>
 
   <div class="section" title="7.23.4. Inter-Check-Verzögerung (inter-check delay)">
@@ -178,9 +163,8 @@
     <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_inter_check_delay_method</em></span> angeben, wird
     Icinga den Wert für die inter-check-Verzögerung wie folgt berechnen:</p>
 
-    <p>
-      <span class="emphasis"><em>inter-check-Verzögerung = (durchschnittl. Check-Intervall für alle Services) / (Gesamtzahl der Services)</em></span>
-    </p>
+    <p><span class="emphasis"><em>inter-check-Verzögerung = (durchschnittl. Check-Intervall für alle Services) / (Gesamtzahl der
+    Services)</em></span></p>
 
     <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben 1.000 Services mit einem normalen Prüfintervall von fünf Minuten (natürlich werden
     einige Services mit anderen Intervallen geprüft, aber wir vereinfachen an dieser Stelle...). Die gesamte Check-Intervall-Zeit ist 5.000
@@ -190,6 +174,8 @@
     werden. Durch die Verteilung alle 0,3 Sekunden können wir erreichen, dass Icinga jede Sekunde drei Service-Prüfungen einplant
     und/oder ausführt. Durch die gleichmäßige Aufteilung über die Zeit können wir hoffen, dass die Last auf dem lokalen Rechner, auf dem
     Icinga läuft, in etwa gleich bleibt.</p>
+
+    <a class="indexterm" name="idp183471392"></a>
   </div>
 
   <div class="section" title="7.23.5. Service-Verschachtelung (service interleaving)">
@@ -211,9 +197,7 @@
     <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_interleave_factor</em></span> angeben, wird Icinga den
     Wert für den Verschachtelungsfaktor wie folgt berechnen:</p>
 
-    <p>
-      <span class="emphasis"><em>interleave factor = ceil ( Gesamtzahl der Services / Gesamtzahl der Hosts )</em></span>
-    </p>
+    <p><span class="emphasis"><em>interleave factor = ceil ( Gesamtzahl der Services / Gesamtzahl der Hosts )</em></span></p>
 
     <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben insgesamt 1.000 Services und 150 Hosts, die Sie überwachen. Icinga würde
     einen Verschachtelungsfaktor von 7 berechnen (1000 / 150 = 6,6; aufgerundet 7). Das bedeutet, dass Icinga bei der initialen
@@ -234,48 +218,26 @@
 </colgroup>
 <tbody>
 <tr>
-<td>
-              <p>nicht verschachtelte Prüfungen</p>
-            </td>
-<td>
-              <p>verschachtelte Prüfungen</p>
-            </td>
+<td><p>nicht verschachtelte Prüfungen</p></td>
+<td><p>verschachtelte Prüfungen</p></td>
 </tr>
 <tr>
-<td align="left" valign="middle">
-              <p>
-                <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span>
-              </p>
-            </td>
-<td align="left" valign="middle">
-              <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span>
-              </p>
-            </td>
+<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span> </p></td>
+<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span> </p></td>
 </tr>
 <tr>
-<td align="left" valign="middle">
-              <p>
-                <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span>
-              </p>
-            </td>
-<td align="left" valign="middle">
-              <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span>
-              </p>
-            </td>
+<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span> </p></td>
+<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span> </p></td>
 </tr>
 <tr>
 <td> </td>
-<td align="left" valign="middle">
-              <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span>
-              </p>
-            </td>
+<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span> </p></td>
 </tr>
 </tbody>
 </table>
     </div>
+
+    <a class="indexterm" name="idp183504672"></a>
   </div>
 
   <div class="section" title="7.23.6. Maximale Zahl gleichzeitiger Service-Prüfungen">
@@ -314,10 +276,8 @@
     <p>Dann benutzen Sie die folgende Berechnung, um einen geeigneten Wert für die maximale Zahl von gleichzeitig erlaubten Prüfungen zu
     errechnen...</p>
 
-    <p>
-      <span class="emphasis"><em>max. Anzahl gleichzeitiger Prüfungen = ceil( max( check result reaper frequency , average check execution time ) /
-      inter-check delay )</em></span>
-    </p>
+    <p><span class="emphasis"><em>max. Anzahl gleichzeitiger Prüfungen = ceil( max( check result reaper frequency , average check execution time ) /
+    inter-check delay )</em></span></p>
 
     <p>Die errechnete Zahl sollte einen guten Ausgangspunkt für die <span class="emphasis"><em>max_concurrent_checks</em></span>-Variable bieten. Es kann
     sein, dass Sie diesen Wert noch ein wenig erhöhen müssen, falls Service-Prüfungen nach wie vor nicht zur geplanten Zeit ausgeführt
@@ -328,9 +288,7 @@
     einen ungefähren Wert für die maximale Zahl von gleichzeitigen Prüfungen wie folgt berechnen (wir nehmen an, dass die durchschnittliche
     Ausführungszeit für Service-Prüfungen kleiner als zehn Sekunden ist) ...</p>
 
-    <p>
-      <span class="emphasis"><em>max. Zahl gleichzeitiger Prüfungen = ceil( 10 / 0.137 )</em></span>
-    </p>
+    <p><span class="emphasis"><em>max. Zahl gleichzeitiger Prüfungen = ceil( 10 / 0.137 )</em></span></p>
 
     <p>In diesem Fall ist der berechnete Wert 73. Das ergibt Sinn, denn Icinga wird etwas mehr als sieben neue Service-Prüfungen
     pro Sekunde ausführen und es wird Service-Prüfergebnisse nur alle zehn Sekunden verarbeiten. Das bedeutet, dass es zu einer beliebigen
@@ -339,6 +297,8 @@
     Icinga Service-Prüfergebnisse verarbeitet bzw. andere Dinge tut. Sie werden offensichtlich ein wenig testen und verändern müssen,
     damit alles reibungslos funktioniert, aber mit diesen Informationen sollten Sie ein paar generelle Richtlinien an der Hand
     haben...</p>
+
+    <a class="indexterm" name="idp183521872"></a>
   </div>
 
   <div class="section" title="7.23.7. Zeitbeschränkungen">
@@ -367,6 +327,8 @@
       Dinge.</p>
     </td></tr>
 </table></div>
+
+    <a class="indexterm" name="idp183529760"></a>
   </div>
 
   <div class="section" title="7.23.8. Normale Planung">
@@ -378,6 +340,8 @@
     Netzwerküberwachungsprogramm. Wie auch immer, wenn die Dinge reibungslos laufen und ein Service in einem OK-Zustand ist, nennen wir das
     "normal". Service-Prüfungen werden normalerweise in der Häufigkeit geplant, die in der Option <span class="emphasis"><em>check_interval</em></span>
     angegeben ist. Das war's. Einfach, oder?</p>
+
+    <a class="indexterm" name="idp183533792"></a>
   </div>
 
   <div class="section" title="7.23.9. Planung bei Problemen">
@@ -402,6 +366,8 @@
     1 zurücksetzen. Da der Service in einem harten nicht-OK-Status ist, wird die Service-Prüfung mit der normalen Häufigkeit geplant, die in
     der Option <span class="emphasis"><em>check_interval</em></span> angegeben ist, statt des Wertes aus der Option
     <span class="emphasis"><em>retry_interval</em></span>.</p>
+
+    <a class="indexterm" name="idp183544048"></a>
   </div>
 
   <div class="section" title="7.23.10. Host-Prüfungen">
@@ -412,6 +378,8 @@
     <p>Ein Fall, wo Icinga den Status eines Hosts prüft, ist, wenn ein Service-Prüfung einen nicht-OK-Zustand ergibt.
     Icinga prüft den Host, um zu entscheiden, ob der Host "up" ist oder nicht, bzw. ob der Host "up", "down" oder "unreachable" ist.
     Wenn die erste Host-Prüfung einen nicht-OK-Zustand ergibt, wird Icinga Host-Prüfungen wie bei den Services durchführen.</p>
+
+    <a class="indexterm" name="idp183547552"></a>
   </div>
 
   <div class="section" title="7.23.11. Planungsverzögerungen">
@@ -423,6 +391,8 @@
     werden inIcinga als Ereignisse mit niedriger Priorität angesehen, so dass sie verzögert werden können, wenn Ereignisse mit
     höherer Priorität ausgeführt werden müssen. Beispiel von Ereignissen mit hoher Priorität umfassen Log-Datei-Rotationen, externe
     Befehlsprüfungen und Prüfergebnis-Ernteereignisse.</p>
+
+    <a class="indexterm" name="idp183551280"></a>
   </div>
 
   <div class="section" title="7.23.12. Planungsbeispiel">
@@ -434,9 +404,7 @@
     verstehen sein, deshalb schauen wir uns ein einfaches Beispiel an. Betrachten wir das folgende Diagramm - wir werden uns darauf
     beziehen, während wir die Dinge erklären.</p>
 
-    <p>
-      <span class="inlinemediaobject"><img src="../images/checktiming.png"></span>
-    </p>
+    <p><span class="inlinemediaobject"><img src="../images/checktiming.png"></span></p>
 
     <p>Zuallererst sind <span class="bold"><strong>X</strong></span><sub>n</sub> Prüfergebnis-Ernteereignisse, die in der Häufigkeit
     geplant werden, die durch die Option <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> in
@@ -464,6 +432,8 @@
     durch das Anpassen der nächsten Prüfzeit ausgleichen. Das wird gemacht, damit Icinga nicht verrückt wird beim Versuch, mit den
     Service-Prüfungen Schritt zu halten, wenn eine hohe Last auftritt. Außerdem, wie sinnvoll ist es, etwas in der Vergangenheit zu
     planen...?</p>
+
+    <a class="indexterm" name="idp183570528"></a>
   </div>
 
   <div class="section" title="7.23.13. Service-Definitionsoptionen, die die Planung beeinflussen">
@@ -492,6 +462,8 @@
     niemals mit dem Intervall geprüft, das in der <span class="emphasis"><em>retry_interval</em></span>-Option angegeben ist. Statt dessen wird er sofort in
     einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und anschließend mit dem in der Option <span class="emphasis"><em>check_interval</em></span>
     festgelegten Intervall geprüft.</p>
+
+    <a class="indexterm" name="idp183584432"></a>
   </div>
 
   <div class="section" title="7.23.14. TODO">
@@ -499,42 +471,14 @@
 <a name="todo"></a>7.23.14. TODO</h3></div></div></div>
     
 
-    <p>
-      <span class="bold"><strong><a name="checkscheduling-host_inter_check_delay"></a>Host-Prüfungs-Direktiven</strong></span>
-    </p>
+    <p><span class="bold"><strong><a name="hostintercheckdelay"></a>Host-Prüfungs-Direktiven</strong></span></p>
 
     <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
 
     <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
+
+    <a class="indexterm" name="idp183589440"></a>
   </div>
-
-  <a class="indexterm" name="idp192193888"></a>
-
-  <a class="indexterm" name="idp192194016"></a>
-
-  <a class="indexterm" name="idp192197104"></a>
-
-  <a class="indexterm" name="idp192197232"></a>
-
-  <a class="indexterm" name="idp192200640"></a>
-
-  <a class="indexterm" name="idp192202256"></a>
-
-  <a class="indexterm" name="idp192203936"></a>
-
-  <a class="indexterm" name="idp192205488"></a>
-
-  <a class="indexterm" name="idp192207072"></a>
-
-  <a class="indexterm" name="idp192208704"></a>
-
-  <a class="indexterm" name="idp192210528"></a>
-
-  <a class="indexterm" name="idp192212048"></a>
-
-  <a class="indexterm" name="idp192213680"></a>
-
-  <a class="indexterm" name="idp192215312"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -553,6 +497,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

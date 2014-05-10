@@ -30,7 +30,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="adaptive"></a>7.19. <a name="adaptive_monitoring"></a>Adaptive Monitoring</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.19.1. <a href="adaptive.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.19.1. <a href="adaptive.html#introduction_adaptive">Introduction</a></span></dt>
 <dt><span class="section">7.19.2. <a href="adaptive.html#changed">What Can Be Changed?</a></span></dt>
 <dt><span class="section">7.19.3. <a href="adaptive.html#extcommandsadaptive">External Commands For Adaptive Monitoring</a></span></dt>
 </dl></div>
@@ -38,106 +38,108 @@
 
   <div class="section" title="7.19.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>7.19.1. Introduction</h3></div></div></div>
-	  
+<a name="introduction_adaptive"></a>7.19.1. Introduction</h3></div></div></div>
+    
 
-  <p>Icinga allows you to change certain commands and host and service check attributes during runtime. I'll refer to
-  this feature as "adaptive monitoring". Please note that the adaptive monitoring features found in Icinga will probably
-  not be of much use to 99% of users, but they do allow you to do some neat things.</p>
-
+    <p>Icinga allows you to change certain commands and host and service check attributes during runtime. I'll refer to this
+    feature as "adaptive monitoring". Please note that the adaptive monitoring features found in Icinga will probably not be of much
+    use to 99% of users, but they do allow you to do some neat things.</p>
   </div>
+
   <div class="section" title="7.19.2. What Can Be Changed?">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changed"></a>7.19.2. What Can Be Changed?</h3></div></div></div>
-	  
+    
 
-  <p>The following service check attributes can be changed during runtime:</p>
+    <p>The following service check attributes can be changed during runtime:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Check command (and command arguments)</p>
-    </li>
+        <p>Check command (and command arguments)</p>
+      </li>
 <li class="listitem">
-      <p>Check interval</p>
-    </li>
+        <p>Check interval</p>
+      </li>
 <li class="listitem">
-      <p>Max check attempts</p>
-    </li>
+        <p>Max check attempts</p>
+      </li>
 <li class="listitem">
-      <p>Check timeperiod</p>
-    </li>
+        <p>Check timeperiod</p>
+      </li>
 <li class="listitem">
-      <p>Event handler command (and command arguments)</p>
-    </li>
+        <p>Event handler command (and command arguments)</p>
+      </li>
 </ul></div>
 
-  <p>The following host check attributes can be changed during runtime:</p>
+    <p>The following host check attributes can be changed during runtime:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Check command (and command arguments)</p>
-    </li>
+        <p>Check command (and command arguments)</p>
+      </li>
 <li class="listitem">
-      <p>Check interval</p>
-    </li>
+        <p>Check interval</p>
+      </li>
 <li class="listitem">
-      <p>Max check attempts</p>
-    </li>
+        <p>Max check attempts</p>
+      </li>
 <li class="listitem">
-      <p>Check timeperiod</p>
-    </li>
+        <p>Check timeperiod</p>
+      </li>
 <li class="listitem">
-      <p>Event handler command (and command arguments)</p>
-    </li>
+        <p>Event handler command (and command arguments)</p>
+      </li>
 </ul></div>
 
-  <p>The following global attributes can be changed during runtime:</p>
+    <p>The following global attributes can be changed during runtime:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Global host event handler command (and command arguments)</p>
-    </li>
+        <p>Global host event handler command (and command arguments)</p>
+      </li>
 <li class="listitem">
-      <p>Global service event handler command (and command arguments)</p>
-    </li>
+        <p>Global service event handler command (and command arguments)</p>
+      </li>
 </ul></div>
-
   </div>
 
   <div class="section" title="7.19.3. External Commands For Adaptive Monitoring">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="extcommandsadaptive"></a>7.19.3. External Commands For Adaptive Monitoring</h3></div></div></div>
-	  
+    
 
-  <p>In order to change global or host- or service-specific attributes during runtime, you must submit the appropriate <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> to Icinga via the <a class="link" href="configmain.html#configmain-command_file">external command
-  file</a>. The table below lists the different attributes that may be changed during runtime, along with the external command
-  to accomplish the job.</p>
+    <p>In order to change global or host- or service-specific attributes during runtime, you must submit the appropriate <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> to Icinga via the <a class="link" href="configmain.html#configmain-command_file">external command
+    file</a>. The table below lists the different attributes that may be changed during runtime, along with the external command to
+    accomplish the job.</p>
 
-  <p>A full listing of external commands that can be used for adaptive monitoring can be found in the <a class="link" href="extcommands2.html" title="7.2. List of External Commands">list of external commands</a>.</p>
+    <p>A full listing of external commands that can be used for adaptive monitoring can be found in the <a class="link" href="extcommands2.html" title="7.2. List of External Commands">list
+    of external commands</a>.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>When changing check commands, check timeperiods, or event handler commands, it is important to note that the new
-        values for these options must have been defined before Icinga was started. Any request to change a command or
-        timeperiod to one which had not been defined when Icinga was started is ignored.</p>
-      </li>
+          <p>When changing check commands, check timeperiods, or event handler commands, it is important to note that the new values for
+          these options must have been defined before Icinga was started. Any request to change a command or timeperiod to one which
+          had not been defined when Icinga was started is ignored.</p>
+        </li>
 <li class="listitem">
-        <p>You can specify command arguments along with the actual command name - just separate individual arguments from the
-        command name (and from each other) using bang (!) characters. More information on how arguments in command definitions are
-        processed during runtime can be found in the documentation on <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a>.</p>
-      </li>
+          <p>You can specify command arguments along with the actual command name - just separate individual arguments from the command
+          name (and from each other) using bang (!) characters. More information on how arguments in command definitions are processed
+          during runtime can be found in the documentation on <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a>.</p>
+        </li>
 </ul></div>
-  </td></tr>
+    </td></tr>
 </table></div>
-  <a class="indexterm" name="idp192047680"></a>
-  <a class="indexterm" name="idp192046384"></a>
-</div>
+
+    <a class="indexterm" name="idp180685824"></a>
+
+    <a class="indexterm" name="idp180687040"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
@@ -156,6 +158,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

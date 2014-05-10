@@ -77,7 +77,8 @@
   <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
   started.</p>
 
-  <p>This guide will give you examples for installation on <a class="link" href="" target="_top">FreeBSD</a> 8.1-RELEASE. Thanks to <a class="link" href="http://www.monitoring-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> for the adapted instructions.</p>
+  <p>This guide will give you examples for installation on <a class="link" href="" target="_top">FreeBSD</a> 8.1-RELEASE. Thanks to <a class="link" href="http://www.monitoring-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> for the adapted
+  instructions.</p>
 
   <p>Later distributions of FreeBSD may inherit from these examples.</p>
 
@@ -462,7 +463,7 @@
       </td></tr>
 </table></div>
 
-            <pre class="screen"> # mysql -u root -p
+      <pre class="screen"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
 
@@ -524,9 +525,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.9 the command 'make install-webconf-auth' additionally installs the file <code class="filename">htpasswd.users</code> which contains
-    credentials for the user <span class="emphasis"><em>icingaadmin</em></span> so you can skip the following step. The password is
-    <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    <p>Starting with Icinga 1.9 the command 'make install-webconf-auth' additionally installs the file
+    <code class="filename">htpasswd.users</code> which contains credentials for the user <span class="emphasis"><em>icingaadmin</em></span> so you can skip the
+    following step. The password is <span class="emphasis"><em>icingaadmin</em></span>.</p>
   </td></tr>
 </table></div>
 
@@ -625,7 +626,7 @@
   <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
   explained here.</p>
 
-
+  
 
   <p><span class="bold"><strong>You're Done</strong></span></p>
 
@@ -651,9 +652,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp178141968"></a>
+  <a class="indexterm" name="idp166752528"></a>
 
-  <a class="indexterm" name="idp178143664"></a>
+  <a class="indexterm" name="idp166752656"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -672,6 +673,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-present Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

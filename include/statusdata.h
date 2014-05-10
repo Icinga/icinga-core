@@ -4,7 +4,7 @@
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-present Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -109,7 +109,7 @@ typedef struct hoststatus_struct{
 	char	*check_source;
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
-	char	*check_service;	/* Icinga 2 */
+	int     is_reachable;
         }hoststatus;
 
 
@@ -171,6 +171,7 @@ typedef struct servicestatus_struct{
 	int     current_warning_notification_number;
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
+	int     is_reachable;
         }servicestatus;
 
 
