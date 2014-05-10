@@ -20,6 +20,13 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.11.3 - 10/05/2014
+
+ENHANCEMENTS
+
+* classic ui: add 'is_reachable' attribute to extinfo details (Icinga 2 only) #6186 - MF
+
+FIXES
 
 1.11.2 - 24/04/2014
 
