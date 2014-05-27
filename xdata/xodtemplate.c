@@ -746,8 +746,10 @@ int xodtemplate_process_config_file(char *filename, int options) {
 			/* check validity of object type */
 			if (strcmp(input, "timeperiod") && strcmp(input, "command") && strcmp(input, "contact") && strcmp(input, "contactgroup") && strcmp(input, "host") && strcmp(input, "hostgroup") && strcmp(input, "servicegroup") && strcmp(input, "service") && strcmp(input, "servicedependency") && strcmp(input, "serviceescalation") && strcmp(input, "hostgroupescalation") && strcmp(input, "hostdependency") && strcmp(input, "hostescalation") && strcmp(input, "hostextinfo") && strcmp(input, "serviceextinfo") && strcmp(input, "module")) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid object definition type '%s' in file '%s' on line %d.\n", input, filename, current_line);
+#ifdef NSCORE
 				result = ERROR;
 				break;
+#endif
 			}
 
 			/* we're already in an object definition... */
@@ -948,8 +950,13 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		xodtemplate_current_object_type = XODTEMPLATE_SERVICEEXTINFO;
 	else if (!strcmp(input, "module"))
 		xodtemplate_current_object_type = XODTEMPLATE_MODULE;
-	else
+	else {
+#ifdef NSCORE
 		return ERROR;
+#else
+		return OK;
+#endif
+	}
 
 
 	/* check to see if we should process this type of object */
@@ -1260,7 +1267,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			return OK;
 		break;
 	default:
+#ifdef NSCORE
 		return ERROR;
+#else
+		return OK;
+#endif
 		break;
 	}
 
