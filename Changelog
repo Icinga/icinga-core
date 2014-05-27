@@ -20,6 +20,14 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.11.4 - XX/YY/2014
+
+FIXES
+
+* core: Icinga should warn about deprecated configuration objects and attributes #6075 - MF
+* core: Fix config parser with object custom variables #6330 - MF
+* core: Allow Classic UI config parser to ignore unknown objects #5826 - MF
+
 1.11.3 - 10/05/2014
 
 ENHANCEMENTS
