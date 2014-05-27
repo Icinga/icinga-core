@@ -1,11 +1,1105 @@
-// MSDropDown - jquery.dd.js
+// MSDropDown - uncompressed.jquery.dd
 // author: Marghoob Suleman - Search me on google
-// Date: 12th Aug, 2009, {18 Dec, 2010 (2.36)}
-// Version: 2.37.5 {date: 17 June, 2011}
-// Revision: 34
+// Date: 12th Aug, 2009, {18 Dec, 2010 (2.36)}, {date: 02 July, 2011}
+// Version: 2.38
+// Revision: 35
 // web: www.giftlelo.com | www.marghoobsuleman.com
 /*
 // msDropDown is free jQuery Plugin: you can redistribute it and/or modify
 // it under the terms of the either the MIT License or the Gnu General Public License (GPL) Version 2
 */
-;eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}(';(5($){3 1L="";3 3m=5(p,q){3 r=p;3 s=1a;3 q=$.3n({1d:4c,2q:7,3o:23,1U:6,1M:4d,3p:\'28\',1N:15,3q:\'4e\',2I:\'\',1j:\'\'},q);1a.1V=2r 3r();3 u="";3 v={};v.2J=6;v.2s=15;v.2t=1o;3 x=15;3 y={2K:\'4f\',1O:\'4g\',1H:\'4h\',29:\'4i\',1h:\'4j\',2L:\'4k\',2M:\'4l\',4m:\'4n\',2u:\'4o\',3s:\'4p\'};3 z={28:q.3p,2N:\'2N\',2O:\'2O\',2P:\'2P\',1t:\'1t\',1k:.30,2a:\'2a\',2v:\'2v\',2w:\'2w\',11:\'11\'};3 A={3t:"2x,2Q,2R,1P,2y,2z,1u,1B,2A,1Q,4q,1W,2S",18:"1C,1v,1k,4r"};1a.1R=2r 3r();3 B=$(r).18("1b");4(1w(B)=="14"||B.1c<=0){B="4s"+$.1S.3u++;$(r).2B("1b",B)};3 C=$(r).18("1j");q.1j+=(C==14)?"":C;3 D=$(r).3v();x=($(r).18("1C")>1||$(r).18("1v")==6)?6:15;4(x){q.2q=$(r).18("1C")};3 E={};3 F=0;3 G=15;3 H;3 I={};3 J=5(a){4(1w(I[a])=="14"){I[a]=1p.4t(a)}12 I[a]};3 K=5(a){12 B+y[a]};3 L=5(a){3 b=a;3 c=$(b).18("1j");12 c};3 M=5(a){3 b=$("#"+B+" 2T:11");4(b.1c>1){1D(3 i=0;i<b.1c;i++){4(a==b[i].1i){12 6}}}19 4(b.1c==1){4(b[0].1i==a){12 6}};12 15};3 N=5(a,b,c,d){3 e="";3 f=(d=="2U")?K("2M"):K("2L");3 g=(d=="2U")?f+"2V"+(b)+"2V"+(c):f+"2V"+(b);3 h="";3 i="";4(q.1N!=15){i=\' \'+q.1N+\' \'+a.3w}19{h=$(a).18("1X");h=(h.1c==0)?"":\'<3x 3y="\'+h+\'" 3z="3A" /> \'};3 j=$(a).1q();3 k=$(a).4u();3 l=($(a).18("1k")==6)?"1k":"2W";E[g]={1I:h+j,2b:k,1q:j,1i:a.1i,1b:g};3 m=L(a);4(M(a.1i)==6){e+=\'<a 3B="3C:3D(0);" 1r="\'+z.11+\' \'+l+i+\'"\'}19{e+=\'<a  3B="3C:3D(0);" 1r="\'+l+i+\'"\'};4(m!==15&&m!==14){e+=" 1j=\'"+m+"\'"};e+=\' 1b="\'+g+\'">\';e+=h+\'<1x 1r="\'+z.1t+\'">\'+j+\'</1x></a>\';12 e};3 O=5(t){3 b=t.3E();4(b.1c==0)12-1;3 a="";1D(3 i 2c E){3 c=E[i].1q.3E();4(c.3F(0,b.1c)==b){a+="#"+E[i].1b+", "}};12(a=="")?-1:a};3 P=5(){3 f=D;4(f.1c==0)12"";3 g="";3 h=K("2L");3 i=K("2M");f.2X(5(c){3 d=f[c];4(d.4v=="4w"){g+="<1y 1r=\'4x\'>";g+="<1x 1j=\'3G-4y:4z;3G-1j:4A; 4B:4C;\'>"+$(d).18("4D")+"</1x>";3 e=$(d).3v();e.2X(5(a){3 b=e[a];g+=N(b,c,a,"2U")});g+="</1y>"}19{g+=N(d,c,"","")}});12 g};3 Q=5(){3 a=K("1O");3 b=K("1h");3 c=q.1j;1Y="";1Y+=\'<1y 1b="\'+b+\'" 1r="\'+z.2P+\'"\';4(!x){1Y+=(c!="")?\' 1j="\'+c+\'"\':\'\'}19{1Y+=(c!="")?\' 1j="2C-1m:4E 4F #4G;1s:2d;1n:2Y;\'+c+\'"\':\'\'};1Y+=\'>\';12 1Y};3 R=5(){3 a=K("1H");3 b=K("2u");3 c=K("29");3 d=K("3s");3 e="";3 f="";4(J(B).1E.1c>0){e=$("#"+B+" 2T:11").1q();f=$("#"+B+" 2T:11").18("1X")};f=(f.1c==0||f==14||q.1U==15||q.1N!=15)?"":\'<3x 3y="\'+f+\'" 3z="3A" /> \';3 g=\'<1y 1b="\'+a+\'" 1r="\'+z.2N+\'"\';g+=\'>\';g+=\'<1x 1b="\'+b+\'" 1r="\'+z.2O+\'"></1x><1x 1r="\'+z.1t+\'" 1b="\'+c+\'">\'+f+\'<1x 1r="\'+z.1t+\'">\'+e+\'</1x></1x></1y>\';12 g};3 S=5(){3 c=K("1h");$("#"+c+" a.2W").1J("1P");$("#"+c+" a.2W").1e("1P",5(a){a.1Z();V(1a);21();4(!x){$("#"+c).1J("1B");X(15);3 b=(q.1U==15)?$(1a).1q():$(1a).1I();1T(b);s.2e()}})};3 T=5(){3 d=15;3 e=K("1O");3 f=K("1H");3 g=K("29");3 h=K("1h");3 i=K("2u");3 j=$("#"+B).2Z();j=j+2;3 k=q.1j;4($("#"+e).1c>0){$("#"+e).2D();d=6};3 l=\'<1y 1b="\'+e+\'" 1r="\'+z.28+\'"\';l+=(k!="")?\' 1j="\'+k+\'"\':\'\';l+=\'>\';l+=R();l+=Q();l+=P();l+="</1y>";l+="</1y>";4(d==6){3 m=K("2K");$("#"+m).31(l)}19{$("#"+B).31(l)};4(x){3 f=K("1H");$("#"+f).2f()};$("#"+e).9("2Z",j+"1z");$("#"+h).9("2Z",(j-2)+"1z");4(D.1c>q.2q){3 n=2g($("#"+h+" a:3H").9("2h-3I"))+2g($("#"+h+" a:3H").9("2h-1m"));3 o=((q.3o)*q.2q)-n;$("#"+h).9("1d",o+"1z")}19 4(x){3 o=$("#"+B).1d();$("#"+h).9("1d",o+"1z")};4(d==15){3J();W(B)};4($("#"+B).18("1k")==6){$("#"+e).9("2E",z.1k)};Z();$("#"+f).1e("1B",5(a){32(1)});$("#"+f).1e("1Q",5(a){32(0)});S();$("#"+h+" a.1k").9("2E",z.1k);4(x){$("#"+h).1e("1B",5(c){4(!v.2s){v.2s=6;$(1p).1e("1W",5(a){3 b=a.3K;v.2t=b;4(b==39||b==40){a.1Z();a.2i();33();21()};4(b==37||b==38){a.1Z();a.2i();34();21()}})}})};$("#"+h).1e("1Q",5(a){X(15);$(1p).1J("1W");v.2s=15;v.2t=1o});$("#"+f).1e("1P",5(b){X(15);4($("#"+h+":2j").1c==1){$("#"+h).1J("1B")}19{$("#"+h).1e("1B",5(a){X(6)});s.3L()}});$("#"+f).1e("1Q",5(a){X(15)});4(q.1U&&q.1N!=15){2k()}};3 U=5(a){1D(3 i 2c E){4(E[i].1i==a){12 E[i]}};12-1};3 V=5(a){3 b=K("1h");4($("#"+b+" a."+z.11).1c==1){u=$("#"+b+" a."+z.11).1q()};4(!x){$("#"+b+" a."+z.11).1K(z.11)};3 c=$("#"+b+" a."+z.11).18("1b");4(c!=14){3 d=(v.22==14||v.22==1o)?E[c].1i:v.22};4(a&&!x){$(a).1F(z.11)};4(x){3 e=v.2t;4($("#"+B).18("1v")==6){4(e==17){v.22=E[$(a).18("1b")].1i;$(a).4H(z.11)}19 4(e==16){$("#"+b+" a."+z.11).1K(z.11);$(a).1F(z.11);3 f=$(a).18("1b");3 g=E[f].1i;1D(3 i=35.4I(d,g);i<=35.4J(d,g);i++){$("#"+U(i).1b).1F(z.11)}}19{$("#"+b+" a."+z.11).1K(z.11);$(a).1F(z.11);v.22=E[$(a).18("1b")].1i}}19{$("#"+b+" a."+z.11).1K(z.11);$(a).1F(z.11);v.22=E[$(a).18("1b")].1i}}};3 W=5(a){3 b=a;J(b).4K=5(e){$("#"+b).1S(q)}};3 X=5(a){v.2J=a};3 Y=5(){12 v.2J};3 Z=5(){3 b=K("1O");3 c=A.3t.4L(",");1D(3 d=0;d<c.1c;d++){3 e=c[d];3 f=24(e);4(f==6){2F(e){1f"2x":$("#"+b).1e("4M",5(a){J(B).2x()});1g;1f"1P":$("#"+b).1e("1P",5(a){$("#"+B).1G("1P")});1g;1f"2y":$("#"+b).1e("2y",5(a){$("#"+B).1G("2y")});1g;1f"2z":$("#"+b).1e("2z",5(a){$("#"+B).1G("2z")});1g;1f"1u":$("#"+b).1e("1u",5(a){$("#"+B).1G("1u")});1g;1f"1B":$("#"+b).1e("1B",5(a){$("#"+B).1G("1B")});1g;1f"2A":$("#"+b).1e("2A",5(a){$("#"+B).1G("2A")});1g;1f"1Q":$("#"+b).1e("1Q",5(a){$("#"+B).1G("1Q")});1g}}}};3 3J=5(){3 a=K("2K");$("#"+B).31("<1y 1r=\'"+z.2a+"\' 1j=\'1d:3M;3N:3O;1n:36;\' 1b=\'"+a+"\'></1y>");$("#"+B).4N($("#"+a))};3 1T=5(a){3 b=K("29");$("#"+b).1I(a)};3 3a=5(w){3 a=w;3 b=K("1h");3 c=$("#"+b+" a:2j");3 d=c.1c;3 e=$("#"+b+" a:2j").1i($("#"+b+" a.11:2j"));3 f;2F(a){1f"3b":4(e<d-1){e++;f=c[e]};1g;1f"3P":4(e<d&&e>0){e--;f=c[e]};1g};4(1w(f)=="14"){12 15};$("#"+b+" a."+z.11).1K(z.11);$(f).1F(z.11);3 g=f.1b;4(!x){3 h=(q.1U==15)?E[g].1q:$("#"+g).1I();1T(h);2k(E[g].1i)};4(a=="3b"){4(2g(($("#"+g).1n().1m+$("#"+g).1d()))>=2g($("#"+b).1d())){$("#"+b).2l(($("#"+b).2l())+$("#"+g).1d()+$("#"+g).1d())}}19{4(2g(($("#"+g).1n().1m+$("#"+g).1d()))<=0){$("#"+b).2l(($("#"+b).2l()-$("#"+b).1d())-$("#"+g).1d())}}};3 33=5(){3a("3b")};3 34=5(){3a("3P")};3 2k=5(i){4(q.1N!=15){3 a=K("29");3 b=(1w(i)=="14")?J(B).1l:i;3 c=J(B).1E[b].3w;4(c.1c>0){3 d=K("1h");3 e=$("#"+d+" a."+c).18("1b");3 f=$("#"+e).9("2m-4O");3 g=$("#"+e).9("2m-1n");3 h=$("#"+e).9("2h-3Q");4(f!=14){$("#"+a).2n("."+z.1t).2B(\'1j\',"2m:"+f)};4(g!=14){$("#"+a).2n("."+z.1t).9(\'2m-1n\',g)};4(h!=14){$("#"+a).2n("."+z.1t).9(\'2h-3Q\',h)};$("#"+a).2n("."+z.1t).9(\'2m-3R\',\'4P-3R\');$("#"+a).2n("."+z.1t).9(\'2h-3I\',\'4Q\')}}};3 21=5(){3 a=K("1h");3 b=$("#"+a+" a."+z.11);4(b.1c==1){3 c=$("#"+a+" a."+z.11).1q();3 d=$("#"+a+" a."+z.11).18("1b");4(d!=14){3 e=E[d].2b;J(B).1l=E[d].1i};4(q.1U&&q.1N!=15)2k()}19 4(b.1c>1){1D(3 i=0;i<b.1c;i++){3 d=$(b[i]).18("1b");3 f=E[d].1i;J(B).1E[f].11="11"}};3 g=J(B).1l;s.1V["1l"]=g};3 24=5(a){4($("#"+B).18("4R"+a)!=14){12 6};3 b=$("#"+B).3c("4S");4(b&&b[a]){12 6};12 15};3 3S=5(){3 b=K("1h");4(24(\'2R\')==6){3 c=E[$("#"+b+" a.11").18("1b")].1q;4($.3T(u)!==$.3T(c)&&u!==""){$("#"+B).1G("2R")}};4(24(\'1u\')==6){$("#"+B).1G("1u")};4(24(\'2Q\')==6){$(1p).1e("1u",5(a){$("#"+B).2x();$("#"+B)[0].2Q();21();$(1p).1J("1u")})}};3 32=5(a){3 b=K("2u");4(a==1)$("#"+b).9({3U:\'0 4T%\'});19 $("#"+b).9({3U:\'0 0\'})};3 3V=5(){1D(3 i 2c J(B)){4(1w(J(B)[i])!=\'5\'&&J(B)[i]!==14&&J(B)[i]!==1o){s.1A(i,J(B)[i],6)}}};3 3W=5(a,b){4(U(b)!=-1){J(B)[a]=b;3 c=K("1h");$("#"+c+" a."+z.11).1K(z.11);$("#"+U(b).1b).1F(z.11);3 d=U(J(B).1l).1I;1T(d)}};3 3X=5(i,a){4(a==\'d\'){1D(3 b 2c E){4(E[b].1i==i){4U E[b];1g}}};3 c=0;1D(3 b 2c E){E[b].1i=c;c++}};3 2G=5(){3 a=K("1h");3 b=K("1O");3 c=$("#"+b).1n();3 d=$("#"+b).1d();3 e=$(3Y).1d();3 f=$(3Y).2l();3 g=$("#"+a).1d();3 h={1M:q.1M,1m:(c.1m+d)+"1z",1s:"2o"};3 i=q.3q;3 j=15;3 k=z.2w;$("#"+a).1K(z.2w);$("#"+a).1K(z.2v);4((e+f)<35.4V(g+d+c.1m)){3 l=c.1m-g;4((c.1m-g)<0){l=10};h={1M:q.1M,1m:l+"1z",1s:"2o"};i="25";j=6;k=z.2v};12{3d:j,3Z:i,9:h,2C:k}};3 3e=5(){4(s.1R["41"]!=1o){2H(s.1R["41"])(s)}};3 3f=5(){3S();4(s.1R["42"]!=1o){2H(s.1R["42"])(s)}};1a.3L=5(){4((s.26("1k",6)==6)||(s.26("1E",6).1c==0))12;3 e=K("1h");4(1L!=""&&e!=1L){$("#"+1L).43("3g");$("#"+1L).9({1M:\'0\'})};4($("#"+e).9("1s")=="2o"){u=E[$("#"+e+" a.11").18("1b")].1q;3 f="";H=$("#"+e).1d();$("#"+e+" a").25();$(1p).1e("1W",5(a){3 b=a.3K;4(b==8){a.1Z();a.2i();f=(f.1c==0)?"":f.3F(0,f.1c-1)};2F(b){1f 39:1f 40:a.1Z();a.2i();33();1g;1f 37:1f 38:a.1Z();a.2i();34();1g;1f 27:1f 13:s.2e();21();1g;44:4(b>46){f+=4W.4X(b)};3 c=O(f);4(c!=-1){$("#"+e).9({1d:\'4Y\'});$("#"+e+" a").2f();$(c).25();3 d=2G();$("#"+e).9(d.9);$("#"+e).9({1s:\'2d\'})}19{$("#"+e+" a").25();$("#"+e).9({1d:H+\'1z\'})};1g};4(24("1W")==6){J(B).4Z()}});$(1p).1e("2S",5(a){4($("#"+B).18("45")!=14){J(B).45()}});$(1p).1e("1u",5(a){4(Y()==15){s.2e()}});3 g=2G();$("#"+e).9(g.9);4(g.3d==6){$("#"+e).9({1s:\'2d\'});$("#"+e).1F(g.2C);3e()}19{$("#"+e)[g.3Z]("3g",5(){$("#"+e).1F(g.2C);3e()})};4(e!=1L){1L=e}}};1a.2e=5(){3 b=K("1h");3 c=$("#"+K("1H")).1n().1m;3 d=2G();G=15;4(d.3d==6){$("#"+b).50({1d:0,1m:c},5(){$("#"+b).9({1d:H+\'1z\',1s:\'2o\'});3f()})}19{$("#"+b).43("3g",5(a){3f();$("#"+b).9({1M:\'0\'});$("#"+b).9({1d:H+\'1z\'})})};2k();$(1p).1J("1W");$(1p).1J("2S");$(1p).1J("1u")};1a.1l=5(i){4(1w(i)=="14"){12 s.26("1l")}19{s.1A("1l",i)}};1a.51=5(a){4(1w(a)=="14"||a==6){$("."+z.2a).52("1j")}19{$("."+z.2a).2B("1j","1d:3M;3N:3O;1n:36")}};1a.1A=5(a,b,c){4(a==14||b==14)47{48:"1A 53 54?"};s.1V[a]=b;4(c!=6){2F(a){1f"1l":3W(a,b);1g;1f"1k":s.1k(b,6);1g;1f"1v":J(B)[a]=b;x=($(r).18("1C")>0||$(r).18("1v")==6)?6:15;4(x){3 d=$("#"+B).1d();3 f=K("1h");$("#"+f).9("1d",d+"1z");3 g=K("1H");$("#"+g).2f();3 f=K("1h");$("#"+f).9({1s:\'2d\',1n:\'2Y\'});S()};1g;1f"1C":J(B)[a]=b;4(b==0){J(B).1v=15};x=($(r).18("1C")>0||$(r).18("1v")==6)?6:15;4(b==0){3 g=K("1H");$("#"+g).25();3 f=K("1h");$("#"+f).9({1s:\'2o\',1n:\'36\'});3 h="";4(J(B).1l>=0){3 i=U(J(B).1l);h=i.1I;V($("#"+i.1b))};1T(h)}19{3 g=K("1H");$("#"+g).2f();3 f=K("1h");$("#"+f).9({1s:\'2d\',1n:\'2Y\'})};1g;44:55{J(B)[a]=b}56(e){};1g}}};1a.26=5(a,b){4(a==14&&b==14){12 s.1V};4(a!=14&&b==14){12(s.1V[a]!=14)?s.1V[a]:1o};4(a!=14&&b!=14){12 J(B)[a]}};1a.2j=5(a){3 b=K("1O");4(a==6){$("#"+b).25()}19 4(a==15){$("#"+b).2f()}19{12 $("#"+b).9("1s")}};1a.57=5(a,b){3 c=a;3 d=c.1q;3 e=(c.2b==14||c.2b==1o)?d:c.2b;3 f=(c["1X"]==14||c["1X"]==1o)?\'\':c["1X"];3 i=(b==14||b==1o)?J(B).1E.1c:b;J(B).1E[i]=2r 58(d,e);4(f!=\'\')J(B).1E[i]["1X"]=f;3 g=U(i);4(g!=-1){3 h=N(J(B).1E[i],i,"","");$("#"+g.1b).1I(h)}19{3 h=N(J(B).1E[i],i,"","");3 j=K("1h");$("#"+j).59(h);S()}};1a.2D=5(i){J(B).2D(i);4((U(i))!=-1){$("#"+U(i).1b).2D();3X(i,\'d\')};4(J(B).1c==0){1T("")}19{3 a=U(J(B).1l).1I;1T(a)};s.1A("1l",J(B).1l)};1a.1k=5(a,b){J(B).1k=a;3 c=K("1O");4(a==6){$("#"+c).9("2E",z.1k);s.2e()}19 4(a==15){$("#"+c).9("2E",1)};4(b!=6){s.1A("1k",a)}};1a.3h=5(){12(J(B).3h==14)?1o:J(B).3h};1a.3i=5(){4(2p.1c==1){12 J(B).3i(2p[0])}19 4(2p.1c==2){12 J(B).3i(2p[0],2p[1])}19{47{48:"5a 1i 5b 5c!"}}};1a.49=5(a){12 J(B).49(a)};1a.1v=5(a){4(1w(a)=="14"){12 s.26("1v")}19{s.1A("1v",a)}};1a.1C=5(a){4(1w(a)=="14"){12 s.26("1C")}19{s.1A("1C",a)}};1a.5d=5(a,b){s.1R[a]=b};1a.5e=5(a){2H(s.1R[a])(s)};3 4a=5(){s.1A("3j",$.1S.3j);s.1A("3k",$.1S.3k)};3 4b=5(){T();3V();4a();4(q.2I!=\'\'){2H(q.2I)(s)}};4b()};$.1S={3j:2.37,3k:"5f 5g",3u:20,5h:5(a,b){12 $(a).1S(b).3c("28")}};$.3l.3n({1S:5(b){12 1a.2X(5(){3 a=2r 3m(1a,b);$(1a).3c(\'28\',a)})}});4(1w($.3l.18)==\'14\'){$.3l.18=5(w){12 $(1a).2B(w)}}})(5i);',62,329,'|||var|if|function|true|||css||||||||||||||||||||||||||||||||||||||||||||||||||||||selected|return||undefined|false|||prop|else|this|id|length|height|bind|case|break|postChildID|index|style|disabled|selectedIndex|top|position|null|document|text|class|display|ddTitleText|mouseup|multiple|typeof|span|div|px|set|mouseover|size|for|options|addClass|trigger|postTitleID|html|unbind|removeClass|bs|zIndex|useSprite|postID|click|mouseout|onActions|msDropDown|bv|showIcon|ddProp|keydown|title|sDiv|preventDefault||bA|oldIndex||bB|show|get||dd|postTitleTextID|ddOutOfVision|value|in|block|close|hide|parseInt|padding|stopPropagation|visible|bz|scrollTop|background|find|none|arguments|visibleRows|new|keyboardAction|currentKey|postArrowID|borderTop|noBorderTop|focus|dblclick|mousedown|mousemove|attr|border|remove|opacity|switch|bH|eval|onInit|insideWindow|postElementHolder|postAID|postOPTAID|ddTitle|arrow|ddChild|blur|change|keyup|option|opt|_|enabled|each|relative|width||after|bD|bx|by|Math|absolute||||bw|next|data|opp|bI|bJ|fast|form|item|version|author|fn|bt|extend|rowHeight|mainCSS|animStyle|Object|postInputhidden|actions|counter|children|className|img|src|align|absmiddle|href|javascript|void|toLowerCase|substr|font|first|bottom|bu|keyCode|open|0px|overflow|hidden|previous|left|repeat|bC|trim|backgroundPosition|bE|bF|bG|window|ani||onOpen|onClose|slideUp|default|onkeyup||throw|message|namedItem|bK|bL|120|9999|slideDown|_msddHolder|_msdd|_title|_titletext|_child|_msa|_msopta|postInputID|_msinput|_arrow|_inp|keypress|tabindex|msdrpdd|getElementById|val|nodeName|OPTGROUP|opta|weight|bold|italic|clear|both|label|1px|solid|c3c3c3|toggleClass|min|max|refresh|split|mouseenter|appendTo|image|no|2px|on|events|100|delete|floor|String|fromCharCode|auto|onkeydown|animate|debug|removeAttr|to|what|try|catch|add|Option|append|An|is|required|addMyEvent|fireEvent|Marghoob|Suleman|create|jQuery'.split('|'),0,{}))
+;(function($) { 
+		   
+   var msOldDiv = ""; 
+   var dd = function(element, options)
+   {
+		var sElement = element;
+		var $this =  this; //parent this
+		var options = $.extend({
+			height:120,
+			visibleRows:7,
+			rowHeight:23,
+			showIcon:true,
+			zIndex:9999,
+			mainCSS:'dd',
+			useSprite:false,
+			animStyle:'slideDown',
+			onInit:'',
+			jsonTitle:true,
+			style:''
+		}, options);
+		this.ddProp = new Object();//storing propeties;
+		var oldSelectedValue = "";
+		var actionSettings ={};
+		actionSettings.insideWindow = true;
+		actionSettings.keyboardAction = false;
+		actionSettings.currentKey = null;
+		var ddList = false;
+		var config = {postElementHolder:'_msddHolder', postID:'_msdd', postTitleID:'_title',postTitleTextID:'_titletext',postChildID:'_child',postAID:'_msa',postOPTAID:'_msopta',postInputID:'_msinput', postArrowID:'_arrow', postInputhidden:'_inp'};
+		var styles = {dd:options.mainCSS, ddTitle:'ddTitle', arrow:'arrow', ddChild:'ddChild', ddTitleText:'ddTitleText', disabled:.30, ddOutOfVision:'ddOutOfVision', borderTop:'borderTop', noBorderTop:'noBorderTop', selected:'selected'};
+		var attributes = {actions:"focus,blur,change,click,dblclick,mousedown,mouseup,mouseover,mousemove,mouseout,keypress,keydown,keyup", prop:"size,multiple,disabled,tabindex"};
+		this.onActions = new Object();
+		var elementid = $(sElement).prop("id");
+		if(typeof(elementid)=="undefined" || elementid.length<=0) {
+			//assign and id;
+			elementid = "msdrpdd"+$.msDropDown.counter++;//I guess it makes unique for the page.
+			$(sElement).attr("id", elementid);
+		};
+		var inlineCSS = $(sElement).prop("style");
+		options.style += (inlineCSS==undefined) ? "" : inlineCSS;
+		var allOptions = $(sElement).children();
+		ddList = ($(sElement).prop("size")>1 || $(sElement).prop("multiple")==true) ? true : false;
+		if(ddList) {options.visibleRows = $(sElement).prop("size");};
+		var a_array = {};//stores id, html & value etc
+		var currentP = 0;
+		var isFilter = false;
+		var oldHeight;
+		var cacheElement = {};
+		var inputText = "";
+	
+	var getElement = function(ele) {
+		if(typeof(cacheElement[ele])=="undefined") {
+			cacheElement[ele] = document.getElementById(ele);
+		}
+		return cacheElement[ele];
+	};
+	var getPostID = function (id) {
+		return elementid+config[id];
+	};
+	var getOptionsProperties = function (option) {
+		var currentOption = option;
+		var styles = $(currentOption).prop("style");
+		return (typeof styles=="undefined") ? "" : styles.cssText;
+	};
+	var matchIndex = function (index) {
+		var selectedIndex = $("#"+elementid+" option:selected");
+		if(selectedIndex.length>1) {
+			for(var i=0;i<selectedIndex.length;i++) {
+				if(index == selectedIndex[i].index) {
+					return true;
+				};
+			};
+		} else if(selectedIndex.length==1) {
+			if(selectedIndex[0].index==index) {
+				return true;
+			};
+		};
+		return false;
+	};
+	var createA = function(currentOptOption, current, currentopt, tp) {
+		var aTag = "";
+		//var aidfix = getPostID("postAID");
+		var aidoptfix = (tp=="opt") ? getPostID("postOPTAID") : getPostID("postAID");		
+		var aid = (tp=="opt") ? aidoptfix+"_"+(current)+"_"+(currentopt) : aidoptfix+"_"+(current);
+		var arrow = "";
+		var t = "";
+		var clsName = "";
+		var pH = ""; //addition html
+		if(options.useSprite!=false) {
+		 clsName = ' '+options.useSprite+' '+currentOptOption.className;
+		} else {
+		 arrow = $(currentOptOption).prop("title");
+		 var reg = new RegExp(/^\{.*\}$/);
+		 var isJson = reg.test(arrow); 
+		 if(options.jsonTitle==true && isJson==true) {			 
+				 if(arrow.length!=0) {
+					 var obj = eval("["+arrow+"]");
+					 img = (typeof obj[0].image=="undefined") ? "" : obj[0].image;
+					 t = (typeof obj[0].title=="undefined") ? "" : obj[0].title;
+					 pH = (typeof obj[0].postHTML=="undefined") ? "" : obj[0].postHTML;
+					 arrow = (img.length==0) ? "" : '<img src="'+img+'" align="absmiddle" /> ';
+				 };
+		 } else {
+			 arrow = (arrow.length==0) ? "" : '<img src="'+arrow+'" align="absmiddle" /> ';
+		 };
+		};
+		var sText = $(currentOptOption).text();
+		var sValue = $(currentOptOption).val();
+		var sEnabledClass = ($(currentOptOption).prop("disabled")==true) ? "disabled" : "enabled";
+		a_array[aid] = {html:arrow + sText, value:sValue, text:sText, index:currentOptOption.index, id:aid, title:t};
+		var innerStyle = getOptionsProperties(currentOptOption);
+		if(matchIndex(currentOptOption.index)==true) {
+		 aTag += '<a href="javascript:void(0);" class="'+styles.selected+' '+sEnabledClass+clsName+'"';
+		} else {
+		aTag += '<a  href="javascript:void(0);" class="'+sEnabledClass+clsName+'"';
+		};
+		if(innerStyle!==false && innerStyle!==undefined && innerStyle.length!=0) {
+			aTag +=  " style='"+innerStyle+"'";
+		};
+		if(t!=="") {
+			aTag +=  " title='"+t+"'";
+		};
+		aTag +=  ' id="'+aid+'">';
+		aTag += arrow + '<span class="'+styles.ddTitleText+'">' +sText+'</span>';
+		if(pH!=="") {
+			aTag +=  pH;
+		};
+		aTag += '</a>';
+		return aTag;
+	};
+	var in_array = function(t) {
+		var sText = t.toLowerCase();
+		if(sText.length==0) return -1;
+		var a = "";
+		for(var i in a_array) {
+			var a_text = a_array[i].text.toLowerCase();
+			if(a_text.substr(0, sText.length) == sText) {
+				a += "#"+a_array[i].id+ ", ";
+			};
+		};
+		return (a=="") ? -1 : a;
+	};
+	var createATags = function () {
+		var childnodes = allOptions;
+		if(childnodes.length==0) return "";
+		var aTag = "";
+		var aidfix = getPostID("postAID");
+		var aidoptfix = getPostID("postOPTAID");
+		childnodes.each(function(current){
+								 var currentOption = childnodes[current];
+								 //OPTGROUP
+								 if(currentOption.nodeName.toString().toLowerCase() == "optgroup") {
+								  	aTag += "<div class='opta'>";
+									 aTag += "<span style='font-weight:bold;font-style:italic;clear:both;'>"+$(currentOption).prop("label")+"</span>";
+									 var optChild = $(currentOption).children();
+									 optChild.each(function(currentopt){
+															var currentOptOption = optChild[currentopt];
+															 aTag += createA(currentOptOption, current, currentopt, "opt");
+															});
+									 aTag += "</div>";
+									 
+								 } else {
+									 aTag += createA(currentOption, current, "", "");
+								 };
+								 });
+		return aTag;
+	};
+	var createChildDiv = function () {
+		var id = getPostID("postID");
+		var childid = getPostID("postChildID");
+		var sStyle = options.style;
+		sDiv = "";
+		sDiv += '<div id="'+childid+'" class="'+styles.ddChild+'"';
+		if(!ddList) {
+			sDiv += (sStyle!="") ? ' style="'+sStyle+'"' : ''; 
+		} else {
+			sDiv += (sStyle!="") ? ' style="border-top:1px solid #c3c3c3;display:block;position:relative;'+sStyle+'"' : ''; 
+		};
+		sDiv += '>';		
+		return sDiv;
+	};
+
+	var createTitleDiv = function () {
+		var titleid = getPostID("postTitleID");
+		var arrowid = getPostID("postArrowID");
+		var titletextid = getPostID("postTitleTextID");
+		var inputhidden = getPostID("postInputhidden");
+		var sText = "";
+		var arrow = "";
+		if(getElement(elementid).options.length>0) {
+			sText = $("#"+elementid+" option:selected").text();
+			arrow = $("#"+elementid+" option:selected").prop("title");
+		};
+		var img = "";
+		var t = "";
+		var reg = new RegExp(/^\{.*\}$/);
+		var isJson = reg.test(arrow);
+		if(options.jsonTitle==true && isJson==true) {			 
+			 if(arrow.length!=0) {
+				 var obj = eval("["+arrow+"]");
+				 img = (typeof obj[0].image=="undefined") ? "" : obj[0].image;
+				 t = (typeof obj[0].title=="undefined") ? "" : obj[0].title;
+				 arrow = (img.length==0 || options.showIcon==false || options.useSprite!=false) ? "" : '<img src="'+img+'" align="absmiddle" /> ';
+			 }; 
+		} else {
+			arrow = (arrow.length==0 || arrow==undefined || options.showIcon==false || options.useSprite!=false) ? "" : '<img src="'+arrow+'" align="absmiddle" /> ';
+		};
+		var sDiv = '<div id="'+titleid+'" class="'+styles.ddTitle+'"';
+		sDiv += '>';
+		sDiv += '<span id="'+arrowid+'" class="'+styles.arrow+'"></span><span class="'+styles.ddTitleText+'" id="'+titletextid+'">'+arrow + '<span class="'+styles.ddTitleText+'">'+sText+'</span></span></div>';
+		return sDiv;
+	};
+	var applyEventsOnA = function() {
+		var childid = getPostID("postChildID");
+		$("#"+childid+ " a.enabled").unbind("click"); //remove old one
+			$("#"+childid+ " a.enabled").bind("click", function(event) {
+														 event.preventDefault();
+														 manageSelection(this);
+														 setValue();
+														 if(!ddList) {
+															 $("#"+childid).unbind("mouseover");
+															 setInsideWindow(false);															 
+															 var sText = (options.showIcon==false) ? $(this).text() : $(this).html();
+															  setTitleText(sText);
+															  //$this.data("dd").close();
+															  $this.close();
+														 };
+														 //actionSettings.oldIndex = a_array[$($this).prop("id")].index;
+														 });		
+	};
+	var createDropDown = function () {
+		var changeInsertionPoint = false;
+		var id = getPostID("postID");
+		var titleid = getPostID("postTitleID");
+		var titletextid = getPostID("postTitleTextID");
+		var childid = getPostID("postChildID");
+		var arrowid = getPostID("postArrowID");
+		var iWidth = $("#"+elementid).outerWidth();
+		var sStyle = options.style;
+		if($("#"+id).length>0) {
+			$("#"+id).remove();
+			changeInsertionPoint = true;
+		};
+		var sDiv = '<div id="'+id+'" class="'+styles.dd+'"';
+		sDiv += (sStyle!="") ? ' style="'+sStyle+'"' : '';
+		sDiv += '>';
+		//create title bar
+		sDiv += createTitleDiv();
+		//create child
+		sDiv += createChildDiv();
+		sDiv += createATags();
+		sDiv += "</div>";
+		sDiv += "</div>";
+		if(changeInsertionPoint==true) {
+			var sid =getPostID("postElementHolder");
+			$("#"+sid).after(sDiv);
+		} else {
+			$("#"+elementid).after(sDiv);
+		};
+		if(ddList) {
+			var titleid = getPostID("postTitleID");	
+			$("#"+titleid).hide();
+		};
+		
+		$("#"+id).css("width", iWidth+"px");
+		$("#"+childid).css("width", (iWidth-2)+"px");
+		if(allOptions.length>options.visibleRows) {
+			var margin = parseInt($("#"+childid+" a:first").css("padding-bottom")) + parseInt($("#"+childid+" a:first").css("padding-top"));
+			var iHeight = ((options.rowHeight)*options.visibleRows) - margin;
+			$("#"+childid).css("height", iHeight+"px");
+		} else if(ddList) {
+			var iHeight = $("#"+elementid).height();
+			$("#"+childid).css("height", iHeight+"px");
+		};
+		//set out of vision
+		if(changeInsertionPoint==false) {
+			setOutOfVision();
+			addRefreshMethods(elementid);
+		};
+		if($("#"+elementid).prop("disabled")==true) {
+			$("#"+id).css("opacity", styles.disabled);
+		};
+		applyEvents();
+		//add events
+		//arrow hightlight
+		$("#"+titleid).bind("mouseover", function(event) {
+												  hightlightArrow(1);
+												  });
+		$("#"+titleid).bind("mouseout", function(event) {
+												  hightlightArrow(0);
+												  });
+			//open close events
+		applyEventsOnA();
+		$("#"+childid+ " a.disabled").css("opacity", styles.disabled);
+		//alert("ddList "+ddList)
+		if(ddList) {
+			$("#"+childid).bind("mouseover", function(event) {if(!actionSettings.keyboardAction) {
+																 actionSettings.keyboardAction = true;
+																 $(document).bind("keydown", function(event) {
+																									var keyCode = event.keyCode;	
+																									actionSettings.currentKey = keyCode;
+																									if(keyCode==39 || keyCode==40) {
+																										//move to next
+																										event.preventDefault(); event.stopPropagation();
+																										next();
+																										setValue();
+																									};
+																									if(keyCode==37 || keyCode==38) {
+																										event.preventDefault(); event.stopPropagation();
+																										//move to previous
+																										previous();
+																										setValue();
+																									};
+																									  });
+																 
+																 }});
+		};
+		$("#"+childid).bind("mouseout", function(event) {setInsideWindow(false);$(document).unbind("keydown", d_onkeydown);actionSettings.keyboardAction = false;actionSettings.currentKey=null;});
+		$("#"+titleid).bind("click", function(event) {
+											  setInsideWindow(false);
+												if($("#"+childid+":visible").length==1) {
+													$("#"+childid).unbind("mouseover");
+												} else {
+													$("#"+childid).bind("mouseover", function(event) {setInsideWindow(true);});
+													//alert("open "+elementid + $this);
+													//$this.data("dd").openMe();
+													$this.open();
+												};
+											  });
+		$("#"+titleid).bind("mouseout", function(evt) {
+												 setInsideWindow(false);
+												 });
+		if(options.showIcon && options.useSprite!=false) {
+			setTitleImageSprite();
+		};
+	};
+	var getByIndex = function (index) {
+		for(var i in a_array) {
+			if(a_array[i].index==index) {
+				return a_array[i];
+			};
+		};
+		return -1;
+	};
+	var manageSelection = function (obj) {
+		var childid = getPostID("postChildID");
+		if($("#"+childid+ " a."+styles.selected).length==1) { //check if there is any selected
+			oldSelectedValue = $("#"+childid+ " a."+styles.selected).text(); //i should have value here. but sometime value is missing
+			//alert("oldSelectedValue "+oldSelectedValue);
+		};
+		if(!ddList) {
+			$("#"+childid+ " a."+styles.selected).removeClass(styles.selected);
+		}; 
+		var selectedA = $("#"+childid + " a."+styles.selected).prop("id");
+		if(selectedA!=undefined) {
+			var oldIndex = (actionSettings.oldIndex==undefined || actionSettings.oldIndex==null) ? a_array[selectedA].index : actionSettings.oldIndex;
+		};
+		if(obj && !ddList) {
+			$(obj).addClass(styles.selected);
+		};	
+		if(ddList) {
+			var keyCode = actionSettings.currentKey;
+			if($("#"+elementid).prop("multiple")==true) {
+				if(keyCode == 17) {
+					//control
+						actionSettings.oldIndex = a_array[$(obj).prop("id")].index;
+						$(obj).toggleClass(styles.selected);
+					//multiple
+				} else if(keyCode==16) {
+					$("#"+childid+ " a."+styles.selected).removeClass(styles.selected);
+					$(obj).addClass(styles.selected);
+					//shift
+					var currentSelected = $(obj).prop("id");
+					var currentIndex = a_array[currentSelected].index;
+					for(var i=Math.min(oldIndex, currentIndex);i<=Math.max(oldIndex, currentIndex);i++) {
+						$("#"+getByIndex(i).id).addClass(styles.selected);
+					};
+				} else {
+					$("#"+childid+ " a."+styles.selected).removeClass(styles.selected);
+					$(obj).addClass(styles.selected);
+					actionSettings.oldIndex = a_array[$(obj).prop("id")].index;
+				};
+			} else {
+					$("#"+childid+ " a."+styles.selected).removeClass(styles.selected);
+					$(obj).addClass(styles.selected);
+					actionSettings.oldIndex = a_array[$(obj).prop("id")].index;				
+			};
+			//isSingle
+		};		
+	};
+	var addRefreshMethods = function (id) {
+		//deprecated
+		var objid = id;
+		getElement(objid).refresh = function(e) {
+			 $("#"+objid).msDropDown(options);
+		};
+	};
+	var setInsideWindow = function (val) {
+		actionSettings.insideWindow = val;
+	};
+	var getInsideWindow = function () {
+		return actionSettings.insideWindow;
+		//will work on this
+		/*
+		var childid = getPostID("postChildID");
+		return ($("#"+childid + ":visible").length == 0) ? false : true;
+		*/
+	};
+	var applyEvents = function () {
+		var mainid = getPostID("postID");
+		var actions_array = attributes.actions.split(",");
+		for(var iCount=0;iCount<actions_array.length;iCount++) {
+			var action = actions_array[iCount];
+			//var actionFound = $("#"+elementid).prop(action);
+			var actionFound = has_handler(action);
+			if(actionFound==true) {
+				switch(action) {
+					case "focus": 
+					$("#"+mainid).bind("mouseenter", function(event) {
+													   getElement(elementid).focus();
+													   //$("#"+elementid).focus();
+													   });
+					break;
+					case "click": 
+					$("#"+mainid).bind("click", function(event) {
+													   //getElement(elementid).onclick();
+													   $("#"+elementid).trigger("click");
+													   });
+					break;
+					case "dblclick": 
+					$("#"+mainid).bind("dblclick", function(event) {
+													   //getElement(elementid).ondblclick();
+													   $("#"+elementid).trigger("dblclick");
+													   });
+					break;
+					case "mousedown": 
+					$("#"+mainid).bind("mousedown", function(event) {
+													   //getElement(elementid).onmousedown();
+													   $("#"+elementid).trigger("mousedown");
+													   });
+					break;
+					case "mouseup": 
+					//has in close mthod
+					$("#"+mainid).bind("mouseup", function(event) {
+													   //getElement(elementid).onmouseup();
+													   $("#"+elementid).trigger("mouseup");
+													   //setValue();
+													   });
+					break;
+					case "mouseover": 
+					$("#"+mainid).bind("mouseover", function(event) {
+													   //getElement(elementid).onmouseover();													   
+													   $("#"+elementid).trigger("mouseover");
+													   });
+					break;
+					case "mousemove": 
+					$("#"+mainid).bind("mousemove", function(event) {
+													   //getElement(elementid).onmousemove();
+													   $("#"+elementid).trigger("mousemove");
+													   });
+					break;
+					case "mouseout": 
+					$("#"+mainid).bind("mouseout", function(event) {
+													   //getElement(elementid).onmouseout();
+													   $("#"+elementid).trigger("mouseout");
+													   });
+					break;					
+				};
+			};
+		};
+		
+	};
+	var setOutOfVision = function () {
+		var sId = getPostID("postElementHolder");
+		$("#"+elementid).after("<div class='"+styles.ddOutOfVision+"' style='height:0px;overflow:hidden;position:absolute;' id='"+sId+"'></div>");
+		$("#"+elementid).appendTo($("#"+sId));
+	};
+	var setTitleText = function (sText) {
+		var titletextid = getPostID("postTitleTextID");
+		$("#"+titletextid).html(sText);		
+	};
+	var navigateA = function(w) {
+		var where = w;
+		var childid = getPostID("postChildID");
+		var visibleA = $("#"+childid + " a:visible");
+		var totalA = visibleA.length;
+		var currentP = $("#"+childid +" a:visible").index($("#"+childid +" a.selected:visible"));
+		var nextA;
+		switch(where) {
+			case "next":
+				if(currentP < totalA-1) {
+					currentP++;
+					nextA = visibleA[currentP];
+				};
+			break;
+			case "previous":
+				if(currentP < totalA && currentP>0) {
+					currentP--;
+					nextA = visibleA[currentP];
+				};
+			break;	
+		};
+		if(typeof(nextA)=="undefined") {
+			return false;
+		};
+		$("#"+childid + " a."+styles.selected).removeClass(styles.selected);	
+		$(nextA).addClass(styles.selected);
+		var selectedA = nextA.id;
+		if(!ddList) {
+			var sText = (options.showIcon==false) ? a_array[selectedA].text : $("#"+selectedA).html();
+			setTitleText(sText);
+			setTitleImageSprite(a_array[selectedA].index);
+		};
+		if(where=="next")  {
+			if(parseInt(($("#"+selectedA).position().top+$("#"+selectedA).height()))>=parseInt($("#"+childid).height())) {
+				$("#"+childid).scrollTop(($("#"+childid).scrollTop())+$("#"+selectedA).height()+$("#"+selectedA).height());
+			};
+		} else {
+			if(parseInt(($("#"+selectedA).position().top+$("#"+selectedA).height())) <=0) {
+				$("#"+childid).scrollTop(($("#"+childid).scrollTop()-$("#"+childid).height())-$("#"+selectedA).height());
+			};				
+		};	
+	};
+	var next = function () {
+		navigateA("next");
+	};
+	var previous = function () {
+		navigateA("previous");
+	};
+	var setTitleImageSprite = function(i) {
+		if(options.useSprite!=false) {
+			var titletextid = getPostID("postTitleTextID");
+			var index = (typeof(i)=="undefined") ? getElement(elementid).selectedIndex : i;
+			var sClassName = getElement(elementid).options[index].className;
+			if(sClassName.length>0) {
+				var childid = getPostID("postChildID");
+				var id = $("#"+childid + " a."+sClassName).prop("id");
+				var backgroundImg = $("#"+id).css("background-image");
+				var backgroundPosition = $("#"+id).css("background-position");
+				if(backgroundPosition == undefined){
+					backgroundPosition = $("#"+id).css("background-position-x") + " " + $("#"+id).css("background-position-y");
+				};				
+				var paddingLeft = $("#"+id).css("padding-left");
+				if(backgroundImg!=undefined) {
+					$("#"+titletextid).find("."+styles.ddTitleText).attr('style', "background:"+backgroundImg);
+				};
+				if(backgroundPosition!=undefined) {
+					$("#"+titletextid).find("."+styles.ddTitleText).css('background-position', backgroundPosition);
+				};
+				if(paddingLeft!=undefined) {
+					$("#"+titletextid).find("."+styles.ddTitleText).css('padding-left', paddingLeft);	
+				};
+				$("#"+titletextid).find("."+styles.ddTitleText).css('background-repeat', 'no-repeat');				
+				$("#"+titletextid).find("."+styles.ddTitleText).css('padding-bottom', '2px');
+			};
+		};		
+	};
+	var setValue = function () {
+		//alert("setValue "+elementid);
+		var childid = getPostID("postChildID");
+		var allSelected = $("#"+childid + " a."+styles.selected);
+		if(allSelected.length==1) {
+			var sText = $("#"+childid + " a."+styles.selected).text();
+			var selectedA = $("#"+childid + " a."+styles.selected).prop("id");
+			if(selectedA!=undefined) {
+				var sValue = a_array[selectedA].value;
+				getElement(elementid).selectedIndex = a_array[selectedA].index;
+			};
+			//set image on title if using sprite
+			
+			if(options.showIcon && options.useSprite!=false)
+				setTitleImageSprite();
+		} else if(allSelected.length>1) { 
+			//var alls = $("#"+elementid +" > option:selected").removeprop("selected");
+			for(var i=0;i<allSelected.length;i++) {
+				var selectedA = $(allSelected[i]).prop("id");
+				var index = a_array[selectedA].index;
+				getElement(elementid).options[index].selected = "selected";
+			};
+		};
+		//alert(getElement(elementid).selectedIndex);
+		var sIndex = getElement(elementid).selectedIndex;
+		$this.ddProp["selectedIndex"]= sIndex;
+		//alert("selectedIndex "+ $this.ddProp["selectedIndex"] + " sIndex "+sIndex);
+	};
+	var has_handler = function (name) {
+		// True if a handler has been added in the html.
+		if ($("#"+elementid).prop("on" + name) != undefined) {
+			return true;
+		};
+		// True if a handler has been added using jQuery.
+		var evs = $("#"+elementid).data("events");
+		if (evs && evs[name]) {
+			return true;
+		};
+		return false;
+	};
+	var blur_m = function(evt) {
+		$("#"+elementid).focus();
+		$("#"+elementid)[0].blur();
+		setValue();
+		$(document).unbind("mouseup", d_onmouseup);
+		$(document).unbind("mouseup", blur_m);
+	};
+	var checkMethodAndApply = function () {
+		//console.log("calling checkMethodAndApply");
+		var childid = getPostID("postChildID");
+		if(has_handler('change')==true) {
+			//alert(1);
+			var currentSelectedValue = a_array[$("#"+childid +" a.selected").prop("id")].text;
+			if($.trim(oldSelectedValue) !== $.trim(currentSelectedValue) && oldSelectedValue!==""){
+				$("#"+elementid).trigger("change");
+			};
+		};
+		if(has_handler('mouseup')==true) {
+			$("#"+elementid).trigger("mouseup");
+		};
+		if(has_handler('blur')==true) { 
+			$(document).bind("mouseup", blur_m);
+		};
+		return false;
+	};
+	var hightlightArrow = function(ison) {
+		var arrowid = getPostID("postArrowID");
+		if(ison==1)
+			$("#"+arrowid).css({backgroundPosition:'0 100%'});
+		else 
+			$("#"+arrowid).css({backgroundPosition:'0 0'});
+	};
+	var setOriginalProperties = function() {
+		//properties = {};
+		//alert($this.data("dd"));
+		for(var i in getElement(elementid)) {
+			if(typeof(getElement(elementid)[i])!='function' && getElement(elementid)[i]!==undefined && getElement(elementid)[i]!==null) {
+				$this.set(i, getElement(elementid)[i], true);//true = setting local properties
+			};
+		};
+	};
+	var setValueByIndex = function(prop, val) {
+			if(getByIndex(val) != -1) {
+				getElement(elementid)[prop] = val;
+				var childid = getPostID("postChildID");
+				$("#"+childid+ " a."+styles.selected).removeClass(styles.selected);
+				$("#"+getByIndex(val).id).addClass(styles.selected);
+				var sText = getByIndex(getElement(elementid).selectedIndex).html;
+				setTitleText(sText);				
+			};
+	};
+	var addRemoveFromIndex = function(i, action) {
+		if(action=='d') {
+			for(var key in a_array) {
+				if(a_array[key].index == i) {
+					delete a_array[key];
+					break;
+				};
+			};
+		};
+		//update index
+		var count = 0;
+		for(var key in a_array) {
+			a_array[key].index = count;
+			count++;
+		};
+	};
+	var shouldOpenOpposite = function() {
+		var childid = getPostID("postChildID");
+		var main = getPostID("postID");
+		var pos = $("#"+main).offset();
+		var mH = $("#"+main).height();
+		var wH = $(window).height();
+		var st = $(window).scrollTop();
+		var cH = $("#"+childid).height();
+		var css = {zIndex:options.zIndex, top:(pos.top+mH)+"px", display:"none"};
+		var ani = options.animStyle;
+		var opp = false;
+		var borderTop = styles.noBorderTop;
+		$("#"+childid).removeClass(styles.noBorderTop);
+		$("#"+childid).removeClass(styles.borderTop);
+		if( (wH+st) < Math.floor(cH+mH+pos.top) ) {
+			var tp = pos.top-cH;
+			if((pos.top-cH)<0) {
+				tp = 10;
+			};
+			css = {zIndex:options.zIndex, top:tp+"px", display:"none"};
+			ani = "show";
+			opp = true;
+			borderTop = styles.borderTop;
+		};
+		return {opp:opp, ani:ani, css:css, border:borderTop};
+	};	
+	var fireOpenEvent = function() {
+		  if($this.onActions["onOpen"]!=null) {
+			  eval($this.onActions["onOpen"])($this);
+		  };		
+	};
+	var fireCloseEvent = function() {
+			checkMethodAndApply();
+			if($this.onActions["onClose"]!=null) {
+				eval($this.onActions["onClose"])($this);
+			};		
+	};
+	var d_onkeydown = function(event) {
+		var childid = getPostID("postChildID");
+		var keyCode = event.keyCode;
+		//alert("keyCode "+keyCode);
+		if(keyCode==8) {
+				event.preventDefault(); event.stopPropagation();
+				//remove char
+				inputText = (inputText.length==0) ? "" : inputText.substr(0, inputText.length-1);
+		};
+		switch(keyCode) {
+			case 39:
+			case 40:
+				//move to next
+				event.preventDefault(); event.stopPropagation();
+				next();															
+			break;
+			case 37:
+			case 38:
+				//move to previous
+				event.preventDefault(); event.stopPropagation();
+				previous();
+			break;
+			case 27:
+			case 13:
+				$this.close();
+				setValue();
+			break;
+			default:
+				if(keyCode>46) {
+					inputText += String.fromCharCode(keyCode);
+				};
+				var ind = in_array(inputText);
+				if(ind != -1) {
+					$("#"+childid).css({height:'auto'});
+					$("#"+childid +" a").hide();
+					$(ind).show();																
+					var wf = shouldOpenOpposite();
+					$("#"+childid).css(wf.css);
+					$("#"+childid).css({display:'block'});
+				} else {
+					$("#"+childid +" a").show();
+					$("#"+childid).css({height:oldHeight+'px'});
+				};
+			break;
+		};
+		if(has_handler("keydown")==true) {
+			getElement(elementid).onkeydown();
+		};
+		return false;
+	};
+	var d_onmouseup = function(event) {
+		if(getInsideWindow()==false) {
+			//alert("evt.target: "+event.target);
+			 //$this.data("dd").close();
+			 $this.close();
+		};
+		return false;
+	};
+	var d_onkeyup = function(event) {
+		if($("#"+elementid).prop("onkeyup")!=undefined) {
+			//$("#"+elementid).keyup();
+			getElement(elementid).onkeyup();
+		};
+		return false;
+	};
+	/************* public methods *********************/
+	this.open = function() {
+		if(($this.get("disabled", true) == true) || ($this.get("options", true).length==0)) return;
+		var childid = getPostID("postChildID");
+		if(msOldDiv!="" && childid!=msOldDiv) { 
+			$("#"+msOldDiv).slideUp("fast");
+			$("#"+msOldDiv).css({zIndex:'0'});
+		};
+		if($("#"+childid).css("display")=="none") {
+			oldSelectedValue = a_array[$("#"+childid +" a.selected").prop("id")].text;
+			//keyboard action
+			inputText = "";
+			oldHeight = $("#"+childid).height();
+			$("#"+childid +" a").show();
+			$(document).bind("keydown", d_onkeydown);
+			$(document).bind("keyup", d_onkeyup);
+			//end keyboard action
+			
+			//close onmouseup
+			$(document).bind("mouseup", d_onmouseup);													  
+			
+			//check open
+			var wf = shouldOpenOpposite();
+			$("#"+childid).css(wf.css);
+			if(wf.opp==true) {
+				$("#"+childid).css({display:'block'});
+				$("#"+childid).addClass(wf.border);
+				fireOpenEvent();
+			} else {
+				$("#"+childid)[wf.ani]("fast", function() {
+														  $("#"+childid).addClass(wf.border);
+														  fireOpenEvent();
+														  });
+			};
+			if(childid != msOldDiv) {
+				msOldDiv = childid;
+			};
+		};
+	};
+	this.close = function() {
+				var childid = getPostID("postChildID");
+				//console.log("calling close " + $("#"+childid).css("display"));
+				if($("#"+childid).css("display")=="none") {return false;};
+				var top = $("#"+getPostID("postTitleID")).position().top;
+				var wf = shouldOpenOpposite();
+				//var oldHeight = $("#"+childid).height();
+				isFilter = false;
+				if(wf.opp==true) {
+					$("#"+childid).animate({
+										height:0,
+										top: top
+										}, function() {
+												$("#"+childid).css({height:oldHeight+'px', display:'none'});
+												fireCloseEvent();
+										});
+				} 
+				else {
+					$("#"+childid).slideUp("fast", function(event) {
+																fireCloseEvent();
+																$("#"+childid).css({zIndex:'0'});
+																$("#"+childid).css({height:oldHeight+'px'});
+																});
+				};
+				setTitleImageSprite();
+				$(document).unbind("keydown", d_onkeydown);
+				$(document).unbind("keyup", d_onmouseup);
+				$(document).unbind("mouseup", d_onkeyup);
+	};
+	this.selectedIndex = function(i) {
+		if(typeof(i)=="undefined") {
+			return $this.get("selectedIndex");
+		} else {
+			$this.set("selectedIndex", i);
+		};
+	};
+	this.debug = function(is) {
+		if(typeof(is)=="undefined" || is==true) {
+			$("."+styles.ddOutOfVision).removeAttr("style");
+		} else {
+			$("."+styles.ddOutOfVision).attr("style", "height:0px;overflow:hidden;position:absolute");
+		};
+	};
+	//update properties
+	this.set = function(prop, val, isLocal) {
+		//alert("- set " + prop + " : "+val);
+		if(prop==undefined || val==undefined) throw {message:"set to what?"}; 
+		$this.ddProp[prop] = val;
+		if(isLocal!=true) { 
+			switch(prop) {
+				case "selectedIndex":
+					setValueByIndex(prop, val);
+				break;
+				case "disabled":
+					$this.disabled(val, true);
+				break;
+				case "multiple":
+					getElement(elementid)[prop] = val;
+					ddList = ($(sElement).prop("size")>0 || $(sElement).prop("multiple")==true) ? true : false;	
+					if(ddList) {
+						//do something
+						var iHeight = $("#"+elementid).height();
+						var childid = getPostID("postChildID");
+						$("#"+childid).css("height", iHeight+"px");					
+						//hide titlebar
+						var titleid = getPostID("postTitleID");
+						$("#"+titleid).hide();
+						var childid = getPostID("postChildID");
+						$("#"+childid).css({display:'block',position:'relative'});
+						applyEventsOnA();
+					};
+				break;
+				case "size":
+					getElement(elementid)[prop] = val;
+					if(val==0) {
+						getElement(elementid).multiple = false;
+					};
+					ddList = ($(sElement).prop("size")>0 || $(sElement).prop("multiple")==true) ? true : false;	
+					if(val==0) {
+						//show titlebar
+						var titleid = getPostID("postTitleID");
+						$("#"+titleid).show();
+						var childid = getPostID("postChildID");
+						$("#"+childid).css({display:'none',position:'absolute'});
+						var sText = "";
+						if(getElement(elementid).selectedIndex>=0) {
+							var aObj = getByIndex(getElement(elementid).selectedIndex);
+							sText = aObj.html;
+							manageSelection($("#"+aObj.id));
+						}; 
+						setTitleText(sText);
+					} else {
+						//hide titlebar
+						var titleid = getPostID("postTitleID");
+						$("#"+titleid).hide();
+						var childid = getPostID("postChildID");
+						$("#"+childid).css({display:'block',position:'relative'});						
+					};
+				break;
+				default:
+				try{
+					//check if this is not a readonly properties
+					getElement(elementid)[prop] = val;
+				} catch(e) {
+					//silent
+				};				
+				break;
+			};
+		};
+		//alert("get " + prop + " : "+$this.ddProp[prop]);
+		//$this.set("selectedIndex", 0);
+	};
+	this.get = function(prop, forceRefresh) {
+		if(prop==undefined && forceRefresh==undefined) {
+			//alert("c1 : " +$this.ddProp);
+		 	return $this.ddProp;
+		};
+		if(prop!=undefined && forceRefresh==undefined) {
+			//alert("c2 : " +$this.ddProp[prop]);
+			return ($this.ddProp[prop]!=undefined) ? $this.ddProp[prop] : null;
+		};
+		if(prop!=undefined && forceRefresh!=undefined) {
+			//alert("c3 : " +getElement(elementid)[prop]);
+			return getElement(elementid)[prop];
+		};
+	};
+	this.visible = function(val) {
+		var id = getPostID("postID");
+		if(val==true) {
+			$("#"+id).show();
+		} else if(val==false) {
+			$("#"+id).hide();
+		} else {
+			return $("#"+id).css("display");
+		};
+	};
+	this.add = function(opt, index) {
+		var objOpt = opt;
+		var sText = objOpt.text;
+		var sValue = (objOpt.value==undefined || objOpt.value==null) ? sText : objOpt.value;
+		var img = (objOpt["title"]==undefined || objOpt["title"]==null) ? '' : objOpt["title"];
+		var i = (index==undefined || index==null) ? getElement(elementid).options.length : index;
+		getElement(elementid).options[i] = new Option(sText, sValue);
+		if(img!='') getElement(elementid).options[i]["title"] = img;
+		//check if exist
+		var ifA = getByIndex(i);
+		if(ifA != -1) {
+			//replace
+			var aTag = createA(getElement(elementid).options[i], i, "", "");
+			$("#"+ifA.id).html(aTag);
+			//a_array[key]
+		} else {
+			var aTag = createA(getElement(elementid).options[i], i, "", "");
+			//add
+			var childid = getPostID("postChildID");
+			$("#"+childid).append(aTag);
+			applyEventsOnA();
+		};
+	};	
+	this.remove = function(i) {
+		getElement(elementid).remove(i);
+		if((getByIndex(i))!= -1) { $("#"+getByIndex(i).id).remove();addRemoveFromIndex(i, 'd');};
+		//alert("a" +a);
+		if(getElement(elementid).length==0) {
+			setTitleText("");
+		} else {
+			var sText = getByIndex(getElement(elementid).selectedIndex).html;
+			setTitleText(sText);
+		};
+		$this.set("selectedIndex", getElement(elementid).selectedIndex);
+	};
+	this.disabled = function(dis, isLocal) {
+		getElement(elementid).disabled = dis;
+		//alert(getElement(elementid).disabled);
+		var id = getPostID("postID");
+		if(dis==true) {
+			$("#"+id).css("opacity", styles.disabled);
+			$this.close();
+		} else if(dis==false) {
+			$("#"+id).css("opacity", 1);
+		};
+		if(isLocal!=true) {
+			$this.set("disabled", dis);
+		};
+	};
+	//return form element
+	this.form = function() {
+		return (getElement(elementid).form == undefined) ? null : getElement(elementid).form;
+	};
+	this.item = function() {
+		//index, subindex - use arguments.length
+		if(arguments.length==1) {
+			return getElement(elementid).item(arguments[0]);
+		} else if(arguments.length==2) {
+			return getElement(elementid).item(arguments[0], arguments[1]);
+		} else {
+			throw {message:"An index is required!"};
+		};
+	};
+	this.namedItem = function(nm) {
+		return getElement(elementid).namedItem(nm);
+	};
+	this.multiple = function(is) {
+		if(typeof(is)=="undefined") {
+			return $this.get("multiple");
+		} else {
+			$this.set("multiple", is);
+		};
+		
+	};
+	this.size = function(sz) {
+		if(typeof(sz)=="undefined") {
+			return $this.get("size");
+		} else {
+			$this.set("size", sz);
+		};		
+	};	
+	this.addMyEvent = function(nm, fn) {
+		$this.onActions[nm] = fn;
+	};
+	this.fireEvent = function(nm) {
+		eval($this.onActions[nm])($this);
+	};
+	this.showRows = function(r) {
+		if(typeof r == "undefined" || r==0) {return false};
+		var childid = getPostID("postChildID");
+		var fc = $("#"+childid+" a:first").height();
+		var dh = (fc==0) ? options.rowHeight : fc; 
+		var iHeight = r*dh;
+		$("#"+childid).css("height", iHeight+"px");	
+	};
+	//end 
+	var updateCommonVars = function() {
+		$this.set("version", $.msDropDown.version);
+		$this.set("author", $.msDropDown.author);
+	};
+	var init = function() {
+		//create wrapper
+		createDropDown();
+		//update propties
+		//alert("init");
+		setOriginalProperties();
+		updateCommonVars();
+		if(options.onInit!='') {
+			eval(options.onInit)($this);
+		};		
+	};
+	init();
+	};
+	//static
+	$.msDropDown = {
+		version: '2.38',
+		author: "Marghoob Suleman",
+		counter:20,
+		debug: function(v) {
+			if(v==true) {
+				$(".ddOutOfVision").css({height:'20px', position:'relative'});
+			} else {
+				$(".ddOutOfVision").css({height:'0px', position:'absolute'});
+			};
+		},
+		create: function(id, opt) {
+			return $(id).msDropDown(opt).data("dd");
+		}
+	};
+	$.fn.extend({
+	        msDropDown: function(options)
+	        {
+	            return this.each(function()
+	            {
+	               //if ($(this).data('dd')) return; // need to comment when using refresh method - will remove in next version
+	               var mydropdown = new dd(this, options);
+	               $(this).data('dd', mydropdown);
+	            });
+	        }
+    });
+	//fixed for prop
+	if(typeof($.fn.prop)=='undefined') {
+		$.fn.prop = function(w, v) {
+			if(typeof v == "undefined") {
+				return $(this).attr(w);
+			};
+			try {
+				$(this).attr(w, v);
+			} catch(e) {
+				//some properties are read only.
+			};
+		};
+	};		   
+	
+})(jQuery);
