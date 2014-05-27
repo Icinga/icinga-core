@@ -743,11 +743,17 @@ int xodtemplate_process_config_file(char *filename, int options) {
 				break;
 			}
 
+			if (!strcmp(input, "hostextinfo") || !strcmp(input, "serviceextinfo")) {
+				logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Object definition type '%s' is DEPRECATED in file '%s' on line %d.\n", input, filename, current_line);
+			}
+
 			/* check validity of object type */
 			if (strcmp(input, "timeperiod") && strcmp(input, "command") && strcmp(input, "contact") && strcmp(input, "contactgroup") && strcmp(input, "host") && strcmp(input, "hostgroup") && strcmp(input, "servicegroup") && strcmp(input, "service") && strcmp(input, "servicedependency") && strcmp(input, "serviceescalation") && strcmp(input, "hostgroupescalation") && strcmp(input, "hostdependency") && strcmp(input, "hostescalation") && strcmp(input, "hostextinfo") && strcmp(input, "serviceextinfo") && strcmp(input, "module")) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid object definition type '%s' in file '%s' on line %d.\n", input, filename, current_line);
+#ifdef NSCORE
 				result = ERROR;
 				break;
+#endif
 			}
 
 			/* we're already in an object definition... */
@@ -948,8 +954,13 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		xodtemplate_current_object_type = XODTEMPLATE_SERVICEEXTINFO;
 	else if (!strcmp(input, "module"))
 		xodtemplate_current_object_type = XODTEMPLATE_MODULE;
-	else
+	else {
+#ifdef NSCORE
 		return ERROR;
+#else
+		return OK;
+#endif
+	}
 
 
 	/* check to see if we should process this type of object */
@@ -1260,7 +1271,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			return OK;
 		break;
 	default:
+#ifdef NSCORE
 		return ERROR;
+#else
+		return OK;
+#endif
 		break;
 	}
 
@@ -1343,7 +1358,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_timeperiod->register_object = (atoi(value) > 0) ? TRUE : FALSE;
 		else if (xodtemplate_parse_timeperiod_directive(temp_timeperiod, variable, value) == OK)
 			result = OK;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in timeperiod object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid timeperiod object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1498,7 +1517,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_contactgroup->have_contactgroup_members = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_contactgroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in contactgroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid contactgroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1606,7 +1629,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostgroup->have_action_url = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_hostgroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in hostgroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostgroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1715,7 +1742,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_servicegroup->have_action_url = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_servicegroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in servicegroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid servicegroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1896,7 +1927,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_servicedependency->have_notification_dependency_options = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_servicedependency->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in service dependency object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid servicedependency object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -2072,7 +2107,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			}
 		} else if (!strcmp(variable, "register"))
 			temp_serviceescalation->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in service escalation object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid serviceescalation object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -2471,16 +2510,28 @@ int xodtemplate_add_object_property(char *input, int options) {
 				result = ERROR;
 			}
 			temp_host->have_initial_state = TRUE;
-		} else if (!strcmp(variable, "check_interval") || !strcmp(variable, "normal_check_interval")) {
+		} else if (!strcmp(variable, "check_interval")) {
 			temp_host->check_interval = strtod(value, NULL);
 			temp_host->have_check_interval = TRUE;
-		} else if (!strcmp(variable, "retry_interval") || !strcmp(variable, "retry_check_interval")) {
+		} else if (!strcmp(variable, "normal_check_interval")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' with value '%s' is DEPRECATED. Replace it with 'check_interval'.\n", variable, value);
+			temp_host->check_interval = strtod(value, NULL);
+			temp_host->have_check_interval = TRUE;
+		} else if (!strcmp(variable, "retry_interval")) {
+			temp_host->retry_interval = strtod(value, NULL);
+			temp_host->have_retry_interval = TRUE;
+		} else if (!strcmp(variable, "retry_check_interval")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' with value '%s' is DEPRECATED. Replace it with 'retry_interval'.\n", variable, value);
 			temp_host->retry_interval = strtod(value, NULL);
 			temp_host->have_retry_interval = TRUE;
 		} else if (!strcmp(variable, "max_check_attempts")) {
 			temp_host->max_check_attempts = atoi(value);
 			temp_host->have_max_check_attempts = TRUE;
-		} else if (!strcmp(variable, "checks_enabled") || !strcmp(variable, "active_checks_enabled")) {
+		} else if (!strcmp(variable, "active_checks_enabled")) {
+			temp_host->active_checks_enabled = (atoi(value) > 0) ? TRUE : FALSE;
+			temp_host->have_active_checks_enabled = TRUE;
+		} else if (!strcmp(variable, "checks_enabled")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' with value '%s' is DEPRECATED. Replace it with 'active_checks_enabled'.\n", variable, value);
 			temp_host->active_checks_enabled = (atoi(value) > 0) ? TRUE : FALSE;
 			temp_host->have_active_checks_enabled = TRUE;
 		} else if (!strcmp(variable, "passive_checks_enabled")) {
@@ -2626,6 +2677,7 @@ int xodtemplate_add_object_property(char *input, int options) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid 3d_coords value '%s' in host definition.\n", temp_ptr);
 				return ERROR;
 			}
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' for host '%s' is DEPRECATED. Remove it from your configuration.\n", variable, value);
 			temp_host->z_3d = strtod(temp_ptr, NULL);
 			temp_host->have_3d_coords = TRUE;
 		} else if (!strcmp(variable, "obsess_over_host")) {
@@ -2861,10 +2913,18 @@ int xodtemplate_add_object_property(char *input, int options) {
 		} else if (!strcmp(variable, "max_check_attempts")) {
 			temp_service->max_check_attempts = atoi(value);
 			temp_service->have_max_check_attempts = TRUE;
-		} else if (!strcmp(variable, "check_interval") || !strcmp(variable, "normal_check_interval")) {
+		} else if (!strcmp(variable, "check_interval")) {
 			temp_service->check_interval = strtod(value, NULL);
 			temp_service->have_check_interval = TRUE;
-		} else if (!strcmp(variable, "retry_interval") || !strcmp(variable, "retry_check_interval")) {
+		} else if (!strcmp(variable, "normal_check_interval")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' with value '%s' is DEPRECATED. Replace it with 'check_interval'.\n", variable, value);
+			temp_service->check_interval = strtod(value, NULL);
+			temp_service->have_check_interval = TRUE;
+		} else if (!strcmp(variable, "retry_interval")) {
+			temp_service->retry_interval = strtod(value, NULL);
+			temp_service->have_retry_interval = TRUE;
+		} else if (!strcmp(variable, "retry_check_interval")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: Variable '%s' with value '%s' is DEPRECATED. Replace it with 'retry_interval'.\n", variable, value);
 			temp_service->retry_interval = strtod(value, NULL);
 			temp_service->have_retry_interval = TRUE;
 		} else if (!strcmp(variable, "active_checks_enabled")) {
@@ -3180,7 +3240,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostdependency->have_execution_dependency_options = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_hostdependency->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in host dependency object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostdependency object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -3318,7 +3382,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			}
 		} else if (!strcmp(variable, "register"))
 			temp_hostescalation->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in host escalation object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostescalation object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -3596,7 +3664,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 				result = ERROR;
 		} else if (!strcmp(variable, "register"))
 			temp_module->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in module object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid module object directive '%s'.\n", variable);
 			return ERROR;
 		}
