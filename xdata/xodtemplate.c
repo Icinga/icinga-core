@@ -1343,7 +1343,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_timeperiod->register_object = (atoi(value) > 0) ? TRUE : FALSE;
 		else if (xodtemplate_parse_timeperiod_directive(temp_timeperiod, variable, value) == OK)
 			result = OK;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in timeperiod object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid timeperiod object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1498,7 +1502,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_contactgroup->have_contactgroup_members = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_contactgroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in contactgroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid contactgroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1606,7 +1614,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostgroup->have_action_url = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_hostgroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in hostgroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostgroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1715,7 +1727,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_servicegroup->have_action_url = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_servicegroup->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in servicegroup object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid servicegroup object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -1896,7 +1912,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_servicedependency->have_notification_dependency_options = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_servicedependency->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in service dependency object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid servicedependency object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -2072,7 +2092,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			}
 		} else if (!strcmp(variable, "register"))
 			temp_serviceescalation->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in service escalation object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid serviceescalation object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -3180,7 +3204,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostdependency->have_execution_dependency_options = TRUE;
 		} else if (!strcmp(variable, "register"))
 			temp_hostdependency->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in host dependency object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostdependency object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -3318,7 +3346,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 			}
 		} else if (!strcmp(variable, "register"))
 			temp_hostescalation->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in host escalation object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid hostescalation object directive '%s'.\n", variable);
 			return ERROR;
 		}
@@ -3596,7 +3628,11 @@ int xodtemplate_add_object_property(char *input, int options) {
 				result = ERROR;
 		} else if (!strcmp(variable, "register"))
 			temp_module->register_object = (atoi(value) > 0) ? TRUE : FALSE;
-		else {
+		else if (variable[0] == '_') {
+#ifdef NSCORE
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: ignoring unused custom variable in module object directive '%s'.\n", variable);
+#endif
+		} else {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Invalid module object directive '%s'.\n", variable);
 			return ERROR;
 		}
