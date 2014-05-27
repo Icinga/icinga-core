@@ -28,6 +28,8 @@ FIXES
 * core: Fix config parser with object custom variables #6330 - MF
 * core: Allow Classic UI config parser to ignore unknown objects #5826 - MF
 
+* classic ui: Fix jquery.dd source file, update to 2.38 #6324 - MF
+
 1.11.3 - 10/05/2014
 
 ENHANCEMENTS
