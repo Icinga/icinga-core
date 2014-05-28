@@ -20,7 +20,7 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
-1.11.4 - XX/YY/2014
+1.11.4 - 28/05/2014
 
 FIXES
 
@@ -29,6 +29,16 @@ FIXES
 * core: Allow Classic UI config parser to ignore unknown objects #5826 - MF
 
 * classic ui: Fix jquery.dd source file, update to 2.38 #6324 - MF
+
+CHANGES
+
+* config parser now marks the following attributes and objects as DEPRECATED (they have been since 0.8.0)
+	** retry_check_interval (hosts, services)
+	** normal_check_internal (hosts, services)
+	** checks_enabled (hosts)
+	** hostextinfo object
+	** serviceextinfo object
+
 
 1.11.3 - 10/05/2014
 
