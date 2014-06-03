@@ -242,6 +242,7 @@ int sort_type = SORT_NONE;				/**< defines sort order  */
 int sort_option = SORT_HOSTNAME;			/**< defines after which column is sorted */
 int sort_object = SERVICE_STATUS;			/**< defines if service or hoststatus is sorted */
 int hosts_need_to_be_sorted_again = FALSE;		/**< if we have hosts with no services and no sort option is given, then we need to sort the hosts alphabetically again */
+int user_sorted_manually = FALSE;			/**< will be set if user used sorting, needed to distinct between default sort of @ref hosts_need_to_be_sorted_again or not */
 
 /** @name status data counters vars
     @{ **/
@@ -1857,6 +1858,7 @@ int process_cgivars(void) {
 			}
 
 			sort_type = atoi(value);
+			user_sorted_manually = TRUE;
 		}
 
 		/* we found the sort option argument */
@@ -1867,6 +1869,7 @@ int process_cgivars(void) {
 			}
 
 			sort_option = atoi(value);
+			user_sorted_manually = TRUE;
 		}
 
 		/* we found the sort object argument */
@@ -1880,6 +1883,8 @@ int process_cgivars(void) {
 				sort_object = HOST_STATUS;
 			else if (!strcmp(value, "services"))
 				sort_object = SERVICE_STATUS;
+
+			user_sorted_manually = TRUE;
 		}
 
 		/* we found the embed option */
@@ -2886,7 +2891,7 @@ void show_host_detail(void) {
 
 	/* sort status data if necessary */
 	if ((sort_type != SORT_NONE && sort_object == HOST_STATUS) || hosts_need_to_be_sorted_again == TRUE) {
-		result = sort_status_data(HOST_STATUS, (hosts_need_to_be_sorted_again == TRUE) ? SORT_ASCENDING : sort_type, sort_option);
+		result = sort_status_data(HOST_STATUS, (hosts_need_to_be_sorted_again == TRUE && user_sorted_manually == FALSE) ? SORT_ASCENDING : sort_type, sort_option);
 		if (result == ERROR)
 			use_sort = FALSE;
 		else
@@ -2928,7 +2933,7 @@ void show_host_detail(void) {
 		print_displayed_names(display_type);
 		printf("</div>\n");
 
-		if (use_sort == TRUE && hosts_need_to_be_sorted_again == FALSE) {
+		if (use_sort == TRUE && user_sorted_manually == TRUE && sort_object == HOST_STATUS) {
 			printf("<div align='center' class='statusSort'>Entries sorted by <b>");
 			if (sort_option == SORT_HOSTNAME)
 				printf("host name");
@@ -6522,6 +6527,8 @@ void free_sort_list(void) {
 		next_sort = this_sort->next;
 		free(this_sort);
 	}
+
+	statussort_list = NULL;
 
 	return;
 }
