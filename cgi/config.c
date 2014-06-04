@@ -163,6 +163,8 @@ void store_default_settings(void);
 
 authdata current_authdata;
 
+extern char		*status_file_icinga_version;
+
 int display_type = DISPLAY_NONE;
 int get_result_limit = -1;
 int result_start = 1;
@@ -4198,6 +4200,11 @@ void display_command_expansion(void) {
 	host *hst = NULL;
 	service *svc = NULL;
 	char *processed_command;
+
+	if (status_file_icinga_version != NULL && status_file_icinga_version[0] != '1') {
+		printf("<p><div align='center' class='dataTitle'>Sorry, command expander only available using Icinga 1.x.</div></p>\n");
+		return;
+	}
 
 	/* show host and/or service related raw command */
 	hst = find_host(host_name);
