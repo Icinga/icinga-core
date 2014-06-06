@@ -212,7 +212,7 @@ case "$1" in
 			if status_ido2db; then
 				echo ''
 				echo "Warning - Ido2db did not exit in a timely manner. Sending kill -9"
-				kill9proc_ido2db
+                                killproc9_ido2db
 			else
 				remove_run_files
 				echo "done."

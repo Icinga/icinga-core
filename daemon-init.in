@@ -250,7 +250,7 @@ case "$1" in
 			if status_icinga; then
 				echo ''
 				echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
-				kill9proc_icinga
+                                killproc9_icinga
 			else
 				echo 'Stopping icinga done.'
 				remove_run_files
