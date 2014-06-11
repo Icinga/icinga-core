@@ -92,6 +92,7 @@ extern char *service_warning_sound;
 extern char *splunk_url;
 extern char *statusmap_background_image;
 extern char url_html_path[MAX_FILENAME_LENGTH];
+extern char url_cgi_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 
@@ -220,6 +221,7 @@ char *org_service_warning_sound = "";
 char *org_splunk_url = "";
 char *org_statusmap_background_image = "";
 char *org_url_html_path = "";
+char *org_url_cgi_path = "";
 char *org_url_stylesheets_path = "";
 
 int org_add_notif_num_hard;
@@ -4140,6 +4142,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(tab_friendly_titles, org_tab_friendly_titles, "bool")
 	PRINT_CONFIG_LINE_INT(tac_show_only_hard_state, org_tac_show_only_hard_state, "bool")
 	PRINT_CONFIG_LINE_STRING(url_html_path, org_url_html_path)
+	PRINT_CONFIG_LINE_STRING(url_cgi_path, org_url_cgi_path)
 	PRINT_CONFIG_LINE_STRING(url_stylesheets_path, org_url_stylesheets_path)
 	PRINT_CONFIG_LINE_INT(use_authentication, org_use_authentication, "bool")
 	PRINT_CONFIG_LINE_INT(use_logging, org_use_logging, "bool")
@@ -4529,6 +4532,7 @@ void store_default_settings(void) {
 	org_splunk_url = strdup(splunk_url);
 	org_statusmap_background_image = strdup(statusmap_background_image);
 	org_url_html_path = strdup(url_html_path);
+	org_url_cgi_path = strdup(url_cgi_path);
 	org_url_stylesheets_path = strdup(url_stylesheets_path);
 
 	org_add_notif_num_hard = add_notif_num_hard;

@@ -528,8 +528,8 @@ int read_cgi_config_file(char *filename) {
 			url_cgi_path[sizeof(url_cgi_path) - 1] = '\x0';
 
 			strip(url_cgi_path);
-			if (url_cgi_path[strlen(url_cgi_path) - 1] != '/' && (strlen(url_cgi_path) < sizeof(url_cgi_path) - 1))
-				strcat(url_cgi_path, "/");
+			if (url_cgi_path[strlen(url_cgi_path) - 1] == '/')
+				url_cgi_path[strlen(url_cgi_path) - 1] = '\x0';
 
 		}
 
@@ -830,6 +830,8 @@ int read_cgi_config_file(char *filename) {
 		snprintf(url_stylesheets_path, sizeof(url_stylesheets_path), "%sstylesheets/", url_html_path);
 		url_stylesheets_path[sizeof(url_stylesheets_path) - 1] = '\x0';
 	}
+
+	/* check if cgi path was set */
 	if (!strcmp(url_cgi_path, "")) {
 		snprintf(url_cgi_path, sizeof(url_cgi_path), "%s", DEFAULT_URL_CGIBIN_PATH);
 		url_cgi_path[sizeof(url_cgi_path) - 1] = '\x0';
