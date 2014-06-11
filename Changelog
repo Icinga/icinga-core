@@ -26,6 +26,10 @@ ENHANCEMENTS
 
 * classic ui: start with unhandled problems view instead of TAC #4817 - MF
 
+FIXES
+
+* classic ui: fix status.cgi gets stuck in loop when sorting on "All Unhandled Problems" #5886 - RB
+
 
 1.11.4 - 28/05/2014
 
