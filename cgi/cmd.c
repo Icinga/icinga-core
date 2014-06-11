@@ -46,6 +46,7 @@ extern const char *extcmd_get_name(int id);
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
+extern char url_cgi_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char command_file[MAX_FILENAME_LENGTH];
 extern char comment_file[MAX_FILENAME_LENGTH];
@@ -2066,7 +2067,7 @@ void commit_command_data(int cmd) {
 	get_authentication_information(&current_authdata);
 
 	referer = getenv("HTTP_REFERER");
-	asprintf(&referer_check, "%s/%s", DEFAULT_URL_CGIBIN_PATH, CMD_CGI);
+	asprintf(&referer_check, "%s/%s", url_cgi_path, CMD_CGI);
 
 	if (disable_cmd_cgi_csrf_protection == FALSE && (referer == NULL || !strstr(referer, referer_check))) {
 		if (use_logging == TRUE) {

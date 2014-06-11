@@ -56,6 +56,17 @@ url_html_path=@htmurl@
 
 
 
+# URL CGI PATH
+# This is the path portion of the URL that corresponds to the
+# physical location of the Icinga CGI files. It is evaluated by
+# the cmd.cgi CSRF protection.
+# This value should be changed if the CGI files are accessible
+# under a different path than the default installation path.
+
+#url_cgi_path=@htmurl@/cgi-bin
+
+
+
 # URL STYLESHEETS PATH
 # This option allows to define an url stylesheet path other than the
 # default ($url_html_path/stylesheets). This will be useful when
