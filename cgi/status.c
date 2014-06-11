@@ -2590,9 +2590,9 @@ void show_service_detail(void) {
 				printf("<table border='0' cellpadding='0' cellspacing='0'>\n");
 				printf("<tr>\n");
 				if (!strcmp(temp_host->address6, temp_host->name))
-					printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s'>%s</a></td>\n", host_status_bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+					printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s (%s)'>%s</a></td>\n", host_status_bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), temp_host->address, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 				else
-					printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s,%s'>%s</a></td>\n", host_status_bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+					printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s (%s),%s'>%s</a></td>\n", host_status_bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), temp_host->address, temp_host->address6, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 
 				printf("</tr>\n");
 				printf("</table>\n");
@@ -3139,9 +3139,9 @@ void show_host_detail(void) {
 			printf("<table border='0' cellpadding='0' cellspacing='0'>\n");
 			printf("<tr>\n");
 			if (!strcmp(temp_host->address6, temp_host->name))
-				printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s'>%s</a>&nbsp;</td>\n", status_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+				printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s (%s)'>%s</a>&nbsp;</td>\n", status_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), temp_host->address, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 			else
-				printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s,%s'>%s</a>&nbsp;</td>\n", status_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+				printf("<td align='left' valign='middle' class='status%s'><a href='%s?type=%d&amp;host=%s' title='%s,%s (%s)'>%s</a>&nbsp;</td>\n", status_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), temp_host->address, temp_host->address6, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 
 			printf("</tr>\n");
 			printf("</table>\n");
@@ -4766,9 +4766,9 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 		printf("<table border='0' width=100%% cellpadding='0' cellspacing='0'>\n");
 		printf("<tr class='status%s'>\n", status_bg_class);
 		if (!strcmp(temp_host->address6, temp_host->name))
-			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s (%s)'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 		else
-			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s,%s'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<td class='status%s' style='text-align:left;'><a href='%s?host=%s&amp;style=detail' title='%s,%s (%s)'>%s</a></td>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->alias != NULL) ? html_encode(temp_host->alias, TRUE) : " ", (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 
 		if (temp_host->icon_image != NULL) {
 			printf("<td class='status%s' width=5></td>\n", status_bg_class);
