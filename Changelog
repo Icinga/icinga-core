@@ -20,6 +20,13 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.11.5 - XX/XX/2014
+
+FIXES
+
+* classic ui: Fix CSRF protection in cmd.cgi matches only complied in URL #6459 - MF
+
+
 1.11.4 - 28/05/2014
 
 FIXES
