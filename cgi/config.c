@@ -108,6 +108,7 @@ extern int cgi_log_rotation_method;
 extern int default_downtime_duration;
 extern int default_expiring_acknowledgement_duration;
 extern int display_status_totals;
+extern int disable_cmd_cgi_csrf_protection;
 extern int default_statusmap_layout_method;
 extern int enable_splunk_integration;
 extern int enforce_comments_on_actions;
@@ -231,6 +232,7 @@ int org_cgi_log_rotation_method;
 int org_default_downtime_duration;
 int org_default_expiring_acknowledgement_duration;
 int org_display_status_totals;
+int org_disable_cmd_cgi_csrf_protection;
 int org_default_statusmap_layout;
 int org_enable_splunk_integration;
 int org_enforce_comments_on_actions;
@@ -383,7 +385,7 @@ int main(void) {
 		else if (display_type == DISPLAY_HOSTDEPENDENCIES)	printf("Host Dependencies");
 		else if (display_type == DISPLAY_HOSTESCALATIONS)	printf("Host Escalations");
 		else if (display_type == DISPLAY_MODULES)		printf("Modules");
-		else if (display_type == DISPLAY_CGICONFIG)		printf("CGI Config Setings");
+		else if (display_type == DISPLAY_CGICONFIG)		printf("CGI Config Settings");
 
 		printf("</div>\n");
 
@@ -4035,6 +4037,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(default_downtime_duration, org_default_downtime_duration, "int")
 	PRINT_CONFIG_LINE_INT(default_expiring_acknowledgement_duration, org_default_expiring_acknowledgement_duration, "int")
 	PRINT_CONFIG_LINE_INT(display_status_totals, org_display_status_totals, "bool")
+	PRINT_CONFIG_LINE_INT(disable_cmd_cgi_csrf_protection, org_disable_cmd_cgi_csrf_protection, "bool")
 
 	// default_statusmap_layout
 	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
@@ -4540,6 +4543,7 @@ void store_default_settings(void) {
 	org_default_downtime_duration = default_downtime_duration;
 	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
 	org_display_status_totals = display_status_totals;
+	org_disable_cmd_cgi_csrf_protection = disable_cmd_cgi_csrf_protection;
 	org_default_statusmap_layout = default_statusmap_layout_method;
 	org_enable_splunk_integration = enable_splunk_integration;
 	org_enforce_comments_on_actions = enforce_comments_on_actions;
