@@ -20,13 +20,14 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
-1.11.5 - XX/XX/2014
+1.11.5 - 20/06/2014
 
 FIXES
 
 * classic-ui: fix status.cgi gets stuck in loop when sorting on "All Unhandled Problems" #5886 - RB
 * classic ui: Only show command expander if backend is Icinga 1.x (incompatible with Icinga 2) #6408 - MF
 * classic ui: Fix CSRF protection in cmd.cgi matches only compiled in URL #6459 - MF
+* classic-ui: config.cgi missing new option #6502 - RB
 
 * initscript: Fixed Typo in ido2db and icinga init scripts preventing them to kill -9 their processes #6410 - MaH
 
