@@ -140,6 +140,32 @@
   aufrufen, sollte dieser Wert <span class="emphasis"><em>/icinga</em></span> sein. Grundsätzlich ist es der Pfadanteil des URL, der zum Aufruf der
   Icinga-HTML-Seiten benutzt wird.</p>
 
+  <p><a name="configcgi-url_cgi_path"></a> <span class="bold"><strong>URL CGI Path</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>url_cgi_path=&lt;path&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>url_cgi_path=/icinga/cgi-bin</strong></span></font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>Diese Option erlaubt Ihnen die Angabe einer alternativen CGI URL. Dieser Pfad wird vom cmd.cgi CSRF-Schutz ausgewertet. Diese
+  Option ist nützlich, wenn auf die CGI Dateien unter einem anderen Pfad zugegriffen wird als diese installiert worden sind.
+  Wird sie nicht gesetzt, wird der Standard-Speicherort verwendet   (url_cgi_path=url_html_path/cgi-bin).</p>
+
   <p><a name="configcgi-url_stylesheet_path"></a> <span class="bold"><strong>URL Stylesheet Path</strong></span></p>
 
   <div class="informaltable">
@@ -163,7 +189,7 @@
   </div>
 
   <p>Diese Option erlaubt Ihnen die Angabe einer alternativen Stylesheet URL. Dies ist nützlich, wenn Sie benutzerdefinierte Stylesheets
-  aus einem anderen Verzeichnis hinzufügen möchten.Wird sie nicht gesetzt, wird der Standard-Speicherort verwendet
+  aus einem anderen Verzeichnis hinzufügen möchten. Wird sie nicht gesetzt, wird der Standard-Speicherort verwendet
   (url_stylesheets_path=url_html_path/stylesheets).</p>
 
   <p><a name="configcgi-use_authentication"></a><span class="bold"><strong>Nutzung der Authentifizierung</strong></span></p>
@@ -852,23 +878,23 @@
 <td align="left" valign="top"><p>Format:</p></td>
 <td>
 <p>
-               
+
 
               <span class="bold"><strong>color_transparency_index_r=&lt;0...255&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>color_transparency_index_g=&lt;0...255&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>color_transparency_index_b=&lt;0...255&gt;</strong></span>
 
-               
+
             </p>
 </td>
 </tr>
@@ -1021,41 +1047,41 @@
 <td align="left" valign="top"><p>Format:</p></td>
 <td>
 <p>
-               
+
 
               <span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>host_down_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>service_critical_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>service_warning_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>service_unknown_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="bold"><strong>normal_sound=&lt;sound_file&gt;</strong></span>
 
-               
+
             </p>
 </td>
 </tr>
@@ -1063,77 +1089,77 @@
 <td align="left" valign="top"><p>Beispiele:</p></td>
 <td>
 <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p> <p>
-               
+
 
               <span class="color"><font color="red">
-                 
+
 
                 <span class="bold"><strong>normal_sound=noproblem.wav</strong></span>
 
-                 
+
               </font></span>
 
-               
+
             </p>
 </td>
 </tr>
@@ -1958,7 +1984,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="idp175095344"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="idp175096592"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -2653,147 +2679,147 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp175327552"></a>
+  <a class="indexterm" name="idp175328720"></a>
 
-  <a class="indexterm" name="idp175329376"></a>
+  <a class="indexterm" name="idp175330512"></a>
 
-  <a class="indexterm" name="idp175330864"></a>
+  <a class="indexterm" name="idp175332192"></a>
 
-  <a class="indexterm" name="idp175332512"></a>
+  <a class="indexterm" name="idp175333584"></a>
 
-  <a class="indexterm" name="idp175334144"></a>
+  <a class="indexterm" name="idp175335216"></a>
 
-  <a class="indexterm" name="idp175335776"></a>
+  <a class="indexterm" name="idp175336896"></a>
 
-  <a class="indexterm" name="idp175337424"></a>
+  <a class="indexterm" name="idp175338544"></a>
 
-  <a class="indexterm" name="idp175339072"></a>
+  <a class="indexterm" name="idp175340192"></a>
 
-  <a class="indexterm" name="idp175340768"></a>
+  <a class="indexterm" name="idp175341888"></a>
 
-  <a class="indexterm" name="idp175342496"></a>
+  <a class="indexterm" name="idp175343632"></a>
 
-  <a class="indexterm" name="idp175344128"></a>
+  <a class="indexterm" name="idp175345264"></a>
 
-  <a class="indexterm" name="idp175345248"></a>
+  <a class="indexterm" name="idp175346384"></a>
 
-  <a class="indexterm" name="idp175346960"></a>
+  <a class="indexterm" name="idp175348096"></a>
 
-  <a class="indexterm" name="idp175348672"></a>
+  <a class="indexterm" name="idp175349808"></a>
 
-  <a class="indexterm" name="idp175350960"></a>
+  <a class="indexterm" name="idp175352096"></a>
 
-  <a class="indexterm" name="idp175352672"></a>
+  <a class="indexterm" name="idp175353808"></a>
 
-  <a class="indexterm" name="idp175354128"></a>
+  <a class="indexterm" name="idp175355264"></a>
 
-  <a class="indexterm" name="idp175356016"></a>
+  <a class="indexterm" name="idp175357152"></a>
 
-  <a class="indexterm" name="idp175357712"></a>
+  <a class="indexterm" name="idp175358848"></a>
 
-  <a class="indexterm" name="idp175359392"></a>
+  <a class="indexterm" name="idp175360528"></a>
 
-  <a class="indexterm" name="idp175361152"></a>
+  <a class="indexterm" name="idp175362288"></a>
 
-  <a class="indexterm" name="idp175362896"></a>
+  <a class="indexterm" name="idp175364032"></a>
 
-  <a class="indexterm" name="idp175364496"></a>
+  <a class="indexterm" name="idp175365632"></a>
 
-  <a class="indexterm" name="idp175366176"></a>
+  <a class="indexterm" name="idp175367312"></a>
 
-  <a class="indexterm" name="idp175367872"></a>
+  <a class="indexterm" name="idp175369008"></a>
 
-  <a class="indexterm" name="idp175369648"></a>
+  <a class="indexterm" name="idp175370784"></a>
 
-  <a class="indexterm" name="idp175371344"></a>
+  <a class="indexterm" name="idp175372480"></a>
 
-  <a class="indexterm" name="idp175372992"></a>
+  <a class="indexterm" name="idp175374128"></a>
 
-  <a class="indexterm" name="idp175374624"></a>
+  <a class="indexterm" name="idp175375760"></a>
 
-  <a class="indexterm" name="idp175376288"></a>
+  <a class="indexterm" name="idp175377424"></a>
 
-  <a class="indexterm" name="idp175377952"></a>
+  <a class="indexterm" name="idp175379088"></a>
 
-  <a class="indexterm" name="idp175379552"></a>
+  <a class="indexterm" name="idp175380688"></a>
 
-  <a class="indexterm" name="idp175381216"></a>
+  <a class="indexterm" name="idp175382352"></a>
 
-  <a class="indexterm" name="idp175382976"></a>
+  <a class="indexterm" name="idp175384112"></a>
 
-  <a class="indexterm" name="idp175384464"></a>
+  <a class="indexterm" name="idp175385600"></a>
 
-  <a class="indexterm" name="idp175386096"></a>
+  <a class="indexterm" name="idp175387232"></a>
 
-  <a class="indexterm" name="idp175387728"></a>
+  <a class="indexterm" name="idp175389056"></a>
 
-  <a class="indexterm" name="idp175389360"></a>
+  <a class="indexterm" name="idp175390624"></a>
 
-  <a class="indexterm" name="idp175391024"></a>
+  <a class="indexterm" name="idp175392288"></a>
 
-  <a class="indexterm" name="idp175392624"></a>
+  <a class="indexterm" name="idp175393840"></a>
 
-  <a class="indexterm" name="idp175394352"></a>
+  <a class="indexterm" name="idp175395504"></a>
 
-  <a class="indexterm" name="idp175396032"></a>
+  <a class="indexterm" name="idp175397264"></a>
 
-  <a class="indexterm" name="idp175397760"></a>
+  <a class="indexterm" name="idp175398880"></a>
 
-  <a class="indexterm" name="idp175399328"></a>
+  <a class="indexterm" name="idp175400608"></a>
 
-  <a class="indexterm" name="idp175401056"></a>
+  <a class="indexterm" name="idp175402176"></a>
 
-  <a class="indexterm" name="idp175402624"></a>
+  <a class="indexterm" name="idp175403904"></a>
 
-  <a class="indexterm" name="idp175404352"></a>
+  <a class="indexterm" name="idp175405456"></a>
 
-  <a class="indexterm" name="idp175405920"></a>
+  <a class="indexterm" name="idp175407120"></a>
 
-  <a class="indexterm" name="idp175407200"></a>
+  <a class="indexterm" name="idp175408400"></a>
 
-  <a class="indexterm" name="idp175408768"></a>
+  <a class="indexterm" name="idp175409968"></a>
 
-  <a class="indexterm" name="idp175410496"></a>
+  <a class="indexterm" name="idp175411696"></a>
 
-  <a class="indexterm" name="idp175412032"></a>
+  <a class="indexterm" name="idp175413232"></a>
 
-  <a class="indexterm" name="idp175413664"></a>
+  <a class="indexterm" name="idp175414864"></a>
 
-  <a class="indexterm" name="idp175415424"></a>
+  <a class="indexterm" name="idp175416624"></a>
 
-  <a class="indexterm" name="idp175417040"></a>
+  <a class="indexterm" name="idp175418240"></a>
 
-  <a class="indexterm" name="idp175418656"></a>
+  <a class="indexterm" name="idp175419856"></a>
 
-  <a class="indexterm" name="idp175420352"></a>
+  <a class="indexterm" name="idp175421488"></a>
 
-  <a class="indexterm" name="idp175422032"></a>
+  <a class="indexterm" name="idp175423168"></a>
 
-  <a class="indexterm" name="idp175423696"></a>
+  <a class="indexterm" name="idp175424832"></a>
 
-  <a class="indexterm" name="idp175425312"></a>
+  <a class="indexterm" name="idp175426448"></a>
 
-  <a class="indexterm" name="idp175427040"></a>
+  <a class="indexterm" name="idp175428176"></a>
 
-  <a class="indexterm" name="idp175428752"></a>
+  <a class="indexterm" name="idp175429888"></a>
 
-  <a class="indexterm" name="idp175430416"></a>
+  <a class="indexterm" name="idp175431552"></a>
 
-  <a class="indexterm" name="idp175432128"></a>
+  <a class="indexterm" name="idp175433264"></a>
 
-  <a class="indexterm" name="idp175433808"></a>
+  <a class="indexterm" name="idp175434944"></a>
 
-  <a class="indexterm" name="idp175435472"></a>
+  <a class="indexterm" name="idp175436608"></a>
 
-  <a class="indexterm" name="idp175437200"></a>
+  <a class="indexterm" name="idp175438336"></a>
 
-  <a class="indexterm" name="idp175438784"></a>
+  <a class="indexterm" name="idp175439920"></a>
 
-  <a class="indexterm" name="idp175440448"></a>
+  <a class="indexterm" name="idp175441584"></a>
 
-  <a class="indexterm" name="idp175442112"></a>
+  <a class="indexterm" name="idp175443248"></a>
 
-  <a class="indexterm" name="idp175443792"></a>
+  <a class="indexterm" name="idp175444928"></a>
 </div>
 <div class="navfooter">
 <hr>

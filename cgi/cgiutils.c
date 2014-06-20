@@ -39,6 +39,7 @@ char            physical_html_path[MAX_FILENAME_LENGTH];
 char            physical_images_path[MAX_FILENAME_LENGTH];
 char            physical_ssi_path[MAX_FILENAME_LENGTH];
 char            url_html_path[MAX_FILENAME_LENGTH];
+char            url_cgi_path[MAX_FILENAME_LENGTH];
 char            url_docs_path[MAX_FILENAME_LENGTH];
 char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
@@ -303,6 +304,7 @@ void reset_cgi_vars(void) {
 	strcpy(physical_ssi_path, "");
 
 	strcpy(url_html_path, "");
+	strcpy(url_cgi_path, "");
 	strcpy(url_docs_path, "");
 	strcpy(url_stylesheets_path, "");
 	strcpy(url_js_path, "");
@@ -518,6 +520,17 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_media_path, sizeof(url_media_path), "%smedia/", url_html_path);
 			url_media_path[sizeof(url_media_path) - 1] = '\x0';
+		}
+
+		else if (!strcmp(var, "url_cgi_path")) {
+
+			strncpy(url_cgi_path, val, sizeof(url_cgi_path));
+			url_cgi_path[sizeof(url_cgi_path) - 1] = '\x0';
+
+			strip(url_cgi_path);
+			if (url_cgi_path[strlen(url_cgi_path) - 1] == '/')
+				url_cgi_path[strlen(url_cgi_path) - 1] = '\x0';
+
 		}
 
 		else if (!strcmp(var, "url_stylesheets_path")) {
@@ -816,6 +829,12 @@ int read_cgi_config_file(char *filename) {
 	if (!strcmp(url_stylesheets_path, "")) {
 		snprintf(url_stylesheets_path, sizeof(url_stylesheets_path), "%sstylesheets/", url_html_path);
 		url_stylesheets_path[sizeof(url_stylesheets_path) - 1] = '\x0';
+	}
+
+	/* check if cgi path was set */
+	if (!strcmp(url_cgi_path, "")) {
+		snprintf(url_cgi_path, sizeof(url_cgi_path), "%s", DEFAULT_URL_CGIBIN_PATH);
+		url_cgi_path[sizeof(url_cgi_path) - 1] = '\x0';
 	}
 
 	if (!strcmp(main_config_file, "")) {

@@ -1,6 +1,6 @@
-#####################################################
-Icinga Core / Classic UI / IDOUtils / Docs Change Log
-#####################################################
+#########################################################
+Icinga 1.x Core / Classic UI / IDOUtils / Docs Change Log
+#########################################################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
@@ -12,9 +12,12 @@ UPGRADE NOTES
 	- core, classic ui: ${source}/sample-config/updates/
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
-
+	https://wiki.icinga.org/display/howtos/Package+Specific+Locations
 
 NEWS
+
+* This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
+  please check https://www.icinga.org/icinga2
 
 * Releases are now hosted at GitHub. Please check https://www.icinga.org/download for details!
 
@@ -28,7 +31,22 @@ ENHANCEMENTS
 
 FIXES
 
-* classic ui: fix status.cgi gets stuck in loop when sorting on "All Unhandled Problems" #5886 - RB
+
+1.11.5 - 20/06/2014
+
+FIXES
+
+* classic-ui: fix status.cgi gets stuck in loop when sorting on "All Unhandled Problems" #5886 - RB
+* classic ui: Only show command expander if backend is Icinga 1.x (incompatible with Icinga 2) #6408 - MF
+* classic ui: Fix CSRF protection in cmd.cgi matches only compiled in URL #6459 - MF
+* classic-ui: config.cgi missing new option #6502 - RB
+
+* initscript: Fixed Typo in ido2db and icinga init scripts preventing them to kill -9 their processes #6410 - MaH
+
+CHANGES
+
+* cgi.cfg: Add url_cgi_path allowing to override the default '$htmurl/cgi-bin' required for CSRF checks #6459
+	** Required for icinga2-classicui Debian package
 
 
 1.11.4 - 28/05/2014

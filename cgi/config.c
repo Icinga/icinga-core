@@ -92,6 +92,7 @@ extern char *service_warning_sound;
 extern char *splunk_url;
 extern char *statusmap_background_image;
 extern char url_html_path[MAX_FILENAME_LENGTH];
+extern char url_cgi_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 
@@ -108,6 +109,7 @@ extern int cgi_log_rotation_method;
 extern int default_downtime_duration;
 extern int default_expiring_acknowledgement_duration;
 extern int display_status_totals;
+extern int disable_cmd_cgi_csrf_protection;
 extern int default_statusmap_layout_method;
 extern int enable_splunk_integration;
 extern int enforce_comments_on_actions;
@@ -222,6 +224,7 @@ char *org_service_warning_sound = "";
 char *org_splunk_url = "";
 char *org_statusmap_background_image = "";
 char *org_url_html_path = "";
+char *org_url_cgi_path = "";
 char *org_url_stylesheets_path = "";
 
 int org_add_notif_num_hard;
@@ -233,6 +236,7 @@ int org_cgi_log_rotation_method;
 int org_default_downtime_duration;
 int org_default_expiring_acknowledgement_duration;
 int org_display_status_totals;
+int org_disable_cmd_cgi_csrf_protection;
 int org_default_statusmap_layout;
 int org_enable_splunk_integration;
 int org_enforce_comments_on_actions;
@@ -385,7 +389,7 @@ int main(void) {
 		else if (display_type == DISPLAY_HOSTDEPENDENCIES)	printf("Host Dependencies");
 		else if (display_type == DISPLAY_HOSTESCALATIONS)	printf("Host Escalations");
 		else if (display_type == DISPLAY_MODULES)		printf("Modules");
-		else if (display_type == DISPLAY_CGICONFIG)		printf("CGI Config Setings");
+		else if (display_type == DISPLAY_CGICONFIG)		printf("CGI Config Settings");
 
 		printf("</div>\n");
 
@@ -4037,6 +4041,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(default_downtime_duration, org_default_downtime_duration, "int")
 	PRINT_CONFIG_LINE_INT(default_expiring_acknowledgement_duration, org_default_expiring_acknowledgement_duration, "int")
 	PRINT_CONFIG_LINE_INT(display_status_totals, org_display_status_totals, "bool")
+	PRINT_CONFIG_LINE_INT(disable_cmd_cgi_csrf_protection, org_disable_cmd_cgi_csrf_protection, "bool")
 
 	// default_statusmap_layout
 	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
@@ -4142,6 +4147,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(tab_friendly_titles, org_tab_friendly_titles, "bool")
 	PRINT_CONFIG_LINE_INT(tac_show_only_hard_state, org_tac_show_only_hard_state, "bool")
 	PRINT_CONFIG_LINE_STRING(url_html_path, org_url_html_path)
+	PRINT_CONFIG_LINE_STRING(url_cgi_path, org_url_cgi_path)
 	PRINT_CONFIG_LINE_STRING(url_stylesheets_path, org_url_stylesheets_path)
 	PRINT_CONFIG_LINE_INT(use_authentication, org_use_authentication, "bool")
 	PRINT_CONFIG_LINE_INT(use_logging, org_use_logging, "bool")
@@ -4536,6 +4542,7 @@ void store_default_settings(void) {
 	org_splunk_url = strdup(splunk_url);
 	org_statusmap_background_image = strdup(statusmap_background_image);
 	org_url_html_path = strdup(url_html_path);
+	org_url_cgi_path = strdup(url_cgi_path);
 	org_url_stylesheets_path = strdup(url_stylesheets_path);
 
 	org_add_notif_num_hard = add_notif_num_hard;
@@ -4547,6 +4554,7 @@ void store_default_settings(void) {
 	org_default_downtime_duration = default_downtime_duration;
 	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
 	org_display_status_totals = display_status_totals;
+	org_disable_cmd_cgi_csrf_protection = disable_cmd_cgi_csrf_protection;
 	org_default_statusmap_layout = default_statusmap_layout_method;
 	org_enable_splunk_integration = enable_splunk_integration;
 	org_enforce_comments_on_actions = enforce_comments_on_actions;
