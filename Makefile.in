@@ -122,6 +122,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-config" "install sample config"
 	@printf "\t%-23s - %s\n" "install-webconf" "install apache config and http auth file for Classic UI"
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
+	@printf "\t%-23s - %s\n" "install-systemd" "install systemd init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
 	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
