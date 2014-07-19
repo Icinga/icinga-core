@@ -28,6 +28,7 @@ NEWS
 ENHANCEMENTS
 
 * classic ui: start with unhandled problems view instead of TAC #4817 - MF
+* classic ui: Adding alias to title in host/service overview #5900 - WN
 
 FIXES
 
