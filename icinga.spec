@@ -63,6 +63,10 @@ URL: http://www.icinga.org/
 Source0: https://github.com/Icinga/icinga-core/releases/download/v%{version}/icinga-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
+%if "%{_vendor}" == "redhat"
+Requires(pre): shadow-utils
+%endif
+
 %if 0%{?using_systemd}
 Requires(post): systemd-units
 Requires(preun): systemd-units
