@@ -24,6 +24,18 @@ NEWS
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
 
+1.11.6 - XX/YY/2014
+
+FIXES
+
+* idoutils: Fix customvariable* tables are not case sensitive (mysql) #6788 - MF
+
+* spec: Add shadow-utils as a dependency for Redhat packaging #4495 - SS
+
+SUPPORT
+
+* Fix comments in cgiutils.c #6712
+
 1.11.5 - 20/06/2014
 
 FIXES
