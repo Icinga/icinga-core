@@ -80,6 +80,7 @@ BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
+BuildRequires: make
 ### Requires: nagios-plugins
 BuildRequires: %{apachename}
 %if "%{_vendor}" == "suse"
