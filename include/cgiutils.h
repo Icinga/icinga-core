@@ -179,6 +179,7 @@ extern "C" {
 #define DELETE_ICON			"delete.gif"
 #define DELAY_ICON			"delay.gif"
 #define DOWNTIME_ICON			"downtime.gif"
+#define ACTIVEONLY_ICON			"activeeonly.gif"
 #define PASSIVE_ICON			"passiveonly.gif"
 #define RIGHT_ARROW_ICON		"right.gif"
 #define LEFT_ARROW_ICON			"left.gif"
@@ -218,6 +219,7 @@ extern "C" {
 #define TAC_ENABLED_ICON		"tacenabled.png"
 #define ZOOM1_ICON			"zoom1.gif"
 #define ZOOM2_ICON			"zoom2.gif"
+#define EVENTHANDLING_DISABLED_ICON	"eventhandlingdisabled.gif"
 
 #define CONTEXT_HELP_ICON		"contexthelp.gif"
 
