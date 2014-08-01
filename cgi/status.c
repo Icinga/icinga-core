@@ -2612,12 +2612,18 @@ void show_service_detail(void) {
 				if (temp_hoststatus->notifications_enabled == FALSE) {
 					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Notifications for this host have been disabled' title='Notifications for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, NOTIFICATIONS_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				}
-				if (temp_hoststatus->checks_enabled == FALSE) {
-					if (temp_hoststatus->accept_passive_host_checks == TRUE)
-						printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active Checks of this host have been disabled' title='Active Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, PASSIVE_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-					else
-						printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active and Passive Checks of this host have been disabled'd title='Active and Passive Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-				}
+	                        if (temp_hoststatus->event_handler_enabled == FALSE) {
+					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host have been disabled' title='Event handling for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+	                        }
+	                        if (temp_hoststatus->checks_enabled == FALSE || temp_hoststatus->accept_passive_host_checks == FALSE) {
+	                                if (temp_hoststatus->accept_passive_host_checks == FALSE && temp_hoststatus->checks_enabled == FALSE) {
+	                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active and Passive checks have been disabled of this host' title='Active and passive checks have been disabled for this host'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+	                                } else if (temp_hoststatus->accept_passive_host_checks == TRUE && temp_hoststatus->checks_enabled == FALSE) {
+	                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active Checks of this host have been disabled' title='Active Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, PASSIVE_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+	                                } else if (temp_hoststatus->accept_passive_host_checks == FALSE && temp_hoststatus->checks_enabled == TRUE) {
+	                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active checks are being scheduled as normal - passive checks are disabled' title='Active checks are being scheduled as normal - passive checks are disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, ACTIVEONLY_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+	                                }
+                        	}
 				if (temp_hoststatus->is_flapping == TRUE) {
 					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='This host is flapping between states' title='This host is flapping between states'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, FLAPPING_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				}
@@ -3165,27 +3171,21 @@ void show_host_detail(void) {
 				if (total_comments > 0)
 					print_comment_icon(temp_host->name, NULL);
 			}
-			if (temp_statusdata->checks_enabled == FALSE || temp_statusdata->accept_passive_checks == FALSE) {
-                                if (temp_statusdata->accept_passive_checks == FALSE && temp_statusdata->checks_enabled == FALSE) {
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active and passive checks have been disabled for this host' title='Active and passive checks have been disabled for this host'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-                                } else if (temp_statusdata->accept_passive_checks == TRUE && temp_statusdata->checks_enabled == FALSE) {
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active checks of the service have been disabled - only passive checks are being accepted' title='Active checks of the host have been disabled - only passive checks are being accepted'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, PASSIVE_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-                                } else if (temp_statusdata->accept_passive_checks == FALSE && temp_statusdata->checks_enabled == TRUE) {
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active checks are being scheduled as normal - passive checks are disabled' title='Active checks are being scheduled as normal - passive checks are disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, ACTIVEONLY_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-                                }
-                        }
 			if (temp_statusdata->notifications_enabled == FALSE) {
 				printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Notifications for this host have been disabled' title='Notifications for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, NOTIFICATIONS_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 			}
 			if (temp_statusdata->event_handler_enabled == FALSE) {
                                 printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host have been disabled' title='Event handling for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
                         }
-			if (temp_statusdata->checks_enabled == FALSE) {
-				if (temp_statusdata->accept_passive_checks == TRUE)
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active Checks of this host have been disabled' title='Active Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, PASSIVE_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-				else
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active and Passive Checks of this host have been disabled'd title='Active and Passive Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-			}
+			if (temp_statusdata->checks_enabled == FALSE || temp_statusdata->accept_passive_checks == FALSE) {
+                                if (temp_statusdata->accept_passive_checks == FALSE && temp_statusdata->checks_enabled == FALSE) {
+                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active and Passive checks have been disabled of this host' title='Active and passive checks have been disabled for this host'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+                                } else if (temp_statusdata->accept_passive_checks == TRUE && temp_statusdata->checks_enabled == FALSE) {
+                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active Checks of this host have been disabled' title='Active Checks of this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, PASSIVE_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+                                } else if (temp_statusdata->accept_passive_checks == FALSE && temp_statusdata->checks_enabled == TRUE) {
+                                        printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Active checks are being scheduled as normal - passive checks are disabled' title='Active checks are being scheduled as normal - passive checks are disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, ACTIVEONLY_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+                                }
+                        }
 			if (temp_statusdata->is_flapping == TRUE) {
 				printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='This host is flapping between states' title='This host is flapping between states'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, FLAPPING_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 			}
