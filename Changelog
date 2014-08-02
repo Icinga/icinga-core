@@ -23,6 +23,29 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.12.0
+
+ENHANCEMENTS
+
+* classic ui: start with unhandled problems view instead of TAC #4817 - MF
+* classic ui: Adding alias to title in host/service overview #5900 - WN
+
+FIXES
+
+* idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
+
+
+1.11.6 - XX/YY/2014
+
+FIXES
+
+* idoutils: Fix customvariable* tables are not case sensitive (mysql) #6788 - MF
+
+* spec: Add shadow-utils as a dependency for Redhat packaging #4495 - SS
+
+SUPPORT
+
+* Fix comments in cgiutils.c #6712
 
 1.11.5 - 20/06/2014
 

@@ -208,8 +208,8 @@ extern hoststatus      *hoststatus_list;
 extern servicestatus   *servicestatus_list;
 
 
-char encoded_url_string[4][MAX_INPUT_BUFFER]; // 2 to be able use url_encode 4 times
-char encoded_html_string[2][(MAX_COMMAND_BUFFER * 6)]; // 2 to be able use html_encode twice
+char encoded_url_string[4][MAX_INPUT_BUFFER]; // 4 to be able to use url_encode 4 times
+char encoded_html_string[2][(MAX_COMMAND_BUFFER * 6)]; // 2 to be able to use html_encode twice
 
 #ifdef HAVE_TZNAME
 #ifdef CYGWIN
