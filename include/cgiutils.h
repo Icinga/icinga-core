@@ -179,7 +179,7 @@ extern "C" {
 #define DELETE_ICON			"delete.gif"
 #define DELAY_ICON			"delay.gif"
 #define DOWNTIME_ICON			"downtime.gif"
-#define ACTIVEONLY_ICON			"activeeonly.gif"
+#define ACTIVEONLY_ICON			"activeonly.gif"
 #define PASSIVE_ICON			"passiveonly.gif"
 #define RIGHT_ARROW_ICON		"right.gif"
 #define LEFT_ARROW_ICON			"left.gif"
