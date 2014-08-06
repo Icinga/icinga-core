@@ -530,11 +530,11 @@ fi
 systemd_sysconfig_dir=/etc/sysconfig
 
 dnl User can override unit file directory location
-AC_ARG_WITH(systemd_unit_dir,AC_HELP_STRING([--with-systemd-unitdir=<path>],[sets directory to place systemd service file into]),systemd_unit_dir=$withval)
+AC_ARG_WITH(systemd_unit_dir,AC_HELP_STRING([--with-systemd-unit-dir=<path>],[sets directory to place systemd service file into]),systemd_unit_dir=$withval)
 AC_SUBST(systemd_unit_dir)
 
 dnl User can override sysconfig file directory location
-AC_ARG_WITH(systemd_sysconfig_dir,AC_HELP_STRING([--with-systemd-sysconfigdir=<path>],[sets directory to place systemd service configuration file]),systemd_sysconfig_dir=$withval)
+AC_ARG_WITH(systemd_sysconfig_dir,AC_HELP_STRING([--with-systemd-sysconfig-dir=<path>],[sets directory to place systemd service configuration file]),systemd_sysconfig_dir=$withval)
 AC_SUBST(systemd_sysconfig_dir)
 
 dnl User can override lock file location

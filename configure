@@ -1525,9 +1525,9 @@ Optional Packages:
   --with-p1-file-dir=<path>
                           sets path to embedded perl p1.pl directory
   --with-init-dir=<path>  sets directory to place init script into
-  --with-systemd-unitdir=<path>
+  --with-systemd-unit-dir=<path>
                           sets directory to place systemd service file into
-  --with-systemd-sysconfigdir=<path>
+  --with-systemd-sysconfig-dir=<path>
                           sets directory to place systemd service
                           configuration file
   --with-lockfile=<path>  sets path and file name for lock file
