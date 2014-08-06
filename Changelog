@@ -35,17 +35,25 @@ FIXES
 * idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
 
 
-1.11.6 - XX/YY/2014
+1.11.6 - 06/08/2014
 
 FIXES
 
 * idoutils: Fix customvariable* tables are not case sensitive (mysql) #6788 - MF
 
+* installation: Fix misspelled systemd configure options, added hint in Makefile #6710 - SS
+
 * spec: Add shadow-utils as a dependency for Redhat packaging #4495 - SS
+* spec: Build dependency for "make" is missing - GB
 
 SUPPORT
 
 * Fix comments in cgiutils.c #6712
+
+CHANGES
+
+* Fix customvariable tables requires schema version update to 1.11.6! #6788
+
 
 1.11.5 - 20/06/2014
 
