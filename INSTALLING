@@ -31,4 +31,48 @@ various community support channels: https://www.icinga.org/support/
 Good luck! :-)
 
 
+Building Release Tarballs
+-------------------------
+
+In order to build a release tarball you should first check out the Git repository
+in a new directory. If you're using an existing check-out you should make sure
+that there are no local modifications:
+
+$ git status
+
+Here's a short check-list for releases:
+
+* Update the .mailmap and AUTHORS files
+    $ git log --use-mailmap | grep ^Author: | cut -f2- -d' ' | sort | uniq > AUTHORS
+* Bump the version in icinga.spec.
+* Update the current version (and db schema, if required)
+    $ ./update-version
+    $ ./update-version-schema
+* Update the Changelog and generate the docs
+    $ ./configure; make create-docs
+* Commit these changes to the "next" branch and create a signed tag (tags/v<VERSION>).
+    $ git commit -v -a -m "Release version <VERSION>"
+    $ git tag -u EE8E0720 -m "Version <VERSION>" v<VERSION>
+    $ git push --tags
+* Merge the "next" branch into the "master" branch (using --ff-only).
+    $ git checkout master
+    $ git merge --ff-only next
+    $ git push origin master
+* Bump the version to "v<NEXT-VERSION>-dev" and commit this change to the "next" branch.
+
+Use "git archive" to build the release tarball:
+
+$ VERSION=1.11.6
+$ git archive --format=tgz --prefix=icinga-$VERSION/ tags/v$VERSION
+
+On CentOS 6.x use
+
+$ VERSION=1.11.6
+$ git archive --format=tar --prefix=icinga-$VERSION/ tags/v$VERSION | gzip >icinga-$VERSION.tar.gz
+
+Finally you should verify that the tarball only contains the files it should contain:
+
+$ VERSION=1.11.6
+$ tar ztf icinga-$VERSION.tar.gz | less
+
 
