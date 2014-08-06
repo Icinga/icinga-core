@@ -88,7 +88,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.11.5
+ICINGA_VERSION=1.11.6
 
 CP=@CP@
 
@@ -100,7 +100,6 @@ none:
 	@printf "Other useful targets:\n"
 	@printf "\t%-23s - %s\n" "distclean" "make source ready for commit or packaging"
 	@printf "\t%-23s - %s\n" "create-tarball" "create tarball for packaging"
-	@printf "\t%-23s - %s\n" "create-tarball-nightly" "create nightly build tarball"
 	@printf "\t%-23s - %s\n" "create-docs" "generate html docs from docbook"
 	@printf "\t%-23s - %s\n" "submodule-init" "init git submodules"
 	@printf "\t%-23s - %s\n" "submodule-update" "update git submodules"
@@ -122,6 +121,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-config" "install sample config"
 	@printf "\t%-23s - %s\n" "install-webconf" "install apache config and http auth file for Classic UI"
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
+	@printf "\t%-23s - %s\n" "install-systemd" "install systemd init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
 	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
@@ -320,13 +320,9 @@ create-docs: copy-docs-style
 	@echo "updated docs :)"
 
 create-tarball:
-	./make-tarball --prefix icinga-${ICINGA_VERSION}/
-
-create-tarball-nightly:
-	#git pull origin `git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'` #user must pull himself, some brnaches are not remote
-	${MAKE} submodule-update-latest
-	${MAKE} create-docs
-	./make-tarball --prefix icinga-${ICINGA_VERSION}_`date +%Y%m%d`_`git rev-parse --short HEAD`/
+	$(eval version := $(shell git describe --tags HEAD | sed 's/^v//'))
+	git archive -o "../${TARBALL_NAME}-$(version).tar.gz" --prefix="${TARBALL_NAME}-$(version)/" HEAD
+	@echo "You find your tarball here: ../${TARBALL_NAME}-$(version).tar.gz"
 
 create-doxygen:
 	doxygen
