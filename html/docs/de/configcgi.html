@@ -1984,7 +1984,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="idp175096592"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="idm251265886656"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -2634,7 +2634,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-disable_cmd_cgi_csrf_proctection"></a><span class="bold"><strong>Deaktivieren des Schutzes von cmd.cgi gegen
+  <p><a name="configcgi-disable_cmd_cgi_csrf_protection"></a><span class="bold"><strong>Deaktivieren des Schutzes von cmd.cgi gegen
   CRSF-Attacken</strong></span></p>
 
   <div class="informaltable">
@@ -2646,11 +2646,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>disable_cmd_cgi_csrf_proctection=0|1</strong></span></p></td>
+<td><p><span class="bold"><strong>disable_cmd_cgi_csrf_protection=0|1</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>disable_cmd_cgi_csrf_proctection=1</strong></span></font></span></p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>disable_cmd_cgi_csrf_protection=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -2679,147 +2679,225 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp175328720"></a>
+  <p><a name="configcgi-exclude_customvar_name"></a><span class="bold"><strong>Ansehen von benutzerdefinierten Variablennamen
+  unterdrücken</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>exclude_customvar_name=&lt;name1[,name2,...]|*&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>exclude_customvar_name=&lt;password&gt;</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idp175330512"></a>
+  <p>Benutzerdefinierte Variablennamen sind im Classic UI sichtbar (seit Icinga 1.11). Weil einige Namen sensitive Informationen
+  enthalten, sollen diese Daten vor dem Benutzer verborgen werden. Die Direktive "exclude_customvar_name" gibt eine kommaseparierte Liste
+  von Strings an. Variablennamen, die diese Strings enthalten, werden nicht angezeigt. Die Angabe von "*" anstatt einer Liste wird alle
+  benutzerdefinierten Variablennamen unterdrücken.</p>
 
-  <a class="indexterm" name="idp175332192"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.11</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idp175333584"></a>
+  <p><a name="configcgi-exclude_customvar_name"></a><span class="bold"><strong>Ansehen von benutzerdefinierten Variablenwerten
+  unterdrücken</strong></span></p>
 
-  <a class="indexterm" name="idp175335216"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>exclude_customvar_value=&lt;value1[,value2,...]|*&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>exclude_customvar_value=&lt;secret&gt;</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idp175336896"></a>
+  <p>Benutzerdefinierte Variablenwerte sind im Classic UI sichtbar (seit Icinga 1.11). Weil einige Werte sensitive Informationen
+  enthalten, sollen diese Daten vor dem Benutzer verborgen werden. Die Direktive "exclude_customvar_value" gibt eine kommaseparierte Liste
+  von Strings an. Variablenwerte, die diese Strings enthalten, werden nicht angezeigt. Die Angabe von "*" anstatt einer Liste wird alle
+  benutzerdefinierten Variablenwerte unterdrücken.</p>
 
-  <a class="indexterm" name="idp175338544"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.11</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idp175340192"></a>
+  <a class="indexterm" name="idm251265628240"></a>
 
-  <a class="indexterm" name="idp175341888"></a>
+  <a class="indexterm" name="idm251265626480"></a>
 
-  <a class="indexterm" name="idp175343632"></a>
+  <a class="indexterm" name="idm251265624992"></a>
 
-  <a class="indexterm" name="idp175345264"></a>
+  <a class="indexterm" name="idm251265623328"></a>
 
-  <a class="indexterm" name="idp175346384"></a>
+  <a class="indexterm" name="idm251265622064"></a>
 
-  <a class="indexterm" name="idp175348096"></a>
+  <a class="indexterm" name="idm251265620672"></a>
 
-  <a class="indexterm" name="idp175349808"></a>
+  <a class="indexterm" name="idm251265619280"></a>
 
-  <a class="indexterm" name="idp175352096"></a>
+  <a class="indexterm" name="idm251265617600"></a>
 
-  <a class="indexterm" name="idp175353808"></a>
+  <a class="indexterm" name="idm251265616048"></a>
 
-  <a class="indexterm" name="idp175355264"></a>
+  <a class="indexterm" name="idm251265614352"></a>
 
-  <a class="indexterm" name="idp175357152"></a>
+  <a class="indexterm" name="idm251265612688"></a>
 
-  <a class="indexterm" name="idp175358848"></a>
+  <a class="indexterm" name="idm251265611568"></a>
 
-  <a class="indexterm" name="idp175360528"></a>
+  <a class="indexterm" name="idm251265609856"></a>
 
-  <a class="indexterm" name="idp175362288"></a>
+  <a class="indexterm" name="idm251265608144"></a>
 
-  <a class="indexterm" name="idp175364032"></a>
+  <a class="indexterm" name="idm251265605920"></a>
 
-  <a class="indexterm" name="idp175365632"></a>
+  <a class="indexterm" name="idm251265604240"></a>
 
-  <a class="indexterm" name="idp175367312"></a>
+  <a class="indexterm" name="idm251265602544"></a>
 
-  <a class="indexterm" name="idp175369008"></a>
+  <a class="indexterm" name="idm251265600768"></a>
 
-  <a class="indexterm" name="idp175370784"></a>
+  <a class="indexterm" name="idm251265599136"></a>
 
-  <a class="indexterm" name="idp175372480"></a>
+  <a class="indexterm" name="idm251265598000"></a>
 
-  <a class="indexterm" name="idp175374128"></a>
+  <a class="indexterm" name="idm251265595712"></a>
 
-  <a class="indexterm" name="idp175375760"></a>
+  <a class="indexterm" name="idm251265593968"></a>
 
-  <a class="indexterm" name="idp175377424"></a>
+  <a class="indexterm" name="idm251265592368"></a>
 
-  <a class="indexterm" name="idp175379088"></a>
+  <a class="indexterm" name="idm251265590688"></a>
 
-  <a class="indexterm" name="idp175380688"></a>
+  <a class="indexterm" name="idm251265588992"></a>
 
-  <a class="indexterm" name="idp175382352"></a>
+  <a class="indexterm" name="idm251265587216"></a>
 
-  <a class="indexterm" name="idp175384112"></a>
+  <a class="indexterm" name="idm251265585520"></a>
 
-  <a class="indexterm" name="idp175385600"></a>
+  <a class="indexterm" name="idm251265583872"></a>
 
-  <a class="indexterm" name="idp175387232"></a>
+  <a class="indexterm" name="idm251265582240"></a>
 
-  <a class="indexterm" name="idp175389056"></a>
+  <a class="indexterm" name="idm251265580576"></a>
 
-  <a class="indexterm" name="idp175390624"></a>
+  <a class="indexterm" name="idm251265578912"></a>
 
-  <a class="indexterm" name="idp175392288"></a>
+  <a class="indexterm" name="idm251265577312"></a>
 
-  <a class="indexterm" name="idp175393840"></a>
+  <a class="indexterm" name="idm251265575648"></a>
 
-  <a class="indexterm" name="idp175395504"></a>
+  <a class="indexterm" name="idm251265573888"></a>
 
-  <a class="indexterm" name="idp175397264"></a>
+  <a class="indexterm" name="idm251265572400"></a>
 
-  <a class="indexterm" name="idp175398880"></a>
+  <a class="indexterm" name="idm251265570768"></a>
 
-  <a class="indexterm" name="idp175400608"></a>
+  <a class="indexterm" name="idm251265569136"></a>
 
-  <a class="indexterm" name="idp175402176"></a>
+  <a class="indexterm" name="idm251265567504"></a>
 
-  <a class="indexterm" name="idp175403904"></a>
+  <a class="indexterm" name="idm251265565840"></a>
 
-  <a class="indexterm" name="idp175405456"></a>
+  <a class="indexterm" name="idm251265564240"></a>
 
-  <a class="indexterm" name="idp175407120"></a>
+  <a class="indexterm" name="idm251265562560"></a>
 
-  <a class="indexterm" name="idp175408400"></a>
+  <a class="indexterm" name="idm251265560960"></a>
 
-  <a class="indexterm" name="idp175409968"></a>
+  <a class="indexterm" name="idm251265559264"></a>
 
-  <a class="indexterm" name="idp175411696"></a>
+  <a class="indexterm" name="idm251265557616"></a>
 
-  <a class="indexterm" name="idp175413232"></a>
+  <a class="indexterm" name="idm251265555968"></a>
 
-  <a class="indexterm" name="idp175414864"></a>
+  <a class="indexterm" name="idm251265554320"></a>
 
-  <a class="indexterm" name="idp175416624"></a>
+  <a class="indexterm" name="idm251265552688"></a>
 
-  <a class="indexterm" name="idp175418240"></a>
+  <a class="indexterm" name="idm251265551024"></a>
 
-  <a class="indexterm" name="idp175419856"></a>
+  <a class="indexterm" name="idm251265549616"></a>
 
-  <a class="indexterm" name="idp175421488"></a>
+  <a class="indexterm" name="idm251265548096"></a>
 
-  <a class="indexterm" name="idp175423168"></a>
+  <a class="indexterm" name="idm251265546368"></a>
 
-  <a class="indexterm" name="idp175424832"></a>
+  <a class="indexterm" name="idm251265544832"></a>
 
-  <a class="indexterm" name="idp175426448"></a>
+  <a class="indexterm" name="idm251265543200"></a>
 
-  <a class="indexterm" name="idp175428176"></a>
+  <a class="indexterm" name="idm251265541440"></a>
 
-  <a class="indexterm" name="idp175429888"></a>
+  <a class="indexterm" name="idm251265539824"></a>
 
-  <a class="indexterm" name="idp175431552"></a>
+  <a class="indexterm" name="idm251265538208"></a>
 
-  <a class="indexterm" name="idp175433264"></a>
+  <a class="indexterm" name="idm251265536512"></a>
 
-  <a class="indexterm" name="idp175434944"></a>
+  <a class="indexterm" name="idm251265534832"></a>
 
-  <a class="indexterm" name="idp175436608"></a>
+  <a class="indexterm" name="idm251265533168"></a>
 
-  <a class="indexterm" name="idp175438336"></a>
+  <a class="indexterm" name="idm251265531552"></a>
 
-  <a class="indexterm" name="idp175439920"></a>
+  <a class="indexterm" name="idm251265529824"></a>
 
-  <a class="indexterm" name="idp175441584"></a>
+  <a class="indexterm" name="idm251265528112"></a>
 
-  <a class="indexterm" name="idp175443248"></a>
+  <a class="indexterm" name="idm251265526448"></a>
 
-  <a class="indexterm" name="idp175444928"></a>
+  <a class="indexterm" name="idm251265524736"></a>
+
+  <a class="indexterm" name="idm251265523056"></a>
+
+  <a class="indexterm" name="idm251265521392"></a>
+
+  <a class="indexterm" name="idm251265519664"></a>
+
+  <a class="indexterm" name="idm251265518080"></a>
+
+  <a class="indexterm" name="idm251265516416"></a>
+
+  <a class="indexterm" name="idm251265514752"></a>
+
+  <a class="indexterm" name="idm251265513072"></a>
+
+  <a class="indexterm" name="idm251265511360"></a>
+
+  <a class="indexterm" name="idm251265509744"></a>
 </div>
 <div class="navfooter">
 <hr>
