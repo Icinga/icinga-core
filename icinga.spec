@@ -106,8 +106,8 @@ Icinga is a fork of the nagios project.
 Summary: Classic UI for %{name}
 Group: Applications/System
 Requires: %{apachename}
-Requires: %{name}-doc
-Requires: %{name}-classicui-config
+Requires: %{name}-doc = %{version}-%{release}
+Requires: %{name}-classicui-config = %{version}-%{release}
 
 %description gui
 This package contains the Classic UI for %{name}. Requires %{name}-doc
@@ -127,7 +127,7 @@ This packages contains the classic ui configuration for %{name}.
 %package devel
 Summary: Provides include files that Icinga-related applications may compile against
 Group: Development/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 This package provides include files that Icinga-related applications
@@ -137,7 +137,7 @@ may compile against.
 Summary: transitional package, use idoutils-libdbi-* instead
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-idoutils-libdbi-mysql
+Requires: %{name}-idoutils-libdbi-mysql = %{version}-%{release}
 
 %description idoutils
 Transitional package. Idoutils has been splitted into
