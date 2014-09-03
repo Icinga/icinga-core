@@ -35,6 +35,18 @@ FIXES
 * idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
 
 
+1.11.7 - 03/09/2014
+
+FIXES
+
+* Use versioned dependencies in the RPM spec file #7071 - GB
+* Import 1.11.7 schema changes from Icinga 2 #6939 - MF
+
+CHANGES
+
+* New programstatus column 'endpoint_name' requires schema update to 1.11.7! #6939
+
+
 1.11.6 - 06/08/2014
 
 FIXES
