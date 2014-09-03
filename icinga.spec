@@ -54,7 +54,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.11.6
+Version: 1.11.7
 Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -593,6 +593,9 @@ fi
 
 
 %changelog
+* Wed Sep 03 2014 Michael Friedrich <michael.friedrich@netways.de> - 1.11.7-1
+- bump 1.11.7
+
 * Wed Aug 06 2014 Michael Friedrich <michael.friedrich@gmail.com> - 1.11.6-1
 - bump 1.11.6
 
