@@ -338,6 +338,7 @@ typedef struct nebstruct_notification_struct{
 	int             contacts_notified;
 
 	void            *object_ptr;
+	char 		*long_output;
         }nebstruct_notification_data;
 
 

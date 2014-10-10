@@ -1623,8 +1623,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[0] = ido_escape_buffer(notdata->host_name);
 		es[1] = ido_escape_buffer(notdata->service_description);
 		es[2] = ido_escape_buffer(notdata->output);
-		/* Preparing if notifications will have long_output in the future */
-		es[3] = ido_escape_buffer(notdata->output);
+		es[3] = ido_escape_buffer(notdata->long_output);
 		es[4] = ido_escape_buffer(notdata->ack_author);
 		es[5] = ido_escape_buffer(notdata->ack_data);
 

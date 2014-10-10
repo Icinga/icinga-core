@@ -629,12 +629,14 @@ int broker_notification_data(int type, int flags, int attr, int notification_typ
 		ds.service_description = temp_service->description;
 		ds.state = temp_service->current_state;
 		ds.output = temp_service->plugin_output;
+		ds.long_output = temp_service->long_plugin_output;
 	} else {
 		temp_host = (host *)data;
 		ds.host_name = temp_host->name;
 		ds.service_description = NULL;
 		ds.state = temp_host->current_state;
 		ds.output = temp_host->plugin_output;
+		ds.long_output = temp_host->long_plugin_output;
 	}
 	ds.object_ptr = data;
 	ds.ack_author = ack_author;
