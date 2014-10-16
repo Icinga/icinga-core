@@ -924,6 +924,7 @@ CREATE TABLE  icinga_processevents (
 CREATE TABLE  icinga_programstatus (
   programstatus_id bigserial,
   instance_id bigint default 0,
+  program_version TEXT  default NULL,
   status_update_time timestamp with time zone default '1970-01-01 00:00:00',
   program_start_time timestamp with time zone default '1970-01-01 00:00:00',
   program_end_time timestamp with time zone default '1970-01-01 00:00:00',
@@ -1631,5 +1632,5 @@ CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, co
 -- set dbversion
 -- -----------------------------------------
 
-SELECT updatedbversion('1.11.7');
+SELECT updatedbversion('1.12.0');
 

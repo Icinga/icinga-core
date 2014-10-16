@@ -4323,7 +4323,7 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "process_performance_data=:X16, obsess_over_hosts=:X17, "
 	             "obsess_over_services=:X18, modified_host_attributes=:X19, "
 	             "modified_service_attributes=:X20, global_host_event_handler=:X21, "
-	             "global_service_event_handler=:X22, disable_notif_expire_time=unixts2localts(:X23) "
+	             "global_service_event_handler=:X22, disable_notif_expire_time=unixts2localts(:X23), program_version=:X24 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, status_update_time, "
 	             "program_start_time, is_currently_running, "
@@ -4336,11 +4336,11 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "obsess_over_hosts, obsess_over_services, "
 	             "modified_host_attributes, modified_service_attributes, "
 	             "global_host_event_handler, global_service_event_handler, "
-		     "disable_notif_expire_time) "
+		     "disable_notif_expire_time, program_version) "
 	             "VALUES (seq_programstatus.nextval, :X1, unixts2localts(:X2) , "
 	             "unixts2localts(:X3) , '1', :X4, :X5, "
 	             "unixts2localts(:X6), unixts2localts(:X7) , :X8, :X9, :X10, :X11, "
-	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, unixts2localts(:X23) )",
+	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, unixts2localts(:X23), :X24 )",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
 		buf = NULL;
 	}

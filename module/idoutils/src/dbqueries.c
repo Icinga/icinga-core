@@ -3055,7 +3055,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                                 "event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, "
                                                 "process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, "
                                                 "modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', "
-                                                "global_service_event_handler='%s', disable_notif_expire_time=%s "
+                                                "global_service_event_handler='%s', disable_notif_expire_time=%s, program_version='%s' "
                                                 "WHERE instance_id=%lu",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
                                  *(char **) data[1],             /* update start */
@@ -3079,7 +3079,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                  *(unsigned long *) data[19],
                                  *(char **) data[20],
                                  *(char **) data[21],
-                                 *(char **) data[26],            /* update end */
+                                 *(char **) data[26],
+                                 *(char **) data[28],            /* update end */
                                  *(unsigned long *) data[0]      /* unique constraint start/end */
                                 );
                 /* send query to db */
@@ -3129,8 +3130,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                                         "passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, "
                                                         "failure_prediction_enabled, process_performance_data, obsess_over_hosts, "
                                                         "obsess_over_services, modified_host_attributes, modified_service_attributes, "
-                                                        "global_host_event_handler, global_service_event_handler, disable_notif_expire_time) "
-                                                        "VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s', %s)",
+                                                        "global_host_event_handler, global_service_event_handler, disable_notif_expire_time, program_version) "
+                                                        "VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s', %s, '%s')",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(char **) data[1],
@@ -3154,7 +3155,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                          *(unsigned long *) data[19],
                                          *(char **) data[20],
                                          *(char **) data[21],
-                                         *(char **) data[26]             /* insert end */
+                                         *(char **) data[26],
+                                         *(char **) data[28]             /* insert end */
                                         );
                 	        /* send query to db */
 	                        result = ido2db_db_query(idi, query2);
@@ -3174,7 +3176,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 						"event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, "
 						"process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, "
 						"modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler=E'%s', "
-						"global_service_event_handler=E'%s', disable_notif_expire_time=%s "
+						"global_service_event_handler=E'%s', disable_notif_expire_time=%s, program_version='%s' "
 						"WHERE instance_id=%lu",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
 		                 *(char **) data[1],             /* update start */
@@ -3198,7 +3200,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 		                 *(unsigned long *) data[19],
 		                 *(char **) data[20],
 		                 *(char **) data[21],
-		                 *(char **) data[26],            /* update end */
+		                 *(char **) data[26],
+		                 *(char **) data[28],		 /* update end */
 		                 *(unsigned long *) data[0]      /* unique constraint start/end */
 		                );
 		/* send query to db */
@@ -3218,8 +3221,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 							"passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, "
 							"failure_prediction_enabled, process_performance_data, obsess_over_hosts, "
 							"obsess_over_services, modified_host_attributes, modified_service_attributes, "
-							"global_host_event_handler, global_service_event_handler, disable_notif_expire_time) "
-							"VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, E'%s', E'%s', %s)",
+							"global_host_event_handler, global_service_event_handler, disable_notif_expire_time, program_version) "
+							"VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, E'%s', E'%s', %s, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
 			                 *(unsigned long *) data[0],     /* insert start */
 			                 *(char **) data[1],
@@ -3243,7 +3246,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 			                 *(unsigned long *) data[19],
 			                 *(char **) data[20],
 			                 *(char **) data[21],
-			                 *(char **) data[26]             /* insert end */
+			                 *(char **) data[26],
+			                 *(char **) data[28]             /* insert end */
 			                );
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -3350,6 +3354,16 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_programstatus, MT(":X23"), (uint *) data[27])) { /* unixtimestamp instead of time2sql */
 		return IDO_ERROR;
 	}
+        if (*(char **) data[28] == NULL) {
+                if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_programstatus, ":X24") == IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                if (!OCI_BindString(idi->dbinfo.oci_statement_programstatus, MT(":X24"), *(char **) data[28], 0)) {
+                        return IDO_ERROR;
+                }
+        }
+
 
 	/* execute statement */
 	if (!OCI_Execute(idi->dbinfo.oci_statement_programstatus)) {

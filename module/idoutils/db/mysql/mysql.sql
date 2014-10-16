@@ -897,6 +897,7 @@ CREATE TABLE IF NOT EXISTS icinga_processevents (
 CREATE TABLE IF NOT EXISTS icinga_programstatus (
   programstatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
+  program_version varchar(64) character set latin1 collate latin1_general_cs default NULL,
   status_update_time timestamp  default '0000-00-00 00:00:00',
   program_start_time timestamp  default '0000-00-00 00:00:00',
   program_end_time timestamp  default '0000-00-00 00:00:00',
@@ -1602,6 +1603,6 @@ CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, co
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.11.7', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.11.7', modify_time=NOW();
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.12.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.12.0', modify_time=NOW();
 
 

@@ -2021,7 +2021,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[1] = ido_escape_buffer(psdata->global_service_event_handler);
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%lu\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%s\n%d=%s\n%d=%lu\n%d\n\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%lu\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%s\n%d=%s\n%d=%lu\n%d=%s\n%d\n\n"
 		         , IDO_API_PROGRAMSTATUSDATA
 		         , IDO_DATA_TYPE
 		         , psdata->type
@@ -2074,6 +2074,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (es[1] == NULL) ? "" : es[1]
 			 , IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME
 			 , psdata->disable_notifications_expire_time
+		         , IDO_DATA_PROGRAMVERSION
+		         , get_program_version()
 		         , IDO_API_ENDDATA
 		        );
 

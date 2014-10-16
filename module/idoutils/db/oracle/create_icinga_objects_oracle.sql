@@ -1250,6 +1250,7 @@ alter table processevents add constraint processevents_pk PRIMARY KEY  (id)
 CREATE TABLE programstatus (
   id integer ,
   instance_id integer default 0 ,
+  program_version varchar2(64),
   status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   program_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   program_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,

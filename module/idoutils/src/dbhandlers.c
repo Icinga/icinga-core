@@ -3459,8 +3459,8 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	unsigned long modified_host_attributes = 0L;
 	unsigned long modified_service_attributes = 0L;
 	char *ts[5];
-	char *es[2];
-	void *data[28];
+	char *es[3];
+	void *data[29];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_programstatusdata() start\n");
 
@@ -3499,6 +3499,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALHOSTEVENTHANDLER]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALSERVICEEVENTHANDLER]);
+	es[2] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PROGRAMVERSION]);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, program_start_time);
@@ -3536,6 +3537,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	/* disabled notifications expiry */
 	data[26] = (void *) &ts[4];
 	data[27] = (void *) &disable_notifications_expire_time;
+	data[28] = (void *) &es[2];
 
 	/* save entry to db */
 	result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
