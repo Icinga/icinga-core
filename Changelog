@@ -27,12 +27,25 @@ NEWS
 
 ENHANCEMENTS
 
+* core/idoutils: Populate long_output column on notification history neb events #7362 - MF
+
 * classic ui: start with unhandled problems view instead of TAC #4817 - MF
 * classic ui: Adding alias to title in host/service overview #5900 - WN
+* classic ui: Add display of extra icons in status overview of hosts and services #6829 - RD/RB
+
+* idoutils: Add program_version column to programstatus table #7390 - MF
 
 FIXES
 
 * idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
+
+* spec: Use versioned dependencies in the RPM spec file #7017 - GB
+
+CHANGES
+
+* core/idoutils: Populate long_output column on notification history neb events #7362
+* idoutils: Add program_version column to programstatus table #7390
+	** required for Icinga Web 2 and Icinga 2
 
 
 1.11.7 - 03/09/2014
