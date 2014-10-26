@@ -525,7 +525,7 @@ CREATE TABLE contacts (
   instance_id integer default 0 ,
   config_type integer default 0 ,
   contact_object_id integer default 0 ,
-  alias varchar2(64),
+  alias varchar2(1024),
   email_address varchar2(1024),
   pager_address varchar2(64),
   host_timeperiod_object_id integer default 0 ,

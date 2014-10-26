@@ -36,6 +36,8 @@ whenever sqlerror exit failure
 spool oracle-upgrade-&&ICINGA_VERSION..log
 
 
+ALTER TABLE contacts MODIFY alias VARCHAR2(1024);
+
 ALTER TABLE programstatus ADD program_version varchar2(64);
 
 -- -----------------------------------------
