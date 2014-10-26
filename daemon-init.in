@@ -208,7 +208,7 @@ case "$1" in
 
 			start
 		else
-			IcingaPrecacheFile=$(grep ^precached_object_file $IcingaCfgFile | tail -n 1 | awk 'BEGIN { FS = "=" }; { print $2 }')
+			IcingaPrecacheFile=`grep '^precached_object_file' $IcingaCfgFile | tail -1 | awk -F= '{ print $2 }'`
 
 			chk_config "CONFIG ERROR!  Falling back to pre-cache file. See $IcingaChkFile for details." precache
 
