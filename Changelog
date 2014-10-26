@@ -37,7 +37,11 @@ ENHANCEMENTS
 
 FIXES
 
+* classic ui: Fix grammatical errors in popup text #7451 - CF
+
 * idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
+
+* initscript: Correct bash-specific syntax in startup script #7450 - CF
 
 * spec: Use versioned dependencies in the RPM spec file #7017 - GB
 
