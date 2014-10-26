@@ -101,6 +101,7 @@ char *sigs[35] = {"EXIT", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "F
 
 int main(int argc, char **argv) {
 	int result = IDO_OK;
+	ido2db_idi idi_schema;
 
 #ifdef DEBUG_MEMORY
 	mtrace();
@@ -115,7 +116,6 @@ int main(int argc, char **argv) {
 	int numdrivers;
 	driver = NULL;
 #endif
-ido2db_idi idi_schema;
 #ifdef USE_ORACLE
 	unsigned int v1,v2;
 #endif
