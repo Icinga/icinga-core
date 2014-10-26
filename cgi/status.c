@@ -2613,7 +2613,7 @@ void show_service_detail(void) {
 					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Notifications for this host have been disabled' title='Notifications for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, NOTIFICATIONS_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				}
 	                        if (temp_hoststatus->event_handler_enabled == FALSE) {
-					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host have been disabled' title='Event handling for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+					printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host has been disabled' title='Event handling for this host has been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 	                        }
 	                        if (temp_hoststatus->checks_enabled == FALSE || temp_hoststatus->accept_passive_host_checks == FALSE) {
 	                                if (temp_hoststatus->accept_passive_host_checks == FALSE && temp_hoststatus->checks_enabled == FALSE) {
@@ -2723,7 +2723,7 @@ void show_service_detail(void) {
 			}
 			if (temp_status->event_handler_enabled == FALSE) {
                                 printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
-                                printf("&amp;service=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this service have been disabled' title='Event handling for this service have been disabled'></a></td>", url_encode(temp_status->svc_description), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+                                printf("&amp;service=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this service has been disabled' title='Event handling for this service has been disabled'></a></td>", url_encode(temp_status->svc_description), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
                         }
 			if (temp_status->is_flapping == TRUE) {
 				printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
@@ -3175,7 +3175,7 @@ void show_host_detail(void) {
 				printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Notifications for this host have been disabled' title='Notifications for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, NOTIFICATIONS_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 			}
 			if (temp_statusdata->event_handler_enabled == FALSE) {
-                                printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host have been disabled' title='Event handling for this host have been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+                                printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'><img src='%s%s' border='0' width=%d height=%d alt='Event handling for this host has been disabled' title='Event handling for this host has been disabled'></a></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, EVENTHANDLING_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
                         }
 			if (temp_statusdata->checks_enabled == FALSE || temp_statusdata->accept_passive_checks == FALSE) {
                                 if (temp_statusdata->accept_passive_checks == FALSE && temp_statusdata->checks_enabled == FALSE) {
