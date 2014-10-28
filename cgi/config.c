@@ -125,6 +125,7 @@ extern int refresh_type;
 extern int result_limit;
 extern int send_ack_notifications;
 extern int set_expire_ack_by_default;
+extern int set_sticky_acknowledgment;
 extern int show_all_services_host_is_authorized_for;
 extern int show_partial_hostgroups;
 extern int show_partial_servicegroups;
@@ -253,6 +254,7 @@ int org_refresh_type;
 int org_result_limit;
 int org_send_ack_notifications;
 int org_set_expire_ack_by_default;
+int org_set_sticky_acknowledgment;
 int org_show_all_services_host_is_authorized_for;
 int org_show_partial_hostgroups;
 int org_show_partial_servicegroups;
@@ -4133,6 +4135,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
 	PRINT_CONFIG_LINE_INT(send_ack_notifications, org_send_ack_notifications, "bool")
 	PRINT_CONFIG_LINE_INT(set_expire_ack_by_default, org_set_expire_ack_by_default, "bool")
+	PRINT_CONFIG_LINE_INT(set_sticky_acknowledgment, org_set_sticky_acknowledgment, "bool")
 	PRINT_CONFIG_LINE_INT(show_all_services_host_is_authorized_for, org_show_all_services_host_is_authorized_for, "bool")
 	PRINT_CONFIG_LINE_INT(show_partial_hostgroups, org_show_partial_hostgroups, "bool")
 	PRINT_CONFIG_LINE_INT(show_partial_servicegroups, org_show_partial_servicegroups, "bool")
@@ -4571,6 +4574,7 @@ void store_default_settings(void) {
 	org_result_limit = result_limit;
 	org_send_ack_notifications = send_ack_notifications;
 	org_set_expire_ack_by_default = set_expire_ack_by_default;
+	org_set_sticky_acknowledgment = set_sticky_acknowledgment;
 	org_show_all_services_host_is_authorized_for = show_all_services_host_is_authorized_for;
 	org_show_partial_hostgroups = show_partial_hostgroups;
 	org_show_partial_servicegroups = show_partial_servicegroups;

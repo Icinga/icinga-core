@@ -2453,6 +2453,42 @@
   </td></tr>
 </table></div>
 
+
+  <p><a name="configcgi-set_sticky_acknowledgment"></a><span class="bold"><strong>Set initial state of "Sticky Acknowledgment"
+  checkbox</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>set_sticky_acknowledgment=0|1</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>set_sticky_acknowledgment=1</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option controls the initial state of the "Sticky Acknowledgment:" checkbox when acknowledging a problem. Set this to 1 to force stickiness
+  by default and 0 to not. The default is 1 (ACKs are sticky). This may be overridden in the CGI dialogue.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.12</p>
+  </td></tr>
+</table></div>
+
   <p><a name="configcgi-standalone_installation"></a><span class="bold"><strong>Enable Classic UI Standalone Installation
   </strong></span></p>
 

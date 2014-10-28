@@ -58,6 +58,7 @@ extern int  persistent_ack_comments;
 extern int  send_ack_notifications;
 extern int  default_expiring_acknowledgement_duration;
 extern int  set_expire_ack_by_default;
+extern int  set_sticky_acknowledgment;
 extern int  default_expiring_disabled_notifications_duration;
 extern int  disable_cmd_cgi_csrf_protection;
 
@@ -630,8 +631,8 @@ int process_cgivars(void) {
 			send_notification = TRUE;
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(key, "sticky_ack"))
-			sticky_ack_set = TRUE;
+		else if (strcmp(key, "sticky_ack") == 0 || strcmp(key, "set_sticky_acknowledgment") == 0)
+			sticky_ack_set = set_sticky_acknowledgment = TRUE;
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(key, "use_ack_end_time"))
@@ -996,10 +997,13 @@ void print_form_element(int element, int cmd) {
 
 		strcpy(help_text, "If you want acknowledgement to disable notifications until the host/service recovers, check this option.");
 
-		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
+		printf("<tr><td id=\"sticky_ack_row\" class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align='left'>");
+/*
 		printf("<input type='checkbox' name='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
+*/
+		printf("<input type='checkbox' id='sticky_ack_checkbox' name='sticky_ack' onClick=\"if (document.getElementById('sticky_ack_checkbox').checked == true) document.getElementById('sticky_ack_row').style.display = ''; else document.getElementById('sticky_ack_row').style.display = 'none';\" %s></td></tr>\n", (set_sticky_acknowledgment == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:

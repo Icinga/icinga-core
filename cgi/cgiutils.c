@@ -195,6 +195,8 @@ int		default_expiring_acknowledgement_duration = 86400;
 int		set_expire_ack_by_default = FALSE;
 int		default_expiring_disabled_notifications_duration = 86400;
 
+int		set_sticky_acknowledgment = TRUE;
+
 int		result_limit = 50;
 
 extern hostgroup       *hostgroup_list;
@@ -640,6 +642,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "set_expire_ack_by_default"))
 			set_expire_ack_by_default = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (strcmp(var, "set_sticky_acknowledgment") == 0)
+			set_sticky_acknowledgment = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "default_expiring_disabled_notifications_duration"))
 			default_expiring_disabled_notifications_duration = atoi(val);
