@@ -2331,6 +2331,8 @@ void show_service_detail(void) {
 				printf("attempt number");
 			else if (sort_option == SORT_STATEDURATION)
 				printf("state duration");
+			else if (sort_option == SORT_HOSTNAME_SERVICENAME)
+				printf("host + service name");
 			printf("</b> (%s)\n", (sort_type == SORT_ASCENDING) ? "ascending" : "descending");
 			printf("</div>\n");
 		}
@@ -2960,7 +2962,7 @@ void show_host_detail(void) {
 
 		if (use_sort == TRUE && user_sorted_manually == TRUE && sort_object == HOST_STATUS) {
 			printf("<div align='center' class='statusSort'>Entries sorted by <b>");
-			if (sort_option == SORT_HOSTNAME)
+			if (sort_option == SORT_HOSTNAME || sort_option == SORT_HOSTNAME_SERVICENAME)
 				printf("host name");
 			else if (sort_option == SORT_HOSTSTATUS)
 				printf("host status");
