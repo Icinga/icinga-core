@@ -362,6 +362,7 @@ extern "C" {
 #define SORT_NEXTCHECKTIME		7
 #define SORT_HOSTSTATUS			8
 #define SORT_HOSTURGENCY                9
+#define SORT_HOSTNAME_SERVICENAME       10
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
 

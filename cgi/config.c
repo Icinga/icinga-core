@@ -132,6 +132,7 @@ extern int show_tac_header;
 extern int show_tac_header_pending;
 extern int showlog_current_states;
 extern int showlog_initial_states;
+extern int sort_status_data_by_default;
 extern int status_show_long_plugin_output;
 extern int suppress_maintenance_downtime;
 extern int tab_friendly_titles;
@@ -260,6 +261,7 @@ int org_show_tac_header;
 int org_show_tac_header_pending;
 int org_showlog_current_states;
 int org_showlog_initial_states;
+int org_sort_status_data_by_default;
 int org_status_show_long_plugin_output;
 int org_suppress_maintenance_downtime;
 int org_tab_friendly_titles;
@@ -4140,6 +4142,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(show_tac_header_pending, org_show_tac_header_pending, "bool")
 	PRINT_CONFIG_LINE_INT(showlog_current_states, org_showlog_current_states, "bool")
 	PRINT_CONFIG_LINE_INT(showlog_initial_states, org_showlog_initial_states, "bool")
+	PRINT_CONFIG_LINE_INT(sort_status_data_by_default, org_sort_status_data_by_default, "bool")
 	PRINT_CONFIG_LINE_STRING(splunk_url, org_splunk_url)
 	PRINT_CONFIG_LINE_INT(status_show_long_plugin_output, org_status_show_long_plugin_output, "bool")
 	PRINT_CONFIG_LINE_STRING(statusmap_background_image, org_statusmap_background_image)
@@ -4579,6 +4582,7 @@ void store_default_settings(void) {
 	org_showlog_current_states = showlog_current_states;
 	org_showlog_initial_states = showlog_initial_states;
 	org_status_show_long_plugin_output = status_show_long_plugin_output;
+	org_sort_status_data_by_default = sort_status_data_by_default;
 	org_suppress_maintenance_downtime = suppress_maintenance_downtime;
 	org_tab_friendly_titles = tab_friendly_titles;
 	org_tac_show_only_hard_state = tac_show_only_hard_state;

@@ -606,6 +606,17 @@ highlight_table_rows=1
 
 
 
+# SORT STATUS DATA BY DEFAULT
+# This option forces status.cgi to sort status data by default. Data will
+# be sorted ascending. First host name and then service description. This is
+# helpful if status data in status.dat is not sorted properly. This can occur
+# especially if you use Icinga2. By default this options is switched off (0)
+# to avoid possible higher cpu load in huge environments.
+
+sort_status_data_by_default=0
+
+
+
 
 ######################################
 #

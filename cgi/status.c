@@ -82,6 +82,7 @@ extern int content_type;
 extern int escape_html_tags;
 extern int show_partial_hostgroups;			/**< show any hosts in hostgroups the user is authorized for */
 extern int show_partial_servicegroups;
+extern int sort_status_data_by_default;
 
 extern int add_notif_num_hard;
 extern int add_notif_num_soft;
@@ -698,6 +699,16 @@ int main(void) {
 	/* allow service_filter only for status lists */
 	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
 		my_free(service_filter);
+
+	/* check if we schould sort unsorted status.dat data */
+	if (sort_type == SORT_NONE && sort_status_data_by_default == TRUE) {
+		sort_type = SORT_ASCENDING;
+		sort_option = SORT_HOSTNAME_SERVICENAME;
+	}
+
+	if (sort_type != SORT_NONE && sort_option == SORT_HOSTNAME && sort_object == SERVICE_STATUS) {
+		sort_option = SORT_HOSTNAME_SERVICENAME;
+	}
 
 
 	/**
@@ -6424,6 +6435,9 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 	statusdata *new_status;
 	statusdata *temp_status;
 
+	char tmp_buffer_a[MAX_INPUT_BUFFER];
+	char tmp_buffer_b[MAX_INPUT_BUFFER];
+
 	new_status = new_sort->status;
 	temp_status = temp_sort->status;
 
@@ -6469,6 +6483,25 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 				return TRUE;
 			else
 				return FALSE;
+		} else if (sort_option == SORT_HOSTNAME_SERVICENAME) {
+			if (status_type == HOST_STATUS)
+				snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s", new_status->host_name);
+			else
+				snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s%s", new_status->host_name, new_status->svc_description);
+
+			tmp_buffer_a[sizeof(tmp_buffer_a) - 1] = '\x0';
+
+			if (status_type == HOST_STATUS)
+				snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s", temp_status->host_name);
+			else
+				snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s%s", temp_status->host_name, temp_status->svc_description);
+
+			tmp_buffer_b[sizeof(tmp_buffer_b) - 1] = '\x0';
+
+			if (strcasecmp(tmp_buffer_a, tmp_buffer_b) < 0)
+				return TRUE;
+			else
+				return FALSE;
 		}
 	} else {
 		if (sort_option == SORT_LASTCHECKTIME) {
@@ -6508,6 +6541,25 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 				return FALSE;
 		} else if (sort_option == SORT_STATEDURATION) {
 			if (new_status->ts_state_duration > temp_status->ts_state_duration)
+				return TRUE;
+			else
+				return FALSE;
+		} else if (sort_option == SORT_HOSTNAME_SERVICENAME) {
+			if (status_type == HOST_STATUS)
+				snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s", new_status->host_name);
+			else
+				snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s%s", new_status->host_name, new_status->svc_description);
+
+			tmp_buffer_a[sizeof(tmp_buffer_a) - 1] = '\x0';
+
+			if (status_type == HOST_STATUS)
+				snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s", temp_status->host_name);
+			else
+				snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s%s", temp_status->host_name, temp_status->svc_description);
+
+			tmp_buffer_b[sizeof(tmp_buffer_b) - 1] = '\x0';
+
+			if (strcasecmp(tmp_buffer_a, tmp_buffer_b) > 0)
 				return TRUE;
 			else
 				return FALSE;
