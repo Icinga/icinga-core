@@ -2747,8 +2747,8 @@ void display_tac_overview(void) {
 
 	printf("<table class='tac' cellspacing='4' cellpadding='0' border='0'>\n");
 
-	printf("<tr><td colspan='2' height='20' class='featureTitle'>&nbsp;Service Checks</td>\n");
-	printf("<td colspan='2' height='20' class='featureTitle'>&nbsp;Host Checks</td></tr>\n");
+	printf("<tr><td colspan='2' height='20' class='featureTitle'>&nbsp;Host Checks</td>\n");
+	printf("<td colspan='2' height='20' class='featureTitle'>&nbsp;Service Checks</td></tr>\n");
 
 	printf("<tr>\n");
 	printf("<td class='featureHeader' width='135'>Active</td>\n");
@@ -2759,6 +2759,59 @@ void display_tac_overview(void) {
 	printf("</tr>\n");
 
 	printf("<tr>\n");
+
+
+	/******* Host Checks ******/
+	printf("<td valign='top'>\n");
+	printf("<table border='0' width='135' cellspacing='0' cellpadding='0'>\n");
+	printf("<tr>\n");
+	printf("<td valign='top'><a href='%s?cmd_typ=%d'><img src='%s%s' border='0' alt='Active Host Checks %s' title='Active Host Checks %s'></a></td>\n", CMD_CGI, (execute_host_checks == TRUE) ? CMD_STOP_EXECUTING_HOST_CHECKS : CMD_START_EXECUTING_HOST_CHECKS, url_images_path, (execute_host_checks == TRUE) ? TAC_ENABLED_ICON : TAC_DISABLED_ICON, (execute_host_checks == TRUE) ? "Enabled" : "Disabled", (execute_host_checks == TRUE) ? "Enabled" : "Disabled");
+	printf("<td width='10'>&nbsp;</td>\n");
+	if (execute_host_checks == TRUE) {
+		printf("<td valign='top' width='100%%' class='EnabledActiveHostChecks'>\n");
+		printf("<table border='0' width='100%%'>\n");
+
+		if (total_active_host_checks > 0)
+			printf("<tr><td width='100%%' class='ItemActiveHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Enabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_ENABLED, total_active_host_checks);
+		else
+			printf("<tr><td width='100%%' class='ItemActiveHostChecks'>No Active Checks</td></tr>\n");
+
+		if (total_active_host_checks_with_passive_disabled > 0)
+			printf("<tr><td width='100%%' class='ItemActiveHostChecksWithPassiveDisabled'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d with Passive Disabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_ENABLED | HOST_PASSIVE_CHECKS_DISABLED, total_active_host_checks_with_passive_disabled);
+
+		printf("</table>\n");
+		printf("</td>\n");
+	} else
+		printf("<td valign='middle' width='100%%' class='DisableActiveHostChecks'>N/A</td>\n");
+	printf("</tr>\n");
+	printf("</table>\n");
+	printf("</td>\n");
+
+
+	printf("<td valign='top'>\n");
+	printf("<table border='0' width='135' cellspacing='0' cellpadding='0'>\n");
+	printf("<tr>\n");
+	printf("<td valign='top'><a href='%s?cmd_typ=%d'><img src='%s%s' border='0' alt='Passive Host Checks %s' title='Passive Host Checks %s'></a></td>\n", CMD_CGI, (accept_passive_host_checks == TRUE) ? CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS : CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS, url_images_path, (accept_passive_host_checks == TRUE) ? TAC_ENABLED_ICON : TAC_DISABLED_ICON, (accept_passive_host_checks == TRUE) ? "Enabled" : "Disabled", (accept_passive_host_checks == TRUE) ? "Enabled" : "Disabled");
+	printf("<td width='10'>&nbsp;</td>\n");
+	if (accept_passive_host_checks == TRUE) {
+		printf("<td valign='top' width='100%%' class='EnabledPassiveHostChecks'>\n");
+		printf("<table border='0' width='100%%'>\n");
+
+		if (total_passive_host_checks > 0)
+			printf("<tr><td width='100%%' class='ItemPassiveHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Enabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_DISABLED | HOST_PASSIVE_CHECKS_ENABLED, total_passive_host_checks);
+		else
+			printf("<tr><td width='100%%' class='ItemPassiveHostChecks'>No Passive Checks</td></tr>\n");
+
+		if (total_disabled_host_checks > 0)
+			printf("<tr><td width='100%%' class='ItemDisabledHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Disabled</a></td></tr>\n", STATUS_CGI, HOST_PASSIVE_CHECKS_DISABLED | HOST_CHECKS_DISABLED, total_disabled_host_checks);
+
+		printf("</table>\n");
+		printf("</td>\n");
+	} else
+		printf("<td valign='middle' width='100%%' class='DisabledPassiveHostChecks'>N/A</td>\n");
+	printf("</tr>\n");
+	printf("</table>\n");
+	printf("</td>\n");
 
 
 	/******* Service Checks ******/
@@ -2810,59 +2863,6 @@ void display_tac_overview(void) {
 		printf("</td>\n");
 	} else
 		printf("<td valign='middle' width='100%%' class='DisabledPassiveServiceChecks'>N/A</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
-	printf("</td>\n");
-
-
-	/******* Host Checks ******/
-	printf("<td valign='top'>\n");
-	printf("<table border='0' width='135' cellspacing='0' cellpadding='0'>\n");
-	printf("<tr>\n");
-	printf("<td valign='top'><a href='%s?cmd_typ=%d'><img src='%s%s' border='0' alt='Active Host Checks %s' title='Active Host Checks %s'></a></td>\n", CMD_CGI, (execute_host_checks == TRUE) ? CMD_STOP_EXECUTING_HOST_CHECKS : CMD_START_EXECUTING_HOST_CHECKS, url_images_path, (execute_host_checks == TRUE) ? TAC_ENABLED_ICON : TAC_DISABLED_ICON, (execute_host_checks == TRUE) ? "Enabled" : "Disabled", (execute_host_checks == TRUE) ? "Enabled" : "Disabled");
-	printf("<td width='10'>&nbsp;</td>\n");
-	if (execute_host_checks == TRUE) {
-		printf("<td valign='top' width='100%%' class='EnabledActiveHostChecks'>\n");
-		printf("<table border='0' width='100%%'>\n");
-
-		if (total_active_host_checks > 0)
-			printf("<tr><td width='100%%' class='ItemActiveHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Enabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_ENABLED, total_active_host_checks);
-		else
-			printf("<tr><td width='100%%' class='ItemActiveHostChecks'>No Active Checks</td></tr>\n");
-
-		if (total_active_host_checks_with_passive_disabled > 0)
-			printf("<tr><td width='100%%' class='ItemActiveHostChecksWithPassiveDisabled'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d with Passive Disabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_ENABLED | HOST_PASSIVE_CHECKS_DISABLED, total_active_host_checks_with_passive_disabled);
-
-		printf("</table>\n");
-		printf("</td>\n");
-	} else
-		printf("<td valign='middle' width='100%%' class='DisableActiveHostChecks'>N/A</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
-	printf("</td>\n");
-
-
-	printf("<td valign='top'>\n");
-	printf("<table border='0' width='135' cellspacing='0' cellpadding='0'>\n");
-	printf("<tr>\n");
-	printf("<td valign='top'><a href='%s?cmd_typ=%d'><img src='%s%s' border='0' alt='Passive Host Checks %s' title='Passive Host Checks %s'></a></td>\n", CMD_CGI, (accept_passive_host_checks == TRUE) ? CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS : CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS, url_images_path, (accept_passive_host_checks == TRUE) ? TAC_ENABLED_ICON : TAC_DISABLED_ICON, (accept_passive_host_checks == TRUE) ? "Enabled" : "Disabled", (accept_passive_host_checks == TRUE) ? "Enabled" : "Disabled");
-	printf("<td width='10'>&nbsp;</td>\n");
-	if (accept_passive_host_checks == TRUE) {
-		printf("<td valign='top' width='100%%' class='EnabledPassiveHostChecks'>\n");
-		printf("<table border='0' width='100%%'>\n");
-
-		if (total_passive_host_checks > 0)
-			printf("<tr><td width='100%%' class='ItemPassiveHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Enabled</a></td></tr>\n", STATUS_CGI, HOST_CHECKS_DISABLED | HOST_PASSIVE_CHECKS_ENABLED, total_passive_host_checks);
-		else
-			printf("<tr><td width='100%%' class='ItemPassiveHostChecks'>No Passive Checks</td></tr>\n");
-
-		if (total_disabled_host_checks > 0)
-			printf("<tr><td width='100%%' class='ItemDisabledHostChecks'><a href='%s?host=all&amp;style=hostdetail&amp;hostprops=%d'>%d Disabled</a></td></tr>\n", STATUS_CGI, HOST_PASSIVE_CHECKS_DISABLED | HOST_CHECKS_DISABLED, total_disabled_host_checks);
-
-		printf("</table>\n");
-		printf("</td>\n");
-	} else
-		printf("<td valign='middle' width='100%%' class='DisabledPassiveHostChecks'>N/A</td>\n");
 	printf("</tr>\n");
 	printf("</table>\n");
 	printf("</td>\n");
