@@ -753,6 +753,16 @@ disable_cmd_cgi_csrf_protection=0
 
 
 
+# SET_STICKY_ACKNOWLEDGMENT
+# This either sets or clears the checkbox in the CGIs for sticky
+# acknowledgments.  Valid options are "1" and "0"; a 0 clears the
+# checkbox and 1 sets it.  The default is 1 (set) to preserve
+# backward compatibility.
+
+set_sticky_acknowledgment=1
+
+
+
 
 ######################################
 #
