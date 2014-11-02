@@ -65,28 +65,29 @@ extern int		extinfo_show_child_hosts;
 extern int		tab_friendly_titles;
 extern int		result_limit;
 
-extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_logo_images_path[MAX_FILENAME_LENGTH];
+extern char		main_config_file[MAX_FILENAME_LENGTH];
+extern char		url_images_path[MAX_FILENAME_LENGTH];
+extern char		url_logo_images_path[MAX_FILENAME_LENGTH];
 
 extern int              enable_splunk_integration;
 
 extern char             *notes_url_target;
 extern char             *action_url_target;
 
-extern host *host_list;
-extern service *service_list;
-extern hoststatus *hoststatus_list;
-extern servicestatus *servicestatus_list;
+extern host		*host_list;
+extern service		*service_list;
+extern hoststatus	*hoststatus_list;
+extern servicestatus	*servicestatus_list;
 
-extern comment           *comment_list;
-extern scheduled_downtime  *scheduled_downtime_list;
-extern hoststatus *hoststatus_list;
-extern servicestatus *servicestatus_list;
-extern hostgroup *hostgroup_list;
-extern servicegroup *servicegroup_list;
-extern servicedependency *servicedependency_list;
-extern hostdependency *hostdependency_list;
+extern hostgroup	*hostgroup_list;
+extern servicegroup	*servicegroup_list;
+
+extern servicedependency  *servicedependency_list;
+extern hostdependency     *hostdependency_list;
+
+extern comment		  *comment_list;
+extern scheduled_downtime *scheduled_downtime_list;
+
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -98,12 +99,13 @@ extern hostdependency *hostdependency_list;
 #define CSV_COMMENT			1
 #define CSV_DOWNTIME			2
 
-
 /* SORTDATA structure */
 typedef struct sortdata_struct {
-	int is_service;
+	int data_type;
 	servicestatus *svcstatus;
 	hoststatus *hststatus;
+	comment *comment;
+	scheduled_downtime *downtime;
 	struct sortdata_struct *next;
 } sortdata;
 
@@ -136,7 +138,7 @@ char *service_desc = "";
 
 int display_type = DISPLAY_PROCESS_INFO;
 int sort_type = SORT_ASCENDING;
-int sort_option = SORT_NEXTCHECKTIME;
+int sort_option = SORT_NOTHING;
 int csv_type = CSV_DEFAULT;
 int get_result_limit = -1;
 int result_start = 1;
@@ -729,9 +731,12 @@ int main(void) {
 			else if (csv_type == CSV_DOWNTIME)
 				show_downtime(HOST_DOWNTIME);
 			else
-				printf("Please specify the correct csvtype! possible is \"csvtype=comment\" or \"csv_type=downtime\".\n");
-		} else
+				printf("Please specify the correct csvtype! possible is \"csvtype=comment\" or \"csvtype=downtime\".\n");
+		} else {
+			/* sort comments and downtime */
+			sort_data(sort_type, sort_option);
 			show_host_info();
+		}
 	} else if (display_type == DISPLAY_SERVICE_INFO) {
 		if (content_type == CSV_CONTENT) {
 			if (csv_type == CSV_COMMENT)
@@ -739,9 +744,12 @@ int main(void) {
 			else if (csv_type == CSV_DOWNTIME)
 				show_downtime(SERVICE_DOWNTIME);
 			else
-				printf("Please specify the correct csvtype! possible is \"csvtype=comment\" or \"csv_type=downtime\".\n");
-		} else
+				printf("Please specify the correct csvtype! possible is \"csvtype=comment\" or \"csvtype=downtime\".\n");
+		} else {
+			/* sort comments and downtime */
+			sort_data(sort_type, sort_option);
 			show_service_info();
+		}
 	} else if (display_type == DISPLAY_COMMENTS) {
 		if (is_authorized_for_read_only(&current_authdata) == TRUE && is_authorized_for_comments_read_only(&current_authdata) == FALSE)
 			printf("<div align='center' class='infoMessage'>Your account does not have permissions to view comments.<br>\n");
@@ -755,6 +763,9 @@ int main(void) {
 				printf("<br>\n");
 				printf("<div class='commentNav'>[&nbsp;<a href='#HOSTCOMMENTS' class='commentNav'>Host Comments</a>&nbsp;|&nbsp;<a href='#SERVICECOMMENTS' class='commentNav'>Service Comments</a>&nbsp;]</div>\n");
 				printf("<br>\n");
+
+				/* sort comments and downtime */
+				sort_data(sort_type, sort_option);
 
 				show_comments(HOST_COMMENT);
 				printf("<br>\n");
@@ -774,6 +785,9 @@ int main(void) {
 				printf("<br>\n");
 				printf("<div class='downtimeNav'>[&nbsp;<a href='#HOSTDOWNTIME' class='downtimeNav'>Host Downtime</a>&nbsp;|&nbsp;<a href='#SERVICEDOWNTIME' class='downtimeNav'>Service Downtime</a>&nbsp;]</div>\n");
 				printf("<br>\n");
+
+				/* sort comments and downtime */
+				sort_data(sort_type, sort_option);
 
 				show_downtime(HOST_DOWNTIME);
 				printf("<br>\n");
@@ -797,6 +811,7 @@ int main(void) {
 	free_memory();
 	free_comment_data();
 	free_downtime_data();
+	free_sortdata_list();
 
 	return OK;
 }
@@ -3021,15 +3036,19 @@ void show_performance_data(void) {
 void show_comments(int type) {
 	host *temp_host = NULL;
 	service *temp_service = NULL;
-	int total_comments = 0;
+	sortdata *temp_sortdata = NULL;
+	comment *temp_comment = NULL;
 	char *bg_class = "";
-	int odd = 1;
-	char date_time[MAX_DATETIME_LENGTH];
-	comment *temp_comment;
 	char *comment_type;
+	char date_time[MAX_DATETIME_LENGTH];
 	char expire_time[MAX_DATETIME_LENGTH];
+	char temp_url[MAX_INPUT_BUFFER];
+	char temp_buffer[MAX_INPUT_BUFFER];
+	int odd = 1;
+	int total_comments = 0;
 	int colspan = 8;
 	int json_start = TRUE;
+	int first_entry = TRUE;
 
 	/* define colspan */
 	if (display_type == DISPLAY_COMMENTS)
@@ -3100,20 +3119,70 @@ void show_comments(int type) {
 
 		printf("</td></tr>\n");
 
+		snprintf(temp_url, sizeof(temp_url) - 1, "%s?type=%d", EXTINFO_CGI, display_type);
+		temp_url[sizeof(temp_url) - 1] = '\x0';
+
+		if (host_name && *host_name != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&amp;host=%s", temp_buffer, url_encode(host_name));
+			temp_url[sizeof(temp_url) - 1] = '\x0';
+		}
+
+		if (service_desc && *service_desc != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&amp;service=%s", temp_buffer, url_encode(service_desc));
+			temp_url[sizeof(temp_url) - 1] = '\x0';
+		}
+
 		printf("<tr class='comment'>");
 		if (display_type == DISPLAY_COMMENTS) {
-			printf("<th class='comment'>Host Name</th>");
+			printf("<th class='comment'>Host Name&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' title='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' title='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
+
 			if (type == SERVICE_COMMENT)
-				printf("<th class='comment'>Service</th>");
+				printf("<th class='comment'>Service&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service description (ascending)' title='Sort by service description (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service description (descending)' title='Sort by service description (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
 		}
-		printf("<th class='comment'>Entry Time</th><th class='comment'>Author</th><th class='comment'>Comment</th><th class='comment'>Comment ID</th><th class='comment'>Persistent</th><th class='comment'>Type</th><th class='comment'>Expires</th>");
+		printf("<th class='comment'>Entry Time&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by entry time (ascending)' title='Sort by entry time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by entry time (descending)' title='Sort by entry time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_ENTRYTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_ENTRYTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Author&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by author (ascending)' title='Sort by author (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by author (descending)' title='Sort by author (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_AUTHOR, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_AUTHOR, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Comment&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment (ascending)' title='Sort by comment (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment (descending)' title='Sort by comment (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_COMMENT, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_COMMENT, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Comment ID&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment id (ascending)' title='Sort by comment id (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment id (descending)' title='Sort by comment id (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_ID, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_ID, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Persistent&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by persistent (ascending)' title='Sort by persistent (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by persistent (descending)' title='Sort by persistent (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_PERSISTENT, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_PERSISTENT, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Type&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by type (ascending)' title='Sort by type (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by type (descending)' title='Sort by type (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_TYPE, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_TYPE, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='comment'>Expires&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by expire time (ascending)' title='Sort by expire time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by expire time (descending)' title='Sort by expire time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_EXPIRETIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_EXPIRETIME, url_images_path, DOWN_ARROW_ICON);
+
 		if (is_authorized_for_comments_read_only(&current_authdata) == FALSE)
 			printf("<th class='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%scomment\');isValidForSubmit(\'tableform%scomment\');\"></th>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
 		printf("</tr>\n");
 	}
 
-	/* display all the service comments */
-	for (temp_comment = comment_list, total_comments = 0; temp_comment != NULL; temp_comment = temp_comment->next) {
+	/* display comments */
+	while (1) {
+
+		if (sort_option != SORT_NOTHING) {
+
+			if (first_entry == TRUE) {
+				temp_sortdata = sortdata_list;
+				first_entry = FALSE;
+			} else
+				temp_sortdata = temp_sortdata->next;
+
+			if (temp_sortdata == NULL)
+				break;
+
+			if (temp_sortdata->data_type != SORT_COMMENT)
+				continue;
+
+			temp_comment = temp_sortdata->comment;
+
+		} else {
+			if (first_entry == TRUE) {
+				temp_comment = comment_list;
+				first_entry = FALSE;
+			} else
+				temp_comment = temp_comment->next;
+		}
+
+		if (temp_comment == NULL)
+			break;
 
 		if (type == HOST_COMMENT && temp_comment->comment_type != HOST_COMMENT)
 			continue;
@@ -3278,9 +3347,12 @@ void show_comments(int type) {
 void show_downtime(int type) {
 	char *bg_class = "";
 	char date_time[MAX_DATETIME_LENGTH];
-	scheduled_downtime *temp_downtime;
+	char temp_url[MAX_INPUT_BUFFER];
+	char temp_buffer[MAX_INPUT_BUFFER];
+	scheduled_downtime *temp_downtime = NULL;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
+	sortdata *temp_sortdata = NULL;
 	int days;
 	int hours;
 	int minutes;
@@ -3289,6 +3361,7 @@ void show_downtime(int type) {
 	int total_downtime = 0;
 	int colspan = 12;
 	int json_start = TRUE;
+	int first_entry = TRUE;
 
 	/* define colspan */
 	if (display_type == DISPLAY_DOWNTIME)
@@ -3363,20 +3436,73 @@ void show_downtime(int type) {
 
 		printf("</td></tr>\n");
 
+		snprintf(temp_url, sizeof(temp_url) - 1, "%s?type=%d", EXTINFO_CGI, display_type);
+		temp_url[sizeof(temp_url) - 1] = '\x0';
+
+		if (host_name && *host_name != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&amp;host=%s", temp_buffer, url_encode(host_name));
+			temp_url[sizeof(temp_url) - 1] = '\x0';
+		}
+
+		if (service_desc && *service_desc != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&amp;service=%s", temp_buffer, url_encode(service_desc));
+			temp_url[sizeof(temp_url) - 1] = '\x0';
+		}
+
 		printf("<tr class='downtime'>");
 		if (display_type == DISPLAY_DOWNTIME) {
-			printf("<th class='downtime'>Host Name</th>");
+			printf("<th class='downtime'>Host Name&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' title='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' title='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
+
 			if (type == SERVICE_DOWNTIME)
-				printf("<th class='downtime'>Service</th>");
+				printf("<th class='downtime'>Service&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service description (ascending)' title='Sort by service description (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service description (descending)' title='Sort by service description (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
 		}
-		printf("<th class='downtime'>Entry Time</th><th class='downtime'>Author</th><th class='downtime'>Comment</th><th class='downtime'>Start Time</th><th class='downtime'>End Time</th><th class='downtime'>Type</th><th class='downtime'>Trigger Time</th><th class='downtime'>Duration</th><th class='downtime'>Is in effect</th><th class='downtime'>Downtime ID</th><th class='downtime'>Trigger ID</th>");
+		printf("<th class='downtime'>Entry Time&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by entry time (ascending)' title='Sort by entry time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by entry time (descending)' title='Sort by entry time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_ENTRYTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_ENTRYTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Author&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by author (ascending)' title='Sort by author (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by author (descending)' title='Sort by author (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_AUTHOR, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_AUTHOR, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Comment&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment (ascending)' title='Sort by comment (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by comment (descending)' title='Sort by comment (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_COMMENT, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_COMMENT, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Start Time&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by start time (ascending)' title='Sort by start time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by start time (descending)' title='Sort by start time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_STARTTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_STARTTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>End Time&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by end time (ascending)' title='Sort by end time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by end time (descending)' title='Sort by end time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_ENDTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_ENDTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Type&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by type (ascending)' title='Sort by type (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by type (descending)' title='Sort by type (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_TYPE, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_TYPE, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Trigger Time&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by trigger time (ascending)' title='Sort by trigger time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by trigger time (descending)' title='Sort by trigger time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_TRIGGERTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_TRIGGERTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Duration&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by duration (ascending)' title='Sort by duration (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by duration (descending)' title='Sort by duration (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_DURATION, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_DURATION, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Is in effect&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by in effect (ascending)' title='Sort by in effect (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by in effect (descending)' title='Sort by in effect (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_INEFFECT, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_INEFFECT, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Downtime ID&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by downtime id (ascending)' title='Sort by downtime id (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by downtime id (descending)' title='Sort by downtime id (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_ID, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_ID, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='downtime'>Trigger ID&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by trigger id (ascending)' title='Sort by trigger id (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by trigger id (descending)' title='Sort by trigger id (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_EX_TRIGGERID, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_EX_TRIGGERID, url_images_path, DOWN_ARROW_ICON);
+
 		if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
 			printf("<th class='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></th>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
 		printf("</tr>\n");
 	}
 
-	/* display all the downtime */
-	for (temp_downtime = scheduled_downtime_list, total_downtime = 0; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+	/* display downtime data */
+	while (1) {
+
+		if (sort_option != SORT_NOTHING) {
+
+			if (first_entry == TRUE) {
+				temp_sortdata = sortdata_list;
+				first_entry = FALSE;
+			} else
+				temp_sortdata = temp_sortdata->next;
+
+			if (temp_sortdata == NULL)
+				break;
+
+			if (temp_sortdata->data_type != SORT_DOWNTIME)
+				continue;
+
+			temp_downtime = temp_sortdata->downtime;
+		} else {
+			if (first_entry == TRUE) {
+				temp_downtime = scheduled_downtime_list;
+				first_entry = FALSE;
+			} else
+				temp_downtime = temp_downtime->next;
+		}
+
+		if (temp_downtime == NULL)
+			break;
 
 		if (type == HOST_DOWNTIME && temp_downtime->type != HOST_DOWNTIME)
 			continue;
@@ -3610,6 +3736,10 @@ void show_scheduling_queue(void) {
 	char *bgclass = "";
 	int json_start = TRUE;
 
+	if (sort_option == SORT_NOTHING) {
+		sort_option = SORT_NEXTCHECKTIME;
+	}
+
 	/* sort hosts and services */
 	sort_data(sort_type, sort_option);
 
@@ -3674,7 +3804,7 @@ void show_scheduling_queue(void) {
 			temp_url[sizeof(temp_url) - 1] = '\x0';
 		}
 
-		printf("<th class='queue'>Host&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' title='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' title='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='queue'>Host&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' title='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' title='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
 		printf("<th class='queue'>Service&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (ascending)' title='Sort by service name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (descending)' title='Sort by service name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
 		printf("<th class='queue'>Last Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (ascending)' title='Sort by last check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (descending)' title='Sort by last check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_LASTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_LASTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
 		printf("<th class='queue'>Next Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (ascending)' title='Sort by next check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (descending)' title='Sort by next check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_NEXTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_NEXTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
@@ -3685,7 +3815,7 @@ void show_scheduling_queue(void) {
 	for (temp_sortdata = sortdata_list; temp_sortdata != NULL; temp_sortdata = temp_sortdata->next) {
 
 		/* skip hosts and services that shouldn't be scheduled */
-		if (temp_sortdata->is_service == TRUE) {
+		if (temp_sortdata->data_type == SORT_SERVICESTATUS) {
 			temp_svcstatus = temp_sortdata->svcstatus;
 			if (temp_svcstatus->should_be_scheduled == FALSE) {
 				/* passive-only checks should appear if they're being forced */
@@ -3698,7 +3828,7 @@ void show_scheduling_queue(void) {
 			if (service_desc && *service_desc != '\0' && strcmp(service_desc, temp_svcstatus->description))
 				continue;
 
-		} else {
+		} else if (temp_sortdata->data_type == SORT_HOSTSTATUS) {
 			temp_hststatus = temp_sortdata->hststatus;
 			if (temp_hststatus->should_be_scheduled == FALSE) {
 				/* passive-only checks should appear if they're being forced */
@@ -3711,10 +3841,12 @@ void show_scheduling_queue(void) {
 			/* skip host if users just want to see a service */
 			if (service_desc && *service_desc != '\0')
 				continue;
+		} else {
+			continue;
 		}
 
 		/* get the service status */
-		if (temp_sortdata->is_service == TRUE) {
+		if (temp_sortdata->data_type == SORT_SERVICESTATUS) {
 
 			/* find the host */
 			temp_host = find_host(temp_svcstatus->host_name);
@@ -3793,7 +3925,7 @@ void show_scheduling_queue(void) {
 			action_link_schedule[sizeof(action_link_schedule) - 1] = '\x0';
 
 			/* get the host status */
-		} else {
+		} else if (temp_sortdata->data_type == SORT_HOSTSTATUS) {
 			/* find the host */
 			temp_host = find_host(temp_hststatus->host_name);
 
@@ -3873,12 +4005,13 @@ void show_scheduling_queue(void) {
 
 			printf("{ \"host_name\": \"%s\", ", json_encode(host_native_name));
 			printf("\"host_display_name\": \"%s\", ", json_encode(host_display_name));
-			if (temp_sortdata->is_service == TRUE) {
+			if (temp_sortdata->data_type == SORT_SERVICESTATUS) {
 				printf("\"service_description\": \"%s\", ", json_encode(service_native_name));
 				printf("\"service_display_name\": \"%s\", ", json_encode(service_display_name));
 				printf("\"type\": \"SERVICE_CHECK\", ");
-			} else
+			} else if (temp_sortdata->data_type == SORT_HOSTSTATUS) {
 				printf("\"type\": \"HOST_CHECK\", ");
+			}
 
 			printf("\"last_check\": \"%s\", ", last_check);
 			printf("\"next_check\": \"%s\", ", next_check);
@@ -3886,7 +4019,7 @@ void show_scheduling_queue(void) {
 			printf("\"active_check\": %s }", (checks_enabled == TRUE) ? "true" : "false");
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, host_native_name, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_sortdata->is_service == TRUE) ? service_native_name : "", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_sortdata->data_type == SORT_SERVICESTATUS) ? service_native_name : "", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, next_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, type, csv_data_enclosure, csv_delimiter);
@@ -3898,9 +4031,9 @@ void show_scheduling_queue(void) {
 			printf("<td class='queue%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encoded_host, html_encode(host_display_name,TRUE));
 
 			/* Service */
-			if (temp_sortdata->is_service == TRUE)
+			if (temp_sortdata->data_type == SORT_SERVICESTATUS)
 				printf("<td class='queue%s'><a href='%s'>%s</a></td>", bgclass, service_link, html_encode(service_display_name,TRUE));
-			else
+			else if (temp_sortdata->data_type == SORT_HOSTSTATUS)
 				printf("<td class='queue%s'>&nbsp;</td>", bgclass);
 
 			/* last check */
@@ -3917,8 +4050,8 @@ void show_scheduling_queue(void) {
 
 			/* actions */
 			printf("<td align='center' class='queue%s'>", bgclass);
-			printf("<a href='%s'><img src='%s%s' border='0' alt='%s Active Checks Of This %s' title='%s Active Checks Of This %s'></a>\n", action_link_enable_disable, url_images_path, (checks_enabled == TRUE) ? DISABLED_ICON : ENABLED_ICON, (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
-			printf("<a href='%s'><img src='%s%s' border='0' alt='Re-schedule This %s Check' title='Re-schedule This %s Check'></a>", action_link_schedule, url_images_path, DELAY_ICON, (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
+			printf("<a href='%s'><img src='%s%s' border='0' alt='%s Active Checks Of This %s' title='%s Active Checks Of This %s'></a>\n", action_link_enable_disable, url_images_path, (checks_enabled == TRUE) ? DISABLED_ICON : ENABLED_ICON, (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->data_type == SORT_SERVICESTATUS) ? "Service" : "Host", (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->data_type == SORT_SERVICESTATUS) ? "Service" : "Host");
+			printf("<a href='%s'><img src='%s%s' border='0' alt='Re-schedule This %s Check' title='Re-schedule This %s Check'></a>", action_link_schedule, url_images_path, DELAY_ICON, (temp_sortdata->data_type == SORT_SERVICESTATUS) ? "Service" : "Host", (temp_sortdata->data_type == SORT_SERVICESTATUS) ? "Service" : "Host");
 
 			printf("</td></tr>\n");
 		}
@@ -3935,9 +4068,6 @@ void show_scheduling_queue(void) {
 	} else if (content_type == JSON_CONTENT)
 		printf(" ] \n");
 
-	/* free memory allocated to sorted data list */
-	free_sortdata_list();
-
 	return;
 }
 
@@ -3948,56 +4078,112 @@ int sort_data(int s_type, int s_option) {
 	sortdata *temp_sortdata;
 	servicestatus *temp_svcstatus;
 	hoststatus *temp_hststatus;
+	comment *temp_comment;
+	scheduled_downtime *temp_downtime;
+	int svcstatus_start = TRUE;
+	int hststatus_start = TRUE;
+	int comment_start   = TRUE;
+	int downtime_start  = TRUE;
+	int data_type = SORT_NOTHING;
 
-	if (s_type == SORT_NONE)
+	if (s_type == SORT_NONE || s_option == SORT_NOTHING)
 		return ERROR;
 
-	/* sort all service status entries */
-	for (temp_svcstatus = servicestatus_list; temp_svcstatus != NULL; temp_svcstatus = temp_svcstatus->next) {
+	temp_svcstatus = servicestatus_list;
+	temp_hststatus = hoststatus_list;
+	temp_comment = comment_list;
+	temp_downtime = scheduled_downtime_list;
+
+	while (1) {
+
+		data_type = SORT_NOTHING;
+
+		if (display_type == DISPLAY_HOST_INFO || display_type == DISPLAY_SERVICE_INFO || display_type == DISPLAY_COMMENTS || display_type == DISPLAY_DOWNTIME) {
+
+			/* sort comments */
+			if (display_type != DISPLAY_DOWNTIME) {
+				if (temp_comment != NULL) {
+
+					if (comment_start == TRUE) {
+						comment_start = FALSE;
+					} else {
+						temp_comment = temp_comment->next;
+					}
+
+					if (temp_comment == NULL) {
+						continue;
+					}
+
+					data_type = SORT_COMMENT;
+				}
+			}
+
+			/* sort downtimes */
+			if (display_type != DISPLAY_COMMENTS) {
+				if (temp_downtime != NULL) {
+
+					if (downtime_start == TRUE) {
+						downtime_start = FALSE;
+					} else {
+						temp_downtime = temp_downtime->next;
+					}
+
+					if (temp_downtime == NULL) {
+						continue;
+					}
+
+					data_type = SORT_DOWNTIME;
+				}
+			}
+
+		} else if (display_type == DISPLAY_SCHEDULING_QUEUE) {
+
+			/* sort service status */
+			if (temp_svcstatus != NULL) {
+
+				if (svcstatus_start == TRUE) {
+					svcstatus_start = FALSE;
+				} else {
+					temp_svcstatus = temp_svcstatus->next;
+				}
+
+				if (temp_svcstatus == NULL) {
+					continue;
+				}
+
+				data_type = SORT_SERVICESTATUS;
+
+			/* sort host status */
+			} else if (temp_hststatus != NULL) {
+
+				if (hststatus_start == TRUE) {
+					hststatus_start = FALSE;
+				} else {
+					temp_hststatus = temp_hststatus->next;
+				}
+
+				if (temp_hststatus == NULL) {
+					continue;
+				}
+
+				data_type = SORT_HOSTSTATUS;
+			}
+		}
+
+		if (data_type == SORT_NOTHING) {
+			break;
+		}
 
 		/* allocate memory for a new sort structure */
 		new_sortdata = (sortdata *)malloc(sizeof(sortdata));
 		if (new_sortdata == NULL)
 			return ERROR;
 
-		new_sortdata->is_service = TRUE;
-		new_sortdata->svcstatus = temp_svcstatus;
-		new_sortdata->hststatus = NULL;
-
-		last_sortdata = sortdata_list;
-		for (temp_sortdata = sortdata_list; temp_sortdata != NULL; temp_sortdata = temp_sortdata->next) {
-
-			if (compare_sortdata_entries(s_type, s_option, new_sortdata, temp_sortdata) == TRUE) {
-				new_sortdata->next = temp_sortdata;
-				if (temp_sortdata == sortdata_list)
-					sortdata_list = new_sortdata;
-				else
-					last_sortdata->next = new_sortdata;
-				break;
-			} else
-				last_sortdata = temp_sortdata;
-		}
-
-		if (sortdata_list == NULL) {
-			new_sortdata->next = NULL;
-			sortdata_list = new_sortdata;
-		} else if (temp_sortdata == NULL) {
-			new_sortdata->next = NULL;
-			last_sortdata->next = new_sortdata;
-		}
-	}
-
-	/* sort all host status entries */
-	for (temp_hststatus = hoststatus_list; temp_hststatus != NULL; temp_hststatus = temp_hststatus->next) {
-
-		/* allocate memory for a new sort structure */
-		new_sortdata = (sortdata *)malloc(sizeof(sortdata));
-		if (new_sortdata == NULL)
-			return ERROR;
-
-		new_sortdata->is_service = FALSE;
-		new_sortdata->svcstatus = NULL;
-		new_sortdata->hststatus = temp_hststatus;
+		new_sortdata->data_type = data_type;
+		new_sortdata->svcstatus = (data_type == SORT_SERVICESTATUS && temp_svcstatus != NULL) ? temp_svcstatus : NULL;
+		new_sortdata->hststatus = (data_type == SORT_HOSTSTATUS && temp_hststatus != NULL) ? temp_hststatus : NULL;
+		new_sortdata->comment   = (data_type == SORT_COMMENT && temp_comment != NULL) ? temp_comment : NULL;
+		new_sortdata->downtime  = (data_type == SORT_DOWNTIME && temp_downtime != NULL) ? temp_downtime : NULL;
 
 		last_sortdata = sortdata_list;
 		for (temp_sortdata = sortdata_list; temp_sortdata != NULL; temp_sortdata = temp_sortdata->next) {
@@ -4028,46 +4214,129 @@ int sort_data(int s_type, int s_option) {
 int compare_sortdata_entries(int s_type, int s_option, sortdata *new_sortdata, sortdata *temp_sortdata) {
 	hoststatus *temp_hststatus = NULL;
 	servicestatus *temp_svcstatus = NULL;
+	comment *temp_comment = NULL;
+	scheduled_downtime *temp_downtime = NULL;
 	time_t last_check[2];
 	time_t next_check[2];
-	int current_attempt[2];
-	int status[2];
+	time_t entry_time[2];
+	time_t expire_time[2];
+	time_t start_time[2];
+	time_t end_time[2];
+	time_t trigger_time[2];
+	time_t duration[2];
+	int id[2];
+	int persistent[2];
+	int type[2];
+	int in_effect[2];
+	int trigger_id[2];
 	char *host_name[2];
 	char *service_description[2];
+	char *author[2];
+	char *comment_data[2];
+	char tmp_buffer_a[MAX_INPUT_BUFFER] = "";
+	char tmp_buffer_b[MAX_INPUT_BUFFER] = "";
 
-	if (new_sortdata->is_service == TRUE) {
+	/* initialize vars */
+	last_check[0] = last_check[1] = 0;
+	next_check[0] = next_check[1] = 0;
+	entry_time[0] = entry_time[1] = 0;
+	expire_time[0] = expire_time[1] = 0;
+	start_time[0] = start_time[1] = 0;
+	end_time[0] = end_time[1] = 0;
+	trigger_time[0] = trigger_time[1] = 0;
+	duration[0] = duration[1] = 0;
+	id[0] = id[1] = 0;
+	persistent[0] = persistent[1] = 0;
+	type[0] = type[1] = 0;
+	in_effect[0] = in_effect[1] = 0;
+	trigger_id[0] = trigger_id[1] = 0;
+	host_name[0] = host_name[1] = NULL;
+	service_description[0] = service_description[1] = NULL;
+	author[0] = author[1] = NULL;
+	comment_data[0] = comment_data[1] = NULL;
+
+	if (new_sortdata->data_type == SORT_SERVICESTATUS) {
 		temp_svcstatus = new_sortdata->svcstatus;
 		last_check[0] = temp_svcstatus->last_check;
 		next_check[0] = temp_svcstatus->next_check;
-		status[0] = temp_svcstatus->status;
 		host_name[0] = temp_svcstatus->host_name;
 		service_description[0] = temp_svcstatus->description;
-		current_attempt[0] = temp_svcstatus->current_attempt;
-	} else {
+	} else if (new_sortdata->data_type == SORT_HOSTSTATUS) {
 		temp_hststatus = new_sortdata->hststatus;
 		last_check[0] = temp_hststatus->last_check;
 		next_check[0] = temp_hststatus->next_check;
-		status[0] = temp_hststatus->status;
 		host_name[0] = temp_hststatus->host_name;
 		service_description[0] = "";
-		current_attempt[0] = temp_hststatus->current_attempt;
+	} else if (new_sortdata->data_type == SORT_COMMENT) {
+		temp_comment = new_sortdata->comment;
+		host_name[0] = temp_comment->host_name;
+		service_description[0] = (temp_comment->comment_type == SERVICE_COMMENT) ? temp_comment->service_description : "";
+		entry_time[0] = temp_comment->entry_time;
+		author[0] = temp_comment->author;
+		comment_data[0] = temp_comment->comment_data;
+		id[0] = temp_comment->comment_id;
+		persistent[0] = temp_comment->persistent;
+		type[0] = temp_comment->entry_type;
+		expire_time[0] = temp_comment->expire_time;
+	} else if (new_sortdata->data_type == SORT_DOWNTIME) {
+		temp_downtime = new_sortdata->downtime;
+		host_name[0] = temp_downtime->host_name;
+		service_description[0] = (temp_downtime->type == SERVICE_DOWNTIME) ? temp_downtime->service_description : "";
+		entry_time[0] = temp_downtime->entry_time;
+		author[0] = temp_downtime->author;
+		comment_data[0] = temp_downtime->comment;
+		start_time[0] = temp_downtime->start_time;
+		end_time[0] = temp_downtime->end_time;
+		type[0] = temp_downtime->fixed;
+		trigger_time[0] = temp_downtime->trigger_time;
+		duration[0] = temp_downtime->duration;
+		in_effect[0] = temp_downtime->is_in_effect;
+		id[0] = temp_downtime->downtime_id;
+		trigger_id[0] = temp_downtime->triggered_by;
+	} else {
+		return TRUE;
 	}
-	if (temp_sortdata->is_service == TRUE) {
+
+	if (temp_sortdata->data_type == SORT_SERVICESTATUS) {
 		temp_svcstatus = temp_sortdata->svcstatus;
 		last_check[1] = temp_svcstatus->last_check;
 		next_check[1] = temp_svcstatus->next_check;
-		status[1] = temp_svcstatus->status;
 		host_name[1] = temp_svcstatus->host_name;
 		service_description[1] = temp_svcstatus->description;
-		current_attempt[1] = temp_svcstatus->current_attempt;
-	} else {
+	} else if (temp_sortdata->data_type == SORT_HOSTSTATUS) {
 		temp_hststatus = temp_sortdata->hststatus;
 		last_check[1] = temp_hststatus->last_check;
 		next_check[1] = temp_hststatus->next_check;
-		status[1] = temp_hststatus->status;
 		host_name[1] = temp_hststatus->host_name;
 		service_description[1] = "";
-		current_attempt[1] = temp_hststatus->current_attempt;
+	} else if (temp_sortdata->data_type == SORT_COMMENT) {
+		temp_comment = temp_sortdata->comment;
+		host_name[1] = temp_comment->host_name;
+		service_description[1] = (temp_comment->comment_type == SERVICE_COMMENT) ? temp_comment->service_description : "";
+		entry_time[1] = temp_comment->entry_time;
+		author[1] = temp_comment->author;
+		comment_data[1] = temp_comment->comment_data;
+		id[1] = temp_comment->comment_id;
+		persistent[1] = temp_comment->persistent;
+		type[1] = temp_comment->entry_type;
+		expire_time[1] = temp_comment->expire_time;
+	} else if (temp_sortdata->data_type == SORT_DOWNTIME) {
+		temp_downtime = temp_sortdata->downtime;
+		host_name[1] = temp_downtime->host_name;
+		service_description[1] = (temp_downtime->type == SERVICE_DOWNTIME) ? temp_downtime->service_description : "";
+		entry_time[1] = temp_downtime->entry_time;
+		author[1] = temp_downtime->author;
+		comment_data[1] = temp_downtime->comment;
+		start_time[1] = temp_downtime->start_time;
+		end_time[1] = temp_downtime->end_time;
+		type[1] = temp_downtime->fixed;
+		trigger_time[1] = temp_downtime->trigger_time;
+		duration[1] = temp_downtime->duration;
+		in_effect[1] = temp_downtime->is_in_effect;
+		id[1] = temp_downtime->downtime_id;
+		trigger_id[1] = temp_downtime->triggered_by;
+	} else {
+		return TRUE;
 	}
 
 	if (s_type == SORT_ASCENDING) {
@@ -4077,23 +4346,69 @@ int compare_sortdata_entries(int s_type, int s_option, sortdata *new_sortdata, s
 				return TRUE;
 			else
 				return FALSE;
-		}
-		if (s_option == SORT_NEXTCHECKTIME) {
+		} else if (s_option == SORT_NEXTCHECKTIME) {
 			if (next_check[0] <= next_check[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_CURRENTATTEMPT) {
-			if (current_attempt[0] <= current_attempt[1])
+		} else if (s_option == SORT_EX_ENTRYTIME) {
+			if (entry_time[0] <= entry_time[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_SERVICESTATUS) {
-			if (status[0] <= status[1])
+		} else if (s_option == SORT_EX_EXPIRETIME) {
+			if (expire_time[0] <= expire_time[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_HOSTNAME) {
+		} else if (s_option == SORT_EX_STARTTIME) {
+			if (start_time[0] <= start_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_ENDTIME) {
+			if (end_time[0] <= end_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_TRIGGERTIME) {
+			if (trigger_time[0] <= trigger_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_DURATION) {
+			if (duration[0] <= duration[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_ID) {
+			if (id[0] <= id[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_PERSISTENT) {
+			if (persistent[0] <= persistent[1])
+				return TRUE;
+			else
+				return FALSE;
+
+		/* this one is reverse due to type names */
+		} else if (s_option == SORT_EX_TYPE) {
+			if (type[0] > type[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_INEFFECT) {
+			if (in_effect[0] <= in_effect[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_TRIGGERID) {
+			if (trigger_id[0] <= trigger_id[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else 	if (s_option == SORT_HOSTNAME) {
 			if (strcasecmp(host_name[0], host_name[1]) < 0)
 				return TRUE;
 			else
@@ -4103,30 +4418,97 @@ int compare_sortdata_entries(int s_type, int s_option, sortdata *new_sortdata, s
 				return TRUE;
 			else
 				return FALSE;
+		} else if (sort_option == SORT_HOSTNAME_SERVICENAME) {
+			snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s%s", host_name[0], service_description[0]);
+			tmp_buffer_a[sizeof(tmp_buffer_a) - 1] = '\x0';
+
+			snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s%s", host_name[1], service_description[1]);
+			tmp_buffer_b[sizeof(tmp_buffer_b) - 1] = '\x0';
+
+			if (strcasecmp(tmp_buffer_a, tmp_buffer_b) < 0)
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_AUTHOR) {
+			if (strcasecmp(author[0], author[1]) < 0)
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_COMMENT) {
+			if (strcasecmp(comment_data[0], comment_data[1]) < 0)
+				return TRUE;
+			else
+				return FALSE;
 		}
+
 	} else {
+
 		if (s_option == SORT_LASTCHECKTIME) {
 			if (last_check[0] > last_check[1])
 				return TRUE;
 			else
 				return FALSE;
-		}
-		if (s_option == SORT_NEXTCHECKTIME) {
+		} else if (s_option == SORT_NEXTCHECKTIME) {
 			if (next_check[0] > next_check[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_CURRENTATTEMPT) {
-			if (current_attempt[0] > current_attempt[1])
+		} else if (s_option == SORT_EX_ENTRYTIME) {
+			if (entry_time[0] > entry_time[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_SERVICESTATUS) {
-			if (status[0] > status[1])
+		} else if (s_option == SORT_EX_EXPIRETIME) {
+			if (expire_time[0] > expire_time[1])
 				return TRUE;
 			else
 				return FALSE;
-		} else if (s_option == SORT_HOSTNAME) {
+		} else if (s_option == SORT_EX_STARTTIME) {
+			if (start_time[0] > start_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_ENDTIME) {
+			if (end_time[0] > end_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_TRIGGERTIME) {
+			if (trigger_time[0] > trigger_time[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_DURATION) {
+			if (duration[0] > duration[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_ID) {
+			if (id[0] > id[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_PERSISTENT) {
+			if (persistent[0] > persistent[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_TYPE) {
+			if (type[0] <= type[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_INEFFECT) {
+			if (in_effect[0] > in_effect[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_TRIGGERID) {
+			if (trigger_id[0] > trigger_id[1])
+				return TRUE;
+			else
+				return FALSE;
+		} else 	if (s_option == SORT_HOSTNAME) {
 			if (strcasecmp(host_name[0], host_name[1]) > 0)
 				return TRUE;
 			else
@@ -4136,7 +4518,29 @@ int compare_sortdata_entries(int s_type, int s_option, sortdata *new_sortdata, s
 				return TRUE;
 			else
 				return FALSE;
+		} else if (sort_option == SORT_HOSTNAME_SERVICENAME) {
+			snprintf(tmp_buffer_a, sizeof(tmp_buffer_a) - 1, "%s%s", host_name[0], service_description[0]);
+			tmp_buffer_a[sizeof(tmp_buffer_a) - 1] = '\x0';
+
+			snprintf(tmp_buffer_b, sizeof(tmp_buffer_b) - 1, "%s%s", host_name[1], service_description[1]);
+			tmp_buffer_b[sizeof(tmp_buffer_b) - 1] = '\x0';
+
+			if (strcasecmp(tmp_buffer_a, tmp_buffer_b) > 0)
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_AUTHOR) {
+			if (strcasecmp(author[0], author[1]) > 0)
+				return TRUE;
+			else
+				return FALSE;
+		} else if (s_option == SORT_EX_COMMENT) {
+			if (strcasecmp(comment_data[0], comment_data[1]) > 0)
+				return TRUE;
+			else
+				return FALSE;
 		}
+
 	}
 
 	return TRUE;
@@ -4146,6 +4550,9 @@ int compare_sortdata_entries(int s_type, int s_option, sortdata *new_sortdata, s
 void free_sortdata_list(void) {
 	sortdata *this_sortdata;
 	sortdata *next_sortdata;
+
+	if (sortdata_list == NULL)
+		return;
 
 	/* free memory for the sortdata list */
 	for (this_sortdata = sortdata_list; this_sortdata != NULL; this_sortdata = next_sortdata) {
