@@ -134,9 +134,9 @@ struct errorlist {
 char *host_name = "";				/**< requested host name */
 char *hostgroup_name = "";			/**< requested hostgroup name */
 char *servicegroup_name = "";			/**< requested servicegroup name */
-char *service_desc = "";				/**< requested service name */
+char *service_desc = "";			/**< requested service name */
 char *comment_author = "";			/**< submitted comment author */
-char *comment_data = "";				/**< submitted comment data */
+char *comment_data = "";			/**< submitted comment data */
 char *start_time_string = "";			/**< the requested start time */
 char *end_time_string = "";			/**< the requested end time */
 
@@ -169,7 +169,7 @@ int command_mode = CMDMODE_REQUEST;		/**< if command mode is request or commit *
 time_t start_time = 0L;				/**< start time as unix timestamp */
 time_t end_time = 0L;				/**< end time as unix timestamp */
 
-int CGI_ID = CMD_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
+int CGI_ID = CMD_CGI_ID;			/**< ID to identify the cgi for functions in cgiutils.c */
 
 unsigned long attr = MODATTR_NONE;		/**< default modified_attributes */
 double interval = 1.0;				/**< default modified *_interval */
@@ -1000,9 +1000,6 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td id=\"sticky_ack_row\" class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align='left'>");
-/*
-		printf("<input type='checkbox' name='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
-*/
 		printf("<input type='checkbox' id='sticky_ack_checkbox' name='sticky_ack' %s></td></tr>\n", (set_sticky_acknowledgment == TRUE) ? "CHECKED" : "");
 		break;
 
