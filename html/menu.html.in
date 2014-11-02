@@ -22,9 +22,10 @@
 		<ul>
 			<li class="menuli_style1"><a href="main.html" target="main">Home</a></li>
 			<li class="menuli_style2">
-				<div class="flag">Documentation
+				<div class="flag">Docs
 					<a class="flag" href="docs/de/index.html" target="main"><img src="docs/images/flags/de.png" /></a>
 					<a class="flag" href="docs/en/index.html" target="main"><img src="docs/images/flags/um_gb.png" /></a>
+					<a class="flag" href="https://docs.icinga.org" target="main">www</a>
 				</div>
 			</li>
 			<!-- classic search -->
