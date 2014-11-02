@@ -32,6 +32,10 @@ ENHANCEMENTS
 * classic ui: start with unhandled problems view instead of TAC #4817 - MF
 * classic ui: Adding alias to title in host/service overview #5900 - WN
 * classic ui: Add display of extra icons in status overview of hosts and services #6829 - RD/RB
+* classic ui: Add config option to set Sticky Acknowledgment checkbox default #6237 - CF
+* classic ui: Add config option to sort status data by default #5965 - RB
+* classic ui: Add sorting of comments and downtimes #5339 - RB
+* classic ui: Add link to online documentation #6606 - RB
 
 * idoutils: Add program_version column to programstatus table #7390 - MF
 * idoutils: Extend size of column 'alias' for MySQL tables hosts & contacts #6382 - MF
@@ -39,6 +43,7 @@ ENHANCEMENTS
 FIXES
 
 * classic ui: Fix grammatical errors in popup text #7451 - CF
+* classic ui: Fix order of hosts and service checks in tac.cgi #6965 - RB
 
 * idoutils: check for undersized data-packets and ignore them to eliminate null transactions to the database #4221 - CF
 
