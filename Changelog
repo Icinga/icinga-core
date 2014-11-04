@@ -39,6 +39,7 @@ ENHANCEMENTS
 
 * idoutils: Add program_version column to programstatus table #7390 - MF
 * idoutils: Extend size of column 'alias' for MySQL tables hosts & contacts #6382 - MF
+* idoutils: Import 'is_json' for custom vars into schema (Icinga 2) #7568 - MF
 
 FIXES
 
@@ -57,6 +58,7 @@ CHANGES
 * idoutils: Add program_version column to programstatus table #7390
 	** required for Icinga Web 2 and Icinga 2
 * idoutils: 'alias' column is now TEXT in MySQL #6382
+* idoutils: Import 'is_json' for custom vars into schema (Icinga 2) #7568
 
 
 1.11.7 - 03/09/2014

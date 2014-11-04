@@ -365,6 +365,7 @@ CREATE TABLE  icinga_customvariables (
   has_been_modified INTEGER  default 0,
   varname TEXT  default '',
   varvalue TEXT  default '',
+  is_json INTEGER  default 0,
   CONSTRAINT PK_customvariable_id PRIMARY KEY (customvariable_id) ,
   CONSTRAINT UQ_customvariables UNIQUE (object_id,config_type,varname)
 ) ;
@@ -384,6 +385,7 @@ CREATE TABLE  icinga_customvariablestatus (
   has_been_modified INTEGER  default 0,
   varname TEXT  default '',
   varvalue TEXT  default '',
+  is_json INTEGER  default 0,
   CONSTRAINT PK_customvariablestatus_id PRIMARY KEY (customvariablestatus_id) ,
   CONSTRAINT UQ_customvariablestatus UNIQUE (object_id,varname)
 ) ;
@@ -1436,7 +1438,6 @@ ALTER TABLE icinga_servicechecks ADD COLUMN endpoint_object_id bigint default NU
 ALTER TABLE icinga_statehistory ADD COLUMN endpoint_object_id bigint default NULL;
 ALTER TABLE icinga_systemcommands ADD COLUMN endpoint_object_id bigint default NULL;
 
-ALTER TABLE icinga_hosts ADD COLUMN check_service_object_id bigint default NULL;
 
 -- -----------------------------------------
 -- add index (delete)
