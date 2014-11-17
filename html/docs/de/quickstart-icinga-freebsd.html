@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.4. Icinga-Schnellstart auf FreeBSD</title>
+<title>2.5. Icinga-Schnellstart auf FreeBSD</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="quickstart-icinga.html" title="2.3. Icinga-Schnellstart auf Linux">
-<link rel="next" href="quickstart-idoutils.html" title="2.5. Icinga-Schnellstart mit IDOUtils">
+<link rel="prev" href="quickstart-icinga.html" title="2.4. Icinga-Schnellstart auf Linux">
+<link rel="next" href="quickstart-idoutils.html" title="2.6. Icinga-Schnellstart mit IDOUtils">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.4. Icinga-Schnellstart auf FreeBSD</th></tr>
+<tr><th colspan="3" align="center">2.5. Icinga-Schnellstart auf FreeBSD</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="quickstart-icinga.html">Zurück</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.4. Icinga-Schnellstart auf FreeBSD">
+<div class="section" title="2.5. Icinga-Schnellstart auf FreeBSD">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="quickstart-icinga-freebsd"></a>2.4. Icinga-Schnellstart auf FreeBSD</h2></div></div></div>
+<a name="quickstart-icinga-freebsd"></a>2.5. Icinga-Schnellstart auf FreeBSD</h2></div></div></div>
   
 
   <p><span class="bold"><strong><a name="introduction_icinga_freebsd"></a>Einführung</strong></span></p>
@@ -177,8 +177,8 @@
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT-Snapshot)</p>
 
   <pre class="programlisting"> # cd ~/src/ 
- # tar xvzf icinga-1.11.tar.gz 
- # cd icinga-1.11</pre>
+ # tar xvzf icinga-1.12.tar.gz 
+ # cd icinga-1.12</pre>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -209,8 +209,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um
-    ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p>
+    <p><code class="literal">make install-config</code> ist NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um ein versehentliches
+    Überschreiben der Konfigurationsdateien zu verhindern.</p>
   </td></tr>
 </table></div>
 
@@ -220,8 +220,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Icinga 1.7.0 werden mit <code class="literal">make install-eventhandlers</code> einige Beispiel-Eventhandler installiert. Das ist
-    lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
+    <p>Mit <code class="literal">make install-eventhandlers</code> werden einige Beispiel-Eventhandler installiert. Das ist lediglich in
+    <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
   </td></tr>
 </table></div>
 
@@ -283,9 +283,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei <code class="filename">htpasswd.users</code>, die Anmeldeinformationen
-    für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen können. Das Passwort lautet
-    <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei <code class="filename">htpasswd.users</code>,
+    die Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen
+    können. Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
   </td></tr>
 </table></div>
 
@@ -307,8 +307,8 @@
   <p>Entpacken Sie die Monitoring Plugins-Plugins-Quellcode-Archivdatei.</p>
 
   <pre class="programlisting"> # cd ~/src 
- # tar xvzf nagios-plugins-1.5.tar.gz
- # cd nagios-plugins-1.5 </pre>
+ # tar xvzf nagios-plugins-2.1.tar.gz
+ # cd nagios-plugins-2.1 </pre>
 
   <p>Kompilieren und installieren Sie die Plugins, indem Sie das Installationverzeichnis auf /usr/local/icinga</p>
 
@@ -366,7 +366,7 @@
 
   <p>Sie werden ohne Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
 
-  <a class="indexterm" name="idm251271944960"></a>
+  <a class="indexterm" name="idm249452516176"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -379,9 +379,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.3. Icinga-Schnellstart auf Linux </td>
+<td width="40%" align="left" valign="top">2.4. Icinga-Schnellstart auf Linux </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.5. Icinga-Schnellstart mit IDOUtils</td>
+<td width="40%" align="right" valign="top"> 2.6. Icinga-Schnellstart mit IDOUtils</td>
 </tr>
 </table>
 </div>

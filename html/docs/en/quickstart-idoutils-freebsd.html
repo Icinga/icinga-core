@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.6. Icinga and IDOUtils Quickstart on FreeBSD</title>
+<title>2.7. Icinga and IDOUtils Quickstart on FreeBSD</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">
-<link rel="next" href="icinga_packages.html" title="2.7. Icinga Packages for Linux Distributions">
+<link rel="prev" href="quickstart-idoutils.html" title="2.6. Icinga with IDOUtils Quickstart">
+<link rel="next" href="icinga_packages.html" title="2.8. Icinga Packages for Linux Distributions">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.6. Icinga and IDOUtils Quickstart on FreeBSD</th></tr>
+<tr><th colspan="3" align="center">2.7. Icinga and IDOUtils Quickstart on FreeBSD</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="quickstart-idoutils.html">Prev</a> </td>
@@ -26,9 +26,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.6. Icinga and IDOUtils Quickstart on FreeBSD">
+<div class="section" title="2.7. Icinga and IDOUtils Quickstart on FreeBSD">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="quickstart-idoutils-freebsd"></a>2.6. Icinga and IDOUtils Quickstart on FreeBSD</h2></div></div></div>
+<a name="quickstart-idoutils-freebsd"></a>2.7. Icinga and IDOUtils Quickstart on FreeBSD</h2></div></div></div>
   
 
   <p><span class="bold"><strong><a name="introduction_idoutils_freebsd"></a>Introduction</strong></span></p>
@@ -177,12 +177,10 @@
 
       <p><a name="quickstart_idof-timezone_support"></a><span class="bold"><strong>Timezone support</strong></span></p>
 
-      <p>Starting with Icinga 1.6 all dates are stored as local timestamps in the database. Before that there was a different
-      behaviour storing and retrieving dates for each database system which was difficult to handle for frontend apps. Therefore datatypes
-      have been changed for MySQL from DATETIME to TIMESTAMP and for Oracle from DATE to LOCAL TIMESTAMP (0). PostgreSQL
-      was already using TIMESTAMP but has been changed to TIMESTAMP WITH TIME ZONE. IDO2DB will set session timezone to UTC and store all
-      unix timestamps (which are UTC per definition) as UTC based values. Please make sure your system returns unix timestamps as real UTC
-      based values (like "date -u '+%s'").</p>
+      <p>All dates are stored as local timestamps in the database. Datatypes are TIMESTAMP for MySQL, LOCAL TIMESTAMP (0) for
+      Oracle, and TIMESTAMP WITH TIME ZONE for PostgreSQL. IDO2DB will set session timezone to UTC and store all unix timestamps
+      (which are UTC per definition) as UTC based values. Please make sure your system returns unix timestamps as real UTC based values
+      (like "date -u '+%s'").</p>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -203,7 +201,7 @@
 
   <p><span class="bold"><strong>Install the packages</strong></span></p>
 
-  <p>You can install the packages from the ports or you take older packages (have a look at the <a class="link" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">FreeBSD quickstart quide</a>).</p>
+  <p>You can install the packages from the ports or you take older packages (have a look at the <a class="link" href="quickstart-icinga-freebsd.html" title="2.5. Icinga Quickstart FreeBSD">FreeBSD quickstart quide</a>).</p>
 
   <p><span class="bold"><strong>Install ports</strong></span></p>
 
@@ -282,8 +280,8 @@
   <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
   <pre class="screen"> #&gt; cd ~/src/ 
- #&gt; tar xvzf icinga-1.11.tar.gz 
- #&gt; cd icinga-1.11</pre>
+ #&gt; tar xvzf icinga-1.12.tar.gz 
+ #&gt; cd icinga-1.12</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -356,8 +354,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
-    </code>anymore to avoid accidently overwriting of your config files.</p>
+    <p><code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall </code>anymore to avoid accidently
+    overwriting of your config files.</p>
   </td></tr>
 </table></div>
 
@@ -367,8 +365,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
-    prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
+    <p><code class="literal">make install-eventhandlers</code> will install some event handler routines. To prevent undesired behaviour it is only
+    included when you use <code class="literal">make fullinstall</code>.</p>
   </td></tr>
 </table></div>
 
@@ -549,8 +547,8 @@
   <p>Extract the plugins source code tarball.</p>
 
   <pre class="screen"> #&gt; cd ~/src 
- #&gt; tar xvzf nagios-plugins-1.5.tar.gz
- #&gt; cd nagios-plugins-1.5 </pre>
+ #&gt; tar xvzf nagios-plugins-2.1.tar.gz
+ #&gt; cd nagios-plugins-2.1 </pre>
 
   <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
 
@@ -652,9 +650,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idm251264032592"></a>
+  <a class="indexterm" name="idm249464928224"></a>
 
-  <a class="indexterm" name="idm251264032464"></a>
+  <a class="indexterm" name="idm249464928096"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -667,9 +665,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.5. Icinga with IDOUtils Quickstart </td>
+<td width="40%" align="left" valign="top">2.6. Icinga with IDOUtils Quickstart </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 2.7. Icinga Packages for Linux Distributions</td>
+<td width="40%" align="right" valign="top"> 2.8. Icinga Packages for Linux Distributions</td>
 </tr>
 </table>
 </div>

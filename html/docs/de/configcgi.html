@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">
 <link rel="next" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
@@ -50,7 +50,7 @@
   <p><span class="bold"><strong>Beispielkonfiguration</strong></span></p>
 
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: eine Beispiel-CGI-Konfigurationsdatei (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) wird für Sie
-  installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> folgen.</p>
+  installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> folgen.</p>
 
   <p><span class="bold"><strong>Position der Konfigurationsdatei</strong></span></p>
 
@@ -605,7 +605,7 @@
 
   <p>Per Default kann ein Benutzer alle Services eines Hosts sehen, wenn er als Kontakt für den Host autorisiert ist. Durch deaktivieren
   dieser Option muss der Benutzer auch autorisierter Kontakt des Service sein, um diesen ansehen zu können. Bitte beachten Sie, dass diese
-  Option keine Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist (seit Icinga 1.0.2).</p>
+  Option keine Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist.</p>
 
   <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Zugang zu Befehlen und Kommentaren
   verweigern</strong></span></p>
@@ -665,7 +665,7 @@
 <td><p><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_comments_read_only=icingalook</strong></span></font></span> </p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=readonlyusers</strong></span></font></span> </p></td>
 </tr>
@@ -706,7 +706,7 @@
 <td><p><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_downtimes_read_only=icingalook</strong></span></font></span> </p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=readonlyusers</strong></span></font></span> </p></td>
 </tr>
@@ -1361,16 +1361,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-csv_delimiter"></a> <span class="bold"><strong>Feldtrennzeichen für CSV-Export setzen</strong></span></p>
 
   <div class="informaltable">
@@ -1393,16 +1383,6 @@
   </div>
 
   <p>Diese Option legt fest, welche Zeichen als Feldtrenner benutzt werden soll. Default ist Semikolon (;).</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar seit Icinga 1.2.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-csv_data_enclosure"></a> <span class="bold"><strong>Set field enclosure character for CSV export</strong></span></p>
 
@@ -1427,16 +1407,6 @@
   </div>
 
   <p>Diese Option legt fest, mit welchem Zeichen Felder begrenzt werden sollen. Default ist ein Apostroph (').</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar seit Icinga 1.2.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Initialen Status anzeigen</strong></span></p>
 
@@ -1481,16 +1451,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-showlog_current_states"></a> <span class="bold"><strong>Aktuellen Status anzeigen</strong></span></p>
 
   <div class="informaltable">
@@ -1533,16 +1493,6 @@
       <p>1 = aktuelle Zustände in showlog.cgi anzeigen (Default)</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Objekttyp in Tab-Titel anzeigen</strong></span></p>
 
@@ -1595,16 +1545,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-add_notif_num"></a> <span class="bold"><strong>Service-Zustand und Benachrichtigungsnummer
   anzeigen</strong></span></p>
 
@@ -1648,16 +1588,6 @@
 
   <p>Der Vollständigkeit halber gibt es auch add_notif_num_soft für Services im SOFT-Zustand.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-http_charset"></a> <span class="bold"><strong>HTTP-Zeichensatz einstellen</strong></span></p>
 
   <div class="informaltable">
@@ -1680,16 +1610,6 @@
   </div>
 
   <p>Hiermit kann der Zeichensatz eingestellt werden, der mit den HTTP-Headern gesendet wird. Default ist utf-8.</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-first_day_of_week"></a> <span class="bold"><strong>Ersten Tag der Woche setzen</strong></span></p>
 
@@ -1716,16 +1636,6 @@
   <p>Diese Option legt den ersten Tag der Woche fest, der in verschiedenen CGI-Reports benutzt wird. Default ist 0 = Sonntag. 1 = Montag
   gilt für Länder, die sich nach ISO 8601 richten.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-use_logging"></a><span class="bold"><strong>CGI-Protokoll</strong></span> (use logging)</p>
 
   <div class="informaltable">
@@ -1750,16 +1660,6 @@
   <p>Diese Variable gibt an, ob die CGI-Kommandos protokolliert werden sollen. 0 = nicht protokollieren (Default), 1 =
   protokollieren.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-cgi_log_file"></a><span class="bold"><strong>CGI-Protokolldatei</strong></span> (CGI-Log File)</p>
 
   <div class="informaltable">
@@ -1782,16 +1682,6 @@
   </div>
 
   <p>Diese Variable gibt an, wo Icinga die CGI-Protokolldatei anlegen soll.</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-cgi_log_rotation_method"></a><span class="bold"><strong>CGI-Protokollrotationsmethode</strong></span> (CGI Log Rotation
   Method)</p>
@@ -1836,16 +1726,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-cgi_log_archive_path"></a><span class="bold"><strong>CGI-Protokollarchiv-Pfad</strong></span> (CGI Log Archiv
   Path)</p>
 
@@ -1871,16 +1751,6 @@
   <p>Dies ist das Verzeichnis, in dem Icinga die CGI-Protokolldateien ablegen soll, die rotiert wurden. Diese Option wird
   ignoriert, wenn Sie die Funktionalität der <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI-Protokollrotation</a> (CGI log
   rotation) nicht nutzen.</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-enforce_comments_on_actions"></a> <span class="bold"><strong>Erzwingen von Kommentaren bei
   Aktionen</strong></span></p>
@@ -1915,16 +1785,6 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Die Option use_logging muss aktiviert sein, anderenfalls werden keine Kommentare protokolliert.</p>
-  </td></tr>
-</table></div>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
   </td></tr>
 </table></div>
 
@@ -1984,7 +1844,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="idm251265886656"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="idm249446481424"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -1992,16 +1852,6 @@
   </div>
 </div>
 <br class="figure-break">
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-show_tac_header_pending"></a> <span class="bold"><strong>Pending-Anzahlen in Tactical Overview-Header
   anzeigen</strong></span></p>
@@ -2030,16 +1880,6 @@
   diese Option aktiviert ist, dann passen die taktischen Informationen ggf. nicht in den verfügbaren Platz. Diese Option ist per Default
   deaktiviert.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.4.1.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Default-Ausfallzeit-Dauer setzen</strong></span></p>
 
   <div class="informaltable">
@@ -2064,16 +1904,6 @@
 
   <p>Diese Option setzt die Default-Dauer (in Sekunden) von festen und flexiblen Ausfallzeiten. Default ist 7200 Sekunden (2
   Stunden).</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Maintenance/Downtime anzeigen</strong></span></p>
 
@@ -2104,16 +1934,6 @@
   Zustand und das ist beabsichtigt, damit der Benutzer den Zustand sieht, bevor die Ausfallzeit endet. Ein sinnvolles Beispiel dafür ist,
   dass ein Host/Service wieder online ist, an dem gearbeitet wird. Außerdem werden Hosts in einer geplanten Ausfallzeit in der statusmap.cgi
   in grau dargestellt.</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Unvollständige Hostgruppen anzeigen</strong></span></p>
 
@@ -2153,16 +1973,6 @@
   dann deaktivieren Sie diese Option wieder und ermuntern Sie den/die Entwickler des Programms, statt dessen JSON zur Ermittlung der Daten
   zu nutzen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Zeilen in status.cgi hervorheben</strong></span></p>
 
   <div class="informaltable">
@@ -2187,16 +1997,6 @@
 
   <p>Mit dieser Option können Zeilen in der status.cgi hervorgehoben werden. Das kann bei vielen Zeilen oder einer hohen
   Bildschirmauflösung nützlich sein. Werte: 0 = deaktivieren der Hervorhebung, 1 = aktivieren der Hervorhebung (Default).</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-use_pending_states"></a> <span class="bold"><strong>Anzeige für PENDING-Status auswählen</strong></span></p>
 
@@ -2248,16 +2048,6 @@
 
   <p>Mit dieser Option kann die Verfallszeit von Bestätigungen (acknowledgements) festgelegt werden. Nach Ablauf dieser Zeit werden
   Bestätigungen automatisch gelöscht. Default ist 86.400 Sekunden (ein Tag).</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-extinfo_show_child_hosts"></a> <span class="bold"><strong>Child-Host(s) zeigen</strong></span></p>
 
@@ -2315,16 +2105,6 @@
   </td></tr>
 </table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Benutzer(n) VOLLEN Zugriff auf
   Kommandozeilenanzeigen erlauben</strong></span></p>
 
@@ -2364,16 +2144,6 @@
   </td></tr>
 </table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-display_status_totals"></a> <span class="bold"><strong>Host-/Service-Status-Gesamtanzahlen
   anzeigen</strong></span></p>
 
@@ -2398,16 +2168,6 @@
   </div>
 
   <p>Diese Option legt fest, ob die Gesamtanzahlen von Host-/Service-Zuständen angezeigt werden sollen. Default ist 0.</p>
-
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.7.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-result_limit"></a><span class="bold"><strong>Anzahl anzuzeigender Seiteneinträge beschränken</strong></span></p>
 
@@ -2492,7 +2252,7 @@
 <td><p><span class="bold"><strong>send_ack_notifications=0|1</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>send_ack_notifications=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
@@ -2528,7 +2288,7 @@
 <td><p><span class="bold"><strong>set_expire_ack_by_default=0|1</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>set_expire_ack_by_default=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
@@ -2563,7 +2323,7 @@
 <td><p><span class="bold"><strong>standalone_installation=0|1</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>standalone_installation=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
@@ -2649,7 +2409,7 @@
 <td><p><span class="bold"><strong>disable_cmd_cgi_csrf_protection=0|1</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>disable_cmd_cgi_csrf_protection=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
@@ -2694,7 +2454,7 @@
 <td><p><span class="bold"><strong>exclude_customvar_name=&lt;name1[,name2,...]|*&gt;</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><font color="red"><span class="bold"><strong>exclude_customvar_name=&lt;password&gt;</strong></span></font></span></p></td>
 </tr>
 </tbody>
@@ -2716,8 +2476,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-exclude_customvar_name"></a><span class="bold"><strong>Ansehen von benutzerdefinierten Variablenwerten
-  unterdrücken</strong></span></p>
+  <p><a name="configcgi-sort_status_data_by_default"></a><span class="bold"><strong>Statusdaten per Default sortieren</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -2728,20 +2487,20 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>exclude_customvar_value=&lt;value1[,value2,...]|*&gt;</strong></span></p></td>
+<td><p><span class="bold"><strong>sort_status_data_by_default=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>exclude_customvar_value=&lt;secret&gt;</strong></span></font></span></p></td>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>sort_status_data_by_default=&lt;0&gt;</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>Benutzerdefinierte Variablenwerte sind im Classic UI sichtbar (seit Icinga 1.11). Weil einige Werte sensitive Informationen
-  enthalten, sollen diese Daten vor dem Benutzer verborgen werden. Die Direktive "exclude_customvar_value" gibt eine kommaseparierte Liste
-  von Strings an. Variablenwerte, die diese Strings enthalten, werden nicht angezeigt. Die Angabe von "*" anstatt einer Liste wird alle
-  benutzerdefinierten Variablenwerte unterdrücken.</p>
+  <p>Diese Option zwingt status.cgi, die Datei per Default zu sortieren. Dabei erfolgt die Sortierung aufsteigend, zuerst nach Hostnamen,
+  dann nach Service-Beschreibung. Dies ist hilfreich, wenn die Statusdaten in status.dat nicht sortiert sind. Das kann besonders beim
+  Einsatz von Icinga2 auftreten. Normalerweise ist diese Option ausgeschaltet (0), um mögliche höhere CPU-Belastungen bei großen Umgebungen
+  zu vermeiden.</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -2749,155 +2508,194 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Diese Option ist verfügbar ab Icinga 1.11</p>
+    <p>Diese Option ist verfügbar ab Icinga 1.12</p>
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idm251265628240"></a>
+  <p><a name="configcgi-set_sticky_acknowledgment"></a><span class="bold"><strong>Voreinstellung von
+  "sticky"-Bestätigungen</strong></span></p>
 
-  <a class="indexterm" name="idm251265626480"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>set_sticky_acknowledgment=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>set_sticky_acknowledgment=&lt;0&gt;</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idm251265624992"></a>
+  <p>Diese Option kontrolliert den Anfangszustand der "Sticky Acknowledgment:"-Checkbox, wenn ein Problem bestätigt wird. Der Default ist
+  1 (Bestätigungen sind "sticky"), 0 deaktiviert "sticky"-Bestätigungen. Dies kann im CGI-Dialog überschrieben werden.</p>
 
-  <a class="indexterm" name="idm251265623328"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.12</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idm251265622064"></a>
+  <a class="indexterm" name="idm249446220816"></a>
 
-  <a class="indexterm" name="idm251265620672"></a>
+  <a class="indexterm" name="idm249446219408"></a>
 
-  <a class="indexterm" name="idm251265619280"></a>
+  <a class="indexterm" name="idm249446217760"></a>
 
-  <a class="indexterm" name="idm251265617600"></a>
+  <a class="indexterm" name="idm249446216272"></a>
 
-  <a class="indexterm" name="idm251265616048"></a>
+  <a class="indexterm" name="idm249446214688"></a>
 
-  <a class="indexterm" name="idm251265614352"></a>
+  <a class="indexterm" name="idm249446213056"></a>
 
-  <a class="indexterm" name="idm251265612688"></a>
+  <a class="indexterm" name="idm249446211408"></a>
 
-  <a class="indexterm" name="idm251265611568"></a>
+  <a class="indexterm" name="idm249446209760"></a>
 
-  <a class="indexterm" name="idm251265609856"></a>
+  <a class="indexterm" name="idm249446208064"></a>
 
-  <a class="indexterm" name="idm251265608144"></a>
+  <a class="indexterm" name="idm249446206336"></a>
 
-  <a class="indexterm" name="idm251265605920"></a>
+  <a class="indexterm" name="idm249446204704"></a>
 
-  <a class="indexterm" name="idm251265604240"></a>
+  <a class="indexterm" name="idm249446203584"></a>
 
-  <a class="indexterm" name="idm251265602544"></a>
+  <a class="indexterm" name="idm249446201872"></a>
 
-  <a class="indexterm" name="idm251265600768"></a>
+  <a class="indexterm" name="idm249446200160"></a>
 
-  <a class="indexterm" name="idm251265599136"></a>
+  <a class="indexterm" name="idm249446197872"></a>
 
-  <a class="indexterm" name="idm251265598000"></a>
+  <a class="indexterm" name="idm249446196160"></a>
 
-  <a class="indexterm" name="idm251265595712"></a>
+  <a class="indexterm" name="idm249446194704"></a>
 
-  <a class="indexterm" name="idm251265593968"></a>
+  <a class="indexterm" name="idm249446192816"></a>
 
-  <a class="indexterm" name="idm251265592368"></a>
+  <a class="indexterm" name="idm249446191120"></a>
 
-  <a class="indexterm" name="idm251265590688"></a>
+  <a class="indexterm" name="idm249446189312"></a>
 
-  <a class="indexterm" name="idm251265588992"></a>
+  <a class="indexterm" name="idm249446187664"></a>
 
-  <a class="indexterm" name="idm251265587216"></a>
+  <a class="indexterm" name="idm249446185952"></a>
 
-  <a class="indexterm" name="idm251265585520"></a>
+  <a class="indexterm" name="idm249446184272"></a>
 
-  <a class="indexterm" name="idm251265583872"></a>
+  <a class="indexterm" name="idm249446182592"></a>
 
-  <a class="indexterm" name="idm251265582240"></a>
+  <a class="indexterm" name="idm249446180880"></a>
 
-  <a class="indexterm" name="idm251265580576"></a>
+  <a class="indexterm" name="idm249446179216"></a>
 
-  <a class="indexterm" name="idm251265578912"></a>
+  <a class="indexterm" name="idm249446177408"></a>
 
-  <a class="indexterm" name="idm251265577312"></a>
+  <a class="indexterm" name="idm249446175840"></a>
 
-  <a class="indexterm" name="idm251265575648"></a>
+  <a class="indexterm" name="idm249446174176"></a>
 
-  <a class="indexterm" name="idm251265573888"></a>
+  <a class="indexterm" name="idm249446172512"></a>
 
-  <a class="indexterm" name="idm251265572400"></a>
+  <a class="indexterm" name="idm249446170848"></a>
 
-  <a class="indexterm" name="idm251265570768"></a>
+  <a class="indexterm" name="idm249446169088"></a>
 
-  <a class="indexterm" name="idm251265569136"></a>
+  <a class="indexterm" name="idm249446167568"></a>
 
-  <a class="indexterm" name="idm251265567504"></a>
+  <a class="indexterm" name="idm249446165808"></a>
 
-  <a class="indexterm" name="idm251265565840"></a>
+  <a class="indexterm" name="idm249446164320"></a>
 
-  <a class="indexterm" name="idm251265564240"></a>
+  <a class="indexterm" name="idm249446162688"></a>
 
-  <a class="indexterm" name="idm251265562560"></a>
+  <a class="indexterm" name="idm249446161056"></a>
 
-  <a class="indexterm" name="idm251265560960"></a>
+  <a class="indexterm" name="idm249446159376"></a>
 
-  <a class="indexterm" name="idm251265559264"></a>
+  <a class="indexterm" name="idm249446157712"></a>
 
-  <a class="indexterm" name="idm251265557616"></a>
+  <a class="indexterm" name="idm249446156160"></a>
 
-  <a class="indexterm" name="idm251265555968"></a>
+  <a class="indexterm" name="idm249446154496"></a>
 
-  <a class="indexterm" name="idm251265554320"></a>
+  <a class="indexterm" name="idm249446152736"></a>
 
-  <a class="indexterm" name="idm251265552688"></a>
+  <a class="indexterm" name="idm249446151120"></a>
 
-  <a class="indexterm" name="idm251265551024"></a>
+  <a class="indexterm" name="idm249446149392"></a>
 
-  <a class="indexterm" name="idm251265549616"></a>
+  <a class="indexterm" name="idm249446147824"></a>
 
-  <a class="indexterm" name="idm251265548096"></a>
+  <a class="indexterm" name="idm249446146096"></a>
 
-  <a class="indexterm" name="idm251265546368"></a>
+  <a class="indexterm" name="idm249446144544"></a>
 
-  <a class="indexterm" name="idm251265544832"></a>
+  <a class="indexterm" name="idm249446142880"></a>
 
-  <a class="indexterm" name="idm251265543200"></a>
+  <a class="indexterm" name="idm249446141600"></a>
 
-  <a class="indexterm" name="idm251265541440"></a>
+  <a class="indexterm" name="idm249446140032"></a>
 
-  <a class="indexterm" name="idm251265539824"></a>
+  <a class="indexterm" name="idm249446138304"></a>
 
-  <a class="indexterm" name="idm251265538208"></a>
+  <a class="indexterm" name="idm249446136768"></a>
 
-  <a class="indexterm" name="idm251265536512"></a>
+  <a class="indexterm" name="idm249446135136"></a>
 
-  <a class="indexterm" name="idm251265534832"></a>
+  <a class="indexterm" name="idm249446133376"></a>
 
-  <a class="indexterm" name="idm251265533168"></a>
+  <a class="indexterm" name="idm249446131760"></a>
 
-  <a class="indexterm" name="idm251265531552"></a>
+  <a class="indexterm" name="idm249446130144"></a>
 
-  <a class="indexterm" name="idm251265529824"></a>
+  <a class="indexterm" name="idm249446128512"></a>
 
-  <a class="indexterm" name="idm251265528112"></a>
+  <a class="indexterm" name="idm249446126832"></a>
 
-  <a class="indexterm" name="idm251265526448"></a>
+  <a class="indexterm" name="idm249446125344"></a>
 
-  <a class="indexterm" name="idm251265524736"></a>
+  <a class="indexterm" name="idm249446123600"></a>
 
-  <a class="indexterm" name="idm251265523056"></a>
+  <a class="indexterm" name="idm249446121952"></a>
 
-  <a class="indexterm" name="idm251265521392"></a>
+  <a class="indexterm" name="idm249446120192"></a>
 
-  <a class="indexterm" name="idm251265519664"></a>
+  <a class="indexterm" name="idm249446118560"></a>
 
-  <a class="indexterm" name="idm251265518080"></a>
+  <a class="indexterm" name="idm249446116800"></a>
 
-  <a class="indexterm" name="idm251265516416"></a>
+  <a class="indexterm" name="idm249446115168"></a>
 
-  <a class="indexterm" name="idm251265514752"></a>
+  <a class="indexterm" name="idm249446113472"></a>
 
-  <a class="indexterm" name="idm251265513072"></a>
+  <a class="indexterm" name="idm249446111728"></a>
 
-  <a class="indexterm" name="idm251265511360"></a>
+  <a class="indexterm" name="idm249446110208"></a>
 
-  <a class="indexterm" name="idm251265509744"></a>
+  <a class="indexterm" name="idm249446108496"></a>
+
+  <a class="indexterm" name="idm249446106880"></a>
+
+  <a class="indexterm" name="idm249446105200"></a>
+
+  <a class="indexterm" name="idm249446103504"></a>
+
+  <a class="indexterm" name="idm249446101808"></a>
+
+  <a class="indexterm" name="idm249446100128"></a>
+
+  <a class="indexterm" name="idm249446098432"></a>
 </div>
 <div class="navfooter">
 <hr>

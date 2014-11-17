@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.12. Monitoring Windows Machines</title>
+<title>2.13. Monitoring Windows Machines</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="monitoring-overview.html" title="2.11. Monitoring Overview">
-<link rel="next" href="monitoring-linux.html" title="2.13. Monitoring Linux/Unix Machines">
+<link rel="prev" href="monitoring-overview.html" title="2.12. Monitoring Overview">
+<link rel="next" href="monitoring-linux.html" title="2.14. Monitoring Linux/Unix Machines">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.12. Monitoring Windows Machines</th></tr>
+<tr><th colspan="3" align="center">2.13. Monitoring Windows Machines</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-overview.html">Prev</a> </td>
@@ -26,30 +26,30 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.12. Monitoring Windows Machines">
+<div class="section" title="2.13. Monitoring Windows Machines">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-windows"></a>2.12. <a name="monitoring_windows"></a>Monitoring Windows Machines</h2></div></div></div>
+<a name="monitoring-windows"></a>2.13. <a name="monitoring_windows"></a>Monitoring Windows Machines</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.12.1. <a href="monitoring-windows.html#introduction_win">Introduction</a></span></dt>
-<dt><span class="section">2.12.2. <a href="monitoring-windows.html#overview">Overview</a></span></dt>
-<dt><span class="section">2.12.3. <a href="monitoring-windows.html#steps">Steps</a></span></dt>
-<dt><span class="section">2.12.4. <a href="monitoring-windows.html#whatsdone">What's Already Done For You</a></span></dt>
-<dt><span class="section">2.12.5. <a href="monitoring-windows.html#prequisites">Prerequisites</a></span></dt>
-<dt><span class="section">2.12.6. <a href="monitoring-windows.html#installwindowsagent">Installing the Windows Agent</a></span></dt>
-<dt><span class="section">2.12.7. <a href="monitoring-windows.html#configicinga">Configuring Icinga</a></span></dt>
-<dt><span class="section">2.12.8. <a href="monitoring-windows.html#passwordprotect">Password Protection</a></span></dt>
-<dt><span class="section">2.12.9. <a href="monitoring-windows.html#restarticinga">Restarting Icinga</a></span></dt>
-<dt><span class="section">2.12.10. <a href="monitoring-windows.html#troubleshooting">Troubleshooting</a></span></dt>
+<dt><span class="section">2.13.1. <a href="monitoring-windows.html#introduction_win">Introduction</a></span></dt>
+<dt><span class="section">2.13.2. <a href="monitoring-windows.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.13.3. <a href="monitoring-windows.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.13.4. <a href="monitoring-windows.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.13.5. <a href="monitoring-windows.html#prequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.13.6. <a href="monitoring-windows.html#installwindowsagent">Installing the Windows Agent</a></span></dt>
+<dt><span class="section">2.13.7. <a href="monitoring-windows.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.13.8. <a href="monitoring-windows.html#passwordprotect">Password Protection</a></span></dt>
+<dt><span class="section">2.13.9. <a href="monitoring-windows.html#restarticinga">Restarting Icinga</a></span></dt>
+<dt><span class="section">2.13.10. <a href="monitoring-windows.html#troubleshooting">Troubleshooting</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251263701456"></a>
+  <a class="indexterm" name="idm249464595808"></a>
 
-  <a class="indexterm" name="idm251263700064"></a>
+  <a class="indexterm" name="idm249464594256"></a>
 
-  <div class="section" title="2.12.1. Introduction">
+  <div class="section" title="2.13.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction_win"></a>2.12.1. Introduction</h3></div></div></div>
+<a name="introduction_win"></a>2.13.1. Introduction</h3></div></div></div>
     
 
     <p>This document describes how you can monitor "private" services and attributes of Windows machines, such as:</p>
@@ -76,7 +76,7 @@
 </ul></div>
 
     <p>Publicly available services that are provided by Windows machines (HTTP, FTP, POP3, etc.) can be monitored easily by following the
-    documentation on <a class="link" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services">monitoring publicly available services</a>.</p>
+    documentation on <a class="link" href="monitoring-publicservices.html" title="2.18. Monitoring Publicly Available Services">monitoring publicly available services</a>.</p>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -84,7 +84,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart
       guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
       (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the quickstart.</p>
 
@@ -93,9 +93,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.12.2. Overview">
+  <div class="section" title="2.13.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>2.12.2. Overview</h3></div></div></div>
+<a name="overview"></a>2.13.2. Overview</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -117,9 +117,9 @@
     cover using the NSClient++ addon in these instructions.</p>
   </div>
 
-  <div class="section" title="2.12.3. Steps">
+  <div class="section" title="2.13.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="steps"></a>2.12.3. Steps</h3></div></div></div>
+<a name="steps"></a>2.13.3. Steps</h3></div></div></div>
     
 
     <p>There are several steps you'll need to follow in order to monitor a new Windows machine. They are:</p>
@@ -140,9 +140,9 @@
 </ol></div>
   </div>
 
-  <div class="section" title="2.12.4. What's Already Done For You">
+  <div class="section" title="2.13.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="whatsdone"></a>2.12.4. What's Already Done For You</h3></div></div></div>
+<a name="whatsdone"></a>2.13.4. What's Already Done For You</h3></div></div></div>
     
 
     <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
@@ -164,9 +164,9 @@
     be monitoring your Windows boxes in no time.</p>
   </div>
 
-  <div class="section" title="2.12.5. Prerequisites">
+  <div class="section" title="2.13.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prequisites"></a>2.12.5. Prerequisites</h3></div></div></div>
+<a name="prequisites"></a>2.13.5. Prerequisites</h3></div></div></div>
     
 
     <p>The first time you configure Icinga to monitor a Windows machine, you'll need to do a bit of extra work. Remember, you only
@@ -188,9 +188,9 @@
     sample host and service definitions in that file, rather than creating new ones.</p>
   </div>
 
-  <div class="section" title="2.12.6. Installing the Windows Agent">
+  <div class="section" title="2.13.6. Installing the Windows Agent">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="installwindowsagent"></a>2.12.6. Installing the Windows Agent</h3></div></div></div>
+<a name="installwindowsagent"></a>2.13.6. Installing the Windows Agent</h3></div></div></div>
     
 
     <p>Before you can begin monitoring private services and attributes of Windows machines, you'll need to install an agent on those
@@ -238,9 +238,9 @@
     <p>8. Success! The Windows server can now be added to the Icinga monitoring configuration...</p>
   </div>
 
-  <div class="section" title="2.12.7. Configuring Icinga">
+  <div class="section" title="2.13.7. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configicinga"></a>2.12.7. Configuring Icinga</h3></div></div></div>
+<a name="configicinga"></a>2.13.7. Configuring Icinga</h3></div></div></div>
     
 
     <p>Now it's time to define some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in your Icinga configuration files
@@ -362,9 +362,9 @@
     file.</p>
   </div>
 
-  <div class="section" title="2.12.8. Password Protection">
+  <div class="section" title="2.13.8. Password Protection">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="passwordprotect"></a>2.12.8. Password Protection</h3></div></div></div>
+<a name="passwordprotect"></a>2.13.8. Password Protection</h3></div></div></div>
     
 
     <p>If you specified a password in the NSClient++ configuration file on the Windows machine, you'll need to modify the
@@ -398,9 +398,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.12.9. Restarting Icinga">
+  <div class="section" title="2.13.9. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="restarticinga"></a>2.12.9. Restarting Icinga</h3></div></div></div>
+<a name="restarticinga"></a>2.13.9. Restarting Icinga</h3></div></div></div>
     
 
     <p>You're done with modifying the Icinga configuration, so you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your
@@ -410,9 +410,9 @@
     (re)start Icinga until the verification process completes without any errors!</p>
   </div>
 
-  <div class="section" title="2.12.10. Troubleshooting">
+  <div class="section" title="2.13.10. Troubleshooting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="troubleshooting"></a>2.12.10. Troubleshooting</h3></div></div></div>
+<a name="troubleshooting"></a>2.13.10. Troubleshooting</h3></div></div></div>
     
 
     <p>Sometimes it won't work. The easiest way is to execute the plugin as Icinga user on the command line, something like
@@ -466,9 +466,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.11. Monitoring Overview </td>
+<td width="40%" align="left" valign="top">2.12. Monitoring Overview </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 2.13. Monitoring Linux/Unix Machines</td>
+<td width="40%" align="right" valign="top"> 2.14. Monitoring Linux/Unix Machines</td>
 </tr>
 </table>
 </div>

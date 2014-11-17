@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="next" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">
@@ -137,7 +137,7 @@
         <p>Monitoring Plugins Downloads Page: <a class="link" href="https://www.monitoring-plugins.org" target="_top">https://www.monitoring-plugins.org/download.html</a></p>
       </li>
 <li class="listitem">
-        <p>MonitoringExchange: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
+        <p>Icinga Exchange: <a class="link" href="https://exchange.icinga.org" target="_top">https://exchange.icinga.org</a></p>
       </li>
 </ul></div>
 
@@ -398,8 +398,6 @@ resultiert in:
         Icinga-Server!</p>
       </td></tr>
 </table></div>
-
-    <p></p>
   </div>
 
   <div class="section" title="5.1.10. Raw command line">
@@ -407,10 +405,10 @@ resultiert in:
 <a name="rawcommandline"></a>5.1.10. Raw command line</h3></div></div></div>
     
 
-    <p>Beginnend mit Icinga 1.6 ermöglicht das klassische UI die Anzeige der Kommandozeile mit aufgelösten Variablen
-    einschließlich der Werte aus <code class="filename">resource.cfg</code>. Der Klick auf "ACTIVE" neben "Check type" in den Host-/Service Check
-    Details gibt Ihnen Zugriff auf diese Informationen. Wenn Sie noch keine Prüfung definiert haben, dann wählen Sie "View Config" aus den
-    Hauptmenü auf der linken Seite und dann "Command expansion". Bitte beachten Sie, dass der Benutzer über die Direktive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
+    <p>Das klassische UI ermöglicht die Anzeige der Kommandozeile mit aufgelösten Variablen einschließlich der Werte aus
+    <code class="filename">resource.cfg</code>. Der Klick auf "ACTIVE" neben "Check type" in den Host-/Service Check Details gibt Ihnen Zugriff auf
+    diese Informationen. Wenn Sie noch keine Prüfung definiert haben, dann wählen Sie "View Config" aus den Hauptmenü auf der linken Seite
+    und dann "Command expansion". Bitte beachten Sie, dass der Benutzer über die Direktive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
     explizit dazu berechtigt sein muss, die Werte der Variable aus <code class="filename">resource.cfg</code> sehen zu dürfen. Außerdem muss der
     Benutzer, unter dem der Web-Server läuft, Leseberechtigung auf diese Datei besitzen.</p>
 
@@ -508,7 +506,7 @@ resultiert in:
 </tr>
 <tr>
 <td>@10:20</td>
-<td>&lt;= 10 and &gt;= 20, (im Bereich von {10 .. 20})</td>
+<td>&gt;= 10 and &lt;= 20, (im Bereich von {10 .. 20})</td>
 </tr>
 </tbody>
 </table>
@@ -628,17 +626,17 @@ resultiert in:
 
     <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">hier</a>.</p>
 
-    <a class="indexterm" name="idm251265312560"></a>
+    <a class="indexterm" name="idm249445901152"></a>
 
-    <a class="indexterm" name="idm251265310944"></a>
+    <a class="indexterm" name="idm249445899424"></a>
 
-    <a class="indexterm" name="idm251265309840"></a>
+    <a class="indexterm" name="idm249445898288"></a>
 
-    <a class="indexterm" name="idm251265308320"></a>
+    <a class="indexterm" name="idm249445896768"></a>
 
-    <a class="indexterm" name="idm251265306688"></a>
+    <a class="indexterm" name="idm249445895008"></a>
 
-    <a class="indexterm" name="idm251265305024"></a>
+    <a class="indexterm" name="idm249445893488"></a>
   </div>
 </div>
 <div class="navfooter">

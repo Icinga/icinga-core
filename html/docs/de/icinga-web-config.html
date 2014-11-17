@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-scratch.html" title="6.5. Installation des Icinga Web Frontend">
 <link rel="next" href="upgrading_icingaweb.html" title="6.7. Aktualisierung von Icinga Web und Icinga Web Datenbank">
@@ -44,13 +44,10 @@
 <a name="configfilelocation"></a>6.6.1. Wo sind meine Konfigurationsdateien?</h3></div></div></div>
     
 
-    <p>Mit Icinga 1.7 hat sich der Platz von einigen Konfigurationsdateien erneut geändert, um die Pflege für Benutzer,
-    Packetierer und Entwickler gleichermaßen zu vereinfachen. Die von Icinga Web bereitgestellten Konfigurationsdateien stehen weiterhin
-    unter <code class="filename">app/config</code>, aber Site-spezifische, die vorher im gleichen Ordner zu finden waren, sind nun in den
-    Web-Konfigurationsordner gewandert (per Default <code class="filename">etc/conf.d</code>), der bei Aktualisierungen nicht überschrieben wird. Der
-    Ordner kann während der Installation mit Hilfe von --with-conf-dir (bzw. --with-conf-folder Icinga &lt;= 1.6.x) geändert werden.
-    Bitte beachten Sie, dass sich - bedingt durch den neuen Ablageort - der Dateiname geändert hat. Die Kennzeichnung "site." ist entfallen,
-    so dass die Namen nun identisch zu denen in <code class="filename">app/config</code> sind.</p>
+    <p>Die von Icinga Web bereitgestellten Konfigurationsdateien stehen unter <code class="filename">app/config</code>, aber Site-spezifische
+    stehen im Web-Konfigurationsordner (per Default <code class="filename">etc/conf.d</code>), der bei Aktualisierungen nicht überschrieben wird. Der
+    Ordner kann während der Installation mit Hilfe von --with-conf-dir geändert werden. Die Namen der Dateien sind identisch zu denen in
+    <code class="filename">app/config</code>.</p>
 
     <p>Icinga Web arbeitet mit Modulen und jedes Modul hat seine eigene Konfiguration. Das gilt ebenfalls für die Libraries. Wenn Sie
     weitere Informationen zu den Cronk-Libraries benötigen, schauen Sie in <code class="filename">app/modules/Cronks/lib</code> (für js in
@@ -73,7 +70,7 @@
 <a name="configfileindex"></a>6.6.2. Index</h3></div></div></div>
     
 
-    <table border="1" id="idm251260099328">
+    <table border="1" id="idm249440691600">
       <caption>Tabelle 6.1. Konfigurationsdateien</caption>
 
       <tr>
@@ -325,8 +322,8 @@
 
             <div class="itemizedlist"><ul class="itemizedlist" type="square">
 <li class="listitem">
-                <p>defaultHost: definiert den Hos, der für Aktionen benutzt wird, wenn kein Host angegeben ist. Momentan (v1.6) ist dies
-                nur für einige Module wichtig und es betrifft nicht Icinga-Webs Standardleistungsumfang. </p>
+                <p>defaultHost: definiert den Host, der für Aktionen benutzt wird, wenn kein Host angegeben ist. Dies nur für einige
+                Module wichtig und es betrifft nicht Icinga-Webs Standardleistungsumfang. </p>
 <pre class="screen"> &lt;defaultHost&gt;localhost&lt;/defaultHost&gt;</pre>
 <p>Der
                 Host muss im hosts-Abschnitt definiert werden.</p>
@@ -857,7 +854,7 @@
         Fehlermeldung ähnlich der folgenden:</p>
 
         <div class="figure">
-<a name="idm251259918864"></a><p class="title"><b>Abbildung 6.1. Icinga Web instance down</b></p>
+<a name="idm249440510848"></a><p class="title"><b>Abbildung 6.1. Icinga Web instance down</b></p>
 <div class="figure-contents">
           
 
@@ -1019,17 +1016,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
     <p>Benötigen Sie weitere Informationen? Schauen Sie bitte in unserem<a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top"> Development Wiki.</a></p>
 
-    <a class="indexterm" name="idm251259873920"></a>
+    <a class="indexterm" name="idm249440466096"></a>
 
-    <a class="indexterm" name="idm251259872672"></a>
+    <a class="indexterm" name="idm249440464848"></a>
 
-    <a class="indexterm" name="idm251259871504"></a>
+    <a class="indexterm" name="idm249440463680"></a>
 
-    <a class="indexterm" name="idm251259870384"></a>
+    <a class="indexterm" name="idm249440462560"></a>
 
-    <a class="indexterm" name="idm251259869104"></a>
+    <a class="indexterm" name="idm249440461280"></a>
 
-    <a class="indexterm" name="idm251259867376"></a>
+    <a class="indexterm" name="idm249440459552"></a>
   </div>
 </div>
 <div class="navfooter">

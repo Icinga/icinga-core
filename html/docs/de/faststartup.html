@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="tuning.html" title="8.3. Icinga für maximale Leistung optimieren">
 <link rel="next" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks">
@@ -112,14 +112,14 @@
     <p>Bevor wir weitermachen, die Dinge zu beschleunigen, müssen wir sehen was möglich ist und ob wir uns mit der ganzen Sache
     beschäftigen sollten oder nicht. Das ist einfach - starten Sie Icinga mit der <span class="bold"><strong>-s</strong></span> oder <span class="bold"><strong>--test-scheduling</strong></span>-Option, um Zeiten und Planungsinformationen zu bekommen.</p>
 
-    <p>Beginnend mit Icinga 1.0.2 gibt es eine zusätzliche Option <span class="bold"><strong>-S</strong></span> oder <span class="bold"><strong>
-    --show-scheduling</strong></span>. Damit erhalten Sie weitere Informationen zur Scheduling Queue.</p>
+    <p>Es gibt eine zusätzliche Option <span class="bold"><strong>-S</strong></span> oder <span class="bold"><strong> --show-scheduling</strong></span>.
+    Damit erhalten Sie weitere Informationen zur Scheduling Queue.</p>
 
     <p>Ein Beispiel für die Ausgabe (gekürzt, um nur relevante Teile zu zeigen) sehen Sie nachfolgend. In diesem Beispiel nutzen wir eine
     Icinga-Konfigurations mit 25 Host und etwas mehr als 10.000 Services.</p>
 
     <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -s /usr/local/icinga/etc/icinga.cfg
-Icinga 1.11
+Icinga 1.12
 Copyright (c) 1999-2007 Ethan Galstad (http://www.nagios.org/)
 Last Modified: 01-27-2007
 License: GPL
@@ -154,7 +154,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>Okay, lassen Sie uns ansehen was passiert ist. Wenn wir die Summen ansehen, dauerte es ungefähr <span class="bold"><strong>11,6</strong></span> Sekunden, die Konfigurationsdateien zu verarbeiten und weitere <span class="bold"><strong>56</strong></span> Sekunden,
     die Konfigurations zu verifizieren. Das bedeutet, dass es fast <span class="bold"><strong>68 Sekunden</strong></span> dauert, bis die erste
-    Überwachung beginnen kann! Das ist nicht akzeptierbar, wenn wir Icinga ziemlich regelmäßig neu starten müsseb.</p>
+    Überwachung beginnen kann! Das ist nicht akzeptierbar, wenn wir Icinga ziemlich regelmäßig neu starten müssen.</p>
 
     <p>Was kann man daran ändern? Werfen Sie einen erneuten Blick auf die Ausgabe und Sie sehen, dass Icinga schätzt, dass wir
     etwa <span class="bold"><strong>8,4</strong></span> Sekunden bei der Verarbeitung der Konfiguration und weitere <span class="bold"><strong>54,7</strong></span> bei der Verifizierung einsparen können. Icinga denkt, dass wir <span class="bold"><strong>63
@@ -267,19 +267,19 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>5. Das war's! Erfreuen Sie sich am Geschwindigkeitsgewinn beim Start.</p>
 
-    <a class="indexterm" name="idm251256700640"></a>
+    <a class="indexterm" name="idm249437324160"></a>
 
-    <a class="indexterm" name="idm251256699632"></a>
+    <a class="indexterm" name="idm249437322640"></a>
 
-    <a class="indexterm" name="idm251256698624"></a>
+    <a class="indexterm" name="idm249437321360"></a>
 
-    <a class="indexterm" name="idm251256697232"></a>
+    <a class="indexterm" name="idm249437323904"></a>
 
-    <a class="indexterm" name="idm251256695584"></a>
+    <a class="indexterm" name="idm249437318144"></a>
 
-    <a class="indexterm" name="idm251256694064"></a>
+    <a class="indexterm" name="idm249437316672"></a>
 
-    <a class="indexterm" name="idm251256692496"></a>
+    <a class="indexterm" name="idm249437316544"></a>
   </div>
 </div>
 <div class="navfooter">

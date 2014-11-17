@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.12. Windows-Maschinen überwachen</title>
+<title>2.13. Windows-Maschinen überwachen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="monitoring-overview.html" title="2.11. Monitoring-Überblick">
-<link rel="next" href="monitoring-linux.html" title="2.13. Linux/Unix-Rechner überwachen">
+<link rel="prev" href="monitoring-overview.html" title="2.12. Monitoring-Überblick">
+<link rel="next" href="monitoring-linux.html" title="2.14. Linux/Unix-Rechner überwachen">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.12. Windows-Maschinen überwachen</th></tr>
+<tr><th colspan="3" align="center">2.13. Windows-Maschinen überwachen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-overview.html">Zurück</a> </td>
@@ -26,32 +26,32 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.12. Windows-Maschinen überwachen">
+<div class="section" title="2.13. Windows-Maschinen überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-windows"></a>2.12. Windows-Maschinen überwachen</h2></div></div></div>
+<a name="monitoring-windows"></a>2.13. Windows-Maschinen überwachen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.12.1. <a href="monitoring-windows.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">2.12.2. <a href="monitoring-windows.html#overview">Überblick</a></span></dt>
-<dt><span class="section">2.12.3. <a href="monitoring-windows.html#steps">Schritte</a></span></dt>
-<dt><span class="section">2.12.4. <a href="monitoring-windows.html#whatsdone">Was bereits für Sie vorbereitet wurde</a></span></dt>
-<dt><span class="section">2.12.5. <a href="monitoring-windows.html#prequisites">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.12.6. <a href="monitoring-windows.html#installwindowsagent">Installation des Windows-Agenten</a></span></dt>
-<dt><span class="section">2.12.7. <a href="monitoring-windows.html#configicinga">Icinga konfigurieren</a></span></dt>
-<dt><span class="section">2.12.8. <a href="monitoring-windows.html#passwordprotect">Passwortschutz</a></span></dt>
-<dt><span class="section">2.12.9. <a href="monitoring-windows.html#restarticinga">Icinga neu starten</a></span></dt>
-<dt><span class="section">2.12.10. <a href="monitoring-windows.html#troubleshooting">Troubleshooting</a></span></dt>
+<dt><span class="section">2.13.1. <a href="monitoring-windows.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.13.2. <a href="monitoring-windows.html#overview">Überblick</a></span></dt>
+<dt><span class="section">2.13.3. <a href="monitoring-windows.html#steps">Schritte</a></span></dt>
+<dt><span class="section">2.13.4. <a href="monitoring-windows.html#whatsdone">Was bereits für Sie vorbereitet wurde</a></span></dt>
+<dt><span class="section">2.13.5. <a href="monitoring-windows.html#prequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">2.13.6. <a href="monitoring-windows.html#installwindowsagent">Installation des Windows-Agenten</a></span></dt>
+<dt><span class="section">2.13.7. <a href="monitoring-windows.html#configicinga">Icinga konfigurieren</a></span></dt>
+<dt><span class="section">2.13.8. <a href="monitoring-windows.html#passwordprotect">Passwortschutz</a></span></dt>
+<dt><span class="section">2.13.9. <a href="monitoring-windows.html#restarticinga">Icinga neu starten</a></span></dt>
+<dt><span class="section">2.13.10. <a href="monitoring-windows.html#troubleshooting">Troubleshooting</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251271189088"></a>
+  <a class="indexterm" name="idm249451762192"></a>
 
-  <a class="indexterm" name="idm251271187440"></a>
+  <a class="indexterm" name="idm249451760576"></a>
 
-  <a class="indexterm" name="idm251271185712"></a>
+  <a class="indexterm" name="idm249451758928"></a>
 
-  <div class="section" title="2.12.1. Einführung">
+  <div class="section" title="2.13.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.12.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>2.13.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument beschreibt, wie Sie "private" Dienste und Attribute von Windows-Rechnern überwachen können, wie z.B.:</p>
@@ -78,19 +78,19 @@
 </ul></div>
 
     <p>Öffentlich nutzbare Dienste, die von Windows-Rechnern zur Verfügung gestellt werden (HTTP, FTP, POP3, etc.), können einfach mit
-    Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.17. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a> kontrolliert
+    Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.18. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a> kontrolliert
     werden.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
     Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
     definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
 
     <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
   </div>
 
-  <div class="section" title="2.12.2. Überblick">
+  <div class="section" title="2.13.2. Überblick">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>2.12.2. Überblick</h3></div></div></div>
+<a name="overview"></a>2.13.2. Überblick</h3></div></div></div>
     
 
     <div class="mediaobject"><img src="../images/monitoring-windows.png"></div>
@@ -109,9 +109,9 @@
     Einfachheit werden wir nur das NSClient++-Addon in diesen Anweisungen berücksichtigen.</p>
   </div>
 
-  <div class="section" title="2.12.3. Schritte">
+  <div class="section" title="2.13.3. Schritte">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="steps"></a>2.12.3. Schritte</h3></div></div></div>
+<a name="steps"></a>2.13.3. Schritte</h3></div></div></div>
     
 
     <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Windows-Rechner zu überwachen. Das sind:</p>
@@ -132,9 +132,9 @@
 </ol></div>
   </div>
 
-  <div class="section" title="2.12.4. Was bereits für Sie vorbereitet wurde">
+  <div class="section" title="2.13.4. Was bereits für Sie vorbereitet wurde">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="whatsdone"></a>2.12.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
+<a name="whatsdone"></a>2.13.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
     
 
     <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
@@ -157,9 +157,9 @@
     Anweisungen und Sie werden im Nu Ihre Windows-Rechner überwachen.</p>
   </div>
 
-  <div class="section" title="2.12.5. Voraussetzungen">
+  <div class="section" title="2.13.5. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prequisites"></a>2.12.5. Voraussetzungen</h3></div></div></div>
+<a name="prequisites"></a>2.13.5. Voraussetzungen</h3></div></div></div>
     
 
     <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Windows-Rechner zu überwachen, dann müssen Sie ein paar zusätzliche
@@ -182,9 +182,9 @@
     Service-Definitionen an, statt neue zu erstellen.</p>
   </div>
 
-  <div class="section" title="2.12.6. Installation des Windows-Agenten">
+  <div class="section" title="2.13.6. Installation des Windows-Agenten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="installwindowsagent"></a>2.12.6. Installation des Windows-Agenten</h3></div></div></div>
+<a name="installwindowsagent"></a>2.13.6. Installation des Windows-Agenten</h3></div></div></div>
     
 
     <p>Bevor Sie mit der Überwachung von privaten Diensten und Attributen von Windows-Rechnern beginnen, müssen Sie einen Agenten auf
@@ -233,9 +233,9 @@
     <p>8. Geschafft! Der Windows-Rechner kann nun der Icinga-Überwachungskonfiguration hinzugefügt werden...</p>
   </div>
 
-  <div class="section" title="2.12.7. Icinga konfigurieren">
+  <div class="section" title="2.13.7. Icinga konfigurieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configicinga"></a>2.12.7. Icinga konfigurieren</h3></div></div></div>
+<a name="configicinga"></a>2.13.7. Icinga konfigurieren</h3></div></div></div>
     
 
     <p>Nun ist es Zeit, einige <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen</a> in Ihren Icinga-Konfigurationsdateien
@@ -361,9 +361,9 @@
     Speichern Sie die Konfigurationsdatei.</p>
   </div>
 
-  <div class="section" title="2.12.8. Passwortschutz">
+  <div class="section" title="2.13.8. Passwortschutz">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="passwordprotect"></a>2.12.8. Passwortschutz</h3></div></div></div>
+<a name="passwordprotect"></a>2.13.8. Passwortschutz</h3></div></div></div>
     
 
     <p>Wenn Sie ein Passwort in der NSClient++-Konfigurationsdatei auf dem Windows-Rechner angegeben haben, dann müssen Sie die
@@ -383,9 +383,9 @@
     <p>Speichern Sie die Datei</p>
   </div>
 
-  <div class="section" title="2.12.9. Icinga neu starten">
+  <div class="section" title="2.13.9. Icinga neu starten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="restarticinga"></a>2.12.9. Icinga neu starten</h3></div></div></div>
+<a name="restarticinga"></a>2.13.9. Icinga neu starten</h3></div></div></div>
     
 
     <p>Sie sind fertig mit der Anpassung der Icinga-Konfiguration, so dass Sie nun <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die
@@ -395,9 +395,9 @@
     Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
   </div>
 
-  <div class="section" title="2.12.10. Troubleshooting">
+  <div class="section" title="2.13.10. Troubleshooting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="troubleshooting"></a>2.12.10. Troubleshooting</h3></div></div></div>
+<a name="troubleshooting"></a>2.13.10. Troubleshooting</h3></div></div></div>
     
 
     <p>Manchmal funktioniert es nicht. Der einfachste Weg ist es, das Plugin als Icinga-Benutzer auf der Kommandozeile
@@ -452,9 +452,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.11. Monitoring-Überblick </td>
+<td width="40%" align="left" valign="top">2.12. Monitoring-Überblick </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.13. Linux/Unix-Rechner überwachen</td>
+<td width="40%" align="right" valign="top"> 2.14. Linux/Unix-Rechner überwachen</td>
 </tr>
 </table>
 </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="cgicmd.html" title="6.4. Executing Classic UI modules (CGIs) on the command line">
 <link rel="next" href="upgrading_icingaweb.html" title="6.6. Upgrading Icinga Web and Icinga Web Database">
@@ -127,7 +127,7 @@
             <pre class="screen"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-json php5-sockets \
     php5-soap php5-gettext php5-pdo php5-ldap php5-gd php5-mysql apache2-mod_php5</pre>
 
-            <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
+            <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.6. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
             Guide</a></p>
           </li>
 </ul></div>
@@ -184,7 +184,7 @@
             <pre class="screen"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-json php5-sockets \
     php5-soap php5-gettext php5-pdo php5-ldap php5-gd php5-pgsql apache2-mod_php5</pre>
 
-            <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
+            <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.6. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
             Guide</a></p>
           </li>
 </ul></div>
@@ -206,11 +206,11 @@
 
         <p>Unpack your tarball:</p>
 
-        <pre class="screen"> #&gt; tar xzvf icinga-web-1.11.tar.gz</pre>
+        <pre class="screen"> #&gt; tar xzvf icinga-web-1.12.tar.gz</pre>
 
         <p>Then change to the directory:</p>
 
-        <pre class="screen"> #&gt; cd icinga-web-1.11</pre>
+        <pre class="screen"> #&gt; cd icinga-web-1.12</pre>
 
         <p>Icinga Web provides several configure options e.g.</p>
 
@@ -310,9 +310,7 @@
 <p>Reset password for any account on icinga-web.</p>
       </li>
 <li class="listitem">
-        <a name="selinuxsettings"></a>
-
-        <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
+        <p><a name="selinuxsettings"></a><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
 
         <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
         Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
@@ -489,7 +487,7 @@
 
     <p>There are two different sections:</p>
 
-    <p>* Settings of Icinga Web, escpecially database settings</p>
+    <p>* Settings of Icinga Web, especially database settings</p>
 
     <p>* Settings of the Icinga API which is mandatory as data source</p>
 
@@ -862,7 +860,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
       </li>
 <li class="listitem">
         <p>Nothing there =&gt; Check icinga.log if IDOMOD gets loaded if not enable the Event Broker Module in icinga.cfg like described
-        in the Icinga Core with <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">IDOUtils Quickstart Guide</a></p>
+        in the Icinga Core with <a class="link" href="quickstart-idoutils.html" title="2.6. Icinga with IDOUtils Quickstart">IDOUtils Quickstart Guide</a></p>
       </li>
 <li class="listitem">
         <p>IDOUtils DB-Schema is the current one? =&gt; If not check the upgrade path and docs of IDOUtils</p>
@@ -972,11 +970,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idm251252484096"></a>
+    <a class="indexterm" name="idm249453392576"></a>
 
-    <a class="indexterm" name="idm251252482688"></a>
+    <a class="indexterm" name="idm249453391120"></a>
 
-    <a class="indexterm" name="idm251252481520"></a>
+    <a class="indexterm" name="idm249453389952"></a>
   </div>
 </div>
 <div class="navfooter">

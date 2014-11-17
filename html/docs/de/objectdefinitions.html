@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="configobject.html" title="3.3. Überblick Objektkonfiguration">
 <link rel="next" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">
@@ -85,8 +85,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte vermeiden Sie die Verwendung von Sonderzeichen in den Objektdefinitionen. In Icinga &lt;= 1.5.0 gab es einen Fehler,
-    der die Ausführung von "forced reschedules" im Classic UI verhinderte, wobei als Meldung ein "not authorized" angezeigt wurde.</p>
+    <p>Bitte vermeiden Sie die Verwendung von Sonderzeichen in den Objektdefinitionen.</p>
   </td></tr>
 </table></div>
 
@@ -115,7 +114,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Beispielobjektkonfigurationsdateien werden im <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis installiert, wenn Sie der
-    <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
+    <a class="link" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
 
     <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
   </td></tr>
@@ -151,9 +150,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="idm251268406720"></a>
+  <a class="indexterm" name="idm249448985936"></a>
 
-  <a class="indexterm" name="idm251268405504"></a>
+  <a class="indexterm" name="idm249448984800"></a>
 
   <div class="section" title="3.4.1. Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -471,13 +470,13 @@
             $HOSTADDRESS6$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie
             keine Adress6-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. Trotzdem ein Wort
             der Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die Plugins nicht in der Lage
-            sind, den Host-Namen aufzulösen (verfügbar ab Icinga 1.3).</p></td>
+            sind, den Host-Namen aufzulösen.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>display_name</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um einen alternativen Namen zu definieren, der im Web-Interface für den Host
-            angezeigt wird. Wenn nicht angegeben, wird statt dessen der Wert der <span class="emphasis"><em>host_name</em></span>-Direktive benutzt.
-            Anmerkung: Die CGIs bis einschließlich Icinga 1.0.1 nutzen diese Option nicht.</p></td>
+            angezeigt wird. Wenn nicht angegeben, wird statt dessen der Wert der <span class="emphasis"><em>host_name</em></span>-Direktive
+            benutzt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>parents</strong></span>:</p></td>
@@ -791,16 +790,16 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-                <p>Seit Icinga 1.0.2 ist es möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen zu
-                anzugeben. Die Syntax ist wie folgt: </p>
+                <p>Es ist möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen zu anzugeben. Die Syntax
+                ist wie folgt: </p>
 <pre class="programlisting">notes_url|action_url 'ersteURL' 'zweiteURL' 'dritteURL'</pre>
-<p>
-                </p>
+<p> </p>
 <pre class="programlisting">notes_url|action_url nureineURL</pre>
-<p>Bitte achten Sie darauf, dass mehrere URLs auch gleichzeitig
-                mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B. action|notes.gif zu 1-action|1-notes.gif wird. Stellen
-                Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne singlequotes angegeben werden und wird dann wie eine
-                einzelne URL betrachtet und verweist auf das normale Icon (action.gif).</p>
+<p>Bitte
+                achten Sie darauf, dass mehrere URLs auch gleichzeitig mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B.
+                action|notes.gif zu 1-action|1-notes.gif wird. Stellen Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne
+                singlequotes angegeben werden und wird dann wie eine einzelne URL betrachtet und verweist auf das normale Icon
+                (action.gif).</p>
               </td></tr>
 </table></div>
 </td>
@@ -842,9 +841,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251268294432"></a>
+    <a class="indexterm" name="idm249448874528"></a>
 
-    <a class="indexterm" name="idm251268090928"></a>
+    <a class="indexterm" name="idm249448673056"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgruppen-Definition">
@@ -977,9 +976,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251268029120"></a>
+    <a class="indexterm" name="idm249448608768"></a>
 
-    <a class="indexterm" name="idm251268028112"></a>
+    <a class="indexterm" name="idm249448607760"></a>
   </div>
 
   <div class="section" title="3.4.3. Service-Definition">
@@ -1584,16 +1583,16 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-                <p>Seit Icinga 1.0.2 ist es möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen
-                anzugeben. Die Syntax ist wie folgt: </p>
+                <p>Es ist möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen anzugeben. Die Syntax ist
+                wie folgt: </p>
 <pre class="programlisting">notes_url|action_url 'ersteURL' 'zweiteURL' 'dritteURL'</pre>
-<p>
-                </p>
+<p> </p>
 <pre class="programlisting">notes_url|action_url nureineURL</pre>
-<p>Bitte achten Sie darauf, dass mehrere Urls auch gleichzeitig
-                mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B. action|notes.gif zu 1-action|1-notes.gif wird. Stellen
-                Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne singlequotes angegeben werden und wird dann wie eine
-                einzelne URL betrachtet und verweist auf das normale Icon (action.gif).</p>
+<p>Bitte
+                achten Sie darauf, dass mehrere Urls auch gleichzeitig mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B.
+                action|notes.gif zu 1-action|1-notes.gif wird. Stellen Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne
+                singlequotes angegeben werden und wird dann wie eine einzelne URL betrachtet und verweist auf das normale Icon
+                (action.gif).</p>
               </td></tr>
 </table></div>
 </td>
@@ -1614,9 +1613,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267919824"></a>
+    <a class="indexterm" name="idm249448500096"></a>
 
-    <a class="indexterm" name="idm251267732176"></a>
+    <a class="indexterm" name="idm249448312096"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegruppen-Definition">
@@ -1718,8 +1717,8 @@
             Alternative (oder als Zusatz) zu der <span class="emphasis"><em>servicegroups</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definitionen</a> verwendet werden. Das Format der member-Direktive ist wie folgt
             (beachten Sie, dass ein Host-Name einem Service-Namen/einer Service-Beschreibung vorangestellt werden muss):</p>
             <p>members=&lt;host1&gt;,&lt;service1&gt;,&lt;host2&gt;,&lt;service2&gt;,...,&lt;host<span class="emphasis"><em>n</em></span>&gt;,&lt;service<span class="emphasis"><em>n</em></span>&gt;</p>
-            <p>Seit Icinga 1.2 ist es möglich, "*" als Wildcard für alle Hosts zu benutzen. Bitte beachten Sie, dass es NICHT
-            möglich ist, Hosts oder Service über ein vorangestelltes "!" auszuschließen.</p>
+            <p>Es ist möglich, "*" als Wildcard für alle Hosts zu benutzen. Bitte beachten Sie, dass es NICHT möglich ist, Hosts oder
+            Service über ein vorangestelltes "!" auszuschließen.</p>
 </td>
 </tr>
 <tr>
@@ -1755,9 +1754,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267667296"></a>
+    <a class="indexterm" name="idm249448247792"></a>
 
-    <a class="indexterm" name="idm251267666288"></a>
+    <a class="indexterm" name="idm249448246784"></a>
   </div>
 
   <div class="section" title="3.4.5. Kontakt-Definition">
@@ -2046,9 +2045,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267517152"></a>
+    <a class="indexterm" name="idm249448097376"></a>
 
-    <a class="indexterm" name="idm251267516144"></a>
+    <a class="indexterm" name="idm249448096368"></a>
   </div>
 
   <div class="section" title="3.4.6. Kontaktgruppen-Definition">
@@ -2145,9 +2144,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267470864"></a>
+    <a class="indexterm" name="idm249448050560"></a>
 
-    <a class="indexterm" name="idm251267469856"></a>
+    <a class="indexterm" name="idm249448049424"></a>
   </div>
 
   <div class="section" title="3.4.7. Zeitfenster-Definition (timeperiod)">
@@ -2300,9 +2299,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267416416"></a>
+    <a class="indexterm" name="idm249447998896"></a>
 
-    <a class="indexterm" name="idm251267415408"></a>
+    <a class="indexterm" name="idm249447996080"></a>
   </div>
 
   <div class="section" title="3.4.8. Befehls-Definition (command)">
@@ -2399,9 +2398,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267368640"></a>
+    <a class="indexterm" name="idm249447948896"></a>
 
-    <a class="indexterm" name="idm251267367632"></a>
+    <a class="indexterm" name="idm249447947888"></a>
   </div>
 
   <div class="section" title="3.4.9. Service-Abhängigkeits-Definition (servicedependency)">
@@ -2595,9 +2594,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267260256"></a>
+    <a class="indexterm" name="idm249447841264"></a>
 
-    <a class="indexterm" name="idm251267259248"></a>
+    <a class="indexterm" name="idm249447840256"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceeskalations-Definition">
@@ -2826,60 +2825,54 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
-<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">hier</a>.</p></td>
+<td><p>Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_warning_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>erste</em></span> WARNING-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 3 setzen, dann wird diese Eskalation nur dann benutzt, wenn der Service
-            lang genug in einem nicht-OK-Zustand ist, damit eine dritte WARNING-Benachrichtigung versandt wird. Diese Direktive ist ab
-            Icinga 1.0.2 verfügbar.</p></td>
+            lang genug in einem nicht-OK-Zustand ist, damit eine dritte WARNING-Benachrichtigung versandt wird.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>last_warning_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>letzte</em></span> WARNING-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 5 setzen, dann wird diese Eskalation nicht benutzt, wenn mehr als fünf
             WARNING-Benachrichtigungen für den Service versandt werden. Wenn der Wert auf Null gesetzt wird, wird dieser Eskalationseintrag
-            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden). Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_critical_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>erste</em></span> CRITICAL-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 3 setzen, dann wird diese Eskalation nur dann benutzt, wenn der Service
-            lang genug in einem nicht-OK-Zustand ist, damit eine dritte CRITICAL-Benachrichtigung versandt wird. Diese Direktive ist ab
-            Icinga 1.0.2 verfügbar.</p></td>
+            lang genug in einem nicht-OK-Zustand ist, damit eine dritte CRITICAL-Benachrichtigung versandt wird.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>last_critical_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>letzte</em></span> CRITICAL-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 5 setzen, dann wird diese Eskalation nicht benutzt, wenn mehr als fünf
             CRITICAL-Benachrichtigungen für den Service versandt werden. Wenn der Wert auf Null gesetzt wird, wird dieser Eskalationseintrag
-            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden). Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_unknown_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>erste</em></span> UNKNOWN-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 3 setzen, dann wird diese Eskalation nur dann benutzt, wenn der Service
-            lang genug in einem nicht-OK-Zustand ist, damit eine dritte UNKNOWN-Benachrichtigung versandt wird. Diese Direktive ist ab
-            Icinga 1.0.2 verfügbar.</p></td>
+            lang genug in einem nicht-OK-Zustand ist, damit eine dritte UNKNOWN-Benachrichtigung versandt wird.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>last_unknown_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>letzte</em></span> UNKNOWN-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 5 setzen, dann wird diese Eskalation nicht benutzt, wenn mehr als fünf
             UNKNOWN-Benachrichtigungen für den Service versandt werden. Wenn der Wert auf Null gesetzt wird, wird dieser Eskalationseintrag
-            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden). Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            immer benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden).</p></td>
 </tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267122448"></a>
+    <a class="indexterm" name="idm249447703328"></a>
 
-    <a class="indexterm" name="idm251267121440"></a>
+    <a class="indexterm" name="idm249447702320"></a>
   </div>
 
   <div class="section" title="3.4.11. Host-Abhängigkeits-Definition (hostdependency)">
@@ -3032,9 +3025,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251267038912"></a>
+    <a class="indexterm" name="idm249447618816"></a>
 
-    <a class="indexterm" name="idm251267037632"></a>
+    <a class="indexterm" name="idm249447617808"></a>
   </div>
 
   <div class="section" title="3.4.12. Host-Eskalations-Definition">
@@ -3231,45 +3224,41 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
-<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">hier</a>.</p></td>
+<td><p>Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_down_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>erste</em></span> DOWN-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 3 setzen, dann wird diese Eskalation nur dann benutzt, wenn der Host lang
-            genug "down" ist, damit eine dritte Benachrichtigung versandt wird. Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            genug "down" ist, damit eine dritte Benachrichtigung versandt wird.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>last_down_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>letzte</em></span> DOWN-Benachrichtigung angibt, für die diese
             Eskalation gilt. Wenn Sie beispielsweise den Wert auf 5 setzen, dann wird diese Eskalation nicht benutzt, wenn mehr als fünf
             Benachrichtigungen für den Host versandt werden. Wenn der Wert auf Null gesetzt wird, wird dieser Eskalationseintrag immer
-            benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden). Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_unreachable_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>erste</em></span> UNREACHABLE-Benachrichtigung angibt, für die
             diese Eskalation gilt. Wenn Sie beispielsweise den Wert auf 3 setzen, dann wird diese Eskalation nur dann benutzt, wenn der Host
-            lang genug unerreichbar ist, damit eine dritte Benachrichtigung versandt wird. Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            lang genug unerreichbar ist, damit eine dritte Benachrichtigung versandt wird.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>last_unreachable_notification</strong></span>:</p></td>
 <td><p>Diese Direktive ist eine Zahl, die die <span class="emphasis"><em>letzte</em></span> UNREACHABLE-Benachrichtigung angibt, für die
             diese Eskalation gilt. Wenn Sie beispielsweise den Wert auf 5 setzen, dann wird diese Eskalation nicht benutzt, wenn mehr als
             fünf Benachrichtigungen für den Host versandt werden. Wenn der Wert auf Null gesetzt wird, wird dieser Eskalationseintrag immer
-            benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden). Diese Direktive ist ab Icinga 1.0.2
-            verfügbar.</p></td>
+            benutzt (unabhängig davon, wie viele Benachrichtigungen versandt werden).</p></td>
 </tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idm251266927024"></a>
+    <a class="indexterm" name="idm249447507552"></a>
 
-    <a class="indexterm" name="idm251266926016"></a>
+    <a class="indexterm" name="idm249447506480"></a>
   </div>
 
   <div class="section" title="3.4.13. erweiterte Hostinformations-Definition (hostextinfo)">
@@ -3414,16 +3403,16 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-                <p>Seit Icinga 1.0.2 ist es möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen
-                anzugeben. Die Syntax ist wie folgt: </p>
+                <p>Es ist möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen anzugeben. Die Syntax ist
+                wie folgt: </p>
 <pre class="programlisting">notes_url|action_url 'ersteURL' 'zweiteURL' 'dritteURL'</pre>
-<p>
-                </p>
+<p> </p>
 <pre class="programlisting">notes_url|action_url nureineURL</pre>
-<p>Bitte achten Sie darauf, dass mehrere URLs auch gleichzeitig
-                mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B. action|notes.gif zu 1-action|1-notes.gif wird. Stellen
-                Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne singlequotes angegeben werden und wird dann, wie eine
-                einzelne URL betrachtet und verweist auf das normale Icon (action.gif).</p>
+<p>Bitte
+                achten Sie darauf, dass mehrere URLs auch gleichzeitig mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B.
+                action|notes.gif zu 1-action|1-notes.gif wird. Stellen Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne
+                singlequotes angegeben werden und wird dann, wie eine einzelne URL betrachtet und verweist auf das normale Icon
+                (action.gif).</p>
               </td></tr>
 </table></div>
 </td>
@@ -3465,9 +3454,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251266834720"></a>
+    <a class="indexterm" name="idm249447415824"></a>
 
-    <a class="indexterm" name="idm251266833712"></a>
+    <a class="indexterm" name="idm249447414576"></a>
   </div>
 
   <div class="section" title="3.4.14. erweiterte Serviceinformations-Definition (serviceextinfo)">
@@ -3610,16 +3599,16 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-                <p>Seit Icinga 1.0.2 ist es möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen
-                anzugeben. Die Syntax ist wie folgt: </p>
+                <p>Es ist möglich, mehrere URLs für action|notes_url bei Host- und Service-Objektdefinitionen anzugeben. Die Syntax ist
+                wie folgt: </p>
 <pre class="programlisting">notes_url|action_url 'ersteURL' 'zweiteURL' 'dritteURL'</pre>
-<p>
-                </p>
+<p> </p>
 <pre class="programlisting">notes_url|action_url nureineURL</pre>
-<p>Bitte achten Sie darauf, dass mehrere Urls auch gleichzeitig
-                mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B. action|notes.gif zu 1-action|1-notes.gif wird. Stellen
-                Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne singlequotes angegeben werden und wird dann wie eine
-                einzelne URL betrachtet und verweist auf das normale Icon (action.gif).</p>
+<p>Bitte
+                achten Sie darauf, dass mehrere Urls auch gleichzeitig mehrere Icon-Bilder bedeuten. Diese sind hartkodiert, so dass z.B.
+                action|notes.gif zu 1-action|1-notes.gif wird. Stellen Sie sicher, dass diese vorhanden sind. Die letzte URL kann ohne
+                singlequotes angegeben werden und wird dann wie eine einzelne URL betrachtet und verweist auf das normale Icon
+                (action.gif).</p>
               </td></tr>
 </table></div>
 </td>
@@ -3640,9 +3629,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251266753184"></a>
+    <a class="indexterm" name="idm249447334112"></a>
 
-    <a class="indexterm" name="idm251266751968"></a>
+    <a class="indexterm" name="idm249447332896"></a>
   </div>
 
   <div class="section" title="3.4.15. Module-Definition">
@@ -3655,16 +3644,6 @@
     <p>Eine Module-Definition wird benutzt, um Informationen zu einem Modul anzugeben. Sie kann anstatt eines broker_module-Eintrags in
     der Hauptkonfigurationsdatei verwendet werden und ist deshalb flexibler (Sie können cfg_file/cfg_dir-Einträge benutzen, um sie
     einzuschließen).</p>
-
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Moduldefinitionen sind seit Icinga 1.4 verfügbar.</p>
-    </td></tr>
-</table></div>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -3771,7 +3750,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idm251266705456"></a>
+    <a class="indexterm" name="idm249447287760"></a>
   </div>
 </div>
 <div class="navfooter">

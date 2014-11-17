@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.3. Icinga-Schnellstart auf Linux</title>
+<title>2.4. Icinga-Schnellstart auf Linux</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">
-<link rel="next" href="quickstart-icinga-freebsd.html" title="2.4. Icinga-Schnellstart auf FreeBSD">
+<link rel="prev" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">
+<link rel="next" href="quickstart-icinga-freebsd.html" title="2.5. Icinga-Schnellstart auf FreeBSD">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.3. Icinga-Schnellstart auf Linux</th></tr>
+<tr><th colspan="3" align="center">2.4. Icinga-Schnellstart auf Linux</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="quickstart.html">Zurück</a> </td>
@@ -26,30 +26,30 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.3. Icinga-Schnellstart auf Linux">
+<div class="section" title="2.4. Icinga-Schnellstart auf Linux">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="quickstart-icinga"></a>2.3. Icinga-Schnellstart auf Linux</h2></div></div></div>
+<a name="quickstart-icinga"></a>2.4. Icinga-Schnellstart auf Linux</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.3.1. <a href="quickstart-icinga.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">2.3.2. <a href="quickstart-icinga.html#prerequisites">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.3.3. <a href="quickstart-icinga.html#installpackages">Installation der Pakete</a></span></dt>
-<dt><span class="section">2.3.4. <a href="quickstart-icinga.html#createaccount">Benutzerinformationen erstellen</a></span></dt>
-<dt><span class="section">2.3.5. <a href="quickstart-icinga.html#downloadicingaandplugins">Icinga und die Plugins herunterladen</a></span></dt>
-<dt><span class="section">2.3.6. <a href="quickstart-icinga.html#compileinstall">Icinga kompilieren und installieren</a></span></dt>
-<dt><span class="section">2.3.7. <a href="quickstart-icinga.html#customiseconfig">Anpassen der Konfiguration</a></span></dt>
-<dt><span class="section">2.3.8. <a href="quickstart-icinga.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.3.9. <a href="quickstart-icinga.html#compileinstallplugins">Kompilieren und installieren der Monitoring Plugins</a></span></dt>
-<dt><span class="section">2.3.10. <a href="quickstart-icinga.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
-<dt><span class="section">2.3.11. <a href="quickstart-icinga.html#starticinga">Icinga starten</a></span></dt>
-<dt><span class="section">2.3.12. <a href="quickstart-icinga.html#loginclassicui">Anmelden am klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.3.13. <a href="quickstart-icinga.html#othermods">Andere Anpassungen</a></span></dt>
-<dt><span class="section">2.3.14. <a href="quickstart-icinga.html#done">Fertig</a></span></dt>
+<dt><span class="section">2.4.1. <a href="quickstart-icinga.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.4.2. <a href="quickstart-icinga.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">2.4.3. <a href="quickstart-icinga.html#installpackages">Installation der Pakete</a></span></dt>
+<dt><span class="section">2.4.4. <a href="quickstart-icinga.html#createaccount">Benutzerinformationen erstellen</a></span></dt>
+<dt><span class="section">2.4.5. <a href="quickstart-icinga.html#downloadicingaandplugins">Icinga und die Plugins herunterladen</a></span></dt>
+<dt><span class="section">2.4.6. <a href="quickstart-icinga.html#compileinstall">Icinga kompilieren und installieren</a></span></dt>
+<dt><span class="section">2.4.7. <a href="quickstart-icinga.html#customiseconfig">Anpassen der Konfiguration</a></span></dt>
+<dt><span class="section">2.4.8. <a href="quickstart-icinga.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.4.9. <a href="quickstart-icinga.html#compileinstallplugins">Kompilieren und installieren der Monitoring Plugins</a></span></dt>
+<dt><span class="section">2.4.10. <a href="quickstart-icinga.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
+<dt><span class="section">2.4.11. <a href="quickstart-icinga.html#starticinga">Icinga starten</a></span></dt>
+<dt><span class="section">2.4.12. <a href="quickstart-icinga.html#loginclassicui">Anmelden am klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.4.13. <a href="quickstart-icinga.html#othermods">Andere Anpassungen</a></span></dt>
+<dt><span class="section">2.4.14. <a href="quickstart-icinga.html#done">Fertig</a></span></dt>
 </dl></div>
   
 
-  <div class="section" title="2.3.1. Einführung">
+  <div class="section" title="2.4.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.3.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>2.4.1. Einführung</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -109,7 +109,7 @@
 </tr>
 <tr><td align="left" valign="top">
       <p>Wenn Sie planen, eine Datenbank zusammen mit IDOUtils zu nutzen oder wenn Sie das neue Web-Interface einsetzen möchten,
-      dann lesen Sie statt dessen die <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga-Schnellstart mit IDOUtils"> Schnellstartanleitung mit IDOUtils</a>!</p>
+      dann lesen Sie statt dessen die <a class="link" href="quickstart-idoutils.html" title="2.6. Icinga-Schnellstart mit IDOUtils"> Schnellstartanleitung mit IDOUtils</a>!</p>
     </td></tr>
 </table></div>
 
@@ -132,9 +132,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.3.2. Voraussetzungen">
+  <div class="section" title="2.4.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prerequisites"></a>2.3.2. Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>2.4.2. Voraussetzungen</h3></div></div></div>
     
 
     <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
@@ -163,9 +163,9 @@
     brauchen.</p>
   </div>
 
-  <div class="section" title="2.3.3. Installation der Pakete">
+  <div class="section" title="2.4.3. Installation der Pakete">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="installpackages"></a>2.3.3. Installation der Pakete</h3></div></div></div>
+<a name="installpackages"></a>2.4.3. Installation der Pakete</h3></div></div></div>
     
 
     <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo).</p>
@@ -257,9 +257,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.3.4. Benutzerinformationen erstellen">
+  <div class="section" title="2.4.4. Benutzerinformationen erstellen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="createaccount"></a>2.3.4. Benutzerinformationen erstellen</h3></div></div></div>
+<a name="createaccount"></a>2.4.4. Benutzerinformationen erstellen</h3></div></div></div>
     
 
     <p>Werden Sie zum root-Benutzer.</p>
@@ -306,9 +306,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.3.5. Icinga und die Plugins herunterladen">
+  <div class="section" title="2.4.5. Icinga und die Plugins herunterladen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="downloadicingaandplugins"></a>2.3.5. Icinga und die Plugins herunterladen</h3></div></div></div>
+<a name="downloadicingaandplugins"></a>2.4.5. Icinga und die Plugins herunterladen</h3></div></div></div>
     
 
     <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
@@ -320,16 +320,16 @@
     <p>Vergessen Sie nicht die <a class="link" href="https://www.monitoring-plugins.org" target="_top">Monitoring Plugins</a>.</p>
   </div>
 
-  <div class="section" title="2.3.6. Icinga kompilieren und installieren">
+  <div class="section" title="2.4.6. Icinga kompilieren und installieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstall"></a>2.3.6. Icinga kompilieren und installieren</h3></div></div></div>
+<a name="compileinstall"></a>2.4.6. Icinga kompilieren und installieren</h3></div></div></div>
     
 
     <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
     <pre class="programlisting"> #&gt; cd /usr/src/
- #&gt; tar xvzf icinga-1.11.tar.gz
- #&gt; cd icinga-1.11</pre>
+ #&gt; tar xvzf icinga-1.12.tar.gz
+ #&gt; cd icinga-1.12</pre>
 
     <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -359,6 +359,34 @@
     </td></tr>
 </table></div>
 
+    <p>Aktuelle/kommende Distributionen (RedHat/CentOS 7, Fedora 20, Debian 8/Jessie, Gentoo, etc.)
+    unterstützendie Nutzung von systemd statt des SysVinit Systems.</p>
+
+    <p>Icinga 1.x enthält bereits die notwendigen Patches mit den erforderlichen systemd-Dateien und die RPMs installieren sie
+    ebenfalls. Die Source-Installation erfordert ggf. etwa folgendes</p>
+
+    <pre class="screen">#&gt; ./configure [...] --with-systemd-unit-dir=/usr/lib/systemd/system --with-systemd-sysconfig-dir=/etc/sysconfig
+#&gt; make install-systemd</pre>
+
+    <p>Dann aktivieren Sie den systemd-Service und starten Icinga</p>
+
+    <pre class="screen">#&gt; systemctl enable icinga
+#&gt; systemctl start icinga</pre>
+
+    <p>Status</p>
+
+    <pre class="screen">#&gt; systemctl status icinga</pre>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        Es gibt für systemd keine Unterstützung für den "checkconfig/show-errors"-Parameter, wie es für SysVinit der Fall ist. 
+      </td></tr>
+</table></div>
+
     <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
 
     <pre class="programlisting"> #&gt; make all</pre>
@@ -380,8 +408,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>enthalten,
-      um ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p>
+      <p><code class="literal">make install-config</code> ist NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um ein versehentliches
+      Überschreiben der Konfigurationsdateien zu verhindern.</p>
     </td></tr>
 </table></div>
 
@@ -391,8 +419,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Ab Icinga 1.7.0 werden mit <code class="literal">make install-eventhandlers</code> einige Beispiel-Eventhandler installiert. Das
-      ist lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
+      <p>Mit <code class="literal">make install-eventhandlers</code> werden einige Beispiel-Eventhandler installiert. Das ist lediglich in
+      <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
     </td></tr>
 </table></div>
 
@@ -405,9 +433,9 @@
     <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
   </div>
 
-  <div class="section" title="2.3.7. Anpassen der Konfiguration">
+  <div class="section" title="2.4.7. Anpassen der Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="customiseconfig"></a>2.3.7. Anpassen der Konfiguration</h3></div></div></div>
+<a name="customiseconfig"></a>2.4.7. Anpassen der Konfiguration</h3></div></div></div>
     
 
     <p>Beispiel-Konfigurationsdateien werden durch </p>
@@ -422,9 +450,9 @@
     <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
   </div>
 
-  <div class="section" title="2.3.8. Installieren und konfigurieren des klassischen Web-Interface">
+  <div class="section" title="2.4.8. Installieren und konfigurieren des klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configclassicui"></a>2.3.8. Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
+<a name="configclassicui"></a>2.4.8. Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Icinga stellt das klassische Webinterface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt
@@ -462,6 +490,10 @@
 <tr><td align="left" valign="top">
       <p>Beginnend mit Apache 2.4 (testing-Versionen von Debian / Ubuntu) müssen Sie die Konfiguration aktivieren</p>
 <pre class="screen">#&gt; a2enconf icinga</pre>
+
+      <p>Tun Sie das für das CGI-Modul</p>
+
+      <pre class="screen">#&gt; a2enmod cgi</pre>
     </td></tr>
 </table></div>
 
@@ -506,16 +538,16 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.3.9. Kompilieren und installieren der Monitoring Plugins">
+  <div class="section" title="2.4.9. Kompilieren und installieren der Monitoring Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstallplugins"></a>2.3.9. Kompilieren und installieren der Monitoring Plugins</h3></div></div></div>
+<a name="compileinstallplugins"></a>2.4.9. Kompilieren und installieren der Monitoring Plugins</h3></div></div></div>
     
 
     <p>Entpacken Sie die Monitoring Plugins-Quellcode-Archivdatei.</p>
 
     <pre class="programlisting"> #&gt; cd /usr/src
- #&gt; tar xzf nagios-plugins-1.5.tar.gz
- #&gt; cd nagios-plugins-1.5</pre>
+ #&gt; tar xzf nagios-plugins-2.1.tar.gz
+ #&gt; cd nagios-plugins-2.1</pre>
 
     <p>Kompilieren und installieren Sie die Plugins.</p>
 
@@ -526,9 +558,9 @@
  #&gt; make install</pre>
   </div>
 
-  <div class="section" title="2.3.10. Anpassen der SELinux-Einstellungen">
+  <div class="section" title="2.4.10. Anpassen der SELinux-Einstellungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="selinuxsettings"></a>2.3.10. Anpassen der SELinux-Einstellungen</h3></div></div></div>
+<a name="selinuxsettings"></a>2.4.10. Anpassen der SELinux-Einstellungen</h3></div></div></div>
     
 
     <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
@@ -564,9 +596,9 @@
     (englisch).</p>
   </div>
 
-  <div class="section" title="2.3.11. Icinga starten">
+  <div class="section" title="2.4.11. Icinga starten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="starticinga"></a>2.3.11. Icinga starten</h3></div></div></div>
+<a name="starticinga"></a>2.4.11. Icinga starten</h3></div></div></div>
     
 
     <p>Fügen Sie Icinga zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
@@ -602,9 +634,9 @@
     <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
   </div>
 
-  <div class="section" title="2.3.12. Anmelden am klassischen Web-Interface">
+  <div class="section" title="2.4.12. Anmelden am klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="loginclassicui"></a>2.3.12. Anmelden am klassischen Web-Interface</h3></div></div></div>
+<a name="loginclassicui"></a>2.4.12. Anmelden am klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
@@ -621,9 +653,9 @@
     weil die Prüfungen über eine gewisse Zeit verteilt werden.</p>
   </div>
 
-  <div class="section" title="2.3.13. Andere Anpassungen">
+  <div class="section" title="2.4.13. Andere Anpassungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="othermods"></a>2.3.13. Andere Anpassungen</h3></div></div></div>
+<a name="othermods"></a>2.4.13. Andere Anpassungen</h3></div></div></div>
     
 
     <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen,
@@ -637,18 +669,18 @@
     es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
   </div>
 
-  <div class="section" title="2.3.14. Fertig">
+  <div class="section" title="2.4.14. Fertig">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="done"></a>2.3.14. Fertig</h3></div></div></div>
+<a name="done"></a>2.4.14. Fertig</h3></div></div></div>
     
 
     <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idm251272035344"></a>
+    <a class="indexterm" name="idm249452606256"></a>
 
-    <a class="indexterm" name="idm251272033680"></a>
+    <a class="indexterm" name="idm249452604640"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -662,9 +694,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.2. Schnellstart-Installationsanleitungen </td>
+<td width="40%" align="left" valign="top">2.3. Schnellstart-Installationsanleitungen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.4. Icinga-Schnellstart auf FreeBSD</td>
+<td width="40%" align="right" valign="top"> 2.5. Icinga-Schnellstart auf FreeBSD</td>
 </tr>
 </table>
 </div>

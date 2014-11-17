@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.5. Icinga-Schnellstart mit IDOUtils</title>
+<title>2.6. Icinga-Schnellstart mit IDOUtils</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="quickstart-icinga-freebsd.html" title="2.4. Icinga-Schnellstart auf FreeBSD">
-<link rel="next" href="quickstart-idoutils-freebsd.html" title="2.6. Icinga-Schnellstart mit IDOUtils auf FreeBSD">
+<link rel="prev" href="quickstart-icinga-freebsd.html" title="2.5. Icinga-Schnellstart auf FreeBSD">
+<link rel="next" href="quickstart-idoutils-freebsd.html" title="2.7. Icinga-Schnellstart mit IDOUtils auf FreeBSD">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.5. Icinga-Schnellstart mit IDOUtils</th></tr>
+<tr><th colspan="3" align="center">2.6. Icinga-Schnellstart mit IDOUtils</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="quickstart-icinga-freebsd.html">Zurück</a> </td>
@@ -26,35 +26,35 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.5. Icinga-Schnellstart mit IDOUtils">
+<div class="section" title="2.6. Icinga-Schnellstart mit IDOUtils">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="quickstart-idoutils"></a>2.5. Icinga-Schnellstart mit IDOUtils</h2></div></div></div>
+<a name="quickstart-idoutils"></a>2.6. Icinga-Schnellstart mit IDOUtils</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.5.1. <a href="quickstart-idoutils.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">2.5.2. <a href="quickstart-idoutils.html#prerequisites">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.5.3. <a href="quickstart-idoutils.html#newfeatures">Neue Features für die IDOUtils:</a></span></dt>
-<dt><span class="section">2.5.4. <a href="quickstart-idoutils.html#installpackages">Installation der Pakete</a></span></dt>
-<dt><span class="section">2.5.5. <a href="quickstart-idoutils.html#createaccount">Benutzerinformationen erstellen</a></span></dt>
-<dt><span class="section">2.5.6. <a href="quickstart-idoutils.html#downloadicingaandplugins">Icinga und die Plugins herunterladen</a></span></dt>
-<dt><span class="section">2.5.7. <a href="quickstart-idoutils.html#compileinstallidoutils">Icinga und die IDOUtils kompilieren und installieren</a></span></dt>
-<dt><span class="section">2.5.8. <a href="quickstart-idoutils.html#compileinstall">Kompilieren und Installieren</a></span></dt>
-<dt><span class="section">2.5.9. <a href="quickstart-idoutils.html#customiseconfig">Anpassen der Konfiguration</a></span></dt>
-<dt><span class="section">2.5.10. <a href="quickstart-idoutils.html#enableidomod">Aktivieren des idomod-Eventbroker-Moduls</a></span></dt>
-<dt><span class="section">2.5.11. <a href="quickstart-idoutils.html#createidoutilsdatabase">Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen</a></span></dt>
-<dt><span class="section">2.5.12. <a href="quickstart-idoutils.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Kompilieren und installieren der Plugins</a></span></dt>
-<dt><span class="section">2.5.14. <a href="quickstart-idoutils.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
-<dt><span class="section">2.5.15. <a href="quickstart-idoutils.html#startiido2dbandicinga">IDOUtils und Icinga starten</a></span></dt>
-<dt><span class="section">2.5.16. <a href="quickstart-idoutils.html#configstartup">Automatischer Start von IDOUtils</a></span></dt>
-<dt><span class="section">2.5.17. <a href="quickstart-idoutils.html#loginclassicui">Anmelden am klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.5.18. <a href="quickstart-idoutils.html#othermods">Andere Anpassungen</a></span></dt>
-<dt><span class="section">2.5.19. <a href="quickstart-idoutils.html#done">Fertig</a></span></dt>
+<dt><span class="section">2.6.1. <a href="quickstart-idoutils.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.6.2. <a href="quickstart-idoutils.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">2.6.3. <a href="quickstart-idoutils.html#newfeatures">Neue Features für die IDOUtils:</a></span></dt>
+<dt><span class="section">2.6.4. <a href="quickstart-idoutils.html#installpackages">Installation der Pakete</a></span></dt>
+<dt><span class="section">2.6.5. <a href="quickstart-idoutils.html#createaccount">Benutzerinformationen erstellen</a></span></dt>
+<dt><span class="section">2.6.6. <a href="quickstart-idoutils.html#downloadicingaandplugins">Icinga und die Plugins herunterladen</a></span></dt>
+<dt><span class="section">2.6.7. <a href="quickstart-idoutils.html#compileinstallidoutils">Icinga und die IDOUtils kompilieren und installieren</a></span></dt>
+<dt><span class="section">2.6.8. <a href="quickstart-idoutils.html#compileinstall">Kompilieren und Installieren</a></span></dt>
+<dt><span class="section">2.6.9. <a href="quickstart-idoutils.html#customiseconfig">Anpassen der Konfiguration</a></span></dt>
+<dt><span class="section">2.6.10. <a href="quickstart-idoutils.html#enableidomod">Aktivieren des idomod-Eventbroker-Moduls</a></span></dt>
+<dt><span class="section">2.6.11. <a href="quickstart-idoutils.html#createidoutilsdatabase">Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen</a></span></dt>
+<dt><span class="section">2.6.12. <a href="quickstart-idoutils.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.6.13. <a href="quickstart-idoutils.html#compileinstallplugins">Kompilieren und installieren der Plugins</a></span></dt>
+<dt><span class="section">2.6.14. <a href="quickstart-idoutils.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
+<dt><span class="section">2.6.15. <a href="quickstart-idoutils.html#startiido2dbandicinga">IDOUtils und Icinga starten</a></span></dt>
+<dt><span class="section">2.6.16. <a href="quickstart-idoutils.html#configstartup">Automatischer Start von IDOUtils</a></span></dt>
+<dt><span class="section">2.6.17. <a href="quickstart-idoutils.html#loginclassicui">Anmelden am klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.6.18. <a href="quickstart-idoutils.html#othermods">Andere Anpassungen</a></span></dt>
+<dt><span class="section">2.6.19. <a href="quickstart-idoutils.html#done">Fertig</a></span></dt>
 </dl></div>
   
 
-  <div class="section" title="2.5.1. Einführung">
+  <div class="section" title="2.6.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.5.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>2.6.1. Einführung</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -113,7 +113,7 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Wenn Sie planen, Icinga OHNE IDOUtils zu nutzen, dann lesen Sie statt dessen <a class="xref" href="quickstart-icinga.html" title="2.3. Icinga-Schnellstart auf Linux">Abschnitt 2.3, „Icinga-Schnellstart auf Linux“</a>!</p>
+      <p>Wenn Sie planen, Icinga OHNE IDOUtils zu nutzen, dann lesen Sie statt dessen <a class="xref" href="quickstart-icinga.html" title="2.4. Icinga-Schnellstart auf Linux">Abschnitt 2.4, „Icinga-Schnellstart auf Linux“</a>!</p>
     </td></tr>
 </table></div>
 
@@ -138,9 +138,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.2. Voraussetzungen">
+  <div class="section" title="2.6.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prerequisites"></a>2.5.2. Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>2.6.2. Voraussetzungen</h3></div></div></div>
     
 
     <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
@@ -189,9 +189,9 @@
     brauchen.</p>
   </div>
 
-  <div class="section" title="2.5.3. Neue Features für die IDOUtils:">
+  <div class="section" title="2.6.3. Neue Features für die IDOUtils:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="newfeatures"></a>2.5.3. Neue Features für die IDOUtils:</h3></div></div></div>
+<a name="newfeatures"></a>2.6.3. Neue Features für die IDOUtils:</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -222,17 +222,6 @@
           </li>
 <li class="listitem">
             <p>installieren Sie statt des libdbi-Treibers den ocilib-Treiber</p>
-
-            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-              <p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benötigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder
-              3.9.1, denn diese Version sind fehlerbehaftet.</p>
-            </td></tr>
-</table></div>
 
             <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -279,12 +268,10 @@
 
         <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Zeitzonenunterstützung</strong></span></p>
 
-        <p>Ab Icinga 1.6 werden alle Zeit-/Datumsinformationen als lokale Zeitstempel in der Datenbank gespeichert. Vorher gab es
-        für jedes Datenbanksystem unterschiedliche Vorgehensweisen beim Speichern und Abrufen der Daten, was schwierig für
-        Frontend-Applikationen war. Deshalb wurden die Datentypen geändert: für MySQL von DATETIME in TIMESTAMP und für Oracle
-        von DATE in LOCAL TIMESTAMP (0). PostgreSQL benutzt bereits TIMESTAMP, es wurde aber in TIMESTAMP WITH TIME ZONE geändert.
-        IDO2DB wird die Sitzungszeitzone auf UTC setzen und alle Unix-Timestamps (die per Definition UTC sind) als UTC-basierte Werte
-        speichern. Bitte stellen Sie sicher, dass Ihr System Unix-Timestamps als UTC-basierte Werte ausgibt (wie "date -u '+%s'").</p>
+        <p>Alle Zeit-/Datumsinformationen werden als lokale Zeitstempel in der Datenbank gespeichert. Als Datentypen werden TIMESTAMP für
+        MySQL, LOCAL TIMESTAMP (0) für Oracle und TIMESTAMP WITH TIME ZONE für PostgreSQL benutzt. IDO2DB wird die
+        Sitzungszeitzone auf UTC setzen und alle Unix-Timestamps (die per Definition UTC sind) als UTC-basierte Werte speichern. Bitte
+        stellen Sie sicher, dass Ihr System Unix-Timestamps als UTC-basierte Werte ausgibt (wie "date -u '+%s'").</p>
 
         <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -305,9 +292,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.4. Installation der Pakete">
+  <div class="section" title="2.6.4. Installation der Pakete">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="installpackages"></a>2.5.4. Installation der Pakete</h3></div></div></div>
+<a name="installpackages"></a>2.6.4. Installation der Pakete</h3></div></div></div>
     
 
     <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo).</p>
@@ -501,9 +488,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.5. Benutzerinformationen erstellen">
+  <div class="section" title="2.6.5. Benutzerinformationen erstellen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="createaccount"></a>2.5.5. Benutzerinformationen erstellen</h3></div></div></div>
+<a name="createaccount"></a>2.6.5. Benutzerinformationen erstellen</h3></div></div></div>
     
 
     <p>Werden Sie zum root-Benutzer.</p>
@@ -549,9 +536,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.5.6. Icinga und die Plugins herunterladen">
+  <div class="section" title="2.6.6. Icinga und die Plugins herunterladen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="downloadicingaandplugins"></a>2.5.6. Icinga und die Plugins herunterladen</h3></div></div></div>
+<a name="downloadicingaandplugins"></a>2.6.6. Icinga und die Plugins herunterladen</h3></div></div></div>
     
 
     <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
@@ -563,16 +550,16 @@
     <p>Vergessen Sie nicht die <a class="link" href="https://www.monitoring-plugins.org" target="_top">Monitoring Plugins</a>.</p>
   </div>
 
-  <div class="section" title="2.5.7. Icinga und die IDOUtils kompilieren und installieren">
+  <div class="section" title="2.6.7. Icinga und die IDOUtils kompilieren und installieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstallidoutils"></a>2.5.7. Icinga und die IDOUtils kompilieren und installieren</h3></div></div></div>
+<a name="compileinstallidoutils"></a>2.6.7. Icinga und die IDOUtils kompilieren und installieren</h3></div></div></div>
     
 
     <p>Entpacken Sie das Icinga-Archiv</p>
 
     <pre class="programlisting"> #&gt; cd /usr/src/ 
- #&gt; tar xvzf icinga-1.11.tar.gz 
- #&gt; cd icinga-1.11</pre>
+ #&gt; tar xvzf icinga-1.12.tar.gz 
+ #&gt; cd icinga-1.12</pre>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -675,9 +662,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.8. Kompilieren und Installieren">
+  <div class="section" title="2.6.8. Kompilieren und Installieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstall"></a>2.5.8. Kompilieren und Installieren</h3></div></div></div>
+<a name="compileinstall"></a>2.6.8. Kompilieren und Installieren</h3></div></div></div>
     
 
     <p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für IDOUtils (<span class="emphasis"><em>make
@@ -731,23 +718,12 @@
     </td></tr>
 </table></div>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Die Icinga-API diente als eine in PHP geschriebene Datenbank-Abstraktionsschicht. Seit Icinga ist sie durch eine
-      interne Datenbank-Abstraktionsschicht ersetzt worden, so dass Icinga-API nicht mehr installiert werden muss.</p>
-    </td></tr>
-</table></div>
-
     <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
   </div>
 
-  <div class="section" title="2.5.9. Anpassen der Konfiguration">
+  <div class="section" title="2.6.9. Anpassen der Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="customiseconfig"></a>2.5.9. Anpassen der Konfiguration</h3></div></div></div>
+<a name="customiseconfig"></a>2.6.9. Anpassen der Konfiguration</h3></div></div></div>
     
 
     <p>Beispiel-Konfigurationsdateien werden durch </p>
@@ -788,9 +764,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.5.10. Aktivieren des idomod-Eventbroker-Moduls">
+  <div class="section" title="2.6.10. Aktivieren des idomod-Eventbroker-Moduls">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="enableidomod"></a>2.5.10. Aktivieren des idomod-Eventbroker-Moduls</h3></div></div></div>
+<a name="enableidomod"></a>2.6.10. Aktivieren des idomod-Eventbroker-Moduls</h3></div></div></div>
     
 
     <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -812,9 +788,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.5.11. Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen">
+  <div class="section" title="2.6.11. Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="createidoutilsdatabase"></a>2.5.11. Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen</h3></div></div></div>
+<a name="createidoutilsdatabase"></a>2.6.11. Anlegen und konfigurieren von Datenbank, Benutzer und Berechtigungen</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -951,9 +927,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.12. Installieren und konfigurieren des klassischen Web-Interface">
+  <div class="section" title="2.6.12. Installieren und konfigurieren des klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configclassicui"></a>2.5.12. Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
+<a name="configclassicui"></a>2.6.12. Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Icinga stellt das klassische Web-Interface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt
@@ -1046,16 +1022,16 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.5.13. Kompilieren und installieren der Plugins">
+  <div class="section" title="2.6.13. Kompilieren und installieren der Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compileinstallplugins"></a>2.5.13. Kompilieren und installieren der Plugins</h3></div></div></div>
+<a name="compileinstallplugins"></a>2.6.13. Kompilieren und installieren der Plugins</h3></div></div></div>
     
 
     <p>Entpacken Sie die Plugins-Quellcode-Archivdatei.</p>
 
     <pre class="screen"> #&gt; cd /usr/src
- #&gt; tar xzf nagios-plugins-1.5.tar.gz
- #&gt; cd nagios-plugins-1.5</pre>
+ #&gt; tar xzf nagios-plugins-2.1.tar.gz
+ #&gt; cd nagios-plugins-2.1</pre>
 
     <p>Kompilieren und installieren Sie die Plugins.</p>
 
@@ -1065,9 +1041,9 @@
  #&gt; make install</pre>
   </div>
 
-  <div class="section" title="2.5.14. Anpassen der SELinux-Einstellungen">
+  <div class="section" title="2.6.14. Anpassen der SELinux-Einstellungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="selinuxsettings"></a>2.5.14. Anpassen der SELinux-Einstellungen</h3></div></div></div>
+<a name="selinuxsettings"></a>2.6.14. Anpassen der SELinux-Einstellungen</h3></div></div></div>
     
 
     <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
@@ -1103,9 +1079,9 @@
     (englisch).</p>
   </div>
 
-  <div class="section" title="2.5.15. IDOUtils und Icinga starten">
+  <div class="section" title="2.6.15. IDOUtils und Icinga starten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="startiido2dbandicinga"></a>2.5.15. IDOUtils und Icinga starten</h3></div></div></div>
+<a name="startiido2dbandicinga"></a>2.6.15. IDOUtils und Icinga starten</h3></div></div></div>
     
 
     <p>IDOUtils muss vor Icinga gestartet werden</p>
@@ -1141,9 +1117,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.5.16. Automatischer Start von IDOUtils">
+  <div class="section" title="2.6.16. Automatischer Start von IDOUtils">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configstartup"></a>2.5.16. Automatischer Start von IDOUtils</h3></div></div></div>
+<a name="configstartup"></a>2.6.16. Automatischer Start von IDOUtils</h3></div></div></div>
     
 
     <p>Fügen Sie IDOUtils zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
@@ -1190,9 +1166,9 @@
     <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
   </div>
 
-  <div class="section" title="2.5.17. Anmelden am klassischen Web-Interface">
+  <div class="section" title="2.6.17. Anmelden am klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="loginclassicui"></a>2.5.17. Anmelden am klassischen Web-Interface</h3></div></div></div>
+<a name="loginclassicui"></a>2.6.17. Anmelden am klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
@@ -1209,9 +1185,9 @@
     weil die Prüfungen über eine gewisse Zeit verteilt werden.</p>
   </div>
 
-  <div class="section" title="2.5.18. Andere Anpassungen">
+  <div class="section" title="2.6.18. Andere Anpassungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="othermods"></a>2.5.18. Andere Anpassungen</h3></div></div></div>
+<a name="othermods"></a>2.6.18. Andere Anpassungen</h3></div></div></div>
     
 
     <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen,
@@ -1225,18 +1201,18 @@
     es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a></p>
   </div>
 
-  <div class="section" title="2.5.19. Fertig">
+  <div class="section" title="2.6.19. Fertig">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="done"></a>2.5.19. Fertig</h3></div></div></div>
+<a name="done"></a>2.6.19. Fertig</h3></div></div></div>
     
 
     <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idm251271682272"></a>
+    <a class="indexterm" name="idm249452255600"></a>
 
-    <a class="indexterm" name="idm251271680480"></a>
+    <a class="indexterm" name="idm249452253936"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1250,9 +1226,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.4. Icinga-Schnellstart auf FreeBSD </td>
+<td width="40%" align="left" valign="top">2.5. Icinga-Schnellstart auf FreeBSD </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.6. Icinga-Schnellstart mit IDOUtils auf FreeBSD</td>
+<td width="40%" align="right" valign="top"> 2.7. Icinga-Schnellstart mit IDOUtils auf FreeBSD</td>
 </tr>
 </table>
 </div>

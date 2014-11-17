@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
 <link rel="prev" href="int-tcpwrappers.html" title="9.3. TCP Wrapper Integration">
 <link rel="next" href="reporting.html" title="9.5. Installation of the Icinga Reporting with JasperReports Server">
@@ -64,29 +64,21 @@
  cp src/livestatus.o /usr/local/icinga/bin</pre>
       </li>
 <li class="listitem">
-        <p>Edit <span class="emphasis"><em>icinga.cfg</em></span> to integrate the module. Please make sure that the directory
-        <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> exists and is writable for the Icinga user. It should be the same directory used for
-        the command file (mostly icinga.cmd). "live" is a socket and it will only be present during runtime of the module.</p>
-
-        <p><code class="code"> broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
-
-        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-          <p>Starting with Icinga 1.4 you can use the new module definition in one of your object configuration files instead of
-          specifying a broker_module entry:</p>
-
-          <pre class="screen"> define module{
+        <p>Create a module definition in the <code class="filename">modules</code> subdirectory:</p>
+<pre class="programlisting"> define module{
         module_name    mklivestatus
         path           /usr/local/icinga/bin/livestatus.o
         module_type    neb
         args           /usr/local/icinga/var/rw/live
         }</pre>
-        </td></tr>
-</table></div>
+<p>Please make sure that the directory <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> exists and is writable for the
+        Icinga user. It should be the same directory used for the command file (mostly <code class="filename">icinga.cmd</code>). "live" is a socket
+        and it will only be present during runtime of the module.</p>
+
+        <p>Instead of a module definition you can add a broker_module entry in the main configuration file. Edit
+        <span class="emphasis"><em>icinga.cfg</em></span> to integrate the module.</p>
+
+        <p><code class="code">broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
       </li>
 <li class="listitem">
         <p>Restart Icinga</p>
@@ -107,9 +99,9 @@
       </li>
 </ol></div>
 
-    <a class="indexterm" name="idm251248841344"></a>
+    <a class="indexterm" name="idm249449777040"></a>
 
-    <a class="indexterm" name="idm251248840256"></a>
+    <a class="indexterm" name="idm249449775632"></a>
   </div>
 </div>
 <div class="navfooter">

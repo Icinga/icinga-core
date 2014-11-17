@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="configobject.html" title="3.3. Object Configuration Overview">
 <link rel="next" href="customobjectvars.html" title="3.5. Custom Object Variables">
@@ -83,8 +83,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Please try to avoid special characters in the object definitions. In Icinga &lt;= 1.5.0 there was a bug which prevented
-    forcing reschedules from the classic ui resulting in the error message that you are not authorized.</p>
+    <p>Please try to avoid special characters in the object definitions.</p>
   </td></tr>
 </table></div>
 
@@ -110,7 +109,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Sample object configuration files are installed in the <span class="emphasis"><em>/usr/local/icinga/etc/</em></span> directory when you follow the
-    <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart installation guide</a>.</p>
 
     <p>If you installed a package then the sample files might be missing. The contents is listed <a class="link" href="sample-config.html" title="13.1. Sample configuration files and definitions">here</a> for reference.</p>
   </td></tr>
@@ -148,9 +147,9 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="idm251260756640"></a>
+  <a class="indexterm" name="idm249461657408"></a>
 
-  <a class="indexterm" name="idm251260755360"></a>
+  <a class="indexterm" name="idm249461656160"></a>
 
   <div class="section" title="3.4.1. Host definition">
 <div class="titlepage"><div><div><h3 class="title">
@@ -490,7 +489,7 @@
 <tr><td align="left" valign="top">
                 <p>If you do not specify an address6 directive in a host definition, the name of the host will be used as its address. A
                 word of caution about doing this, however - if DNS fails, most of your service checks will fail because the plugins will be
-                unable to resolve the host name (available starting with Icinga 1.3).</p>
+                unable to resolve the host name.</p>
               </td></tr>
 </table></div>
 </td>
@@ -885,9 +884,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251260641168"></a>
+    <a class="indexterm" name="idm249461541648"></a>
 
-    <a class="indexterm" name="idm251260438416"></a>
+    <a class="indexterm" name="idm249461336016"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgroup Definition">
@@ -1026,9 +1025,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251260372688"></a>
+    <a class="indexterm" name="idm249461273552"></a>
 
-    <a class="indexterm" name="idm251260371584"></a>
+    <a class="indexterm" name="idm249461272544"></a>
   </div>
 
   <div class="section" title="3.4.3. Service Definition">
@@ -1675,9 +1674,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251260262656"></a>
+    <a class="indexterm" name="idm249461162960"></a>
 
-    <a class="indexterm" name="idm251260071152"></a>
+    <a class="indexterm" name="idm249460974672"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegroup Definition">
@@ -1787,8 +1786,8 @@
             <span class="emphasis"><em>servicegroups</em></span> directive in <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definitions</a>. The format
             of the member directive is as follows (note that a host name must precede a service name/description):</p> <p>
             members=&lt;host1&gt;,&lt;service1&gt;,&lt;host2&gt;,&lt;service2&gt;,...,&lt;host<span class="emphasis"><em>n</em></span>&gt;,&lt;service<span class="emphasis"><em>n</em></span>&gt;</p>
-            <p>Starting with Icinga 1.2 it is possible to use "*" as a wildcard for all hosts. Please note that it is NOT possible
-            to exclude neither hosts nor services using the "!" at the beginning of the host or service.</p>
+            <p>It is possible to use "*" as a wildcard for all hosts. Please note that it is NOT possible to exclude neither hosts nor
+            services using the "!" at the beginning of the host or service.</p>
 </td>
 </tr>
 <tr>
@@ -1822,9 +1821,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251260005728"></a>
+    <a class="indexterm" name="idm249460906672"></a>
 
-    <a class="indexterm" name="idm251260004624"></a>
+    <a class="indexterm" name="idm249460905568"></a>
   </div>
 
   <div class="section" title="3.4.5. Contact Definition">
@@ -2112,9 +2111,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259857168"></a>
+    <a class="indexterm" name="idm249460758112"></a>
 
-    <a class="indexterm" name="idm251259856160"></a>
+    <a class="indexterm" name="idm249460757104"></a>
   </div>
 
   <div class="section" title="3.4.6. Contactgroup Definition">
@@ -2218,9 +2217,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259810352"></a>
+    <a class="indexterm" name="idm249460711120"></a>
 
-    <a class="indexterm" name="idm251259809344"></a>
+    <a class="indexterm" name="idm249460710112"></a>
   </div>
 
   <div class="section" title="3.4.7. Timeperiod Definition">
@@ -2384,9 +2383,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259754816"></a>
+    <a class="indexterm" name="idm249460655328"></a>
 
-    <a class="indexterm" name="idm251259753808"></a>
+    <a class="indexterm" name="idm249460654320"></a>
   </div>
 
   <div class="section" title="3.4.8. Command Definition">
@@ -2489,9 +2488,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259706672"></a>
+    <a class="indexterm" name="idm249460611408"></a>
 
-    <a class="indexterm" name="idm251259705552"></a>
+    <a class="indexterm" name="idm249460606768"></a>
   </div>
 
   <div class="section" title="3.4.9. Servicedependency Definition">
@@ -2689,9 +2688,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259598512"></a>
+    <a class="indexterm" name="idm249460499248"></a>
 
-    <a class="indexterm" name="idm251259597504"></a>
+    <a class="indexterm" name="idm249460498240"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceescalation Definition">
@@ -2936,7 +2935,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
-<td><p>This directive is completely optional (and only available starting with Icinga 1.0.1). Details can be found <a class="link" href="escalation_condition.html" title="7.10. Escalation Condition">here</a>.</p></td>
+<td><p>This directive is completely optional. Details can be found <a class="link" href="escalation_condition.html" title="7.10. Escalation Condition">here</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_warning_notification</strong></span>:</p></td>
@@ -2981,9 +2980,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259458288"></a>
+    <a class="indexterm" name="idm249460358944"></a>
 
-    <a class="indexterm" name="idm251259457280"></a>
+    <a class="indexterm" name="idm249460357936"></a>
   </div>
 
   <div class="section" title="3.4.11. Hostdependency Definition">
@@ -3146,9 +3145,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259373936"></a>
+    <a class="indexterm" name="idm249460274352"></a>
 
-    <a class="indexterm" name="idm251259372928"></a>
+    <a class="indexterm" name="idm249460273344"></a>
   </div>
 
   <div class="section" title="3.4.12. Hostescalation Definition">
@@ -3385,9 +3384,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259266080"></a>
+    <a class="indexterm" name="idm249460166768"></a>
 
-    <a class="indexterm" name="idm251259265072"></a>
+    <a class="indexterm" name="idm249460165760"></a>
   </div>
 
   <div class="section" title="3.4.13. Hostextinfo Definition">
@@ -3590,9 +3589,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259177968"></a>
+    <a class="indexterm" name="idm249460078880"></a>
 
-    <a class="indexterm" name="idm251259176864"></a>
+    <a class="indexterm" name="idm249460077872"></a>
   </div>
 
   <div class="section" title="3.4.14. Serviceextinfo Definition">
@@ -3763,9 +3762,9 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idm251259100400"></a>
+    <a class="indexterm" name="idm249460001072"></a>
 
-    <a class="indexterm" name="idm251259099216"></a>
+    <a class="indexterm" name="idm249459999904"></a>
   </div>
 
   <div class="section" title="3.4.15. Module Definition">
@@ -3777,16 +3776,6 @@
 
     <p>A module definition is used to specify information about a module. It can be used instead of a broker_module entry in the main
     configuration file thus being more flexible (you can use cfg_file/cfg_dir entries to include it).</p>
-
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Module definitions are available starting with Icinga 1.4.</p>
-    </td></tr>
-</table></div>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -3900,7 +3889,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idm251259053360"></a>
+    <a class="indexterm" name="idm249459954816"></a>
   </div>
 </div>
 <div class="navfooter">

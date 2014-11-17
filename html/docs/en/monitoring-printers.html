@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.15. Monitoring Network Printers</title>
+<title>2.16. Monitoring Network Printers</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="monitoring-netware.html" title="2.14. Monitoring Netware Servers">
-<link rel="next" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">
+<link rel="prev" href="monitoring-netware.html" title="2.15. Monitoring Netware Servers">
+<link rel="next" href="monitoring-routers.html" title="2.17. Monitoring Routers and Switches">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.15. Monitoring Network Printers</th></tr>
+<tr><th colspan="3" align="center">2.16. Monitoring Network Printers</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-netware.html">Prev</a> </td>
@@ -26,25 +26,25 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.15. Monitoring Network Printers">
+<div class="section" title="2.16. Monitoring Network Printers">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-printers"></a>2.15. <a name="monitoring_printers"></a>Monitoring Network Printers</h2></div></div></div>
+<a name="monitoring-printers"></a>2.16. <a name="monitoring_printers"></a>Monitoring Network Printers</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction_printers">Introduction</a></span></dt>
-<dt><span class="section">2.15.2. <a href="monitoring-printers.html#overview">Overview</a></span></dt>
-<dt><span class="section">2.15.3. <a href="monitoring-printers.html#steps">Steps</a></span></dt>
-<dt><span class="section">2.15.4. <a href="monitoring-printers.html#whatsdone">What's Already Done For You</a></span></dt>
-<dt><span class="section">2.15.5. <a href="monitoring-printers.html#prerequisites">Prerequisites</a></span></dt>
-<dt><span class="section">2.15.6. <a href="monitoring-printers.html#configicinga">Configuring Icinga</a></span></dt>
-<dt><span class="section">2.15.7. <a href="monitoring-printers.html#restarticinga">Restarting Icinga</a></span></dt>
+<dt><span class="section">2.16.1. <a href="monitoring-printers.html#introduction_printers">Introduction</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-printers.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-printers.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-printers.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-printers.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-printers.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-printers.html#restarticinga">Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251263551248"></a>
+  <a class="indexterm" name="idm249464445728"></a>
 
-  <div class="section" title="2.15.1. Introduction">
+  <div class="section" title="2.16.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction_printers"></a>2.15.1. Introduction</h3></div></div></div>
+<a name="introduction_printers"></a>2.16.1. Introduction</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -95,7 +95,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart
       guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
       (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the quickstart.</p>
 
@@ -104,9 +104,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.15.2. Overview">
+  <div class="section" title="2.16.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>2.15.2. Overview</h3></div></div></div>
+<a name="overview"></a>2.16.2. Overview</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -125,14 +125,14 @@
       <p>The <span class="emphasis"><em>check_hpjd</em></span> plugin will only get compiled and installed if you have the net-snmp and net-snmp-utils
       packages installed on your system. Make sure the plugin exists in <span class="emphasis"><em>/usr/local/icinga/libexec</em></span> before you continue.
       If it doesn't, install net-snmp and net-snmp-utils and recompile/reinstall the Nagios plugins after issuing "make clean" in the
-      source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="2.3. Icinga Quickstart">Quickstart Guide</a> for details.</p>
+      source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="2.4. Icinga Quickstart">Quickstart Guide</a> for details.</p>
     </td></tr>
 </table></div>
   </div>
 
-  <div class="section" title="2.15.3. Steps">
+  <div class="section" title="2.16.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="steps"></a>2.15.3. Steps</h3></div></div></div>
+<a name="steps"></a>2.16.3. Steps</h3></div></div></div>
     
 
     <p>There are several steps you'll need to follow in order to monitor a new network printer. They are:</p>
@@ -150,9 +150,9 @@
 </ol></div>
   </div>
 
-  <div class="section" title="2.15.4. What's Already Done For You">
+  <div class="section" title="2.16.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="whatsdone"></a>2.15.4. What's Already Done For You</h3></div></div></div>
+<a name="whatsdone"></a>2.16.4. What's Already Done For You</h3></div></div></div>
     
 
     <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
@@ -174,9 +174,9 @@
     be monitoring your network printers in no time.</p>
   </div>
 
-  <div class="section" title="2.15.5. Prerequisites">
+  <div class="section" title="2.16.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prerequisites"></a>2.15.5. Prerequisites</h3></div></div></div>
+<a name="prerequisites"></a>2.16.5. Prerequisites</h3></div></div></div>
     
 
     <p>The first time you configure Icinga to monitor a network printer, you'll need to do a bit of extra work. Remember, you only
@@ -198,9 +198,9 @@
     sample host and service definitions in that file, rather than creating new ones.</p>
   </div>
 
-  <div class="section" title="2.15.6. Configuring Icinga">
+  <div class="section" title="2.16.6. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configicinga"></a>2.15.6. Configuring Icinga</h3></div></div></div>
+<a name="configicinga"></a>2.16.6. Configuring Icinga</h3></div></div></div>
     
 
     <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new printer.</p>
@@ -264,9 +264,9 @@
     <p>Save the file.</p>
   </div>
 
-  <div class="section" title="2.15.7. Restarting Icinga">
+  <div class="section" title="2.16.7. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="restarticinga"></a>2.15.7. Restarting Icinga</h3></div></div></div>
+<a name="restarticinga"></a>2.16.7. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>printer.cfg</em></span> file, you're ready to start
@@ -287,9 +287,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.14. Monitoring Netware Servers </td>
+<td width="40%" align="left" valign="top">2.15. Monitoring Netware Servers </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 2.16. Monitoring Routers and Switches</td>
+<td width="40%" align="right" valign="top"> 2.17. Monitoring Routers and Switches</td>
 </tr>
 </table>
 </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="escalations.html" title="7.9. Notification Escalations">
 <link rel="next" href="oncallrotation.html" title="7.11. On-Call Rotations">
@@ -39,74 +39,71 @@
   <div class="section" title="7.10.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.10.1. Introduction</h3></div></div></div>
-	  
+    
 
-  <p>Starting with Icinga 1.0.1 a patch is implemented which introduces the ability to define an escalation_condition (similar to escalation_options [w,u,c,r]). An
-  escalation with a defined condition will only be escalated if the current state of a particular host/service fits the condition.
-  One possible example of use for this could be the following scenario:</p>
+    <p>An escalation_condition is similar to escalation_options [w,u,c,r]. An escalation with a defined condition will only be escalated
+    if the current state of a particular host/service fits the condition. One possible example of use for this could be the following
+    scenario:</p>
 
-  <p>Imagine two different escalations for the same service <span class="emphasis"><em>foo</em></span>. One of them should only escalate when
-  service <span class="emphasis"><em>bar</em></span> is OK, the other should escalate if <span class="emphasis"><em>bar</em></span> is CRITICAL or WARNING. Now think
-  about <span class="emphasis"><em>foo</em></span> being the main service offered by a company and the admin has to react immediately if it is down.
-  <span class="emphasis"><em>bar</em></span> could be a service indicating if the admin is in the office or at home and the escalation would react
-  as following:</p>
+    <p>Imagine two different escalations for the same service <span class="emphasis"><em>foo</em></span>. One of them should only escalate when service
+    <span class="emphasis"><em>bar</em></span> is OK, the other should escalate if <span class="emphasis"><em>bar</em></span> is CRITICAL or WARNING. Now think about
+    <span class="emphasis"><em>foo</em></span> being the main service offered by a company and the admin has to react immediately if it is down.
+    <span class="emphasis"><em>bar</em></span> could be a service indicating if the admin is in the office or at home and the escalation would react as
+    following:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If the admin is in the office, send an email first, after 5 minutes send an SMS</p>
-    </li>
+        <p>If the admin is in the office, send an email first, after 5 minutes send an SMS</p>
+      </li>
 <li class="listitem">
-      <p>If the admin is at home, send an SMS first and after 30 minutes a second SMS to the admin and the head of
-      department</p>
-    </li>
+        <p>If the admin is at home, send an SMS first and after 30 minutes a second SMS to the admin and the head of department</p>
+      </li>
 </ul></div>
 
-  <p><span class="emphasis"><em>This should be achieved without reloading or restarting the Icinga service.</em></span></p>
-
+    <p><span class="emphasis"><em>This should be achieved without reloading or restarting the Icinga service.</em></span></p>
   </div>
 
   <div class="section" title="7.10.2. Syntax">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="syntax"></a>7.10.2. Syntax</h3></div></div></div>
-	  
+    
 
-  <p>The escalation_condition option is completely optional and can be defined for host escalations as well as for service
-  escalations. The syntax is:</p>
+    <p>The escalation_condition option is completely optional and can be defined for host escalations as well as for service escalations.
+    The syntax is:</p>
 
-  <p><code class="literal">escalation_condition &lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )*</code></p>
+    <p><code class="literal">escalation_condition &lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )*</code></p>
 
-  <p>where &lt;condition&gt; is either: <code class="literal">host hostname = [u,d,o]</code> or <code class="literal">service
-  hostname.service_description = [w,u,c,o]</code>.</p>
+    <p>where &lt;condition&gt; is either: <code class="literal">host hostname = [u,d,o]</code> or <code class="literal">service hostname.service_description =
+    [w,u,c,o]</code>.</p>
 
-  <p>As you can see, the escalation_condition accepts a list of one or more conditions separated by "&amp;" (logical AND) or "|"
-  (logical OR). The meanings of [w,u,c,o,d] differ a bit from the ones used for escalation_options:</p>
+    <p>As you can see, the escalation_condition accepts a list of one or more conditions separated by "&amp;" (logical AND) or "|"
+    (logical OR). The meanings of [w,u,c,o,d] differ a bit from the ones used for escalation_options:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>w = WARNING</p>
-    </li>
+        <p>w = WARNING</p>
+      </li>
 <li class="listitem">
-      <p>u = UNKNOWN</p>
-    </li>
+        <p>u = UNKNOWN</p>
+      </li>
 <li class="listitem">
-      <p>c = CRITICAL</p>
-    </li>
+        <p>c = CRITICAL</p>
+      </li>
 <li class="listitem">
-      <p>o = OK for services or UP for hosts (one could think of ONLINE)</p>
-    </li>
+        <p>o = OK for services or UP for hosts (one could think of ONLINE)</p>
+      </li>
 <li class="listitem">
-      <p>d = Down for hosts</p>
-    </li>
+        <p>d = Down for hosts</p>
+      </li>
 </ul></div>
-
   </div>
 
   <div class="section" title="7.10.3. Example">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="example"></a>7.10.3. Example</h3></div></div></div>
-	  
+    
 
-  <pre class="programlisting">define serviceescalation {
+    <pre class="programlisting">define serviceescalation {
    host_name               localhost
    service_description     HTTP
    first_notification      5
@@ -114,11 +111,12 @@
    escalation_condition    host linux=d | service linux.SSH=w,c
    }</pre>
 <p> This example escalation would be escalated if the HOST 'linux' is DOWN or the Service 'linux.SSH' is WARNING or
-  CRITICAL.</p>
+    CRITICAL.</p>
 
-  <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
-  <a class="indexterm" name="idm251250587856"></a>
-</div>
+    <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
+
+    <a class="indexterm" name="idm249451522672"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

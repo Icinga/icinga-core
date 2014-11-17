@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-introduction.html" title="6.8. Einführung in Icinga Web">
 <link rel="next" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
@@ -32,9 +32,7 @@
 <div class="toc"><dl>
 <dt><span class="section">6.9.1. <a href="icinga-web-pnp.html#installpnp">Installieren von PNP4Nagios</a></span></dt>
 <dt><span class="section">6.9.2. <a href="icinga-web-pnp.html#templateextension">Template-Extensions</a></span></dt>
-<dt><span class="section">6.9.3. <a href="icinga-web-pnp.html#confighostpages">Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga Web zu integrieren</a></span></dt>
-<dt><span class="section">6.9.4. <a href="icinga-web-pnp.html#configservicepages">Integrieren von PNP4Nagios in Icinga Web-Serviceansichten</a></span></dt>
-<dt><span class="section">6.9.5. <a href="icinga-web-pnp.html#idm251259557216">Löschen des Cache</a></span></dt>
+<dt><span class="section">6.9.3. <a href="icinga-web-pnp.html#idm249440177072">Löschen des Cache</a></span></dt>
 </dl></div>
   
 
@@ -42,7 +40,7 @@
   integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="idm251259616768"></a><p class="title"><b>Abbildung 6.41. Expander-Icon</b></p>
+<a name="idm249440208784"></a><p class="title"><b>Abbildung 6.41. Expander-Icon</b></p>
 <div class="figure-contents">
       
 
@@ -54,7 +52,7 @@
   <p>Links sehen Sie das "Expander"-Icon. Nach dem Klicken öffnet sich ein Balken (unterhalb des OK-Zeichens).</p>
 
   <div class="figure">
-<a name="idm251259612896"></a><p class="title"><b>Abbildung 6.42. Icon-Balken</b></p>
+<a name="idm249440205136"></a><p class="title"><b>Abbildung 6.42. Icon-Balken</b></p>
 <div class="figure-contents">
       
 
@@ -66,7 +64,7 @@
   <p>Rechts im "PNP4Nagios"-Abschnitt gibt es zwei Buttons.</p>
 
   <div class="figure">
-<a name="idm251259609536"></a><p class="title"><b>Abbildung 6.43. PNP4Nagios-Icons</b></p>
+<a name="idm249440201584"></a><p class="title"><b>Abbildung 6.43. PNP4Nagios-Icons</b></p>
 <div class="figure-contents">
       
 
@@ -78,7 +76,7 @@
   <p>Nach Rechts-Klick auf einen der beiden und auswählen von "Move into grid" wird das entsprechende Icon ins Raster verschoben.</p>
 
   <div class="figure">
-<a name="idm251259605776"></a><p class="title"><b>Abbildung 6.44. Icon verschieben in Raster</b></p>
+<a name="idm249440197952"></a><p class="title"><b>Abbildung 6.44. Icon verschieben in Raster</b></p>
 <div class="figure-contents">
       
 
@@ -94,7 +92,7 @@
   wieder her.</p>
 
   <div class="figure">
-<a name="idm251259601424"></a><p class="title"><b>Abbildung 6.45. Zurücksetzen von Icon-Einstellungen</b></p>
+<a name="idm249440193664"></a><p class="title"><b>Abbildung 6.45. Zurücksetzen von Icon-Einstellungen</b></p>
 <div class="figure-contents">
       
 
@@ -152,8 +150,7 @@
 <a name="templateextension"></a>6.9.2. Template-Extensions</h3></div></div></div>
     
 
-    <p>Seit Version 1.5 können die Grid-Templates unberührt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
-    einfachen Schnipseln anzupassen. Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
+    <p>Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
 
     <p>Ausschnitt aus <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
 
@@ -181,225 +178,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="6.9.3. Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga Web zu integrieren">
+  <div class="section" title="6.9.3. Löschen des Cache">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="confighostpages"></a>6.9.3. Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga Web zu integrieren</h3></div></div></div>
-    
-
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
-      </td></tr>
-</table></div>
-
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-        <p>Erstellen einer neuen Host-Grid-Ansicht:</p>
-
-        <p>Bitte erstellen Sie eine Kopie von <code class="filename">icinga-host-template.xml</code> in
-        <code class="filename">app/modules/Cronks/data/xml/grid</code> unter Ihrem Icinga-web-Installationspfad: </p>
-<pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
-    /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
-<p> In der neuen Datei legen wir eine
-        zusätzliche Feld- (field) Definition an: </p>
-<pre class="programlisting">        &lt;field name="pnp4nagios_host_link"&gt;
-            &lt;!-- datasource maps a data field from api call --&gt;
-            &lt;datasource&gt;
-                &lt;parameter name="field"&gt;HOST_NAME&lt;/parameter&gt;
-            &lt;/datasource&gt;
-
-            &lt;display&gt;
-                &lt;parameter name="visible"&gt;true&lt;/parameter&gt;
-                &lt;parameter name="label"&gt;Perfdata&lt;/parameter&gt;
-                &lt;parameter name="width"&gt;55&lt;/parameter&gt;
-
-                &lt;parameter name="Ext.grid.Column"&gt;
-                    &lt;parameter name="menuDisabled"&gt;true&lt;/parameter&gt;
-                    &lt;parameter name="fixed"&gt;true&lt;/parameter&gt;
-                &lt;/parameter&gt;
-
-                &lt;parameter name="jsFunc"&gt;
-                    &lt;!-- function to display column with icon in host status grid view --&gt;
-                    &lt;parameter&gt;
-                        &lt;parameter name="namespace"&gt;Cronk.grid.ColumnRenderer&lt;/parameter&gt;
-                        &lt;parameter name="function"&gt;columnImage&lt;/parameter&gt;
-                        &lt;parameter name="type"&gt;renderer&lt;/parameter&gt;
-
-                        &lt;parameter name="arguments"&gt;
-                            &lt;parameter name="image"&gt;images/icons/application_view_gallery.png&lt;/parameter&gt;
-                            &lt;parameter name="css"&gt;x-icinga-grid-link&lt;/parameter&gt;
-                            &lt;parameter name="attr"&gt;
-                                &lt;parameter name="qtip"&gt;Show host perfdata for this host&lt;/parameter&gt;
-                            &lt;/parameter&gt;
-                        &lt;/parameter&gt;
-                    &lt;/parameter&gt;
-
-                    &lt;!-- create cell click event for the previously defined column --&gt;
-                    &lt;parameter&gt;
-                        &lt;parameter name="namespace"&gt;Cronk.grid.IcingaColumnRenderer&lt;/parameter&gt;
-                        &lt;parameter name="function"&gt;iFrameCronk&lt;/parameter&gt;
-                        &lt;parameter name="type"&gt;cellclick&lt;/parameter&gt;
-                        &lt;parameter name="arguments"&gt;
-                            &lt;parameter name="title"&gt;Host perfdata for {host_name}&lt;/parameter&gt;
-                            &lt;parameter name="url"&gt;&lt;![CDATA[/pnp4nagios/index.php/graph?host={host_name}&amp;srv=_HOST_]]&gt;&lt;/parameter&gt;
-                            &lt;parameter name="activateOnClick"&gt;true&lt;/parameter&gt;
-                        &lt;/parameter&gt;
-                    &lt;/parameter&gt;
-                &lt;/parameter&gt;
-            &lt;/display&gt;
-
-            &lt;filter&gt;
-               &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
-            &lt;/filter&gt;
-
-            &lt;order&gt;
-                &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
-            &lt;/order&gt;
-        &lt;/field&gt;</pre>
-      </li>
-<li class="listitem">
-        <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
-
-        <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-        Icinga Web und hinzufügen von: </p>
-<pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
-    &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="description"&gt;Viewing host status in a grid including perfdata link&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="name"&gt;MyHostStatus&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="image"&gt;cronks.Stats&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="categories"&gt;data&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="ae:parameter"&gt;
-        &lt;ae:parameter name="template"&gt;icinga-my-host-template&lt;/ae:parameter&gt;
-    &lt;/ae:parameter&gt;
-&lt;/cronk&gt;</pre>
-      </li>
-</ol></div>
-  </div>
-
-  <div class="section" title="6.9.4. Integrieren von PNP4Nagios in Icinga Web-Serviceansichten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="configservicepages"></a>6.9.4. Integrieren von PNP4Nagios in Icinga Web-Serviceansichten</h3></div></div></div>
-    
-
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
-      </td></tr>
-</table></div>
-
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-        <p>Erstellen einer neuen Service-Grid-Ansicht</p>
-
-        <p>Kopieren Sie das Standard-Template "<code class="filename">icinga-service-template.xml</code>" von
-        <code class="filename">app/modules/Cronks/data/xml/grid</code> in Ihren Icinga Web-Installationspfad:</p>
-
-        <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
-    /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
-
-        <p>In der neuen Datei legen wir eine zusätzliche Feld- (field) Definition an:</p>
-
-        <pre class="programlisting">        &lt;field name="pnp4nagios_service_link"&gt;
-            &lt;!-- datasource maps a data field from api call --&gt;
-            &lt;datasource&gt;
-                &lt;parameter name="field"&gt;SERVICE_NAME&lt;/parameter&gt;
-            &lt;/datasource&gt;
-
-            &lt;display&gt;
-                &lt;parameter name="visible"&gt;true&lt;/parameter&gt;
-                &lt;parameter name="label"&gt;Perfdata&lt;/parameter&gt;
-                &lt;parameter name="width"&gt;55&lt;/parameter&gt;
-
-                &lt;parameter name="Ext.grid.Column"&gt;
-                    &lt;parameter name="menuDisabled"&gt;true&lt;/parameter&gt;
-                    &lt;parameter name="fixed"&gt;true&lt;/parameter&gt;
-                &lt;/parameter&gt;
-
-                &lt;parameter name="jsFunc"&gt;
-                    &lt;!-- function to display column with icon in host status grid view --&gt;
-                    &lt;parameter&gt;
-                        &lt;parameter name="namespace"&gt;Cronk.grid.ColumnRenderer&lt;/parameter&gt;
-                        &lt;parameter name="function"&gt;columnImage&lt;/parameter&gt;
-                        &lt;parameter name="type"&gt;renderer&lt;/parameter&gt;
-
-                        &lt;parameter name="arguments"&gt;
-                            &lt;parameter name="image"&gt;images/icons/application_view_gallery.png&lt;/parameter&gt;
-                            &lt;parameter name="css"&gt;x-icinga-grid-link&lt;/parameter&gt;
-                            &lt;parameter name="attr"&gt;
-                                &lt;parameter name="qtip"&gt;Show perfdata for this service&lt;/parameter&gt;
-                            &lt;/parameter&gt;
-                        &lt;/parameter&gt;
-                    &lt;/parameter&gt;
-
-                    &lt;!-- create cell click event for the previously defined column --&gt;
-                    &lt;parameter&gt;
-                        &lt;parameter name="namespace"&gt;Cronk.grid.IcingaColumnRenderer&lt;/parameter&gt;
-                        &lt;parameter name="function"&gt;iFrameCronk&lt;/parameter&gt;
-                        &lt;parameter name="type"&gt;cellclick&lt;/parameter&gt;
-                        &lt;parameter name="arguments"&gt;
-                            &lt;parameter name="title"&gt;Service perfdata for {service_name} on {host_name}&lt;/parameter&gt;
-                            &lt;parameter name="url"&gt;&lt;![CDATA[/pnp4nagios/index.php/graph?host={host_name}&amp;srv={service_name}]]&gt;&lt;/parameter&gt;
-                            &lt;parameter name="activateOnClick"&gt;true&lt;/parameter&gt;
-                        &lt;/parameter&gt;
-                    &lt;/parameter&gt;
-                &lt;/parameter&gt;
-            &lt;/display&gt;
-
-            &lt;filter&gt;
-                &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
-            &lt;/filter&gt;
-
-            &lt;order&gt;
-                &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
-            &lt;/order&gt;
-        &lt;/field&gt;</pre>
-      </li>
-<li class="listitem">
-        <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
-
-        <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-        Icinga Web und hinzufügen von:</p>
-
-        <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
-    &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="description"&gt;Viewing service status in a grid including perfdata link&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="name"&gt;MyServiceStatus&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="image"&gt;cronks.Stats2&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="categories"&gt;data&lt;/ae:parameter&gt;
-    &lt;ae:parameter name="ae:parameter"&gt;
-        &lt;ae:parameter name="template"&gt;icinga-my-service-template&lt;/ae:parameter&gt;
-    &lt;/ae:parameter&gt;
-&lt;/cronk&gt;</pre>
-      </li>
-<li class="listitem">
-        <p>Verwenden der neuen Grid-Ansicht als Standard-Service-Ansicht</p>
-
-        <p>Bitte sichern Sie zuerst Ihre originale Ansicht: </p>
-<pre class="programlisting">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
-<p>
-        dann</p>
-<pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
-<p>Leeren
-        Sie den Cache wie unten beschrieben. Die Performancegraphen sind nun in Ihren "serviceStatus"-Cronk integriert!</p>
-      </li>
-</ol></div>
-  </div>
-
-  <div class="section" title="6.9.5. Löschen des Cache">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idm251259557216"></a>6.9.5. Löschen des Cache</h3></div></div></div>
+<a name="idm249440177072"></a>6.9.3. Löschen des Cache</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -420,7 +201,7 @@
 
     <p>Das war es auch schon, Sie sind fertig!</p>
 
-    <a class="indexterm" name="idm251259553392"></a>
+    <a class="indexterm" name="idm249440173776"></a>
   </div>
 </div>
 <div class="navfooter">

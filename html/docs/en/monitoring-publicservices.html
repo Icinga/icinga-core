@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.17. Monitoring Publicly Available Services</title>
+<title>2.18. Monitoring Publicly Available Services</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">
+<link rel="prev" href="monitoring-routers.html" title="2.17. Monitoring Routers and Switches">
 <link rel="next" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.17. Monitoring Publicly Available Services</th></tr>
+<tr><th colspan="3" align="center">2.18. Monitoring Publicly Available Services</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-routers.html">Prev</a> </td>
@@ -26,23 +26,23 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.17. Monitoring Publicly Available Services">
+<div class="section" title="2.18. Monitoring Publicly Available Services">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-publicservices"></a>2.17. <a name="monitoring_publicservices"></a>Monitoring Publicly Available Services</h2></div></div></div>
+<a name="monitoring-publicservices"></a>2.18. <a name="monitoring_publicservices"></a>Monitoring Publicly Available Services</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.17.1. <a href="monitoring-publicservices.html#introduction_publicservices">Introduction</a></span></dt>
-<dt><span class="section">2.17.2. <a href="monitoring-publicservices.html#pluginsformonitoringservices">Plugins for Monitoring Services</a></span></dt>
-<dt><span class="section">2.17.3. <a href="monitoring-publicservices.html#createhostdefinition">Creating a Host Definition</a></span></dt>
-<dt><span class="section">2.17.4. <a href="monitoring-publicservices.html#createservicedefinition">Creating Service Definitions</a></span></dt>
-<dt><span class="section">2.17.5. <a href="monitoring-publicservices.html#restarticinga">Restarting Icinga</a></span></dt>
+<dt><span class="section">2.18.1. <a href="monitoring-publicservices.html#introduction_publicservices">Introduction</a></span></dt>
+<dt><span class="section">2.18.2. <a href="monitoring-publicservices.html#pluginsformonitoringservices">Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section">2.18.3. <a href="monitoring-publicservices.html#createhostdefinition">Creating a Host Definition</a></span></dt>
+<dt><span class="section">2.18.4. <a href="monitoring-publicservices.html#createservicedefinition">Creating Service Definitions</a></span></dt>
+<dt><span class="section">2.18.5. <a href="monitoring-publicservices.html#restarticinga">Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251263401616"></a>
+  <a class="indexterm" name="idm249464296240"></a>
 
-  <div class="section" title="2.17.1. Introduction">
+  <div class="section" title="2.18.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction_publicservices"></a>2.17.1. Introduction</h3></div></div></div>
+<a name="introduction_publicservices"></a>2.18.1. Introduction</h3></div></div></div>
     
 
     <p>This document describes how you can monitor publicly available services, applications and protocols. By "public" we mean services
@@ -58,13 +58,13 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p><a class="link" href="monitoring-windows.html" title="2.12. Monitoring Windows Machines">Monitoring Windows machines</a></p>
+        <p><a class="link" href="monitoring-windows.html" title="2.13. Monitoring Windows Machines">Monitoring Windows machines</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="monitoring-netware.html" title="2.14. Monitoring Netware Servers">Monitoring Netware servers</a></p>
+        <p><a class="link" href="monitoring-netware.html" title="2.15. Monitoring Netware Servers">Monitoring Netware servers</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="monitoring-linux.html" title="2.13. Monitoring Linux/Unix Machines">Monitoring Linux/Unix machines</a></p>
+        <p><a class="link" href="monitoring-linux.html" title="2.14. Monitoring Linux/Unix Machines">Monitoring Linux/Unix machines</a></p>
       </li>
 </ul></div>
 
@@ -76,7 +76,7 @@
 <tr><td align="left" valign="top">
       <p>Occasionally you will find that information on private services and applications can be monitored with SNMP. The SNMP agent
       allows you to remotely monitor otherwise private (and inaccessible) information about the host. For more information about monitoring
-      services using SNMP, check out the documentation on <a class="link" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">monitoring switches and routers</a>.</p>
+      services using SNMP, check out the documentation on <a class="link" href="monitoring-routers.html" title="2.17. Monitoring Routers and Switches">monitoring switches and routers</a>.</p>
     </td></tr>
 </table></div>
 
@@ -86,7 +86,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart
       guide</a>. The sample configuration entries below reference objects that are defined in the sample
       <span class="emphasis"><em>commands.cfg</em></span> and <span class="emphasis"><em>localhost.cfg</em></span> config files.</p>
 
@@ -95,14 +95,14 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.17.2. Plugins for Monitoring Services">
+  <div class="section" title="2.18.2. Plugins for Monitoring Services">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="pluginsformonitoringservices"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
+<a name="pluginsformonitoringservices"></a>2.18.2. Plugins for Monitoring Services</h3></div></div></div>
     
 
     <p>When you find yourself needing to monitor a particular application, service, or protocol, chances are good that a <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugin</a> exists to monitor it. The official Nagios plugins distribution comes with plugins that can be used to
     monitor a variety of services and protocols. There are also a large number of contributed plugins that can be found in the
-    <span class="emphasis"><em>contrib/</em></span> subdirectory of the plugin distribution. The <a class="link" href="http://www.monitoringexchange.org" target="_top">MonitoringExchange.org</a> website hosts a number of additional plugins that have been
+    <span class="emphasis"><em>contrib/</em></span> subdirectory of the plugin distribution. The <a class="link" href="https://exchange.icinga.org" target="_top">Icinga Exchange</a> website hosts a number of additional plugins that have been
     written by users, so check it out when you have a chance.</p>
 
     <p>If you don't happen to find an appropriate plugin for monitoring what you need, you can always write your own. Plugins are easy to
@@ -113,9 +113,9 @@
     monitored using one of the plugins that gets installed as part of the Nagios plugins distribution. Let's get started...</p>
   </div>
 
-  <div class="section" title="2.17.3. Creating a Host Definition">
+  <div class="section" title="2.18.3. Creating a Host Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="createhostdefinition"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
+<a name="createhostdefinition"></a>2.18.3. Creating a Host Definition</h3></div></div></div>
     
 
     <p>Before you can monitor a service, you first need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> that is associated
@@ -137,9 +137,9 @@
     As with host definitions, service definitions can be placed in any object configuration file.</p>
   </div>
 
-  <div class="section" title="2.17.4. Creating Service Definitions">
+  <div class="section" title="2.18.4. Creating Service Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="createservicedefinition"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
+<a name="createservicedefinition"></a>2.18.4. Creating Service Definitions</h3></div></div></div>
     
 
     <p>For each service you want to monitor, you need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> in
@@ -377,9 +377,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.17.5. Restarting Icinga">
+  <div class="section" title="2.18.5. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="restarticinga"></a>2.17.5. Restarting Icinga</h3></div></div></div>
+<a name="restarticinga"></a>2.18.5. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to your object configuration file(s), you're ready to start monitoring
@@ -401,7 +401,7 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.16. Monitoring Routers and Switches </td>
+<td width="40%" align="left" valign="top">2.17. Monitoring Routers and Switches </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
 <td width="40%" align="right" valign="top"> Chapter 3. Configuring Icinga</td>
 </tr>

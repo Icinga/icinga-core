@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="escalations.html" title="7.9. Benachrichtigungseskalationen">
 <link rel="next" href="oncallrotation.html" title="7.11. Bereitschafts-Rotation">
@@ -41,10 +41,9 @@
 <a name="introduction"></a>7.10.1. Einleitung</h3></div></div></div>
     
 
-    <p>Ab Icinga 1.0.1 ist ein Patch implementiert, so dass Sie nun eine Eskalations-Bedingung definieren können (ähnlich wie
-    escalation_options [w,u,c,r]). Eine Eskalation mit einer definierten Bedingung wird nur dann eskalieren, wenn der aktuelle Zustand eines
-    bestimmten Hosts/Services mit der angegebenen Bedingung übereinstimmt. Ein mögliches Anwendungsbeispiel könnte das folgende Szenario
-    sein:</p>
+    <p>Sie können eine Eskalations-Bedingung definieren (ähnlich wie escalation_options [w,u,c,r]). Eine Eskalation mit einer definierten
+    Bedingung wird nur dann eskalieren, wenn der aktuelle Zustand eines bestimmten Hosts/Services mit der angegebenen Bedingung
+    übereinstimmt. Ein mögliches Anwendungsbeispiel könnte das folgende Szenario sein:</p>
 
     <p>Stellen Sie sich zwei verschiedene Eskalationen für den selben Service <span class="emphasis"><em>foo</em></span> vor. Eine soll nur dann
     eskalieren, wenn der Service <span class="emphasis"><em>bar</em></span> OK ist, die andere soll eskalieren, wenn <span class="emphasis"><em>bar</em></span> CRITICAL oder
@@ -113,12 +112,12 @@
    contact_groups          admins, managers
    escalation_condition    host linux=d | service linux.SSH=w,c
    }</pre>
-<p> Diese Beispiel-Eskalation würde eskalieren, wenn der HOST 'linux' DOWN ist oder der Service 'linux.SSH' WARNING oder
+<p>Diese Beispiel-Eskalation würde eskalieren, wenn der HOST 'linux' DOWN ist oder der Service 'linux.SSH' WARNING oder
     CRITICAL.</p>
 
     <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
 
-    <a class="indexterm" name="idm251258184944"></a>
+    <a class="indexterm" name="idm249438806560"></a>
   </div>
 </div>
 <div class="navfooter">

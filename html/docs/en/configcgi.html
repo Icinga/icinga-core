@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="3.5. Custom Object Variables">
 <link rel="next" href="ch04.html" title="Chapter 4. Running Icinga">
@@ -56,7 +56,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>A sample CGI configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) is installed for you when you follow the
-    <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
@@ -332,18 +332,8 @@
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view system/process information in the
   <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised
   to issue system/process commands. If you want users to be able to issue system/process commands as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_information </code>
-    to authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_system_information</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_system_commands"></a> <span class="bold"><strong>System/Process Command Access</strong></span></p>
 
@@ -370,18 +360,8 @@
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue system/process commands via the
   <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view
   system/process information. If you want users to be able to view system/process information as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_commands </code> to
-    authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_system_commands</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_configuration_information"></a> <span class="bold"><strong>Configuration Information
   Access</strong></span></p>
@@ -409,18 +389,8 @@
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view configuration information in the
   <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a>. Users in this list can view information on all configured hosts, host groups,
   services, contacts, contact groups, time periods, and commands. More information on how to setup authentication and configure
-  authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_configuration_information
-    </code> to authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_configuration_information</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_all_hosts"></a> <span class="bold"><strong>Global Host Information Access</strong></span></p>
 
@@ -448,18 +418,8 @@
   information for all hosts. Users in this list are also automatically authorised to view information for all services. Users in this list
   are <span class="emphasis"><em>not</em></span> automatically authorised to issue commands for all hosts or services. If you want users able to issue
   commands for all hosts and services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_hosts</code> to
-    authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_all_hosts</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_all_host_commands"></a> <span class="bold"><strong>Global Host Command Access</strong></span></p>
 
@@ -487,18 +447,8 @@
   Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration information for all hosts or
   services. If you want users able to view status and configuration information for all hosts and services as well, you must add them to the
   <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_host_commands </code>
-    to authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_all_host_commands</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_all_services"></a> <span class="bold"><strong>Global Service Information Access</strong></span></p>
 
@@ -525,18 +475,8 @@
   information for all services. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view information for all hosts.
   Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to issue commands for all services. If you want users able to
   issue commands for all services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a> variable. More information on how to
-  setup authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_services</code> to
-    authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  setup authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively
+  specify <code class="literal">authorized_contactgroup_for_all_services</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_all_service_commands"></a> <span class="bold"><strong>Global Service Command Access
   </strong></span></p>
@@ -566,18 +506,8 @@
   commands for all hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration
   information for all hosts. If you want users able to view status and configuration information for all services as well, you must add them
   to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_service_commands
-    </code> to authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_all_service_commands</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Show All Services A Host Is Authorized
   For</strong></span></p>
@@ -604,7 +534,7 @@
 
   <p>By default, a user can see all services on a host, if the user is authorised as contact for the host only. By disabling this option,
   the user must be an authorised contact for the service too in order to view it. Keep in mind that setting the user in
-  authorized_for_all_services obsoletes this option (included starting with Icinga 1.0.2)</p>
+  authorized_for_all_services obsoletes this option.</p>
 
   <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Deny Access To Commands And Comments</strong></span></p>
 
@@ -633,18 +563,8 @@
   block any host or service commands. It will also block comments from being shown to read-only users. Users in this list are
   <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration information for all hosts. If you want users able to
   view status and configuration information for all services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
-  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_read_only</code> to
-    authorise a contactgroup instead of a contact.</p>
-  </td></tr>
-</table></div>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="6.2. Authentication And Authorization In The Classic UI">here</a>. You can alternatively specify
+  <code class="literal">authorized_contactgroup_for_read_only</code> to authorise a contactgroup instead of a contact.</p>
 
   <p><a name="configcgi-authorized_for_comments_read_only"></a> <span class="bold"><strong>Read-Only For Comments</strong></span></p>
 
@@ -826,16 +746,6 @@
       <p>1 = Display the complete plugin output</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-statusmap_background_image"></a> <span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
 
@@ -1035,16 +945,6 @@
 
   <p>This option determines what type of refresh should be used. You can choose between http header and javascript. By default javascript
   (1) is activated. If you have trouble using javascript then try refresh via http header (0).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.7</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-audio_alerts"></a> <span class="bold"><strong>Audio Alerts</strong></span></p>
 
@@ -1272,16 +1172,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-csv_delimiter"></a> <span class="bold"><strong>Set field separator for CSV export</strong></span></p>
 
   <div class="informaltable">
@@ -1304,16 +1194,6 @@
   </div>
 
   <p>This option determines the character which should act as field separator. Default is a semicolon (;).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.2.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-csv_data_enclosure"></a> <span class="bold"><strong>Set field enclosure character for CSV export</strong></span></p>
 
@@ -1338,16 +1218,6 @@
   </div>
 
   <p>This option determines the character which should be used to enclose fields. Default is a single quote (').</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.2.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Show initial states</strong></span></p>
 
@@ -1392,16 +1262,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-showlog_current_states"></a> <span class="bold"><strong>Show current states</strong></span></p>
 
   <div class="informaltable">
@@ -1444,16 +1304,6 @@
       <p>1 = Show current states in showlog.cgi</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Show object type in tab title</strong></span></p>
 
@@ -1508,16 +1358,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-add_notif_num"></a> <span class="bold"><strong>Show service state and notification number</strong></span></p>
 
   <div class="informaltable">
@@ -1560,16 +1400,6 @@
 
   <p>There's an add_notif_num_soft affecting services in a SOFT state for sake of completeness, too.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>These options are available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-http_charset"></a> <span class="bold"><strong>Set HTTP character set</strong></span></p>
 
   <div class="informaltable">
@@ -1592,16 +1422,6 @@
   </div>
 
   <p>This is the character set which is sent with HTTP headers. Default is utf-8.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-first_day_of_week"></a> <span class="bold"><strong>Set first day of week</strong></span></p>
 
@@ -1628,16 +1448,6 @@
   <p>This sets the first day of the week which is used in several CGI-reports. Default is 0 = sunday. 1 = monday will be suitable for
   countries adhering to ISO 8601.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-use_logging"></a> <span class="bold"><strong>Logging of CGI commands</strong></span></p>
 
   <div class="informaltable">
@@ -1661,16 +1471,6 @@
 
   <p>This option enables the logging of CGI commands in a separate log file. Default is 0 = logging disabled, 1 = logging enabled.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-cgi_log_file"></a> <span class="bold"><strong>CGI log file</strong></span></p>
 
   <div class="informaltable">
@@ -1693,16 +1493,6 @@
   </div>
 
   <p>This option sets the location of the CGI log file.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-cgi_log_rotation_method"></a> <span class="bold"><strong>CGI log file rotation method</strong></span></p>
 
@@ -1746,16 +1536,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-cgi_log_archive_path"></a> <span class="bold"><strong>CGI Log Archive Path</strong></span></p>
 
   <div class="informaltable">
@@ -1779,16 +1559,6 @@
 
   <p>This is the directory where Icinga should place CGI log files that have been rotated. This option is ignored if you choose to
   not use the <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI log rotation</a> functionality.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-enforce_comments_on_actions"></a> <span class="bold"><strong>Enforce comments on actions</strong></span></p>
 
@@ -1822,16 +1592,6 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>The option use_logging has to be enabled, otherwise there will be no logging of comments.</p>
-  </td></tr>
-</table></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
   </td></tr>
 </table></div>
 
@@ -1891,7 +1651,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="idm251258244352"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="idm249459168848"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -1899,16 +1659,6 @@
   </div>
 </div>
 <br class="figure-break">
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-show_tac_header_pending"></a> <span class="bold"><strong>Show header including pending counts</strong></span></p>
 
@@ -1935,16 +1685,6 @@
   <p>This option enables the display of pending counts in the tac header. If your display is less than 1024x768 and this is enabled, the
   tactical information may not fit well in the top frame. By default it is disabled.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.4.1</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Set default downtime duration</strong></span></p>
 
   <div class="informaltable">
@@ -1968,16 +1708,6 @@
   </div>
 
   <p>This option defines the default duration (in seconds) of fixed and flexible downtimes. Default is 7200 seconds (2 hours).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.5</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Suppress objects in maintenance/downtime state
   </strong></span></p>
@@ -2009,16 +1739,6 @@
   behaviour. This is so the user can use icinga to see what the state is in before the downtime ends. A useful example for this is so it can
   be seen that a host/service that was being worked on actually came back online. In addition, hosts in scheduled downtime will be grey in
   the statusmap.cgi.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.5</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Show partial hostgroups</strong></span></p>
 
@@ -2057,16 +1777,6 @@
   programs that rely on 'screen scraping' to get their information. If you encounter such a problem, turn this option back to its default of
   off and encourage the developer(s) of the program to use JSON for their data needs instead.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.5</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Highlight rows in status.cgi</strong></span></p>
 
   <div class="informaltable">
@@ -2092,16 +1802,6 @@
   <p>This option allows you to define if table rows in status.cgi will be highlighted or not. Sometimes with a lot of rows or a large
   screen resolution it is hard to see which rows you are working on: Values: 0 = disables row highlighting; 1 = enables row highlighting
   (default).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.5</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-use_pending_states"></a> <span class="bold"><strong>Select state to be shown while pending</strong></span></p>
 
@@ -2153,16 +1853,6 @@
 
   <p>This option allows you to define the period (in seconds) after which acknowledgements will expire (meaning they will be deleted).
   The default is 86,400 seconds (one day).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.6</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-extinfo_show_child_hosts"></a> <span class="bold"><strong>Show child host(s)</strong></span></p>
 
@@ -2220,16 +1910,6 @@
   </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.6</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Allow user(s) for FULL command line
   view</strong></span></p>
 
@@ -2269,16 +1949,6 @@
   </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.6</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configcgi-display_status_totals"></a> <span class="bold"><strong>Display Host/Status Status Totals</strong></span></p>
 
   <div class="informaltable">
@@ -2303,16 +1973,6 @@
 
   <p>This option allows you to specify if the Host Status Totals and Service Status Totals should be displayed. Default value is
   0.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.7</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configcgi-result_limit"></a><span class="bold"><strong>Limit number of page entries to be displayed</strong></span></p>
 
@@ -2450,42 +2110,6 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>This option is available starting with Icinga 1.9</p>
-  </td></tr>
-</table></div>
-
-
-  <p><a name="configcgi-set_sticky_acknowledgment"></a><span class="bold"><strong>Set initial state of "Sticky Acknowledgment"
-  checkbox</strong></span></p>
-
-  <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>set_sticky_acknowledgment=0|1</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>set_sticky_acknowledgment=1</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
-  </div>
-
-  <p>This option controls the initial state of the "Sticky Acknowledgment:" checkbox when acknowledging a problem. Set this to 1 to force stickiness
-  by default and 0 to not. The default is 1 (ACKs are sticky). This may be overridden in the CGI dialogue.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.12</p>
   </td></tr>
 </table></div>
 
@@ -2672,153 +2296,227 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idm251257992448"></a>
+  <p><a name="configcgi-sort_status_data_by_default"></a><span class="bold"><strong>Sort status data by default</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>sort_status_data_by_default=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>sort_status_data_by_default=&lt;0&gt;</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idm251257991456"></a>
+  <p>This option forces status.cgi to sort status data by default. Data will be sorted ascending. First by host name and then by service
+  description. This is helpful if status data in status.dat is not sorted properly. This can occur especially if you use Icinga2. By default
+  this options is switched off (0) to avoid possible higher cpu load in huge environments.</p>
 
-  <a class="indexterm" name="idm251257991328"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.12</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idm251257988272"></a>
+  <p><a name="configcgi-set_sticky_acknowledgment"></a><span class="bold"><strong>State of stickiness of
+  acknowledgements</strong></span></p>
 
-  <a class="indexterm" name="idm251257986672"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>set_sticky_acknowledgment=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>set_sticky_acknowledgment=&lt;0&gt;</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idm251257984848"></a>
+  <p>This option controls the initial state of the "Sticky Acknowledgment:" checkbox when acknowledging a problem. Set this to 1 to force
+  stickiness by default and 0 to not. The default is 1 (ACKs are sticky). This may be overridden in the CGI dialogue.</p>
 
-  <a class="indexterm" name="idm251257983328"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.12</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idm251257981696"></a>
+  <a class="indexterm" name="idm249458901360"></a>
 
-  <a class="indexterm" name="idm251257979984"></a>
+  <a class="indexterm" name="idm249458900144"></a>
 
-  <a class="indexterm" name="idm251257978272"></a>
+  <a class="indexterm" name="idm249458898592"></a>
 
-  <a class="indexterm" name="idm251257976560"></a>
+  <a class="indexterm" name="idm249458896928"></a>
 
-  <a class="indexterm" name="idm251257974880"></a>
+  <a class="indexterm" name="idm249458895376"></a>
 
-  <a class="indexterm" name="idm251257973136"></a>
+  <a class="indexterm" name="idm249458893680"></a>
 
-  <a class="indexterm" name="idm251257971488"></a>
+  <a class="indexterm" name="idm249458892160"></a>
 
-  <a class="indexterm" name="idm251257969824"></a>
+  <a class="indexterm" name="idm249458890528"></a>
 
-  <a class="indexterm" name="idm251257968160"></a>
+  <a class="indexterm" name="idm249458888816"></a>
 
-  <a class="indexterm" name="idm251257966448"></a>
+  <a class="indexterm" name="idm249458887104"></a>
 
-  <a class="indexterm" name="idm251257964768"></a>
+  <a class="indexterm" name="idm249458885392"></a>
 
-  <a class="indexterm" name="idm251257963120"></a>
+  <a class="indexterm" name="idm249458883712"></a>
 
-  <a class="indexterm" name="idm251257961376"></a>
+  <a class="indexterm" name="idm249458881968"></a>
 
-  <a class="indexterm" name="idm251257959744"></a>
+  <a class="indexterm" name="idm249458880320"></a>
 
-  <a class="indexterm" name="idm251257958032"></a>
+  <a class="indexterm" name="idm249458878656"></a>
 
-  <a class="indexterm" name="idm251257956368"></a>
+  <a class="indexterm" name="idm249458876992"></a>
 
-  <a class="indexterm" name="idm251257954688"></a>
+  <a class="indexterm" name="idm249458875280"></a>
 
-  <a class="indexterm" name="idm251257952976"></a>
+  <a class="indexterm" name="idm249458873600"></a>
 
-  <a class="indexterm" name="idm251257951296"></a>
+  <a class="indexterm" name="idm249458872160"></a>
 
-  <a class="indexterm" name="idm251257949520"></a>
+  <a class="indexterm" name="idm249458870768"></a>
 
-  <a class="indexterm" name="idm251257947904"></a>
+  <a class="indexterm" name="idm249458869200"></a>
 
-  <a class="indexterm" name="idm251257946224"></a>
+  <a class="indexterm" name="idm249458867504"></a>
 
-  <a class="indexterm" name="idm251257944560"></a>
+  <a class="indexterm" name="idm249458865872"></a>
 
-  <a class="indexterm" name="idm251257942896"></a>
+  <a class="indexterm" name="idm249458864240"></a>
 
-  <a class="indexterm" name="idm251257941344"></a>
+  <a class="indexterm" name="idm249458862464"></a>
 
-  <a class="indexterm" name="idm251257939584"></a>
+  <a class="indexterm" name="idm249458860912"></a>
 
-  <a class="indexterm" name="idm251257938064"></a>
+  <a class="indexterm" name="idm249458860784"></a>
 
-  <a class="indexterm" name="idm251257936432"></a>
+  <a class="indexterm" name="idm249458857440"></a>
 
-  <a class="indexterm" name="idm251257934800"></a>
+  <a class="indexterm" name="idm249458855808"></a>
 
-  <a class="indexterm" name="idm251257933168"></a>
+  <a class="indexterm" name="idm249458854144"></a>
 
-  <a class="indexterm" name="idm251257931488"></a>
+  <a class="indexterm" name="idm249458852480"></a>
 
-  <a class="indexterm" name="idm251257929824"></a>
+  <a class="indexterm" name="idm249458850880"></a>
 
-  <a class="indexterm" name="idm251257928272"></a>
+  <a class="indexterm" name="idm249458849216"></a>
 
-  <a class="indexterm" name="idm251257926608"></a>
+  <a class="indexterm" name="idm249458847456"></a>
 
-  <a class="indexterm" name="idm251257924848"></a>
+  <a class="indexterm" name="idm249458845968"></a>
 
-  <a class="indexterm" name="idm251257923232"></a>
+  <a class="indexterm" name="idm249458844336"></a>
 
-  <a class="indexterm" name="idm251257921600"></a>
+  <a class="indexterm" name="idm249458842704"></a>
 
-  <a class="indexterm" name="idm251257920208"></a>
+  <a class="indexterm" name="idm249458841072"></a>
 
-  <a class="indexterm" name="idm251257920048"></a>
+  <a class="indexterm" name="idm249458839408"></a>
 
-  <a class="indexterm" name="idm251257916960"></a>
+  <a class="indexterm" name="idm249458837808"></a>
 
-  <a class="indexterm" name="idm251257915216"></a>
+  <a class="indexterm" name="idm249458836128"></a>
 
-  <a class="indexterm" name="idm251257916832"></a>
+  <a class="indexterm" name="idm249458834528"></a>
 
-  <a class="indexterm" name="idm251257912528"></a>
+  <a class="indexterm" name="idm249458832832"></a>
 
-  <a class="indexterm" name="idm251257912400"></a>
+  <a class="indexterm" name="idm249458831184"></a>
 
-  <a class="indexterm" name="idm251257909280"></a>
+  <a class="indexterm" name="idm249458829552"></a>
 
-  <a class="indexterm" name="idm251257909120"></a>
+  <a class="indexterm" name="idm249458827920"></a>
 
-  <a class="indexterm" name="idm251257905872"></a>
+  <a class="indexterm" name="idm249458826288"></a>
 
-  <a class="indexterm" name="idm251257904304"></a>
+  <a class="indexterm" name="idm249458824640"></a>
 
-  <a class="indexterm" name="idm251257902544"></a>
+  <a class="indexterm" name="idm249458823376"></a>
 
-  <a class="indexterm" name="idm251257900896"></a>
+  <a class="indexterm" name="idm249458821680"></a>
 
-  <a class="indexterm" name="idm251257899216"></a>
+  <a class="indexterm" name="idm249458820160"></a>
 
-  <a class="indexterm" name="idm251257897552"></a>
+  <a class="indexterm" name="idm249458818576"></a>
 
-  <a class="indexterm" name="idm251257895888"></a>
+  <a class="indexterm" name="idm249458816928"></a>
 
-  <a class="indexterm" name="idm251257894240"></a>
+  <a class="indexterm" name="idm249458815248"></a>
 
-  <a class="indexterm" name="idm251257892592"></a>
+  <a class="indexterm" name="idm249458813536"></a>
 
-  <a class="indexterm" name="idm251257890832"></a>
+  <a class="indexterm" name="idm249458811920"></a>
 
-  <a class="indexterm" name="idm251257889184"></a>
+  <a class="indexterm" name="idm249458810272"></a>
 
-  <a class="indexterm" name="idm251257887568"></a>
+  <a class="indexterm" name="idm249458808592"></a>
 
-  <a class="indexterm" name="idm251257885888"></a>
+  <a class="indexterm" name="idm249458806928"></a>
 
-  <a class="indexterm" name="idm251257884256"></a>
+  <a class="indexterm" name="idm249458805248"></a>
 
-  <a class="indexterm" name="idm251257882544"></a>
+  <a class="indexterm" name="idm249458803600"></a>
 
-  <a class="indexterm" name="idm251257880896"></a>
+  <a class="indexterm" name="idm249458801952"></a>
 
-  <a class="indexterm" name="idm251257879280"></a>
+  <a class="indexterm" name="idm249458800192"></a>
 
-  <a class="indexterm" name="idm251257877600"></a>
+  <a class="indexterm" name="idm249458798576"></a>
 
-  <a class="indexterm" name="idm251257875920"></a>
+  <a class="indexterm" name="idm249458796816"></a>
 
-  <a class="indexterm" name="idm251257874160"></a>
+  <a class="indexterm" name="idm249458795216"></a>
 
-  <a class="indexterm" name="idm251257872560"></a>
+  <a class="indexterm" name="idm249458793488"></a>
+
+  <a class="indexterm" name="idm249458791920"></a>
+
+  <a class="indexterm" name="idm249458790192"></a>
+
+  <a class="indexterm" name="idm249458788528"></a>
+
+  <a class="indexterm" name="idm249458786864"></a>
+
+  <a class="indexterm" name="idm249458785200"></a>
+
+  <a class="indexterm" name="idm249458783488"></a>
+
+  <a class="indexterm" name="idm249458781888"></a>
+
+  <a class="indexterm" name="idm249458780192"></a>
+
+  <a class="indexterm" name="idm249458778496"></a>
 </div>
 <div class="navfooter">
 <hr>

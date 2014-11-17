@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="recurring_downtimes.html" title="7.17. Recurring Downtimes (experimental/development)">
 <link rel="next" href="adaptive.html" title="7.19. Adaptive Monitoring">
@@ -82,183 +82,168 @@
   <div class="section" title="7.18.1. Advantages">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="pros"></a>7.18.1. Advantages</h3></div></div></div>
-	  
+    
 
-  <p>Some advantages of ePN (embedded Perl Icinga) include:</p>
+    <p>Some advantages of ePN (embedded Perl Icinga) include:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Icinga will spend much less time running your Perl plugins because it no longer forks to execute the plugin (each time
-      loading the Perl interpreter). Instead, it executes your plugin by making a library call.</p>
-    </li>
+        <p>Icinga will spend much less time running your Perl plugins because it no longer forks to execute the plugin (each time
+        loading the Perl interpreter). Instead, it executes your plugin by making a library call.</p>
+      </li>
 <li class="listitem">
-      <p>It greatly reduces the system impact of Perl plugins and/or allows you to run more checks with Perl plugin than you otherwise
-      would be able to. In other words, you have less incentive to write plugins in other languages such as C/C++, or Expect/TCL, that are
-      generally recognised to have development times at least an order of magnitude slower than Perl (although they do run about ten times
-      faster also - TCL being an exception).</p>
-    </li>
+        <p>It greatly reduces the system impact of Perl plugins and/or allows you to run more checks with Perl plugin than you otherwise
+        would be able to. In other words, you have less incentive to write plugins in other languages such as C/C++, or Expect/TCL, that are
+        generally recognised to have development times at least an order of magnitude slower than Perl (although they do run about ten times
+        faster also - TCL being an exception).</p>
+      </li>
 <li class="listitem">
-      <p>If you are not a C programmer, then you can still get a huge amount of mileage out of Icinga by letting Perl do all the
-      heavy lifting without having Icinga slow right down. Note however, that the ePN will not speed up your plugin (apart from
-      eliminating the interpreter load time). If you want fast plugins then consider Perl XSUBs (XS), or C <span class="emphasis"><em>after</em></span> you
-      are sure that your Perl is tuned and that you have a suitable algorithm (Benchmark.pm is <span class="emphasis"><em>invaluable</em></span> for comparing
-      the performance of Perl language elements).</p>
-    </li>
+        <p>If you are not a C programmer, then you can still get a huge amount of mileage out of Icinga by letting Perl do all the
+        heavy lifting without having Icinga slow right down. Note however, that the ePN will not speed up your plugin (apart from
+        eliminating the interpreter load time). If you want fast plugins then consider Perl XSUBs (XS), or C <span class="emphasis"><em>after</em></span> you
+        are sure that your Perl is tuned and that you have a suitable algorithm (Benchmark.pm is <span class="emphasis"><em>invaluable</em></span> for
+        comparing the performance of Perl language elements).</p>
+      </li>
 <li class="listitem">
-      <p>Using the ePN is an excellent opportunity to learn more about Perl.</p>
-    </li>
+        <p>Using the ePN is an excellent opportunity to learn more about Perl.</p>
+      </li>
 </ul></div>
-
   </div>
 
   <div class="section" title="7.18.2. Disadvantages">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="cons"></a>7.18.2. Disadvantages</h3></div></div></div>
-	  
+    
 
-  <p>The disadvantages of ePN (embedded Perl Icinga) are much the same as Apache mod_perl (i.e. Apache with an embedded
-  interpreter) compared to a plain Apache:</p>
+    <p>The disadvantages of ePN (embedded Perl Icinga) are much the same as Apache mod_perl (i.e. Apache with an embedded
+    interpreter) compared to a plain Apache:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>A Perl program that works <span class="emphasis"><em>fine</em></span> with plain Icinga may <span class="emphasis"><em>not</em></span> work with the ePN. You
-      may have to modify your plugins to get them to work.</p>
+        <p>A Perl program that works <span class="emphasis"><em>fine</em></span> with plain Icinga may <span class="emphasis"><em>not</em></span> work with the ePN.
+        You may have to modify your plugins to get them to work.</p>
 
-      <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+        <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Please note that you might introduce memory leaks so you shouldn't run your plugin without having tested/verified it using
-        <code class="filename">new_mini_epn</code> (to be found in the <code class="filename">contrib</code> folder).</p>
-      </td></tr>
+          <p>Please note that you might introduce memory leaks so you shouldn't run your plugin without having tested/verified it using
+          <code class="filename">new_mini_epn</code> (to be found in the <code class="filename">contrib</code> folder).</p>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Perl plugins are harder to debug under an ePN than under a plain Icinga.</p>
-    </li>
+        <p>Perl plugins are harder to debug under an ePN than under a plain Icinga.</p>
+      </li>
 <li class="listitem">
-      <p>Your ePN will have a larger SIZE (memory footprint) than a plain Icinga.</p>
-    </li>
+        <p>Your ePN will have a larger SIZE (memory footprint) than a plain Icinga.</p>
+      </li>
 <li class="listitem">
-      <p>Some Perl constructs cannot be used or may behave differently than what you would expect.</p>
-    </li>
+        <p>Some Perl constructs cannot be used or may behave differently than what you would expect.</p>
+      </li>
 <li class="listitem">
-      <p>You may have to be aware of 'more than one way to do it' and choose a way that seems less attractive or obvious.</p>
-    </li>
+        <p>You may have to be aware of 'more than one way to do it' and choose a way that seems less attractive or obvious.</p>
+      </li>
 <li class="listitem">
-      <p>You will need greater Perl knowledge (but nothing very esoteric or stuff about Perl internals - unless your plugin uses
-      XSUBS).</p>
-    </li>
+        <p>You will need greater Perl knowledge (but nothing very esoteric or stuff about Perl internals - unless your plugin uses
+        XSUBS).</p>
+      </li>
 </ul></div>
-
   </div>
 
   <div class="section" title="7.18.3. Using The Embedded Perl Interpreter">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="interpreter"></a>7.18.3. Using The Embedded Perl Interpreter</h3></div></div></div>
-	  
+    
 
-  <p>If you want to use the embedded Perl interpreter to run your Perl plugins and scripts, here's what you'll need to do:</p>
+    <p>If you want to use the embedded Perl interpreter to run your Perl plugins and scripts, here's what you'll need to do:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Compile Icinga with support for the embedded Perl interpreter (see instructions below).</p>
-    </li>
+        <p>Compile Icinga with support for the embedded Perl interpreter (see instructions below).</p>
+      </li>
 <li class="listitem">
-      <p>Enable the <a class="link" href="configmain.html#configmain-enable_embedded_perl">enable_embedded_perl</a> option in the main configuration
-      file.</p>
-    </li>
+        <p>Enable the <a class="link" href="configmain.html#configmain-enable_embedded_perl">enable_embedded_perl</a> option in the main configuration
+        file.</p>
+      </li>
 <li class="listitem">
-      <p>Set the <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a> option to fit your needs.
-      This option determines whether or not the Perl interpreter should be used by default for individual Perl plugins and scripts.</p>
-    </li>
+        <p>Set the <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a> option to fit your needs.
+        This option determines whether or not the Perl interpreter should be used by default for individual Perl plugins and scripts.</p>
+      </li>
 <li class="listitem">
-      <p>Optionally enable or disable certain Perl plugins and scripts from being run using the embedded Perl interpreter. This can be
-      useful if certain Perl scripts have problems being running under the Perl interpreter. See instructions below for more information on
-      doing this.</p>
-    </li>
+        <p>Optionally enable or disable certain Perl plugins and scripts from being run using the embedded Perl interpreter. This can be
+        useful if certain Perl scripts have problems being running under the Perl interpreter. See instructions below for more information
+        on doing this.</p>
+      </li>
 </ol></div>
-
   </div>
 
   <div class="section" title="7.18.4. Compiling Icinga With Embedded Perl">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="compileicinga"></a>7.18.4. Compiling Icinga With Embedded Perl</h3></div></div></div>
-	  
+    
 
-  <p>If you want to use the embedded Perl interpreter, you'll first need to compile Icinga with support for it. To do this, simply
-  run the configure script with the addition of the <span class="color"><font color="red"> <span class="emphasis"><em>--enable-embedded-perl</em></span>
-  </font></span> option. If you want the embedded interpreter to cache internally compiled scripts, add the <span class="color"><font color="red"> <span class="emphasis"><em>--with-perlcache</em></span> </font></span> option as well. Example:</p>
+    <p>If you want to use the embedded Perl interpreter, you'll first need to compile Icinga with support for it. To do this,
+    simply run the configure script with the addition of the <span class="color"><font color="red">
+    <span class="emphasis"><em>--enable-embedded-perl</em></span> </font></span> option. If you want the embedded interpreter to cache internally compiled
+    scripts, add the <span class="color"><font color="red"> <span class="emphasis"><em>--with-perlcache</em></span> </font></span> option as well.
+    Example:</p>
 
-  <pre class="screen"> ./configure --enable-embedded-perl --with-perlcache <span class="emphasis"><em> otheroptions...</em></span></pre>
+    <pre class="screen"> ./configure --enable-embedded-perl --with-perlcache <span class="emphasis"><em> otheroptions...</em></span></pre>
 
-  <p>Once you've rerun the configure script with the new options, make sure to recompile Icinga.</p>
+    <p>Once you've rerun the configure script with the new options, make sure to recompile Icinga.</p>
 
-  <p>Packagers might use another option to specify the location of the <code class="filename">p1.pl</code> file:</p>
+    <p>Packagers might use another option to specify the location of the <code class="filename">p1.pl</code> file:</p>
 
-  <pre class="screen"> ./configure --with-p1-file-dir=&lt;path&gt;</pre>
-
+    <pre class="screen"> ./configure --with-p1-file-dir=&lt;path&gt;</pre>
   </div>
 
   <div class="section" title="7.18.5. Plugin-Specific Use of the Perl Interpreter">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="plugspecs"></a>7.18.5. Plugin-Specific Use of the Perl Interpreter</h3></div></div></div>
-	  
+    
 
-  <p>Beginning with Icinga 1.11, you can specify which Perl plugins or scripts should or should not be run under the
-  embedded Perl interpreter. This is particularly useful if you have troublesome Perl scripts which do not work well with the Perl
-  interpreter.</p>
+    <p>You can specify which Perl plugins or scripts should or should not be run under the embedded Perl interpreter. This is
+    particularly useful if you have troublesome Perl scripts which do not work well with the Perl interpreter.</p>
 
-  <p>To <span class="emphasis"><em>explicitly</em></span> tell Icinga whether or not to use the embedded Perl interpreter for a particular perl
-  script, add one of the following entries to your Perl script/plugin...</p>
+    <p>To <span class="emphasis"><em>explicitly</em></span> tell Icinga whether or not to use the embedded Perl interpreter for a particular perl
+    script, add one of the following entries to your Perl script/plugin...</p>
 
-  <p>To tell Icinga to use the Perl interpreter for a particular script, add this line to the Perl script:</p>
+    <p>To tell Icinga to use the Perl interpreter for a particular script, add this line to the Perl script:</p>
 
-  <pre class="programlisting"> # icinga: +epn</pre>
+    <pre class="programlisting"> # icinga: +epn</pre>
 
-  <p>To tell Icinga to NOT use the embedded Perl interpreter for a particular script, add this line to the Perl script:</p>
+    <p>To tell Icinga to NOT use the embedded Perl interpreter for a particular script, add this line to the Perl script:</p>
 
-  <pre class="programlisting"> # icinga: -epn</pre>
+    <pre class="programlisting"> # icinga: -epn</pre>
 
-  <p>Either line must be located within the first 10 lines of a script for Icinga to detect it.</p>
+    <p>Either line must be located within the first 10 lines of a script for Icinga to detect it.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>"icinga: +/-epn" is supported starting with Icinga 1.2.1. Before that you had to specify "nagios: +/-epn" which is still
-    possible for compatibility reasons.</p>
-  </td></tr>
-</table></div>
-
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you do not <span class="emphasis"><em>explicitly</em></span> use the method above to tell Icinga whether an individual plugin can be run
-    under the Perl interpreter, Icinga will make will a decision for you. This decision process is controlled by the <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a> variable. If the value is set to 1, all Perl
-    plugins/scripts (that do not explicitly enable/disable the ePN) will be run under the Perl interpreter. If the value is 0, they will NOT
-    be run under the Perl interpreter.</p>
-  </td></tr>
+      <p>If you do not <span class="emphasis"><em>explicitly</em></span> use the method above to tell Icinga whether an individual plugin can be run
+      under the Perl interpreter, Icinga will make will a decision for you. This decision process is controlled by the <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a> variable. If the value is set to 1, all Perl
+      plugins/scripts (that do not explicitly enable/disable the ePN) will be run under the Perl interpreter. If the value is 0, they will
+      NOT be run under the Perl interpreter.</p>
+    </td></tr>
 </table></div>
-
   </div>
 
   <div class="section" title="7.18.6. Developing Plugins For Use With Embedded Perl">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="devlopplugs"></a>7.18.6. Developing Plugins For Use With Embedded Perl</h3></div></div></div>
-	  
+    
 
-  <p>Information on developing plugins for use with the embedded Perl interpreter can be found <a class="link" href="epnplugins.html" title="11.2. Developing Plugins For Use With Embedded Perl">here</a>.</p>
+    <p>Information on developing plugins for use with the embedded Perl interpreter can be found <a class="link" href="epnplugins.html" title="11.2. Developing Plugins For Use With Embedded Perl">here</a>.</p>
 
-  <a class="indexterm" name="idm251250088096"></a>
-</div>
+    <a class="indexterm" name="idm249451024448"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="config.html" title="3.1. Configuration Overview">
 <link rel="next" href="configobject.html" title="3.3. Object Configuration Overview">
@@ -55,7 +55,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>A sample main configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/icinga.cfg</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <p>A sample main configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/icinga.cfg</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="2.3. Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
@@ -1552,8 +1552,7 @@
   status , acknowledgements, downtimes, and comments (you will have to create the contents of this file outside of Icinga). When
   Icinga is restarted, it reads the information in the sync_retention_file and will update the host or service specified <span class="emphasis"><em>if
   the last_update time in the sync file is newer</em></span> than in the state_retention_file, otherwise information will be discarded for
-  that host or service. After the sync file has been read, it will be removed. To disable, comment out the option. This option can be used
-  starting with Icinga 1.0.2.</p>
+  that host or service. After the sync file has been read, it will be removed. To disable, comment out the option.</p>
 
   <p><a name="configmain-retention_update_interval"></a> <span class="bold"><strong>Automatic State Retention Update
   Interval</strong></span></p>
@@ -1866,8 +1865,6 @@
                
 
               <span class="color"><font color="red">
-                 
-
                 <span class="bold"><strong>retained_contact_host_attribute_mask=0</strong></span>
 
                  
@@ -1875,8 +1872,6 @@
 
                
             </p> <p>
-               
-
               <span class="color"><font color="red">
                  
 
@@ -1964,8 +1959,6 @@
     </li>
 </ul></div>
 
-  <p>This option can be used starting with Icinga 1.0.2.</p>
-
   <p><a name="configmain-syslog_local_facility"></a> <span class="bold"><strong>Syslog Local Facility Value</strong></span></p>
 
   <div class="informaltable">
@@ -1988,8 +1981,7 @@
 </table>
   </div>
 
-  <p>If you enabled use_syslog_local_facility you can choose which local facility to use. Valid values are from 0 to 7. This option can
-  be used starting with Icinga 1.0.2.</p>
+  <p>If you enabled use_syslog_local_facility you can choose which local facility to use. Valid values are from 0 to 7.</p>
 
   <p><a name="configmain-log_notifications"></a> <span class="bold"><strong>Notification Logging Option</strong></span></p>
 
@@ -2256,16 +2248,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configmain-log_passive_checks"></a> <span class="bold"><strong>Passive Check Logging Option</strong></span></p>
 
   <div class="informaltable">
@@ -2335,16 +2317,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configmain-log_long_plugin_output"></a> <span class="bold"><strong>Long Plugin Output Logging Option</strong></span></p>
 
   <div class="informaltable">
@@ -2378,16 +2350,6 @@
       <p>1 = Log complete plugin output</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configmain-global_host_event_handler"></a> <span class="bold"><strong>Global Host Event Handler Option</strong></span></p>
 
@@ -2494,16 +2456,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configmain-stalking_notifications_for_hosts"></a> <span class="bold"><strong>Notifications for stalked
   hosts</strong></span></p>
 
@@ -2564,16 +2516,6 @@
       <p>1 = Notifications enabled</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.6.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configmain-sleep_time"></a> <span class="bold"><strong>Inter-Check Sleep Time</strong></span></p>
 
@@ -3421,17 +3363,6 @@
       <p>1 = Make macros available as environment variables</p>
     </li>
 </ul></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>The default has changed starting with Icinga 1.5. Prior to this version the directive has been enabled, now it is
-    <span class="emphasis"><em>disabled</em></span>.</p>
-  </td></tr>
-</table></div>
 
   <p><a name="configmain-enable_flap_detection"></a> <span class="bold"><strong>Flap Detection Option</strong></span></p>
 
@@ -4638,17 +4569,14 @@
   <p>This setting determines whether or not the embedded Perl interpreter is enabled on a program-wide basis. Icinga must be
   compiled with support for embedded Perl for this option to have an effect. More information on the embedded Perl interpreter can be found
   <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">here</a>.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>The default has changed starting with Icinga 1.5. Prior to this version the directive has been enabled, now it is
-    <span class="emphasis"><em>disabled</em></span>.</p>
-  </td></tr>
-</table></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>0 = disabled (default)</p>
+      </li>
+<li class="listitem">
+        <p>1 = enabled</p>
+      </li>
+</ul></div>
 
   <p><a name="configmain-use_embedded_perl_implicitly"></a> <span class="bold"><strong>Embedded Perl Implicit Use Option</strong></span></p>
 
@@ -5336,16 +5264,6 @@
     </li>
 </ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This option is available starting with Icinga 1.3.</p>
-  </td></tr>
-</table></div>
-
   <p><a name="configmain-process_empty_results"></a> <span class="bold"><strong>Process empty performance results</strong></span></p>
 
   <div class="informaltable">
@@ -5409,17 +5327,15 @@
 
   <p>These options determine whether the core will process empty perfdata results or not. This is needed for distributed monitoring, and
   intentionally turned on by default. If you don't require empty perfdata - saving some cpu cycles on unwanted macro calculation - you can
-  turn that off. Be careful! Values: 1 = enable, 0 = disable</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>These options are available starting with Icinga 1.4</p>
-  </td></tr>
-</table></div>
+  turn that off. Be careful!</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>0 = disable</p>
+      </li>
+<li class="listitem">
+        <p>1 = enable</p>
+      </li>
+</ul></div>
 
   <p><a name="configmain-max_check_result_list_items"></a><span class="bold"><strong>Limit number of items in check result
   list</strong></span></p>
@@ -5460,293 +5376,293 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idm251261126272"></a>
+  <a class="indexterm" name="idm249462026304"></a>
 
-  <a class="indexterm" name="idm251261125392"></a>
+  <a class="indexterm" name="idm249462025136"></a>
 
-  <a class="indexterm" name="idm251261123824"></a>
+  <a class="indexterm" name="idm249462023616"></a>
 
-  <a class="indexterm" name="idm251261122160"></a>
+  <a class="indexterm" name="idm249462021856"></a>
 
-  <a class="indexterm" name="idm251261120528"></a>
+  <a class="indexterm" name="idm249462020368"></a>
 
-  <a class="indexterm" name="idm251261118880"></a>
+  <a class="indexterm" name="idm249462018768"></a>
 
-  <a class="indexterm" name="idm251261117248"></a>
+  <a class="indexterm" name="idm249462017136"></a>
 
-  <a class="indexterm" name="idm251261115616"></a>
+  <a class="indexterm" name="idm249462015504"></a>
 
-  <a class="indexterm" name="idm251261113856"></a>
+  <a class="indexterm" name="idm249462013744"></a>
 
-  <a class="indexterm" name="idm251261112336"></a>
+  <a class="indexterm" name="idm249462012224"></a>
 
-  <a class="indexterm" name="idm251261110720"></a>
+  <a class="indexterm" name="idm249462010464"></a>
 
-  <a class="indexterm" name="idm251261109136"></a>
+  <a class="indexterm" name="idm249462008976"></a>
 
-  <a class="indexterm" name="idm251261107504"></a>
+  <a class="indexterm" name="idm249462007248"></a>
 
-  <a class="indexterm" name="idm251261105744"></a>
+  <a class="indexterm" name="idm249462005728"></a>
 
-  <a class="indexterm" name="idm251261104256"></a>
+  <a class="indexterm" name="idm249462004032"></a>
 
-  <a class="indexterm" name="idm251261102624"></a>
+  <a class="indexterm" name="idm249462002512"></a>
 
-  <a class="indexterm" name="idm251261100928"></a>
+  <a class="indexterm" name="idm249462000800"></a>
 
-  <a class="indexterm" name="idm251261099328"></a>
+  <a class="indexterm" name="idm249461999184"></a>
 
-  <a class="indexterm" name="idm251261097680"></a>
+  <a class="indexterm" name="idm249461997552"></a>
 
-  <a class="indexterm" name="idm251261096000"></a>
+  <a class="indexterm" name="idm249461995792"></a>
 
-  <a class="indexterm" name="idm251261094368"></a>
+  <a class="indexterm" name="idm249461994128"></a>
 
-  <a class="indexterm" name="idm251261092736"></a>
+  <a class="indexterm" name="idm249461992608"></a>
 
-  <a class="indexterm" name="idm251261091104"></a>
+  <a class="indexterm" name="idm249461990976"></a>
 
-  <a class="indexterm" name="idm251261089472"></a>
+  <a class="indexterm" name="idm249461989344"></a>
 
-  <a class="indexterm" name="idm251261087744"></a>
+  <a class="indexterm" name="idm249461987616"></a>
 
-  <a class="indexterm" name="idm251261086016"></a>
+  <a class="indexterm" name="idm249461985888"></a>
 
-  <a class="indexterm" name="idm251261084464"></a>
+  <a class="indexterm" name="idm249461984336"></a>
 
-  <a class="indexterm" name="idm251261082736"></a>
+  <a class="indexterm" name="idm249461982608"></a>
 
-  <a class="indexterm" name="idm251261081248"></a>
+  <a class="indexterm" name="idm249462047280"></a>
 
-  <a class="indexterm" name="idm251261079648"></a>
+  <a class="indexterm" name="idm249461979984"></a>
 
-  <a class="indexterm" name="idm251261077968"></a>
+  <a class="indexterm" name="idm249461978496"></a>
 
-  <a class="indexterm" name="idm251261076304"></a>
+  <a class="indexterm" name="idm249461976848"></a>
 
-  <a class="indexterm" name="idm251261074592"></a>
+  <a class="indexterm" name="idm249461975728"></a>
 
-  <a class="indexterm" name="idm251261072928"></a>
+  <a class="indexterm" name="idm249461973456"></a>
 
-  <a class="indexterm" name="idm251261071264"></a>
+  <a class="indexterm" name="idm249461971808"></a>
 
-  <a class="indexterm" name="idm251261069552"></a>
+  <a class="indexterm" name="idm249461970112"></a>
 
-  <a class="indexterm" name="idm251261067888"></a>
+  <a class="indexterm" name="idm249461968336"></a>
 
-  <a class="indexterm" name="idm251261066176"></a>
+  <a class="indexterm" name="idm249461966784"></a>
 
-  <a class="indexterm" name="idm251261064496"></a>
+  <a class="indexterm" name="idm249461965056"></a>
 
-  <a class="indexterm" name="idm251261062816"></a>
+  <a class="indexterm" name="idm249461963392"></a>
 
-  <a class="indexterm" name="idm251261061232"></a>
+  <a class="indexterm" name="idm249461961728"></a>
 
-  <a class="indexterm" name="idm251261059552"></a>
+  <a class="indexterm" name="idm249461960048"></a>
 
-  <a class="indexterm" name="idm251261057936"></a>
+  <a class="indexterm" name="idm249461958384"></a>
 
-  <a class="indexterm" name="idm251261056208"></a>
+  <a class="indexterm" name="idm249461956736"></a>
 
-  <a class="indexterm" name="idm251261054640"></a>
+  <a class="indexterm" name="idm249461955088"></a>
 
-  <a class="indexterm" name="idm251261052912"></a>
+  <a class="indexterm" name="idm249461953440"></a>
 
-  <a class="indexterm" name="idm251261051344"></a>
+  <a class="indexterm" name="idm249461951792"></a>
 
-  <a class="indexterm" name="idm251261049616"></a>
+  <a class="indexterm" name="idm249461950144"></a>
 
-  <a class="indexterm" name="idm251261048048"></a>
+  <a class="indexterm" name="idm249461948496"></a>
 
-  <a class="indexterm" name="idm251261046320"></a>
+  <a class="indexterm" name="idm249461946848"></a>
 
-  <a class="indexterm" name="idm251261044704"></a>
+  <a class="indexterm" name="idm249461945200"></a>
 
-  <a class="indexterm" name="idm251261043040"></a>
+  <a class="indexterm" name="idm249461943520"></a>
 
-  <a class="indexterm" name="idm251261041328"></a>
+  <a class="indexterm" name="idm249461941760"></a>
 
-  <a class="indexterm" name="idm251261039648"></a>
+  <a class="indexterm" name="idm249461940208"></a>
 
-  <a class="indexterm" name="idm251261037968"></a>
+  <a class="indexterm" name="idm249461938512"></a>
 
-  <a class="indexterm" name="idm251261036288"></a>
+  <a class="indexterm" name="idm249461936816"></a>
 
-  <a class="indexterm" name="idm251261034768"></a>
+  <a class="indexterm" name="idm249461935152"></a>
 
-  <a class="indexterm" name="idm251261032976"></a>
+  <a class="indexterm" name="idm249461933456"></a>
 
-  <a class="indexterm" name="idm251261031392"></a>
+  <a class="indexterm" name="idm249461931792"></a>
 
-  <a class="indexterm" name="idm251261029760"></a>
+  <a class="indexterm" name="idm249461930144"></a>
 
-  <a class="indexterm" name="idm251261028080"></a>
+  <a class="indexterm" name="idm249461928464"></a>
 
-  <a class="indexterm" name="idm251261026448"></a>
+  <a class="indexterm" name="idm249461926832"></a>
 
-  <a class="indexterm" name="idm251261024768"></a>
+  <a class="indexterm" name="idm249461925152"></a>
 
-  <a class="indexterm" name="idm251261023104"></a>
+  <a class="indexterm" name="idm249461923488"></a>
 
-  <a class="indexterm" name="idm251261021472"></a>
+  <a class="indexterm" name="idm249461921856"></a>
 
-  <a class="indexterm" name="idm251261019712"></a>
+  <a class="indexterm" name="idm249461920096"></a>
 
-  <a class="indexterm" name="idm251261018144"></a>
+  <a class="indexterm" name="idm249461918528"></a>
 
-  <a class="indexterm" name="idm251261016496"></a>
+  <a class="indexterm" name="idm249461916880"></a>
 
-  <a class="indexterm" name="idm251261014864"></a>
+  <a class="indexterm" name="idm249461915248"></a>
 
-  <a class="indexterm" name="idm251261013216"></a>
+  <a class="indexterm" name="idm249461913600"></a>
 
-  <a class="indexterm" name="idm251261011568"></a>
+  <a class="indexterm" name="idm249461911952"></a>
 
-  <a class="indexterm" name="idm251261009888"></a>
+  <a class="indexterm" name="idm249461910224"></a>
 
-  <a class="indexterm" name="idm251261008224"></a>
+  <a class="indexterm" name="idm249461908480"></a>
 
-  <a class="indexterm" name="idm251261006464"></a>
+  <a class="indexterm" name="idm249461906768"></a>
 
-  <a class="indexterm" name="idm251261004864"></a>
+  <a class="indexterm" name="idm249461905136"></a>
 
-  <a class="indexterm" name="idm251261003744"></a>
+  <a class="indexterm" name="idm249461903424"></a>
 
-  <a class="indexterm" name="idm251261001344"></a>
+  <a class="indexterm" name="idm249461901680"></a>
 
-  <a class="indexterm" name="idm251260999792"></a>
+  <a class="indexterm" name="idm249461900096"></a>
 
-  <a class="indexterm" name="idm251260998128"></a>
+  <a class="indexterm" name="idm249461898480"></a>
 
-  <a class="indexterm" name="idm251260996496"></a>
+  <a class="indexterm" name="idm249461896720"></a>
 
-  <a class="indexterm" name="idm251260994800"></a>
+  <a class="indexterm" name="idm249461895136"></a>
 
-  <a class="indexterm" name="idm251260993152"></a>
+  <a class="indexterm" name="idm249461893504"></a>
 
-  <a class="indexterm" name="idm251260991504"></a>
+  <a class="indexterm" name="idm249461891792"></a>
 
-  <a class="indexterm" name="idm251260989824"></a>
+  <a class="indexterm" name="idm249461890176"></a>
 
-  <a class="indexterm" name="idm251260988192"></a>
+  <a class="indexterm" name="idm249461888544"></a>
 
-  <a class="indexterm" name="idm251260986544"></a>
+  <a class="indexterm" name="idm249461886912"></a>
 
-  <a class="indexterm" name="idm251260984896"></a>
+  <a class="indexterm" name="idm249461885248"></a>
 
-  <a class="indexterm" name="idm251260983248"></a>
+  <a class="indexterm" name="idm249461883616"></a>
 
-  <a class="indexterm" name="idm251260981568"></a>
+  <a class="indexterm" name="idm249461881952"></a>
 
-  <a class="indexterm" name="idm251260979920"></a>
+  <a class="indexterm" name="idm249461880288"></a>
 
-  <a class="indexterm" name="idm251260978272"></a>
+  <a class="indexterm" name="idm249461878560"></a>
 
-  <a class="indexterm" name="idm251260976640"></a>
+  <a class="indexterm" name="idm249461876928"></a>
 
-  <a class="indexterm" name="idm251260974976"></a>
+  <a class="indexterm" name="idm249461875344"></a>
 
-  <a class="indexterm" name="idm251260973344"></a>
+  <a class="indexterm" name="idm249461873712"></a>
 
-  <a class="indexterm" name="idm251260971712"></a>
+  <a class="indexterm" name="idm249461872080"></a>
 
-  <a class="indexterm" name="idm251260969952"></a>
+  <a class="indexterm" name="idm249461870320"></a>
 
-  <a class="indexterm" name="idm251260968464"></a>
+  <a class="indexterm" name="idm249461868832"></a>
 
-  <a class="indexterm" name="idm251260966816"></a>
+  <a class="indexterm" name="idm249461867104"></a>
 
-  <a class="indexterm" name="idm251260965168"></a>
+  <a class="indexterm" name="idm249461865536"></a>
 
-  <a class="indexterm" name="idm251260963536"></a>
+  <a class="indexterm" name="idm249461863808"></a>
 
-  <a class="indexterm" name="idm251260961888"></a>
+  <a class="indexterm" name="idm249461862192"></a>
 
-  <a class="indexterm" name="idm251260960256"></a>
+  <a class="indexterm" name="idm249461860464"></a>
 
-  <a class="indexterm" name="idm251260958480"></a>
+  <a class="indexterm" name="idm249461858768"></a>
 
-  <a class="indexterm" name="idm251260956864"></a>
+  <a class="indexterm" name="idm249461857184"></a>
 
-  <a class="indexterm" name="idm251260955232"></a>
+  <a class="indexterm" name="idm249461855552"></a>
 
-  <a class="indexterm" name="idm251260953472"></a>
+  <a class="indexterm" name="idm249461853792"></a>
 
-  <a class="indexterm" name="idm251260951904"></a>
+  <a class="indexterm" name="idm249461852224"></a>
 
-  <a class="indexterm" name="idm251260950272"></a>
+  <a class="indexterm" name="idm249461850592"></a>
 
-  <a class="indexterm" name="idm251260948480"></a>
+  <a class="indexterm" name="idm249461848928"></a>
 
-  <a class="indexterm" name="idm251260946848"></a>
+  <a class="indexterm" name="idm249461847296"></a>
 
-  <a class="indexterm" name="idm251260945184"></a>
+  <a class="indexterm" name="idm249461845632"></a>
 
-  <a class="indexterm" name="idm251260943472"></a>
+  <a class="indexterm" name="idm249461844112"></a>
 
-  <a class="indexterm" name="idm251260941792"></a>
+  <a class="indexterm" name="idm249461842448"></a>
 
-  <a class="indexterm" name="idm251260940128"></a>
+  <a class="indexterm" name="idm249461840752"></a>
 
-  <a class="indexterm" name="idm251260938416"></a>
+  <a class="indexterm" name="idm249461839056"></a>
 
-  <a class="indexterm" name="idm251260936816"></a>
+  <a class="indexterm" name="idm249461837312"></a>
 
-  <a class="indexterm" name="idm251260935184"></a>
+  <a class="indexterm" name="idm249461835664"></a>
 
-  <a class="indexterm" name="idm251260933520"></a>
+  <a class="indexterm" name="idm249461833984"></a>
 
-  <a class="indexterm" name="idm251260931728"></a>
+  <a class="indexterm" name="idm249461832224"></a>
 
-  <a class="indexterm" name="idm251260930160"></a>
+  <a class="indexterm" name="idm249461830656"></a>
 
-  <a class="indexterm" name="idm251260928400"></a>
+  <a class="indexterm" name="idm249461829024"></a>
 
-  <a class="indexterm" name="idm251260926784"></a>
+  <a class="indexterm" name="idm249461827344"></a>
 
-  <a class="indexterm" name="idm251260925168"></a>
+  <a class="indexterm" name="idm249461825680"></a>
 
-  <a class="indexterm" name="idm251260923440"></a>
+  <a class="indexterm" name="idm249461824032"></a>
 
-  <a class="indexterm" name="idm251260921824"></a>
+  <a class="indexterm" name="idm249461822384"></a>
 
-  <a class="indexterm" name="idm251260920272"></a>
+  <a class="indexterm" name="idm249461820720"></a>
 
-  <a class="indexterm" name="idm251260918512"></a>
+  <a class="indexterm" name="idm249461818960"></a>
 
-  <a class="indexterm" name="idm251260916976"></a>
+  <a class="indexterm" name="idm249461817472"></a>
 
-  <a class="indexterm" name="idm251260915344"></a>
+  <a class="indexterm" name="idm249461815824"></a>
 
-  <a class="indexterm" name="idm251260913680"></a>
+  <a class="indexterm" name="idm249461814176"></a>
 
-  <a class="indexterm" name="idm251260912048"></a>
+  <a class="indexterm" name="idm249461812544"></a>
 
-  <a class="indexterm" name="idm251260910416"></a>
+  <a class="indexterm" name="idm249461810896"></a>
 
-  <a class="indexterm" name="idm251260908656"></a>
+  <a class="indexterm" name="idm249461809232"></a>
 
-  <a class="indexterm" name="idm251260907168"></a>
+  <a class="indexterm" name="idm249461807600"></a>
 
-  <a class="indexterm" name="idm251260905408"></a>
+  <a class="indexterm" name="idm249461805968"></a>
 
-  <a class="indexterm" name="idm251260903744"></a>
+  <a class="indexterm" name="idm249461804336"></a>
 
-  <a class="indexterm" name="idm251260902192"></a>
+  <a class="indexterm" name="idm249461802576"></a>
 
-  <a class="indexterm" name="idm251260900432"></a>
+  <a class="indexterm" name="idm249461801056"></a>
 
-  <a class="indexterm" name="idm251260898944"></a>
+  <a class="indexterm" name="idm249461799472"></a>
 
-  <a class="indexterm" name="idm251260897248"></a>
+  <a class="indexterm" name="idm249461797840"></a>
 
-  <a class="indexterm" name="idm251260895728"></a>
+  <a class="indexterm" name="idm249461796208"></a>
 
-  <a class="indexterm" name="idm251260894256"></a>
+  <a class="indexterm" name="idm249461794576"></a>
 
-  <a class="indexterm" name="idm251260892480"></a>
+  <a class="indexterm" name="idm249461792880"></a>
 
-  <a class="indexterm" name="idm251260890816"></a>
+  <a class="indexterm" name="idm249461791200"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="objectdefinitions.html" title="3.4. Object Definitions">
 <link rel="next" href="configcgi.html" title="3.6. CGI Configuration File Options">
@@ -38,7 +38,7 @@
 </dl></div>
   
 
-  <a class="indexterm" name="idm251259051504"></a>
+  <a class="indexterm" name="idm249459952928"></a>
 
   <div class="section" title="3.5.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
@@ -46,10 +46,10 @@
     
 
     <p>Users often request that new variables be added to host, service, and contact definitions. These include variables for SNMP
-    community, MAC address, AIM username, Skype number, and street address. The list is endless. The problem that I see with doing this is
-    that it makes Icinga less generic and more infrastructure-specific. Icinga was intended to be flexible, which meant things
-    needed to be designed in a generic manner. Host definitions in Icinga, for example, have a generic "address" variable that can
-    contain anything from an IP address to human-readable driving directions - whatever is appropriate for the user's setup.</p>
+    community, MAC address, AIM username, Skype number, and street address. The list is endless. The problem is that it makes Icinga
+    less generic and more infrastructure-specific. Icinga was intended to be flexible, which meant things needed to be designed in a
+    generic manner. Host definitions in Icinga, for example, have a generic "address" variable that can contain anything from an IP
+    address to human-readable driving directions - whatever is appropriate for the user's setup.</p>
 
     <p>Still, there needs to be a method for admins to store information about their infrastructure components in their Icinga
     configuration without imposing a set of specific variables on others. Icinga attempts to solve this problem by allowing users to
@@ -94,7 +94,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idm251259036880"></a>
+    <a class="indexterm" name="idm249459939072"></a>
   </div>
 
   <div class="section" title="3.5.3. Examples">

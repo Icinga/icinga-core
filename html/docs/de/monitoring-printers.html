@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.15. Netzwerk-Drucker überwachen</title>
+<title>2.16. Netzwerk-Drucker überwachen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="monitoring-netware.html" title="2.14. Netware-Server überwachen">
-<link rel="next" href="monitoring-routers.html" title="2.16. Router und Switches überwachen">
+<link rel="prev" href="monitoring-netware.html" title="2.15. Netware-Server überwachen">
+<link rel="next" href="monitoring-routers.html" title="2.17. Router und Switches überwachen">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.15. Netzwerk-Drucker überwachen</th></tr>
+<tr><th colspan="3" align="center">2.16. Netzwerk-Drucker überwachen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-netware.html">Zurück</a> </td>
@@ -26,27 +26,27 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.15. Netzwerk-Drucker überwachen">
+<div class="section" title="2.16. Netzwerk-Drucker überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-printers"></a>2.15. Netzwerk-Drucker überwachen</h2></div></div></div>
+<a name="monitoring-printers"></a>2.16. Netzwerk-Drucker überwachen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">2.15.2. <a href="monitoring-printers.html#overview">Überblick</a></span></dt>
-<dt><span class="section">2.15.3. <a href="monitoring-printers.html#steps">Schritte</a></span></dt>
-<dt><span class="section">2.15.4. <a href="monitoring-printers.html#whatsdone">Was bereits für Sie vorbereitet wurde</a></span></dt>
-<dt><span class="section">2.15.5. <a href="monitoring-printers.html#prerequisites">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.15.6. <a href="monitoring-printers.html#configicinga">Icinga konfigurieren</a></span></dt>
-<dt><span class="section">2.15.7. <a href="monitoring-printers.html#restarticinga">Icinga neu starten</a></span></dt>
+<dt><span class="section">2.16.1. <a href="monitoring-printers.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-printers.html#overview">Überblick</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-printers.html#steps">Schritte</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-printers.html#whatsdone">Was bereits für Sie vorbereitet wurde</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-printers.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-printers.html#configicinga">Icinga konfigurieren</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-printers.html#restarticinga">Icinga neu starten</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251271034592"></a>
+  <a class="indexterm" name="idm249451607680"></a>
 
-  <a class="indexterm" name="idm251271032832"></a>
+  <a class="indexterm" name="idm249451606064"></a>
 
-  <div class="section" title="2.15.1. Einführung">
+  <div class="section" title="2.16.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.15.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>2.16.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/printer.png" align="right"></div>
@@ -88,16 +88,16 @@
       </li>
 </ul></div>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
     Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
     definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
 
     <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
   </div>
 
-  <div class="section" title="2.15.2. Überblick">
+  <div class="section" title="2.16.2. Überblick">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>2.15.2. Überblick</h3></div></div></div>
+<a name="overview"></a>2.16.2. Überblick</h3></div></div></div>
     
 
     <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
@@ -115,14 +115,14 @@
       net-snmp-utils-Pakete auf Ihrem System haben. Stellen Sie sicher, dass das Plugin im
       <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>-Verzeichnis existiert, bevor Sie fortfahren. Falls nicht, installieren Sie net-snmp und
       net-snmp-utils und kompilieren und installieren Sie die Icinga-Plugins erneut, nachdem Sie "make clean" im Source-Verzeichnis
-      ausgeführt haben. Einzelheiten finden Sie in der <a class="link" href="quickstart-icinga.html" title="2.3. Icinga-Schnellstart auf Linux">Schnellstartanleitung</a>.</p>
+      ausgeführt haben. Einzelheiten finden Sie in der <a class="link" href="quickstart-icinga.html" title="2.4. Icinga-Schnellstart auf Linux">Schnellstartanleitung</a>.</p>
     </td></tr>
 </table></div>
   </div>
 
-  <div class="section" title="2.15.3. Schritte">
+  <div class="section" title="2.16.3. Schritte">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="steps"></a>2.15.3. Schritte</h3></div></div></div>
+<a name="steps"></a>2.16.3. Schritte</h3></div></div></div>
     
 
     <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Netzwerkdrucker zu überwachen. Das sind:</p>
@@ -140,9 +140,9 @@
 </ol></div>
   </div>
 
-  <div class="section" title="2.15.4. Was bereits für Sie vorbereitet wurde">
+  <div class="section" title="2.16.4. Was bereits für Sie vorbereitet wurde">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="whatsdone"></a>2.15.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
+<a name="whatsdone"></a>2.16.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
     
 
     <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
@@ -165,9 +165,9 @@
     Anweisungen und Sie werden im Nu Ihre Netzwerkdrucker überwachen.</p>
   </div>
 
-  <div class="section" title="2.15.5. Voraussetzungen">
+  <div class="section" title="2.16.5. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prerequisites"></a>2.15.5. Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>2.16.5. Voraussetzungen</h3></div></div></div>
     
 
     <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Netzwerkdrucker zu überwachen, dann müssen Sie ein paar zusätzliche
@@ -190,9 +190,9 @@
     Service-Definitionen an, statt neue zu erstellen.</p>
   </div>
 
-  <div class="section" title="2.15.6. Icinga konfigurieren">
+  <div class="section" title="2.16.6. Icinga konfigurieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="configicinga"></a>2.15.6. Icinga konfigurieren</h3></div></div></div>
+<a name="configicinga"></a>2.16.6. Icinga konfigurieren</h3></div></div></div>
     
 
     <p>Sie müssen einige <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen anlegen</a>, um einen neuen Drucker zu
@@ -250,9 +250,9 @@
     <p>Speichern Sie die Datei.</p>
   </div>
 
-  <div class="section" title="2.15.7. Icinga neu starten">
+  <div class="section" title="2.16.7. Icinga neu starten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="restarticinga"></a>2.15.7. Icinga neu starten</h3></div></div></div>
+<a name="restarticinga"></a>2.16.7. Icinga neu starten</h3></div></div></div>
     
 
     <p>Sobald Sie die neuen Host- und Service-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei hinzugefügt haben, sind Sie
@@ -274,9 +274,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.14. Netware-Server überwachen </td>
+<td width="40%" align="left" valign="top">2.15. Netware-Server überwachen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.16. Router und Switches überwachen</td>
+<td width="40%" align="right" valign="top"> 2.17. Router und Switches überwachen</td>
 </tr>
 </table>
 </div>

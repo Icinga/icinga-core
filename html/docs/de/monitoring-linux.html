@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.13. Linux/Unix-Rechner überwachen</title>
+<title>2.14. Linux/Unix-Rechner überwachen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="monitoring-windows.html" title="2.12. Windows-Maschinen überwachen">
-<link rel="next" href="monitoring-netware.html" title="2.14. Netware-Server überwachen">
+<link rel="prev" href="monitoring-windows.html" title="2.13. Windows-Maschinen überwachen">
+<link rel="next" href="monitoring-netware.html" title="2.15. Netware-Server überwachen">
 <script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.13. Linux/Unix-Rechner überwachen</th></tr>
+<tr><th colspan="3" align="center">2.14. Linux/Unix-Rechner überwachen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="monitoring-windows.html">Zurück</a> </td>
@@ -26,22 +26,22 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.13. Linux/Unix-Rechner überwachen">
+<div class="section" title="2.14. Linux/Unix-Rechner überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-linux"></a>2.13. Linux/Unix-Rechner überwachen</h2></div></div></div>
+<a name="monitoring-linux"></a>2.14. Linux/Unix-Rechner überwachen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.13.1. <a href="monitoring-linux.html#introduction">Einführung</a></span></dt>
-<dt><span class="section">2.13.2. <a href="monitoring-linux.html#overview">Überblick</a></span></dt>
+<dt><span class="section">2.14.1. <a href="monitoring-linux.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.14.2. <a href="monitoring-linux.html#overview">Überblick</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idm251271083712"></a>
+  <a class="indexterm" name="idm249451656496"></a>
 
-  <a class="indexterm" name="idm251271082064"></a>
+  <a class="indexterm" name="idm249451654976"></a>
 
-  <div class="section" title="2.13.1. Einführung">
+  <div class="section" title="2.14.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="introduction"></a>2.13.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>2.14.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument beschreibt, wie Sie "private" Dienste und Attribute auf Linux/UNIX-Servern überwachen, wie z.B.:</p>
@@ -68,19 +68,19 @@
 </ul></div>
 
     <p>Öffentlich nutzbare Dienste, die von Linux-Servern zur Verfügung gestellt werden (HTTP, FTP, SSH, SMTP, etc.), können
-    einfach mit Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.17. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a>
+    einfach mit Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.18. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a>
     kontrolliert werden.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
     Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
     definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
 
     <p>Falls Sie ein Paket installiert haben, dann fehlen die Beispieldateien möglicherweise. Sie finden den Inhalt <a class="link" href="sample-config.html" title="13.1. Beispielkonfigurationsdateien und Definitionen">hier</a> zum Nachschlagen.</p>
   </div>
 
-  <div class="section" title="2.13.2. Überblick">
+  <div class="section" title="2.14.2. Überblick">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="overview"></a>2.13.2. Überblick</h3></div></div></div>
+<a name="overview"></a>2.14.2. Überblick</h3></div></div></div>
     
 
     <p>[Anmerkung: Dieses Dokument ist noch nicht vollständig. Wir würden empfehlen, die Dokumentation zum <a class="link" href="addons.html#addons-nrpe">NRPE-Addon</a> zu lesen, um zu sehen, wie ein entfernter Linux/Unix-Server zu überwachen
@@ -109,9 +109,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.12. Windows-Maschinen überwachen </td>
+<td width="40%" align="left" valign="top">2.13. Windows-Maschinen überwachen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.14. Netware-Server überwachen</td>
+<td width="40%" align="right" valign="top"> 2.15. Netware-Server überwachen</td>
 </tr>
 </table>
 </div>

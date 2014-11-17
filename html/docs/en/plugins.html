@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="next" href="macros.html" title="5.2. Understanding Macros and How They Work">
@@ -133,7 +133,7 @@
         <p>Monitoring Plugins Downloads Page: <a class="link" href="https://www.monitoring-plugins.org/download.html" target="_top">https://www.monitoring-plugins.org/download.html</a></p>
       </li>
 <li class="listitem">
-        <p>MonitoringExchange.org: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
+        <p>Icinga Exchange: <a class="link" href="https://exchange.icinga.org" target="_top">https://exchange.icinga.org</a></p>
       </li>
 </ul></div>
 
@@ -391,10 +391,10 @@ results in:
 <a name="plugins-rawcommandline"></a>5.1.10. Raw command line</h3></div></div></div>
     
 
-    <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
-    <code class="filename">resource.cfg</code>. Clicking on "ACTIVE" next to "Check type" within host/service check details will give access to this
-    information. If you don't have defined a check yet choose "View Config" from the main menu on the left, then "Command expansion". Please
-    note that the user has to be permitted explicitly using the directive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
+    <p>The classic UI allows to inspect the raw command line including values from <code class="filename">resource.cfg</code>. Clicking on
+    "ACTIVE" next to "Check type" within host/service check details will give access to this information. If you don't have defined a check
+    yet choose "View Config" from the main menu on the left, then "Command expansion". Please note that the user has to be permitted
+    explicitly using the directive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
     to see the values of variables from <code class="filename">resource.cfg</code>. The user running the web server must have read access on this
     file, too.</p>
 
@@ -490,7 +490,7 @@ results in:
 </tr>
 <tr>
 <td>@10:20</td>
-<td>&lt;= 10 and &gt;= 20, (inside the range of {10 .. 20})</td>
+<td>&gt;= 10 and &lt;= 20, (inside the range of {10 .. 20})</td>
 </tr>
 </tbody>
 </table>
@@ -606,25 +606,25 @@ results in:
 
     <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">here</a>.</p>
 
-    <a class="indexterm" name="idm251257680880"></a>
+    <a class="indexterm" name="idm249458587312"></a>
 
-    <a class="indexterm" name="idm251257679152"></a>
+    <a class="indexterm" name="idm249458585920"></a>
 
-    <a class="indexterm" name="idm251257678016"></a>
+    <a class="indexterm" name="idm249458584608"></a>
 
-    <a class="indexterm" name="idm251257676464"></a>
+    <a class="indexterm" name="idm249458582992"></a>
 
-    <a class="indexterm" name="idm251257674736"></a>
+    <a class="indexterm" name="idm249458581376"></a>
 
-    <a class="indexterm" name="idm251257673216"></a>
+    <a class="indexterm" name="idm249458579856"></a>
 
-    <a class="indexterm" name="idm251257671488"></a>
+    <a class="indexterm" name="idm249458578272"></a>
 
-    <a class="indexterm" name="idm251257670000"></a>
+    <a class="indexterm" name="idm249458576640"></a>
 
-    <a class="indexterm" name="idm251257668240"></a>
+    <a class="indexterm" name="idm249458574880"></a>
 
-    <a class="indexterm" name="idm251257666720"></a>
+    <a class="indexterm" name="idm249458573360"></a>
   </div>
 </div>
 <div class="navfooter">

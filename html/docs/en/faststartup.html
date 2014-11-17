@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.11 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Documentation">
 <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
 <link rel="prev" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">
 <link rel="next" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks">
@@ -113,15 +113,15 @@
     thing. This is easy to do - simply start Icinga with the <span class="bold"><strong>-s</strong></span> or <span class="bold"><strong>
     --test-scheduling</strong></span> command line switch to get timing and scheduling information.</p>
 
-    <p>Starting with Icinga 1.0.2 there is an additional option <span class="bold"><strong>-S</strong></span> or <span class="bold"><strong>
-    --show-scheduling</strong></span>. This will add information about the scheduling queue to the output.</p>
+    <p>There is an additional option <span class="bold"><strong>-S</strong></span> or <span class="bold"><strong> --show-scheduling</strong></span>. This
+    will add information about the scheduling queue to the output.</p>
 
     <p>An example of the output (abbreviated to only show relevant portions) is shown below. For this example, we're using an
     Icinga config that has 25 hosts defined and just over 10,000 services.</p>
 
     <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -s /usr/local/icinga/etc/icinga.cfg
 
-Icinga 1.11
+Icinga 1.12
 Copyright (c) 2009 Nagios Core Development Team and Community Contributors
 Copyright (c) 1999-2009 Ethan Galstad
 Last Modified: 12-16-2009
@@ -267,17 +267,17 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>5. That's it! Enjoy the increased startup speed.</p>
 
-    <a class="indexterm" name="idm251249125424"></a>
+    <a class="indexterm" name="idm249450061264"></a>
 
-    <a class="indexterm" name="idm251249123872"></a>
+    <a class="indexterm" name="idm249450060096"></a>
 
-    <a class="indexterm" name="idm251249122608"></a>
+    <a class="indexterm" name="idm249450058400"></a>
 
-    <a class="indexterm" name="idm251249120800"></a>
+    <a class="indexterm" name="idm249450056928"></a>
 
-    <a class="indexterm" name="idm251249119328"></a>
+    <a class="indexterm" name="idm249450056800"></a>
 
-    <a class="indexterm" name="idm251249119200"></a>
+    <a class="indexterm" name="idm249450053712"></a>
   </div>
 </div>
 <div class="navfooter">
