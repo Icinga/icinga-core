@@ -1,0 +1,265 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>2.2. Ich bin neu bei...</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.12 Dokumentation">
+<link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
+<link rel="prev" href="beginners.html" title="2.1. Hinweise für Neulinge">
+<link rel="next" href="quickstart.html" title="2.3. Schnellstart-Installationsanleitungen">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.2. Ich bin neu bei...</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="beginners.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 2. Los geht's</th>
+<td width="20%" align="right"> <a accesskey="n" href="quickstart.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="2.2. Ich bin neu bei...">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="newbie"></a>2.2. <a name="newbie_"></a>Ich bin neu bei...</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">2.2.1. <a href="newbie.html#newbie-linux">Linux</a></span></dt>
+<dt><span class="section">2.2.2. <a href="newbie.html#newbie-mail">Mail</a></span></dt>
+<dt><span class="section">2.2.3. <a href="newbie.html#newbie-snmp">SNMP</a></span></dt>
+<dt><span class="section">2.2.4. <a href="newbie.html#newbie-packages">Pakete</a></span></dt>
+<dt><span class="section">2.2.5. <a href="newbie.html#newbie-monitoring">Überwachung</a></span></dt>
+<dt><span class="section">2.2.6. <a href="newbie.html#newbie-help">Hilfe!</a></span></dt>
+</dl></div>
+  
+
+  <p>Außerhalb des Computing wird ein "Newbie" mit "Neuling" bezeichnet und das begann lange, bevor Sie Laufen lernten. Sie haben diese
+  Herausforderung gemeistert und so gibt es keinen Grund, jetzt zurückzuschrecken. Die folgenden Abschnitte enthalten einige Hinweise zu
+  verschiedenen Themen. Bitte lesen Sie aufmerksam, wenn Sie meinen, dass Sie irgendwo "neu" sind. Wir werden Sie hierhin verweisen, wenn
+  wir der Meinung sind, dass Ihnen ein wenig Grundlagen fehlen ;-).</p>
+
+  <div class="section" title="2.2.1. Linux">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-linux"></a>2.2.1. Linux</h3></div></div></div>
+    
+
+    <p>Eine ansehnliche Zahl von Leuten ist beim Thema "Monitoring" neu, und auch beim Thema Linux. Sie wurden aufgefordert, ein
+    Monitoring-System zu erstellen, das verschiedene Hosts und einige Services auf diesen Geräten überwachen soll. Die Zahl selbst ist
+    uninteressant, weil die erste Hürde bereits das Betriebssystem ist.</p>
+
+    <p>Besonders junge Leute sind an grafische Benutzeroberflächen gewöhnt, die es einfach machen, mit ein paar Maus-Klicks Software zu
+    installieren, währenddessen irgendwelche Werte in einen Lagerraum gesteckt werden, der gemeinhin als "Registry" bekannt ist. Sogar
+    Server-Betriebssysteme haben heutzutage irgendeine Art von grafischer Benutzeroberfläche, aber es trotzdem noch erforderlich, Befehle an
+    einer textbasierten Konsole einzugeben.</p>
+
+    <p>Holen Sie sich daher ein gutes Buch zu Linux-Grundlagen aus Ihrer Stadtbibliothek, um einen Überblick über die
+    Verzeichnisstruktur und häufig benutzte Befehle zu bekommen. Benutzen Sie Ihren Browser, wenn Sie keine Bücher mögen, aber stellen Sie
+    bitte keine diesbezüglichen Fragen in einem Monitoring-Forum (Sie würden auch nicht fragen, wie man laufen lernt, wenn Sie das erste Mal
+    in einem Fitness-Studio sind, oder?).</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Die Verlockung, Befehle als "root" (alias "Administrator" auf Windows-Systemen) auszuführen, ist hoch, aber bitte
+        versuchen Sie dem zu widerstehen, denn es kann relativ schnell zu einem unbrauchbaren System führen, u.a. weil es nicht dauernd
+        quängelnde Fragen gibt ("Sind Sie sicher...?"). Bedingt durch die Berechtigungen dieses Superusers bemerken Sie ggf. nicht bestimmte
+        (notwendige) Beschränkungen des Benutzers, der normalerweise zum Ausführen der Überwachungsausgaben verwendet wird, was in Aussagen
+        resultiert wie "das hat schon 'mal funktioniert".</p>
+      </td></tr>
+</table></div>
+  </div>
+
+  <div class="section" title="2.2.2. Mail">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-mail"></a>2.2.2. Mail</h3></div></div></div>
+    
+
+    <p>In den meisten Fällen wollen Sie Mitteilungen versenden, wenn überwachte Objekte ausfallen oder sich wieder erholen, anstatt auf
+    die Benutzeroberfläche zu schauen. Das mag auf Ihrem lokalen System (dem Überwachungs-Server) funktionieren, aber das Versenden von
+    e-Mails an andere Systeme erfordert von Ihnen, dass Sie Ihrem lokalen Postamt sagen, wohin es sie schicken soll (eine "relaying"
+    genannte Methode). Moderne Systeme haben Sicherheitseinstellungen, die unerwünschte Mails (bestenfalls) zurückschicken oder einfach
+    ignorieren, so dass Sie das empfangende Postamt anweisen müssen, die von Ihrem lokalen Postamt eingehenden Mails tatsächlich anzunehmen
+    und weiterzuleiten.</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Testen Sie, ob ein e-Mail-Programm auf Ihrem lokalen System installiert ist. Führen Sie auf der Kommandozeile etwas Ähnliches
+        wie das Folgende aus:</p>
+<pre class="screen">echo "foo bar" | mail -s "meine erste e-Mail" ihr.name@ihre.firma</pre>
+<p>Falls Sie eine Fehlermeldung
+        wie "Programm nicht gefunden" bekommen, dann sollten Sie ein Mail-Programm installieren. Schauen Sie in der Dokumentation Ihrer
+        Distribution nach Einzelheiten (z.B. <code class="filename">apt-get</code>, <code class="filename">yum</code>, <code class="filename">zypper</code>, um nur
+        einige Paket-Manager zu nennen).</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>Bitte merken Sie sich die Position Ihres Mails-Programms, weil Sie später überprüfen müssen, ob die Angabe in den
+            Benachrichtigungs-Skripten korrekt ist.</p>
+          </td></tr>
+</table></div>
+      </li>
+<li class="listitem">
+        <p>Editieren Sie Ihre lokale Mail-Konfigurationsdatei, damit der Relay-Host-Eintrag (z.B.
+        <code class="filename">/etc/postfix/main.cf</code>, Direktive <a class="link" href="http://www.postfix.org/postconf.5.html#relayhost" target="_top">relayhost</a>) auf den (zentralen) Mail-Server zeigt.</p>
+      </li>
+<li class="listitem">
+        <p>Bitten Sie den Mail-Server-Administrator, die Einstellungen zu ändern, so dass von Ihrem Server kommende Mails akzeptiert und
+        weitergeleitet werden.</p>
+      </li>
+</ol></div>
+
+    <a class="indexterm" name="idm249465765344"></a>
+  </div>
+
+  <div class="section" title="2.2.3. SNMP">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-snmp"></a>2.2.3. SNMP</h3></div></div></div>
+    
+
+    <p>"SNMP, ist ein Netzwerkprotokoll, das von der IETF entwickelt wurde, um Netzwerkelemente (z. B. Router, Server, Switches, Drucker,
+    Computer usw.) von einer zentralen Station aus überwachen und steuern zu können." (<a class="link" href="http://en.wikipedia.org/wiki/SNMP" target="_top">Zitat Wikipedia</a>).</p>
+
+    <p>Mit Hilfe des check_snmp-Plugins aus dem <a class="link" href="&amp;url-monitoring-plugins;" target="_top">Monitoring Plugins</a>-Paket können
+    Sie Daten von "managed" Systemen abrufen. Bitte stellen Sie sicher, dass auf dem Zielsystem ein SNMP-Dämon läuft, der konfiguriert
+    wurde, um auf Anfragen Ihres Überwachungsrechners zu antworten. Führen Sie etwas wie <code class="literal">snmpwalk -v1 -c public -On target_system
+    system</code> aus, um die Funktionalität zu prüfen.</p>
+
+    <p>Sie können OIDs in einer menschlich besser lesbaren Form angeben oder rein numerisch. Letzteres verhindert die Notwendigkeit, die
+    MIBs zu lesen, ist schneller und weniger fehleranfällig.</p>
+
+    <a class="indexterm" name="idm249465756048"></a>
+  </div>
+
+  <div class="section" title="2.2.4. Pakete">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-packages"></a>2.2.4. Pakete</h3></div></div></div>
+    
+
+    <p>Bitte benutzen Sie Pakete, um die benötigte Software zu installieren, wo immer das möglich ist. Es umgeht einige Probleme während
+    Installation und Konfiguration - aber wichtiger ist - es erlaubt einfache Aktualisierungen. Als Monitoring-Neuling brauchen Sie sehr
+    selten eine Änderung, die im allerneusten Git-Snapshot enthalten ist. "Leading edge" kann sehr schnell zu "bleeding edge" werden, und
+    nachdem Sie wahrscheinlich genug damit zu tun haben, das Produkt mit einem begrenzten Wissen der ganzen Beziehungen zu installieren und
+    lauffähig zu bekommen, sollten Sie auf diese Art von Problemen verzichten und bei einer stabilen Version bleiben.</p>
+
+    <a class="indexterm" name="idm249465752160"></a>
+  </div>
+
+  <div class="section" title="2.2.5. Überwachung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-monitoring"></a>2.2.5. Überwachung</h3></div></div></div>
+    
+
+    <p>"Monitoring" bedeutet, Informationen von anderen Systemen abzufragen. Stellen Sie sicher, dass Sie berechtigt sind auf diese
+    anderen Systeme zuzugreifen, indem Sie die Personen fragen, die diese System administrieren. Ports zu untersuchen und ähnliche Dinge zu
+    tun könnte als Angriff angesehen werden! Wenn es Firewall oder andere Maßnahmen gibt, um den Zugang zu beschränken, dann bitten Sie
+    darum, dass geeignete Regeln/Ausnahmen definiert werden.</p>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Abhängig von den Datenschutzvorschriften sind Sie ggf. nicht berechtigt, Workstations oder andere Systeme zu überwachen, an
+      denen Einzelpersonen arbeiten oder der Umfang der Überwachung könnte eingeschränkt sein. Stellen Sie sicher, dass Sie eine
+      schriftliche Genehmigung haben, <span class="emphasis"><em>bevor</em></span> Sie mit der Überwachung beginnen.</p>
+    </td></tr>
+</table></div>
+
+    <a class="indexterm" name="idm249465746672"></a>
+  </div>
+
+  <div class="section" title="2.2.6. Hilfe!">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newbie-help"></a>2.2.6. Hilfe!</h3></div></div></div>
+    
+
+    <p>Monitoring ist ein komplexes Thema und selbst wenn Sie gute Kenntnisse Ihres Betriebssystem besitzen, tauchen Fragen vielleicht
+    schneller auf als gedacht. Nutzen Sie Ihre Suchmaschine. Jemand anders hatte ggf. bereits dieses Problem und möglicherweise gibt es
+    schon eine Lösung. Wenn nicht, dann gibt es eine Vielzahl von Foren da draußen. Bitte wählen Sie eins, das zu Ihrem Problem passt.
+    Fragen, die zu Ihrem Monitoring gehören, können am besten von Leuten beantwortet werden, die sich auf dieses Gebiet spezialisiert haben,
+    und Betriebssystem bezogene Fragen werden besser an anderer Stelle gestellt.</p>
+
+    <p>Die Community ist bereit zu helfen, aber Sie sind der Einzige, der das Problem sieht, also bitte ...</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>liefern Sie detaillierte Informationen zu dem verwendeten Betriebssystem. Die Nennung der Distribution ist nicht ausreichend.
+        Geben Sie die Version an sowie Patch-Level / Service-Pack, falls zutreffend, ggf. mehrfach, falls mehrere Rechner betroffen
+        sind.</p>
+      </li>
+<li class="listitem">
+        <p>geben Sie Version und Installationsmodus der Software an (z.B. Icinga, Plugin, Addon, ...). Einige Dinge sind ggf. bereits in
+        spätere Versionen behoben, oder nur auf eine Version beschränkt. Falls Sie keine Pakete benutzt haben (wir hatten erwähnt, dass Sie
+        das tun sollten, oder?), dann sind die Installationspfade ggf. unterschiedlich und können zu Problemen führen. Manchmal
+        funktionieren bestimmte Kombinationen nicht (z.B. ein neues Betriebssystem-Release führt andere Paketabhängigkeiten ein).</p>
+      </li>
+<li class="listitem">
+        <p>zeigen Sie Ein- und Ausgaben, falls die Ausführung eines Plugins fehlschlägt (am besten Copy&amp;Paste). Manchmal machen
+        (fehlende) Leerzeichen / spezielle Zeichen den Unterschied, so dass Prosa in den meisten Fällen nicht hilft, das Problem zu
+        beschreiben (nur die Fakten bitte).</p>
+      </li>
+<li class="listitem">
+        <p>zeigen Sie relevante Konfigurationsinformationen zu dem Problem (bitte verzichten Sie auf Kommentare und Leerzeilen, die die
+        Ausgabe schwer lesbar machen).</p>
+      </li>
+<li class="listitem">
+        <p>fügen Sie relevante Zeilen von Log-Dateien an (z.B. icinga.log, syslog, web server log).</p>
+      </li>
+<li class="listitem">
+        <p>versuchen Sie, einen Screenshot anzufügen, wenn Sie ein Problem mit einer der Benutzeroberflächen zu zeigen.</p>
+      </li>
+<li class="listitem">
+        <p>fügen Sie Informationen zum Ursprung der Software hinzu ("Ich benutze das Plugin my_plugin" hilft nicht), um anderen den
+        Zugriff auf die gleiche Version zu ermöglichen, die dann ggf. den Fehler bestätigen.</p>
+      </li>
+<li class="listitem">
+        <p>fügen Sie Informationen zu den verwendeten Anweisungen hinzu. Diese sind ggf. veraltet oder beziehen sich nur auf eine
+        bestimmte Version der Software.</p>
+      </li>
+</ul></div>
+
+    <p>Je mehr (präzisere) Informationen Sie liefern, um so höher ist die Chance, dass Sie Antworten erhalten, mit denen Sie Ihr Problem
+    lösen können. Anderenfalls verlieren Sie u.U. wertvolle Zeit, weil Sie nach Informationen gefragt werden, die Sie bereits beim ersten
+    Mal hätten liefern können.</p>
+
+    <p>Seien Sie geduldig. Die Reaktionszeit auf Beiträge, die "dringend" oder ähnliche Wörter enthalten, scheint reziprok dazu zu sein.
+    Foren sind meistens unentgeltliche Plattformen mit Leuten, die in ihrer Freizeit antworten.</p>
+
+    <p>Bitte verzichten Sie auf <a class="link" href="http://de.wikipedia.org/wiki/Crossposting" target="_top">Crossposting</a> (zur gleichen Zeit die
+    gleiche Frage an unterschiedlichen Stellen platzieren).</p>
+
+    <a class="indexterm" name="idm249465730160"></a>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="beginners.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="quickstart.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.1. Hinweise für Neulinge </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 2.3. Schnellstart-Installationsanleitungen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2014 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
