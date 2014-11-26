@@ -34,6 +34,8 @@
 #include "../include/broker.h"
 
 extern int            retain_state_information;
+extern host          *host_list;
+extern service       *service_list;
 
 
 
@@ -117,6 +119,8 @@ int save_state_information(int autosave) {
 /* reads in initial host and state information */
 int read_initial_state_information(void) {
 	int result = OK;
+	host *temp_host;
+	service *temp_service;
 
 	if (retain_state_information == FALSE)
 		return OK;
@@ -130,6 +134,14 @@ int read_initial_state_information(void) {
 #ifdef USE_XRDDEFAULT
 	result = xrddefault_read_state_information();
 #endif
+
+	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next)
+		if (!temp_host->flap_detection_enabled)
+			temp_host->is_flapping = FALSE;
+
+	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next)
+		if (!temp_service->flap_detection_enabled)
+			temp_service->is_flapping = FALSE;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */

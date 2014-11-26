@@ -622,6 +622,9 @@ void disable_host_flap_detection(host *hst) {
 	/* set the flap detection enabled flag */
 	hst->flap_detection_enabled = FALSE;
 
+	/* reset flap detection status */
+	hst->is_flapping = FALSE;
+
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
 	broker_adaptive_host_data(NEBTYPE_ADAPTIVEHOST_UPDATE, NEBFLAG_NONE, NEBATTR_NONE, hst, CMD_NONE, attr, hst->modified_attributes, NULL);
@@ -735,6 +738,9 @@ void disable_service_flap_detection(service *svc) {
 
 	/* set the flap detection enabled flag */
 	svc->flap_detection_enabled = FALSE;
+
+	/* reset flapping status */
+	svc->is_flapping = FALSE;
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
