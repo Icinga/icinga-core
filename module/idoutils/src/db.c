@@ -192,6 +192,8 @@ char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
 	"dbversion"
 };
 
+int use_transactions = IDO_TRUE;
+
 char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
 /*
@@ -2846,8 +2848,10 @@ int ido2db_db_tx_begin(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_begin()\n");
 
-	result = ido2db_db_query(idi, "BEGIN");
-	dbi_result_free(idi->dbinfo.dbi_result);
+	if (use_transactions) {
+		result = ido2db_db_query(idi, "BEGIN");
+		dbi_result_free(idi->dbinfo.dbi_result);
+	}
 
 	idi->in_transaction = IDO_TRUE;
 
@@ -2865,8 +2869,10 @@ int ido2db_db_tx_commit(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_commit()\n");
 
-	result = ido2db_db_query(idi, "COMMIT");
-	dbi_result_free(idi->dbinfo.dbi_result);
+	if (use_transactions) {
+		result = ido2db_db_query(idi, "COMMIT");
+		dbi_result_free(idi->dbinfo.dbi_result);
+	}
 
 	idi->in_transaction = IDO_FALSE;
 

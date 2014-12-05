@@ -30,6 +30,7 @@
 #endif
 
 extern int use_ssl;
+extern int use_transactions;
 
 extern int errno;
 
@@ -660,6 +661,14 @@ int ido2db_process_config_var(char *arg) {
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
+	}
+	else if (!strcmp(var, "use_transactions")) {
+		if (strlen(val) == 1) {
+			if (isdigit((int)val[strlen(val)-1]) != IDO_FALSE)
+				use_transactions = atoi(val);
+			else
+				use_transactions = 0;
+		}
 	}
 	/* DEPRECATED variables */
 	else if (!strcmp(var, "clean_realtime_tables_on_core_startup")) {

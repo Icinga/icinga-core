@@ -316,5 +316,10 @@ oci_errors_to_syslog=1
 # 4 – Bind variables only
 # 8 – Wait events only
 # 12 – Bind Variables and Wait Events
-
 oracle_trace_level=0
+
+
+# TRANSACTIONS
+# This setting determines whether transactions are used. Enabled by default.
+
+use_transactions=1
