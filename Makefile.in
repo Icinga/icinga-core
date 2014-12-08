@@ -308,7 +308,7 @@ test-perl: icinga cgis
 
 copy-docs-style:
 	cp ${SRC_DOCBOOK}/stylesheets/icinga-docs.css ${SRC_DOCS}/stylesheets/icinga-docs.css
-	cp ${SRC_DOCBOOK}/js/icinga-docs.js ${SRC_DOCS}/js/icinga-docs.js
+	cp ${SRC_DOCBOOK}/js/*.js ${SRC_DOCS}/js/
 
 create-docs: copy-docs-style
 	#${MAKE} submodule-init
