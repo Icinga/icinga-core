@@ -41,6 +41,9 @@ static PerlInterpreter *my_perl = NULL;
 int use_embedded_perl = TRUE;
 #endif
 
+/* mutex lock for operations on check_result_list */
+pthread_mutex_t check_result_list_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 extern char	*config_file;
 extern char	*log_file;
 extern char     *command_file;
@@ -2995,8 +2998,18 @@ check_result *read_check_result(void) {
 	if (check_result_list == NULL)
 		return NULL;
 
+	/* lock the check_result_list mutex, in case an event broker is
+	   also trying to change it in a concurrent thread */
+	pthread_mutex_lock(&check_result_list_mutex);
+
 	first_cr = check_result_list;
 	check_result_list = check_result_list->next;
+
+	/* forcibly detach this check result from the list tail */
+	first_cr->next = NULL;
+
+	/* unlock the mutex; all the destructive operations are done */
+	pthread_mutex_unlock(&check_result_list_mutex);
 
 	return first_cr;
 }
@@ -3044,6 +3057,10 @@ int add_check_result_to_list(check_result *new_cr) {
 	if (new_cr == NULL)
 		return ERROR;
 
+	/* lock the check_result_list mutex, so that different threads
+	   can inter-mix calls to add_check_result (i.e. from an event broker) */
+	pthread_mutex_lock(&check_result_list_mutex);
+
 	/* add to list, sorted by finish time (asc) */
 
 	/* find insertion point */
@@ -3069,6 +3086,9 @@ int add_check_result_to_list(check_result *new_cr) {
 		new_cr->next = temp_cr;
 		last_cr->next = new_cr;
 	}
+
+	/* unlock the mutex; all the destructive operations are done */
+	pthread_mutex_unlock(&check_result_list_mutex);
 
 	return OK;
 }
