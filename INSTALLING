@@ -46,8 +46,8 @@ Here's a short check-list for releases:
     $ git log --use-mailmap | grep ^Author: | cut -f2- -d' ' | sort | uniq > AUTHORS
 * Bump the version in icinga.spec.
 * Update the current version (and db schema, if required)
-    $ ./update-version 1.12.0
-    $ ./update-version-schema 1.12.0
+    $ ./update-version 1.12.1
+    $ ./update-version-schema 1.12.1
 * Update the Changelog and generate the docs
     $ ./configure; make create-docs
 * Commit these changes to the "next" branch and create a signed tag (tags/v<VERSION>).
@@ -62,12 +62,12 @@ Here's a short check-list for releases:
 
 Use "git archive" to build the release tarball:
 
-$ VERSION=1.12.0
+$ VERSION=1.12.1
 $ git archive --format=tar --prefix=icinga-$VERSION/ tags/v$VERSION | gzip >icinga-$VERSION.tar.gz
 
 Finally you should verify that the tarball only contains the files it should contain:
 
-$ VERSION=1.12.0
+$ VERSION=1.12.1
 $ tar ztf icinga-$VERSION.tar.gz | less
 
 
