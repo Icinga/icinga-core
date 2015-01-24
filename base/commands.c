@@ -433,6 +433,9 @@ int process_external_command1(char *cmd) {
 	} else if (!strcmp(command_id, "REMOVE_HOST_ACKNOWLEDGEMENT"))
 		command_type = CMD_REMOVE_HOST_ACKNOWLEDGEMENT;
 
+	else if (!strcmp(command_id, "ACKNOWLEDGE_HOST_SVC_PROBLEM"))
+		command_type = CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM;
+
 	else if (!strcmp(command_id, "ENABLE_HOST_EVENT_HANDLER"))
 		command_type = CMD_ENABLE_HOST_EVENT_HANDLER;
 	else if (!strcmp(command_id, "DISABLE_HOST_EVENT_HANDLER"))
@@ -1131,6 +1134,7 @@ int process_external_command2(int cmd, time_t entry_time, char *args) {
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE:
+	case CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE:
 		result = cmd_acknowledge_problem(cmd, args);
@@ -2450,6 +2454,7 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
 
 /* acknowledges a host or service problem */
 int cmd_acknowledge_problem(int cmd, char *args) {
+	servicesmember *temp_servicesmember = NULL;
 	service *temp_service = NULL;
 	host *temp_host = NULL;
 	char *host_name = NULL;
@@ -2525,6 +2530,17 @@ int cmd_acknowledge_problem(int cmd, char *args) {
 	if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE)
 		acknowledge_host_problem(temp_host, ack_author, ack_data, type, notify, persistent, end_time);
 
+	/* acknowledge the host and its services problems */
+	else if (cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) {
+		/* first aknowledge host's services */
+		for (temp_servicesmember = temp_host->services; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
+			if ((temp_service = temp_servicesmember->service_ptr) == NULL)
+				continue;
+			acknowledge_service_problem(temp_service, ack_author, ack_data, type, notify, persistent, end_time);
+		}
+		/* and then aknowledge the host */
+		acknowledge_host_problem(temp_host, ack_author, ack_data, type, notify, persistent, end_time);
+	}
 	/* acknowledge the service problem */
 	else
 		acknowledge_service_problem(temp_service, ack_author, ack_data, type, notify, persistent, end_time);
