@@ -289,6 +289,77 @@ extern unsigned long   max_check_result_list_items;
 extern int errno;
 #endif
 
+
+/******************************************************************/
+/****************** REGISTERED FILE DESCRIPTORS *******************/
+/******************************************************************/
+
+#define REGISTERED_FD_MAX 16
+int registered_fds[REGISTERED_FD_MAX] = { -1 };
+pthread_mutex_t registered_fds_lock;
+
+int init_registered_fds(void)
+{
+	return pthread_mutex_init(&registered_fds_lock, NULL);
+}
+
+int register_fd(int fd)
+{
+	if (pthread_mutex_lock(&registered_fds_lock) != 0)
+		return -1;
+
+	errno = ENOBUFS;
+	int rc = -1;
+	int i;
+
+	for (i = 0; i < REGISTERED_FD_MAX; i++) {
+		if (registered_fds[i] > -1) continue;
+		registered_fds[i] = fd;
+		rc = 0;
+		break;
+	}
+
+	pthread_mutex_unlock(&registered_fds_lock);
+	return rc;
+}
+
+int deregister_fd(int fd)
+{
+	if (pthread_mutex_lock(&registered_fds_lock) != 0)
+		return -1;
+
+	errno = ENOENT;
+	int rc = -1;
+	int i;
+
+	for (i = 0; i < REGISTERED_FD_MAX; i++) {
+		if (registered_fds[i] != fd) continue;
+		registered_fds[i] = -1;
+		rc = 0;
+		break;
+	}
+
+	pthread_mutex_unlock(&registered_fds_lock);
+	return rc;
+}
+
+int close_registered_fds(void)
+{
+	if (pthread_mutex_lock(&registered_fds_lock) != 0)
+		return -1;
+
+	int i;
+	for (i = 0; i < REGISTERED_FD_MAX; i++) {
+		if (registered_fds[i] < 0) continue;
+		close(registered_fds[i]);
+		registered_fds[i] = -1;
+	}
+
+	pthread_mutex_unlock(&registered_fds_lock);
+	return 0;
+}
+
+
 /******************************************************************/
 /******************** SYSTEM COMMAND FUNCTIONS ********************/
 /******************************************************************/
@@ -444,6 +515,9 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
 		close_command_file();
+
+		/* close any file descriptors on behalf of our event brokers */
+		close_registered_fds();
 
 		/* reset signal handling */
 		reset_sighandler();

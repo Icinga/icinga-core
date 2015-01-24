@@ -708,6 +708,9 @@ int main(int argc, char **argv, char **env) {
 			/* write log version/info */
 			write_log_file_info(NULL);
 
+			/* set up the file descriptor registry, for use by even brokers */
+			init_registered_fds();
+
 #ifdef USE_EVENT_BROKER
 			/* load modules */
 			if (neb_load_all_modules() != OK) {

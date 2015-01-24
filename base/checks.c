@@ -832,6 +832,9 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		/* close external command file and shut down worker thread */
 		close_command_file();
 
+		/* close any file descriptors on behalf of our event brokers */
+		close_registered_fds();
+
 		/* fork again if we're not in a large installation */
 		if (child_processes_fork_twice == TRUE) {
 
@@ -3339,6 +3342,9 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
 		close_command_file();
+
+		/* close any file descriptors on behalf of our event brokers */
+		close_registered_fds();
 
 		/* fork again if we're not in a large installation */
 		if (child_processes_fork_twice == TRUE) {

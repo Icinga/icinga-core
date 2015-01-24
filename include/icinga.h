@@ -396,6 +396,10 @@ typedef struct dbuf_struct{
 	unsigned long chunk_size;
         }dbuf;
 
+int init_registered_fds(void);
+int register_fd(int fd);
+int deregister_fd(int fd);
+int close_registered_fds(void);
 
 #define CHECK_STATS_BUCKETS                  15
 
