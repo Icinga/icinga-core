@@ -1,5 +1,5 @@
 // Written by Jannis Moßhammer, Ricardo Bartels and Michael Friedrich
-// Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
+// Copyright (c) 2009-2015 Icinga Development Team (http://www.icinga.org)
 
 /* set via document_header in *.cgi
 var refresh_rate=60;

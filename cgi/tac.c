@@ -3,7 +3,7 @@
  * TAC.C - Icinga Tactical Monitoring Overview CGI
  *
  * Copyright (c) 2001-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2015 Icinga Development Team (http://www.icinga.org)
  *
  * This CGI program will display the contents of the Icinga
  * log file.

@@ -2,7 +2,7 @@
  * UTILS.C - IDO Utils
  *
  * Copyright (c) 2005-2008 Ethan Galstad
- * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2015 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 
