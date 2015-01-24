@@ -2,7 +2,7 @@
  *
  * COMMON.H - Common definitions in IDOUtils
  * Copyright (c) 2005 Ethan Galstad
- * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2015 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 
@@ -22,12 +22,12 @@
 #define LOG2IDO_NAME 		"LOG2IDO"
 
 /* only one space for update-version matching */
-#define IDO_DATE "11-19-2014"
-#define IDO_VERSION "1.12.0"
+#define IDO_DATE "01-24-2015"
+#define IDO_VERSION "1.12.1"
 
 #define IDO_SCHEMA_VERSION "1.12.0"
 
-#define IDO_COPYRIGHT 		"Copyright(c) 2005-2008 Ethan Galstad, Copyright(c) 2009-2014 Icinga Development Team (https://www.icinga.org)"
+#define IDO_COPYRIGHT 		"Copyright(c) 2005-2008 Ethan Galstad, Copyright(c) 2009-2015 Icinga Development Team (https://www.icinga.org)"
 #define IDO_LICENSE 		"License: GPL v2"
 
 #endif

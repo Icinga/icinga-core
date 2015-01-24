@@ -2,7 +2,7 @@
  *
  * IDO2DB.H - IDO2DB Include File
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009-2014 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2015 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 

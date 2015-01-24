@@ -1,7 +1,7 @@
 #!/bin/sh
 #############################################################################################
 # ICINGA TEST CONFIG SCRIPTS
-# (c) 2009-2014 Icinga Development Team and Community Contributors
+# (c) 2009-2015 Icinga Development Team and Community Contributors
 #
 # #1737
 # log error on non-existing host/service/contact/*group when sending a command to the core
