@@ -27,6 +27,7 @@ IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
 IcingaChkFile=@ICINGACHKFILE@
 IcingaPrecacheFallback=0
+IcingaPrecache=0
 
 # load extra environment variables
 if [ -f /etc/sysconfig/icinga ]; then
@@ -199,7 +200,15 @@ start(){
 case "$1" in
 
 	start)
-		if test $IcingaPrecacheFallback != 1; then
+		if test $IcingaPrecache != 0; then
+			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details." precache
+
+			if test $? != 0; then
+				exit 6
+			fi
+
+			start precache
+		elif test $IcingaPrecacheFallback != 1; then
 			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
 
 			if test $? != 0; then
@@ -282,7 +291,13 @@ case "$1" in
 		;;
 
 	restart)
-		if test $IcingaPrecacheFallback != 1; then
+		if test $IcingaPrecache != 0; then
+			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details." precache
+
+			if test $? != 0; then
+				exit 6
+			fi
+		elif test $IcingaPrecacheFallback != 1; then
 			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
 
 			if test $? != 0; then
@@ -291,7 +306,11 @@ case "$1" in
 		fi
 
 		$0 stop
-		start
+		if test $IcingaPrecache != 0; then
+			start precache
+		else
+			start
+		fi
 		;;
 
 	reload|force-reload)
