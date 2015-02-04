@@ -248,10 +248,10 @@ case "$1" in
 			# new IcingaRunFile, allowing multiple icinga daemons
 			# to (sooner or later) run - John Sellens
 			printf 'Waiting for icinga to exit .'
-			for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+			for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17; do
 				if status_icinga; then
 					printf '.'
-					sleep 1
+					sleep $(echo $i | awk '{printf "%.2f \n", $1/10}')
 				else
 					break
 				fi
