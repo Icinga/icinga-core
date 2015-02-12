@@ -23,6 +23,13 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.12.1 - 24/01/2015
+
+FIXES
+
+* Docs - Bug #7801: Add a minified js library for the html docs
+
+
 1.12.0 - 19/11/2014
 
 ENHANCEMENTS
