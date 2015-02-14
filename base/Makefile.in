@@ -191,8 +191,8 @@ install-unstripped:
 	$(MAKE) install-basic
 
 install-basic:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBDIR)
+	$(INSTALL) -m 755 -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 -d $(DESTDIR)$(LIBDIR)
 	$(INSTALL) -m 755 $(INSTALL_OPTS) @icinga_name@ $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 $(INSTALL_OPTS) @icingastats_name@ $(DESTDIR)$(BINDIR)
 
