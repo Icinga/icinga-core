@@ -27,6 +27,14 @@ NEWS
 
 TODO
 
+CHANGES
+
+* Removed event_profiling_enabled from sample-config/icinga.cfg
+
+FEATURES
+
+FIXES
+
 1.12.1 - 24/01/2015
 
 FIXES
