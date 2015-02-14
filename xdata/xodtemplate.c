@@ -4302,7 +4302,7 @@ int xodtemplate_duplicate_services(void) {
 		}
 	}
 
-	return OK;
+	return result;
 }
 
 
