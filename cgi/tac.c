@@ -1323,7 +1323,7 @@ void display_tac_overview(void) {
 
 		if (refresh_type == JAVASCRIPT_REFRESH) {
 			printf("<td nowrap align='center'>\n");
-			printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onClick='icinga_do_refresh(); return false;' title=\"I'm so lonely up here. Where should I go?\"><img src='%s%s' border='0' style='margin-bottom:-2px;'></a>\n", url_images_path, RELOAD_ICON);
+			printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onClick='icinga_do_refresh(); return false;' title=\"Refresh\"><img src='%s%s' border='0' style='margin-bottom:-2px;'></a>\n", url_images_path, RELOAD_ICON);
 			printf("</td>\n");
 		}
 
