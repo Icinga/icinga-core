@@ -684,6 +684,7 @@ ENABLECGILOG
 LOGDIR
 DISABLECOMPRESSEDLOGS
 ENABLEPERFDATA
+DOWNTIMESDIR
 EVENTHANDLERDIR
 PLUGINDIR
 HTTPDCONFFILE
@@ -790,6 +791,7 @@ with_http_auth_file
 with_httpd_conf_file
 with_plugin_dir
 with_eventhandler_dir
+with_downtimes_dir
 enable_perfdata
 enable_compressed_logs
 with_zlib
@@ -1516,6 +1518,9 @@ Optional Packages:
   --with-eventhandler-dir=<path>
                           sets path to eventhandlers directory path i.e.
                           $prefix/libexec/eventhandlers
+  --with-downtimes-dir=<path>
+                          sets path to recurring downtimes scripts directory
+                          path i.e. $prefix/libexec/downtimes
   --with-zlib[=DIR]       use libz in DIR
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
@@ -5517,6 +5522,20 @@ fi
 
 if test x$EVENTHANDLERDIR = xno; then
                 EVENTHANDLERDIR="$libexecdir/eventhandlers"
+        fi
+
+
+DOWNTIMESRDIR=no
+
+# Check whether --with-downtimes-dir was given.
+if test "${with_downtimes_dir+set}" = set; then :
+  withval=$with_downtimes_dir; DOWNTIMESDIR=$withval
+else
+  DOWNTIMESDIR=no
+fi
+
+if test x$DOWNTIMESDIR = xno; then
+                DOWNTIMESDIR="$libexecdir/downtimes"
         fi
 
 

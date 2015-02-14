@@ -374,6 +374,14 @@ if test x$EVENTHANDLERDIR = xno; then
         fi
 AC_SUBST(EVENTHANDLERDIR)
 
+dnl Location of downtimes scripts path
+DOWNTIMESRDIR=no
+AC_ARG_WITH(downtimes-dir,AC_HELP_STRING([--with-downtimes-dir=<path>],[sets path to recurring downtimes scripts directory path i.e. $prefix/libexec/downtimes]),DOWNTIMESDIR=$withval,DOWNTIMESDIR=no)
+if test x$DOWNTIMESDIR = xno; then
+                DOWNTIMESDIR="$libexecdir/downtimes"
+        fi
+AC_SUBST(DOWNTIMESDIR)
+
 dnl enable perfdata
 ENABLE_PERFDATA=no
 AC_ARG_ENABLE(perfdata,AC_HELP_STRING([--enable-perfdata],[enables perfdata in icinga.cfg]),[

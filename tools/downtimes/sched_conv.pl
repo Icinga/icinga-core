@@ -4,7 +4,7 @@
 #
 # sched_conv.pl - Convert downtime definitions to Icinga format
 #
-# Copyright (c) 2011-2012 Icinga Development Team (http://www.icinga.org)
+# Copyright (c) 2011-2015 Icinga Development Team (http://www.icinga.org)
 #
 # License:
 #

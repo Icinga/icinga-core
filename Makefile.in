@@ -37,6 +37,7 @@ CGILOGDIR=@CGILOGDIR@
 CHECKRESULTDIR=@CHECKRESULTDIR@
 EXTCMDFILEDIR=@EXTCMDFILEDIR@
 EVENTHANDLERDIR=@EVENTHANDLERDIR@
+DOWNTIMESDIR=@DOWNTIMESDIR@
 P1FILELOC=@P1FILELOC@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
@@ -400,6 +401,9 @@ install-basic:
 	@echo "  make install-eventhandlers"
 	@echo "     - This installs the sample eventhandlers in $(DESTDIR)$(EVENTHANDLERDIR)"
 	@echo ""
+	@echo "  make install-downtimes"
+	@echo "     - This installs the recurring downtimes scripts in $(DESTDIR)$(DOWNTIMESDIR)"
+	@echo ""
 	@echo "  make install-idoutils"
 	@echo "     - This installs the database addon IDOUtils into the"
 	@echo "       destination directory"
@@ -548,6 +552,15 @@ install-eventhandlers:
 
 	@echo ""
 	@echo "*** Sample Eventhandlers installed ***"
+	@echo ""
+
+install-downtimes:
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(DOWNTIMESDIR)
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) tools/downtimes/sched_down.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_down.pl
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) tools/downtimes/sched_conv.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_conv.pl
+
+	@echo ""
+	@echo "*** Recurring downtimes scripts installed ***"
 	@echo ""
 
 install-classicui-standalone-conf: install-cgiconf install-webconf

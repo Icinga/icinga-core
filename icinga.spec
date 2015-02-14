@@ -261,6 +261,7 @@ EOF
     install-webconf \
     install-idoutils \
     install-eventhandlers \
+    install-downtimes \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
     INSTALL_OPTS_WEB="" \
@@ -496,6 +497,7 @@ fi
 %attr(755,-,-) %{_bindir}/icingastats
 %attr(755,-,-) %{_libdir}/icinga/p1.pl
 %{_libdir}/%{name}/eventhandlers
+%{_libdir}/%{name}/downtimes
 %defattr(-,icinga,icinga,-)
 %dir %{logdir}
 %dir %{logdir}/archives
