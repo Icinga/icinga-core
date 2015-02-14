@@ -123,18 +123,18 @@ int nebmodule_init(int flags, char *args, void *handle) {
 
 	/* process arguments */
 	if (idomod_process_module_args(args) == IDO_ERROR) {
-		idomod_write_to_logs("idomod: An error occurred while attempting to process module arguments.", NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs("idomod: An error occurred while attempting to process module arguments.", NSLOG_CONFIG_ERROR);
 		return -1;
 	}
 
 	if (idomod_sink_type == IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE) {
-		idomod_write_to_logs("idomod: use_ssl=1 while using socket_type=unix is not allowed. Aborting...", NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs("idomod: use_ssl=1 while using socket_type=unix is not allowed. Aborting...", NSLOG_CONFIG_ERROR);
 		return -1;
 	}
 
 	/* do some initialization stuff... */
 	if (idomod_init() == IDO_ERROR) {
-		idomod_write_to_logs("idomod: An error occurred while attempting to initialize.", NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs("idomod: An error occurred while attempting to initialize.", NSLOG_CONFIG_ERROR);
 		return -1;
 	}
 
@@ -171,7 +171,7 @@ int idomod_check_icinga_object_version(void) {
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: I've been compiled with support for revision %d of the internal Icinga object structures, but the Icinga daemon is currently using revision %d.  I'm going to unload so I don't cause any problems...\n", CURRENT_OBJECT_STRUCTURE_VERSION, __icinga_object_structure_version);
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_ERROR);
 
 		return IDO_ERROR;
 	}
@@ -220,7 +220,7 @@ int idomod_init(void) {
 			/* log an error message to the Icinga log file */
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: Warning - No file rotation command defined.\n");
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-			idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+			idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_WARNING);
 		}
 
 		/* schedule a file rotation event */
@@ -289,13 +289,17 @@ int idomod_process_module_args(char *args) {
 	char *ptr = NULL;
 	char **arglist = NULL;
 	char **newarglist = NULL;
+	char temp_buffer[IDOMOD_MAX_BUFLEN];
 	int argcount = 0;
 	int memblocks = 64;
 	int arg = 0;
 
-	if (args == NULL)
-		return IDO_OK;
-
+	if (args == NULL) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: Missing argument 'config_file'. Aborting.\n");
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_ERROR);
+		return IDO_ERROR;
+	}
 
 	/* get all the var/val argument pairs */
 
@@ -358,7 +362,7 @@ int idomod_process_config_file(char *filename) {
 	if ((thefile = ido_mmap_fopen(filename)) == NULL) {
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: Unable to open configuration file %s: %s\n", filename, strerror(errno));
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_ERROR);
 		return IDO_ERROR;
 	}
 
@@ -494,7 +498,7 @@ int idomod_process_config_var(char *arg) {
 		/* log an error message to the Icinga log file */
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: ERROR - Unknown config file variable '%s'.\n", var);
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+		idomod_write_to_logs(temp_buffer, NSLOG_CONFIG_ERROR);
 
 		return IDO_ERROR;
 	}
@@ -509,12 +513,12 @@ int idomod_process_config_var(char *arg) {
 /****************************************************************************/
 
 /* writes a string to Icinga logs */
-int idomod_write_to_logs(char *buf, int flags) {
+void idomod_write_to_logs(char *buf, int flags) {
 
 	if (buf == NULL)
-		return IDO_ERROR;
+		return;
 
-	return write_to_all_logs(buf, flags);
+	logit(flags, TRUE, buf);
 }
 
 
@@ -782,7 +786,7 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 							temp_buffer = NULL;
 					}
 
-					idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+					idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_WARNING);
 					free(temp_buffer);
 					temp_buffer = NULL;
 
@@ -880,13 +884,13 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 			if (asprintf(&temp_buffer, "idomod: Error writing to data sink!  Some output may get lost...") == -1)
 				temp_buffer = NULL;
 
-			idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+			idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_WARNING);
 			free(temp_buffer);
 
 			if (asprintf(&temp_buffer, "idomod: Please check remote ido2db log, database connection or SSL Parameters") == -1)
 				temp_buffer = NULL;
 
-			idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
+			idomod_write_to_logs(temp_buffer, NSLOG_RUNTIME_WARNING);
 			free(temp_buffer);
 			temp_buffer = NULL;
 		}

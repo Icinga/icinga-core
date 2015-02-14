@@ -92,7 +92,7 @@ int idomod_deinit(void);
 
 int idomod_check_icinga_object_version(void);
 
-int idomod_write_to_logs(char *,int);
+void idomod_write_to_logs(char *,int);
 
 int idomod_process_module_args(char *);
 int idomod_process_config_var(char *);
