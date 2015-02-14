@@ -134,8 +134,7 @@ process_ido2db ()
 # check pidfile for existence
 pid_ido2db ()
 {
-	if test -f $Ido2dbRunFile; then
-		Ido2dbPID=`head -n 1 $Ido2dbRunFile`
+	if test -f $Ido2dbRunFile && Ido2dbPID=`head -n 1 $Ido2dbRunFile`; then
 		return 0
 	else
 		return 1
