@@ -29,7 +29,9 @@ TODO
 
 CHANGES
 
-* Removed event_profiling_enabled from sample-config/icinga.cfg
+* Remove deprecated event_profiling_enabled from icinga.cfg
+* Remove deprecated broker_module from icinga.cfg (use module object configuration instead)
+* Add module config examples in modules/ directory (livestatus, mod_gearman, pnp4nagios, flapjack)
 
 FEATURES
 

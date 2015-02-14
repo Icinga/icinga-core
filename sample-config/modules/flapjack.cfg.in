@@ -1,0 +1,17 @@
+# ICINGA CONFIG FOR NEB MODULE: FLAPJACK FEEDER
+#
+# In order to have Icinga run the event broker module, you'll need
+# to place a file like this into modules/ by default, and include that
+# directory in your icinga.cfg
+#
+# Note: This is an addon for Icinga 1.x not developed by the Icinga
+# team. You can use this sample config for easier integration.
+
+
+#define module{
+#        module_name     flapjackfeeder
+#        module_type     neb
+#        path            @libdir@/flapjackfeeder.o
+#        args            redis_host=localhost,redis_port=6379
+#	}
+

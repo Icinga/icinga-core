@@ -246,37 +246,7 @@ event_broker_options=-1
 # ----> use the new *module definition* instead:
 # ----> http://docs.icinga.org/latest/en/objectdefinitions.html
 #
-# This directive can be used to specify an event broker module that should
-# by loaded by Icinga at startup.  Use multiple directives if you want
-# to load more than one module.  Arguments that should be passed to
-# the module at startup are seperated from the module path by a space.
-#
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# Do NOT overwrite modules while they are being used by Icinga or Icinga
-# will crash in a fiery display of SEGFAULT glory.
-#
-# The correct/safe way of updating a module is by using one of these methods:
-#    1. Shutdown Icinga, replace the module file, restart Icinga
-#    2. Delete the original module file, move the new module file into place, restart Icinga
-#
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
-# IDOUtils idomod.so should be enabled using the module definition,
-# i.e. using a package. First check that, and if not, you can
-# enable it here. 
-#
-# ATTENTION: DO NOT load the same module here AND as a module definition.
-# This can lead into problems with races on ressources.
-#
-# Example:
-#   broker_module=<modulepath> [moduleargs]
-
-#broker_module=@libdir@/idomod.so config_file=@sysconfdir@/idomod.cfg
-
+# Example definitions can be found in the '@sysconfdir@/modules/' directory.
 
 
 # LOG ROTATION METHOD

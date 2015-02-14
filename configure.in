@@ -1441,6 +1441,11 @@ perl subst $srcdir/sample-config/template-object/windows.cfg
 perl subst $srcdir/sample-config/template-object/printer.cfg
 perl subst $srcdir/sample-config/template-object/switch.cfg
 
+perl subst $srcdir/sample-config/modules/livestatus.cfg
+perl subst $srcdir/sample-config/modules/mod_gearman.cfg
+perl subst $srcdir/sample-config/modules/pnp4nagios.cfg
+perl subst $srcdir/sample-config/modules/flapjack.cfg
+
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 

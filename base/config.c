@@ -1344,6 +1344,8 @@ int read_main_config_file(char *main_config_file) {
 
 
 		else if (!strcmp(variable, "broker_module")) {
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: config setting '%s' has been deprecated. Please use the 'module' object configuration instead!", variable);
+
 			modptr = strtok(value, " \n");
 			argptr = strtok(NULL, "\n");
 #ifdef USE_EVENT_BROKER
