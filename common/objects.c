@@ -2484,8 +2484,11 @@ module *add_module(char *name, char *type, char *path, char *args) {
 		result = ERROR;
 	if ((new_module->path = (char *)strdup(path)) == NULL)
 		result = ERROR;
-	if ((new_module->args = (char *)strdup(args)) == NULL)
-		result = ERROR;
+	/* args are optional */
+	if (args != NULL) {
+		if ((new_module->args = (char *)strdup(args)) == NULL)
+			result = ERROR;
+	}
 
 	/* add new command to skiplist */
 	if (result == OK) {
@@ -2534,12 +2537,9 @@ int add_module_objects_to_neb(void) {
 
 	for (temp_module = module_list, total_objects = 0; temp_module != NULL; temp_module = temp_module->next, total_objects++) {
 
-		/* just an idea to re-use the type a bit better - MF 2011-04-30 FIXME */
-		//if!strcmp(temp_module->module_type,"neb"){
 #ifdef USE_EVENT_BROKER
 		neb_add_module(temp_module->path, temp_module->args, TRUE);
 #endif
-		//}
 	}
 
 	return OK;
