@@ -23,6 +23,13 @@ NEWS
 
 * Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
 
+1.12.2 - 14/02/2015
+
+FIXES
+
+* Bug #3305: Duplicate service definitions are not generating a config validation error
+
+
 1.12.1 - 24/01/2015
 
 FIXES

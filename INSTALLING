@@ -50,11 +50,11 @@ Here's a short check-list for releases:
     $ ./update-version-schema 1.12.1
 * Update the Changelog and generate the docs
     $ ./configure; make create-docs
-* Commit these changes to the "next" branch and create a signed tag (tags/v<VERSION>).
+* Commit these changes to the "support/1.12" branch and create a signed tag (tags/v<VERSION>).
     $ git commit -v -a -m "Release version <VERSION>"
     $ git tag -u D14A1F16 -m "Version <VERSION>" v<VERSION>
     $ git push --tags
-* Merge the "next" branch into the "master" branch (using --ff-only).
+* Merge the "support/1.12" branch into the "master" branch (using --ff-only).
     $ git checkout master
     $ git merge --ff-only next
     $ git push origin master
@@ -62,12 +62,12 @@ Here's a short check-list for releases:
 
 Use "git archive" to build the release tarball:
 
-$ VERSION=1.12.1
+$ VERSION=1.12.2
 $ git archive --format=tar --prefix=icinga-$VERSION/ tags/v$VERSION | gzip >icinga-$VERSION.tar.gz
 
 Finally you should verify that the tarball only contains the files it should contain:
 
-$ VERSION=1.12.1
+$ VERSION=1.12.2
 $ tar ztf icinga-$VERSION.tar.gz | less
 
 
