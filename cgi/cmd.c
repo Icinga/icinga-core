@@ -628,11 +628,11 @@ int process_cgivars(void) {
 
 		/* we got the notification option for an acknowledgement */
 		else if (!strcmp(key, "send_notification"))
-			send_notification = TRUE;
+			send_notification = (atoi(value) > 0) ? TRUE : FALSE;
 
 		/* we got the acknowledgement type */
 		else if (!strcmp(key, "sticky_ack"))
-			sticky_ack_set = TRUE;
+			sticky_ack_set = (atoi(value) > 0) ? TRUE : FALSE;
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(key, "use_ack_end_time"))
