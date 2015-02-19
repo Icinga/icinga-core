@@ -518,7 +518,7 @@ void idomod_write_to_logs(char *buf, int flags) {
 	if (buf == NULL)
 		return;
 
-	logit(flags, TRUE, buf);
+	write_to_logs_and_console(buf, flags, TRUE);
 }
 
 

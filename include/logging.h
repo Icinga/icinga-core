@@ -106,6 +106,8 @@ int write_to_log_with_host_service(char *, unsigned long, time_t *, host *, serv
 int write_to_all_logs(char *,unsigned long);            /* writes a string to main log file and syslog facility */
 int write_to_log(char *,unsigned long,time_t *);       	/* write a string to the main log file */
 int write_to_syslog(char *,unsigned long);             	/* write a string to the syslog facility */
+void write_to_console(char *);				/* write a string to the console */
+void write_to_logs_and_console(char *, unsigned long, int);	/* write a string to all logs and the console */
 int log_service_event(service *);			/* logs a service event */
 int log_host_event(host *);				/* logs a host event */
 int log_host_states(int,time_t *);	                /* logs initial/current host states */

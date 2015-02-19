@@ -135,7 +135,7 @@ static inline int soft_lock(pthread_mutex_t *lock) {
 /******************************************************************/
 
 /* write something to the console */
-static void write_to_console(char *buffer) {
+void write_to_console(char *buffer) {
 	/* should we print to the console? */
 	if (daemon_mode == FALSE)
 		printf("%s\n", buffer);
@@ -143,9 +143,9 @@ static void write_to_console(char *buffer) {
 
 
 /* write something to the log file, syslog, and possibly the console */
-static void write_to_logs_and_console(char *buffer, unsigned long data_type, int display) {
-	register int len = 0;
-	register int x = 0;
+void write_to_logs_and_console(char *buffer, unsigned long data_type, int display) {
+	int len = 0;
+	int x = 0;
 
 	/* strip unnecessary newlines */
 	len = strlen(buffer);
