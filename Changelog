@@ -19,13 +19,7 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
-* Releases are now hosted at GitHub. Please check https://www.icinga.org/download for details!
-
-* Mailinglists have been migrated to icinga.org. Please check https://www.icinga.org/support for details!
-
-1.13.0 - XX/03/2015
-
-TODO
+1.13.0 - 13/03/2015
 
 CHANGES
 
@@ -36,7 +30,23 @@ CHANGES
 
 FEATURES
 
+* Feature #1867: Recurring Downtimes
+* Feature #6353: deprecate icinga.cfg:broker_module; add more module examples
+* Feature #8007: Implement an option to disable transactions
+* Feature #8139: Add functions for registering file descriptors closed on fork()
+* Feature #8140: Add Check Result List Mutex for NEB modules
+* Feature #8426: Remove constraint from *dependencies tables
+* Feature #8440: Enhance idomod logging
+
 FIXES
+
+* Bug #6263: Race condition in init.d scripts' stop
+* Bug #6762: Icinga crashes when "args" attribute is not specified for modules
+* Bug #7004: GET form param has no effect on cmd.cgi acks (again)
+* Bug #8202: Cool tip text for refresh of hosts and services says "I'm so lonely up here. Where should I go?"
+* Bug #8441: require the 'config_file' argument in idomod modules configuration
+* Bug #8445: cmd.cgi use_ack_end_time param does not enable tickbox in form
+
 
 1.12.2 - 14/02/2015
 
