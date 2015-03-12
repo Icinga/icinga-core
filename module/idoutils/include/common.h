@@ -22,10 +22,10 @@
 #define LOG2IDO_NAME 		"LOG2IDO"
 
 /* only one space for update-version matching */
-#define IDO_DATE "02-14-2015"
-#define IDO_VERSION "1.12.2"
+#define IDO_DATE "03-13-2015"
+#define IDO_VERSION "1.13.0"
 
-#define IDO_SCHEMA_VERSION "1.12.0"
+#define IDO_SCHEMA_VERSION "1.13.0"
 
 #define IDO_COPYRIGHT 		"Copyright(c) 2005-2008 Ethan Galstad, Copyright(c) 2009-2015 Icinga Development Team (https://www.icinga.org)"
 #define IDO_LICENSE 		"License: GPL v2"
