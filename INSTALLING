@@ -63,6 +63,7 @@ Use "git archive" to build the release tarball:
 
 $ VERSION=1.13.0
 $ git archive --format=tar --prefix=icinga-$VERSION/ tags/v$VERSION | gzip >icinga-$VERSION.tar.gz
+$ md5sum icinga-$VERSION.tar.gz > icinga-$VERSION.tar.gz.md5
 
 Finally you should verify that the tarball only contains the files it should contain:
 
