@@ -300,7 +300,8 @@ pthread_mutex_t registered_fds_lock;
 
 int init_registered_fds(void)
 {
-	for (int i = 0; i < REGISTERED_FD_MAX; i++) {
+	int i;
+	for (i = 0; i < REGISTERED_FD_MAX; i++) {
 		registered_fds[i] = -1;
 	}
 
