@@ -295,11 +295,15 @@ extern int errno;
 /******************************************************************/
 
 #define REGISTERED_FD_MAX 16
-int registered_fds[REGISTERED_FD_MAX] = { -1 };
+int registered_fds[REGISTERED_FD_MAX];
 pthread_mutex_t registered_fds_lock;
 
 int init_registered_fds(void)
 {
+	for (int i = 0; i < REGISTERED_FD_MAX; i++) {
+		registered_fds[i] = -1;
+	}
+
 	return pthread_mutex_init(&registered_fds_lock, NULL);
 }
 
