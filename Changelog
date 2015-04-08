@@ -19,6 +19,13 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
+1.13.2 - 08/05/2015
+
+FIXES
+
+* Bug #9010: icinga.spec: broken path to downtimes scripts and not packaged config files
+
+
 1.13.1 - 05/04/2015
 
 NOTES
