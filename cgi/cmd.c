@@ -630,12 +630,22 @@ int process_cgivars(void) {
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(key, "send_notification"))
+		else if (!strcmp(key, "send_notification")) {
 			send_notification = (atoi(value) > 0) ? TRUE : FALSE;
 
+			/* if the value was omitted, assume it is enabled */
+			if (value == NULL)
+				send_notification = TRUE;
+		}
+
 		/* we got the acknowledgement type */
-		else if (!strcmp(key, "sticky_ack"))
+		else if (!strcmp(key, "sticky_ack")) {
 			sticky_ack_set = (atoi(value) > 0) ? TRUE : FALSE;
+
+			/* if the value was omitted, assume it is enabled */
+			if (value == NULL)
+				sticky_ack_set = TRUE;
+		}
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(key, "use_ack_end_time"))
