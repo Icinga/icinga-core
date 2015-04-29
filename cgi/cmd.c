@@ -72,6 +72,9 @@ extern int default_downtime_duration;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
+
+extern char *status_file_icinga_version;
+
 /** @} */
 
 /** @name LIMITS
@@ -2996,10 +2999,14 @@ int commit_command(int cmd) {
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
-		if (child_options == 1)
-			cmd = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
-		else if (child_options == 2)
-			cmd = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
+		/* Icinga 1.x handles that differently */
+		if (status_file_icinga_version != NULL && status_file_icinga_version[0] == '1') {
+			if (child_options == 1)
+				cmd = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
+			else if (child_options == 2)
+				cmd = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
+		}
+
 		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
 			if (commands[x].host_name == NULL)
 				continue;
