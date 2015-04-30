@@ -6,6 +6,7 @@ USERADD=/usr/sbin/useradd
 GROUPADD=/usr/sbin/groupadd
 
 ${SVCCFG} import /var/svc/manifest/application/icinga.xml
+${SVCCFG} import /var/svc/manifest/application/ido2db.xml
 
 chown -R icinga:icinga /etc/icinga /var/icinga
 

@@ -1,21 +1,35 @@
 #!/bin/sh
 
+NOW=`date +%Y%m%dT%H%M`
+
+SVCADM=/usr/sbin/svcadm
 SVCCFG=/usr/sbin/svccfg
 GREP=/usr/bin/grep
 USERDEL=/usr/sbin/userdel
 GROUPDEL=/usr/sbin/groupdel
-fmri=svc:/application/network/icinga:default
+iciFmri="svc:/application/network/icinga:default"
+idoFmri="svc:/application/network/icinga-db:default"
 
+icihome=`grep '^icinga:' /etc/passwd | cut -d: -f6`
+
+if [ ! -z "$icihome" ]
+then
+  tarball=/tmp/preremove-icinga-config-${NOW}.tar
+  echo "WARNING: No Icinga home directory.  Saving configuration to \"$tarball\"."
+else
+  tarball=${icihome}/preremove-icinga-config-${NOW}.tar
+  echo "Saving Icinga configuration to \"$tarball\"."
+fi
+
+a=`pwd`
+cd /etc
+tar -cf ${tarball} icinga
+cd $a
+
+${SCVADM} disable -f ${fmri}
 ${SVCCFG} delete -f ${fmri}
 
-${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
-if [ $? -eq 0 ]; then
-        ${USERDEL} -r icinga
-fi
-
-${GREP} icinga /etc/group > /dev/null 2> /dev/null
-if [ $? -eq 0 ]; then
-        ${GROUPDEL} icinga
-fi
+${SVCADM} disable -f ${idoFmri}
+${SVCCFG} delete -f ${idoFmri}
 
 exit 0

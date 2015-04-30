@@ -4,14 +4,14 @@ GREP=/usr/bin/grep
 USERADD=/usr/sbin/useradd
 GROUPADD=/usr/sbin/groupadd
 
-${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
-if [ $? -ne 0 ]; then
-        ${USERADD} -d /etc/icinga -m icinga >/dev/null
-fi
-
 ${GREP} icinga /etc/group > /dev/null 2> /dev/null
 if [ $? -ne 0 ]; then
         ${GROUPADD} icinga >/dev/null
+fi
+
+${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
+if [ $? -ne 0 ]; then
+        ${USERADD} -c "Icinga Monitoring" -g icinga icinga >/dev/null
 fi
 
 exit 0
