@@ -1013,7 +1013,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td id=\"sticky_ack_row\" class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align='left'>");
-		printf("<input type='checkbox' id='sticky_ack_checkbox' name='sticky_ack' %s></td></tr>\n", (set_sticky_acknowledgment == TRUE) ? "CHECKED" : "");
+		printf("<input type='checkbox' id='sticky_ack_checkbox' name='sticky_ack' value='1' %s></td></tr>\n", (set_sticky_acknowledgment == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:
@@ -1023,7 +1023,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align='left'>");
-		printf("<input type='checkbox' name='send_notification' %s></td></tr>\n", (send_ack_notifications == TRUE) ? "CHECKED" : "");
+		printf("<input type='checkbox' name='send_notification' value='1' %s></td></tr>\n", (send_ack_notifications == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
