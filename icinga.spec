@@ -470,7 +470,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING %{readme}
+%doc README.md LICENSE Changelog UPGRADING %{readme}
 %if 0%{?using_systemd}
 %attr(755,-,-)  %{_unitdir}/icinga.service
 %attr(644,-,-)  %{_sysconfdir}/sysconfig/icinga
@@ -508,12 +508,12 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING %{readme}
+%doc README.md LICENSE Changelog UPGRADING %{readme}
 %{_datadir}/%{name}/docs
 
 %files gui
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING %{readme}
+%doc README.md LICENSE Changelog UPGRADING %{readme}
 %{_libdir}/%{name}/cgi/avail.cgi
 %{_libdir}/%{name}/cgi/cmd.cgi
 %{_libdir}/%{name}/cgi/config.cgi
@@ -546,7 +546,7 @@ fi
 
 %files gui-config
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING %{readme}
+%doc README.md LICENSE Changelog UPGRADING %{readme}
 %config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
 %config(noreplace) %{apacheconfdir}/icinga.conf
@@ -563,7 +563,7 @@ fi
 
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
+%doc README.md LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
 %if 0%{?using_systemd}
 %attr(644,-,-)  %{_unitdir}/ido2db.service
 %else
@@ -579,7 +579,7 @@ fi
 
 %files idoutils-libdbi-pgsql
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
+%doc README.md LICENSE Changelog UPGRADING module/idoutils/db %{readme} %{readmeido}
 %if 0%{?using_systemd}
 %attr(644,-,-)  %{_unitdir}/ido2db.service
 %else
