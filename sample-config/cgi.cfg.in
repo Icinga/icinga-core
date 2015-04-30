@@ -203,14 +203,6 @@ read_gzip_logs=0
 #
 ######################################
 
-# ATTRIBUTE BASED AUTHORIZATION FILE
-# This option will include a file defining authroization based on
-# attributes.
-
-#authorization_config_file=@sysconfdir@/cgiauth.cfg
-
-
-
 # AUTHENTICATION USAGE
 # This option controls whether or not the CGIs will use any
 # authentication when displaying host and service information, as

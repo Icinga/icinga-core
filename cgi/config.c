@@ -47,7 +47,6 @@ extern hostescalation *hostescalation_list;
 extern module *module_list;
 
 extern char *action_url_target;
-extern char *authorization_config_file;
 extern char *authorized_for_all_host_commands;
 extern char *authorized_for_all_hosts;
 extern char *authorized_for_all_service_commands;
@@ -183,7 +182,6 @@ char *search_string = NULL;				/**< contains search string if user searched some
 regex_t search_preg;					/**< contains compiled regex term to use with regexec() */
 
 char *org_action_url_target = "";
-char *org_authorization_config_file = "";
 char *org_authorized_for_all_host_commands = "";
 char *org_authorized_for_all_hosts = "";
 char *org_authorized_for_all_service_commands = "";
@@ -3986,7 +3984,6 @@ void display_cgiconfig(void) {
 	*/
 
 	PRINT_CONFIG_LINE_STRING(action_url_target, org_action_url_target)
-	PRINT_CONFIG_LINE_STRING(authorization_config_file, org_authorization_config_file)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_all_host_commands, org_authorized_for_all_host_commands)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_all_hosts, org_authorized_for_all_hosts)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_all_service_commands, org_authorized_for_all_service_commands)
@@ -4465,7 +4462,6 @@ void store_default_settings(void) {
 
 	/* fill all NULL pointers with an empty string */
 	action_url_target = (action_url_target == NULL) ? "" : action_url_target;
-	authorization_config_file = (authorization_config_file == NULL) ? "" : authorization_config_file;
 	authorized_for_all_host_commands = (authorized_for_all_host_commands == NULL) ? "" : authorized_for_all_host_commands;
 	authorized_for_all_hosts = (authorized_for_all_hosts == NULL) ? "" : authorized_for_all_hosts;
 	authorized_for_all_service_commands = (authorized_for_all_service_commands == NULL) ? "" : authorized_for_all_service_commands;
@@ -4505,7 +4501,6 @@ void store_default_settings(void) {
 
 	/* copy vars to org_vars*/
 	org_action_url_target = strdup(action_url_target);
-	org_authorization_config_file = strdup(authorization_config_file);
 	org_authorized_for_all_host_commands = strdup(authorized_for_all_host_commands);
 	org_authorized_for_all_hosts = strdup(authorized_for_all_hosts);
 	org_authorized_for_all_service_commands = strdup(authorized_for_all_service_commands);

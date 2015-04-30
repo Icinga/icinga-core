@@ -77,7 +77,6 @@ int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
 int             lock_author_names = TRUE;
 
-char		*authorization_config_file = NULL;
 char		*authorized_for_all_host_commands = NULL;
 char		*authorized_for_all_hosts = NULL;
 char		*authorized_for_all_service_commands = NULL;
@@ -721,11 +720,7 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "read_gzip_logs"))
 			read_gzip_logs = (atoi(val) > 0) ? TRUE : FALSE;
 
-		else if (!strcmp(var, "authorization_config_file")) {
-			authorization_config_file = strdup(val);
-			strip(authorization_config_file);
-
-		} else if (!strcmp(var, "authorized_for_all_host_commands")) {
+		else if (!strcmp(var, "authorized_for_all_host_commands")) {
 			authorized_for_all_host_commands = strdup(val);
 			strip(authorized_for_all_host_commands);
 
