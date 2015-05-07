@@ -1179,12 +1179,12 @@ void display_hosts(void) {
 			if (temp_host->low_flap_threshold == 0.0)
 				printf("\"low_flap_threshold\": \"Program-wide value\", ");
 			else
-				printf("\"low_flap_threshold\": %3.1f%%, ", temp_host->low_flap_threshold);
+				printf("\"low_flap_threshold\": \"%3.1f%%\", ", temp_host->low_flap_threshold);
 
 			if (temp_host->high_flap_threshold == 0.0)
 				printf("\"high_flap_threshold\": \"Program-wide value\", ");
 			else
-				printf("\"high_flap_threshold\": %3.1f%%, ", temp_host->high_flap_threshold);
+				printf("\"high_flap_threshold\": \"%3.1f%%\", ", temp_host->high_flap_threshold);
 
 			printf("\"flap_detection_options\": [ ");
 		} else if (content_type == CSV_CONTENT) {
@@ -2461,12 +2461,12 @@ void display_services(void) {
 			if (temp_service->low_flap_threshold == 0.0)
 				printf("\"low_flap_threshold\": \"Program-wide value\", ");
 			else
-				printf("\"low_flap_threshold\": %3.1f%%, ", temp_service->low_flap_threshold);
+				printf("\"low_flap_threshold\": \"%3.1f%%\", ", temp_service->low_flap_threshold);
 
 			if (temp_service->high_flap_threshold == 0.0)
 				printf("\"high_flap_threshold\": \"Program-wide value\", ");
 			else
-				printf("\"high_flap_threshold\": %3.1f%%, ", temp_service->high_flap_threshold);
+				printf("\"high_flap_threshold\": \"%3.1f%%\", ", temp_service->high_flap_threshold);
 
 			printf("\"flap_detection_options\": [ ");
 		} else if (content_type == CSV_CONTENT) {
