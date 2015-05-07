@@ -7107,7 +7107,7 @@ void show_servicecommand_table(void) {
 		/* DropDown menu */
 		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_service' onchange='showValue(\"tableformservice\",this.value,%d,%d)' class='DropDownService'>\n", CMD_SCHEDULE_HOST_CHECK, CMD_SCHEDULE_SVC_CHECK);
 		printf("<option value='nothing'>Select command</option>\n");
-		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>\n", CMD_ADD_SVC_COMMENT, url_images_path, COMMENT_ICON);
+		printf("<option value='%d' title='%s%s'>Add a Comment to Checked Service(s)</option>\n", CMD_ADD_SVC_COMMENT, url_images_path, COMMENT_ICON);
 		printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>\n", CMD_DISABLE_SVC_CHECK, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s'>Enable Active Checks Of Checked Service(s)</option>\n", CMD_ENABLE_SVC_CHECK, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s'>Re-schedule Next Service Check</option>\n", CMD_SCHEDULE_SVC_CHECK, url_images_path, DELAY_ICON);
@@ -7168,14 +7168,15 @@ void show_hostcommand_table(void) {
 		printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>\n", CMD_STOP_OBSESSING_OVER_HOST, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>\n", CMD_START_OBSESSING_OVER_HOST, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>\n", CMD_ACKNOWLEDGE_HOST_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
+		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem And All Services</option>\n", CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
 		printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>\n", CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
 		printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>\n", CMD_DISABLE_HOST_NOTIFICATIONS, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>\n", CMD_ENABLE_HOST_NOTIFICATIONS, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Send Custom Notification</option>\n", CMD_SEND_CUSTOM_HOST_NOTIFICATION, url_images_path, NOTIFICATION_ICON);
 		printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>\n", CMD_DELAY_HOST_NOTIFICATION, url_images_path, DELAY_ICON);
 		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>\n", CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Remove Downtime(s) For Checked Host(s) and All Services</option>\n", CMD_DEL_DOWNTIME_BY_HOST_NAME, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) And All Services</option>\n", CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
+		printf("<option value='%d' title='%s%s' >Remove Downtime(s) For Checked Host(s) And All Services</option>\n", CMD_DEL_DOWNTIME_BY_HOST_NAME, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>\n", CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>\n", CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_SVC_CHECKS, url_images_path, DELAY_ICON);
@@ -7198,7 +7199,7 @@ void show_hostcommand_table(void) {
 		printf("checked = true;\n");
 		printf("checkAll(\"tableformhost\");\n");
 		printf("checked = false;\n");
-		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:27}).data(\"dd\").visible(true);\n");
+		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:28}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("if (console) { console.log(e); }\n}\n");
 		printf("});\n");

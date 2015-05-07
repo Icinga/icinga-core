@@ -2507,7 +2507,7 @@ int cmd_acknowledge_problem(int cmd, char *args) {
 	persistent = (atoi(temp_ptr) > 0) ? TRUE : FALSE;
 
 	/* this acknowledegment will expire */
-	if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE) {
+	if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) {
 		/* get end_time option */
 		if ((temp_ptr = my_strtok(NULL, ";")) == NULL)
 			return ERROR;

@@ -1696,9 +1696,10 @@ void show_host_info(void) {
 				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over This Host' title='Start Obsessing Over This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Start obsessing over this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_HOST, url_encode(host_name));
 
 			if (temp_hoststatus->status == HOST_DOWN || temp_hoststatus->status == HOST_UNREACHABLE) {
-				if (temp_hoststatus->problem_has_been_acknowledged == FALSE)
+				if (temp_hoststatus->problem_has_been_acknowledged == FALSE) {
 					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge This Host Problem' title='Acknowledge This Host Problem'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Acknowledge this host problem</a></td></tr>\n", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(host_name));
-				else
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge Problem For This Host And Its Services' title='Acknowledge Problem For This Host And Its Services'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Acknowledge problem for this host and its services</a></td></tr>\n", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM, url_encode(host_name));
+				} else
 					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Problem Acknowledgement' title='Remove Problem Acknowledgement'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Remove problem acknowledgement</a></td></tr>\n", url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_encode(host_name));
 			}
 

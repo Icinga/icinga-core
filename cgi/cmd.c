@@ -994,13 +994,13 @@ void print_form_element(int element, int cmd) {
 
 	case PRINT_PERSISTENT:
 
-		if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM)
+		if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM)
 			strcpy(help_text, "If you would like the comment to remain once the acknowledgement is removed, check this checkbox.");
 		else {
 			snprintf(help_text, sizeof(help_text), "If you uncheck this option, the comment will automatically be deleted the next time %s is restarted.", PROGRAM_NAME);
 			help_text[sizeof(help_text)-1] = '\x0';
 		}
-		printf("<tr><td class=\"objectDescription descriptionleft\">Persistent%s:", (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM) ? " Comment" : "");
+		printf("<tr><td class=\"objectDescription descriptionleft\">Persistent%s:", (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) ? " Comment" : "");
 		print_help_box(help_text);
 		printf("</td><td align='left'>");
 		printf("<input type='checkbox' name='persistent' %s></td></tr>\n", (persistent_ack_comments == TRUE || cmd == CMD_ADD_HOST_COMMENT || cmd == CMD_ADD_SVC_COMMENT) ? "CHECKED" : "");
@@ -1266,7 +1266,8 @@ void request_command_data(int cmd) {
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-		snprintf(action, sizeof(action), "Acknowledge %s problems", (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM) ? "host" : "service");
+	case CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM:
+		snprintf(action, sizeof(action), "Acknowledge %s problems%s", (cmd != CMD_ACKNOWLEDGE_SVC_PROBLEM) ? "host" : "service", (cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) ? " and all services" : "");
 		break;
 
 	case CMD_START_EXECUTING_HOST_CHECKS:
@@ -1551,6 +1552,7 @@ void request_command_data(int cmd) {
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
 	case CMD_ADD_HOST_COMMENT:
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
+	case CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM:
 
 		if (cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ADD_SVC_COMMENT)
 			print_object_list(PRINT_SERVICE_LIST);
@@ -1562,7 +1564,7 @@ void request_command_data(int cmd) {
 		print_form_element(PRINT_COMMENT_BOX, cmd);
 		print_form_element(PRINT_PERSISTENT, cmd);
 
-		if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM) {
+		if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) {
 			print_form_element(PRINT_EXPIRE_ACKNOWLEDGEMENT, cmd);
 			print_form_element(PRINT_STICKY_ACK, cmd);
 			print_form_element(PRINT_SEND_NOTFICATION, cmd);
@@ -2077,6 +2079,7 @@ void commit_command_data(int cmd) {
 	case CMD_ADD_SVC_COMMENT:
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
+	case CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM:
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
 
@@ -2087,7 +2090,7 @@ void commit_command_data(int cmd) {
 		clean_comment_data(comment_author);
 		clean_comment_data(comment_data);
 
-		if (use_ack_end_time == TRUE && (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM)) {
+		if (use_ack_end_time == TRUE && (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM)) {
 
 			time(&start_time);
 
@@ -2105,7 +2108,7 @@ void commit_command_data(int cmd) {
 
 			/* see if the user is authorized to issue a command... */
 			is_authorized[x] = FALSE;
-			if (cmd == CMD_ADD_HOST_COMMENT || cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_SEND_CUSTOM_HOST_NOTIFICATION) {
+			if (cmd == CMD_ADD_HOST_COMMENT || cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM || cmd == CMD_SEND_CUSTOM_HOST_NOTIFICATION) {
 				temp_host = find_host(commands[x].host_name);
 				if (is_authorized_for_host_commands(temp_host, &current_authdata) == TRUE)
 					is_authorized[x] = TRUE;
@@ -2925,13 +2928,19 @@ int commit_command(int cmd) {
 		break;
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
+	case CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM:
 		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
 			if (commands[x].host_name == NULL)
 				continue;
 			if (is_authorized[x]) {
-				if (end_time > 0) {
-					cmd = CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE;
-					asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
+				if (end_time > 0 || cmd == CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM) {
+					if (cmd == CMD_ACKNOWLEDGE_HOST_PROBLEM)
+						cmd = CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE;
+					if (end_time > 0) {
+						asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
+					} else {
+						asprintf(&temp_buffer, "%s", comment_data);
+					}
 					submit_result[x] = cmd_submitf(cmd, "%s;%d;%d;%d;%lu;%s;%s", commands[x].host_name, (sticky_ack == TRUE) ? ACKNOWLEDGEMENT_STICKY : ACKNOWLEDGEMENT_NORMAL, send_notification, persistent_comment, end_time, comment_author, temp_buffer);
 					my_free(temp_buffer);
 				} else
