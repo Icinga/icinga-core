@@ -19,14 +19,14 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
-1.13.2 - 08/05/2015
+1.13.2 - 05/08/2015
 
 FIXES
 
 * Bug #9010: icinga.spec: broken path to downtimes scripts and not packaged config files
 
 
-1.13.1 - 05/04/2015
+1.13.1 - 04/05/2015
 
 NOTES
 
@@ -39,7 +39,7 @@ FIXES
 * Bug #8986: wrong fd initilization preventing checks using file descriptors
 
 
-1.13.0 - 30/03/2015
+1.13.0 - 03/30/2015
 
 CHANGES
 
@@ -68,21 +68,21 @@ FIXES
 * Bug #8445: cmd.cgi use_ack_end_time param does not enable tickbox in form
 
 
-1.12.2 - 14/02/2015
+1.12.2 - 02/14/2015
 
 FIXES
 
 * Bug #3305: Duplicate service definitions are not generating a config validation error
 
 
-1.12.1 - 24/01/2015
+1.12.1 - 01/24/2015
 
 FIXES
 
 * Docs - Bug #7801: Add a minified js library for the html docs
 
 
-1.12.0 - 19/11/2014
+1.12.0 - 11/19/2014
 
 ENHANCEMENTS
 
@@ -120,7 +120,7 @@ CHANGES
 * idoutils: Import 'is_json' for custom vars into schema (Icinga 2) #7568
 
 
-1.11.7 - 03/09/2014
+1.11.7 - 09/03/2014
 
 FIXES
 
@@ -132,7 +132,7 @@ CHANGES
 * New programstatus column 'endpoint_name' requires schema update to 1.11.7! #6939
 
 
-1.11.6 - 06/08/2014
+1.11.6 - 08/06/2014
 
 FIXES
 
@@ -152,7 +152,7 @@ CHANGES
 * Fix customvariable tables requires schema version update to 1.11.6! #6788
 
 
-1.11.5 - 20/06/2014
+1.11.5 - 06/20/2014
 
 FIXES
 
@@ -169,7 +169,7 @@ CHANGES
 	** Required for icinga2-classicui Debian package
 
 
-1.11.4 - 28/05/2014
+1.11.4 - 05/28/2014
 
 FIXES
 
@@ -189,7 +189,7 @@ CHANGES
 	** serviceextinfo object
 
 
-1.11.3 - 10/05/2014
+1.11.3 - 05/10/2014
 
 ENHANCEMENTS
 
@@ -210,7 +210,7 @@ CHANGES
 * core: Remove json checker
 
 
-1.11.2 - 24/04/2014
+1.11.2 - 04/24/2014
 
 FIXES
 
@@ -222,7 +222,7 @@ FIXES
 * classic ui: drop experimental 'check_service' attribute (Icinga 2 only) #5841 - MF
 
 
-1.11.1 - 28/03/2014
+1.11.1 - 03/28/2014
 
 ENHANCEMENTS
 
@@ -238,7 +238,7 @@ FIXES
 * idoutils: pgsql: fix table creates for icinga 2 endpoints #5850 - GB
 
 
-1.11.0 - 13/03/2014
+1.11.0 - 03/13/2014
 
 ENHANCEMENTS
 
@@ -314,7 +314,7 @@ CHANGES
 * docs: replace sourceforge download links with github releases #5429
 
 
-1.10.3 - 11/02/2014
+1.10.3 - 02/11/2014
 
 ENHANCEMENTS
 
@@ -339,7 +339,7 @@ FIXES
 	** Also use the Apache 2.4 RequireAll authorization container.
 
 
-1.10.2 - 05/12/2013
+1.10.2 - 12/05/2013
 
 ENHANCEMENTS
 
@@ -377,7 +377,7 @@ FIXES
 * idoutils: fix logentry_type being integer, not unsigned long (thx David Mikulksi) #4953 - MF
 
 
-1.10.0 - 24/10/2013
+1.10.0 - 10/24/2013
 
 * idoutils: slahistory table must be removed manually after enable_sla removal #4363
 	- DROP TABLE icinga_slahistory
@@ -502,7 +502,7 @@ FIXES
 * idoutils: fix workaround on libdbi fetch_next_row() bug applied for postgresql too, causing faulty queries #4367 - MF
 
 
-1.9.2 - 30/06/2013
+1.9.2 - 06/30/2013
 
 FIXES
 * core: fix bug with non-ASCII (> 127) illegal macro output characters on char-to-int cast (Jason Young) #4211 - MF
@@ -517,7 +517,7 @@ FIXES
 * idoutils: fix wrong clob freeing in eventhandlers #4357 - TD
 
 
-1.9.1 - 22/05/2013
+1.9.1 - 05/22/2013
 
 FIXES
 * core: fix objects.cache does not get updated on (re)start, but config verify (Christian Ruppert) #4155 - MF
@@ -527,7 +527,7 @@ FIXES
 * idoutils: fix segfaults on reload with multiple neb modules of the same binary #4033 - MF
 
 
-1.9.0 - 07/05/2013
+1.9.0 - 05/07/2013
 
 NOTES
 * idoutils uses a socket queue and transactions for large object dumps! #3527 #3533
@@ -669,7 +669,7 @@ CHANGES
 * install: default permissions for icinga/ido2db binaries are now 755 #3902
 
 
-1.8.4 - 13/01/2013
+1.8.4 - 01/13/2013
 
 FIXES
 * core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
@@ -688,7 +688,7 @@ FIXES
 * idoutils: fix unknown column contactaddress_id (thx fmbiete) #3483 - MF
 
 
-1.8.2 - 28/11/2012
+1.8.2 - 11/28/2012
 
 FIXES
 * core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
@@ -720,13 +720,13 @@ CHANGES
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
 
 
-1.8.1 - 25/10/2012
+1.8.1 - 10/25/2012
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 
 
-1.8.0 - 18/10/2012
+1.8.0 - 10/18/2012
 
 host object attributes 'vrml_image' and '3dcoords' are deprecated due to the removal of the 3d statusmap (statuswrl).
 
@@ -923,13 +923,13 @@ classic ui: Added/Changed cgi.cfg options
 * icinga.spec: forced update on icinga.cfg change package locations #2923
 
 
-1.7.4 - 13/01/2013
+1.7.4 - 01/13/2013
 
 FIXES
 * core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
 
 
-1.7.3 - 08/11/2012
+1.7.3 - 11/08/2012
 
 FIXES
 * core: fix embedded perl segfault #3027 - MF
@@ -938,7 +938,7 @@ FIXES
 
 
 
-1.7.2 - 27/08/2012
+1.7.2 - 08/27/2012
 
 FIXES
 * core: fix duplicated events on check scheduling logic for new events (Andreas Ericsson) #2676 #2993 - MF
@@ -960,7 +960,7 @@ FIXES
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
 
 
-1.7.1 - 18/06/2012
+1.7.1 - 06/18/2012
 
 FIXES
 * core: use prefix in solaris service definition #2609 - TD/CF
@@ -981,7 +981,7 @@ FIXES
 
 
 
-1.7.0 - 15/05/2012
+1.7.0 - 05/15/2012
 
 !!! ATTENTION !!!
 	idomod.o was renamed to idomod.so, module extension is now .so
@@ -1237,7 +1237,7 @@ CHANGES
 * idoutils: add create_time and modify_time to dbversion table #2562
 	** allows to determine the initial import plus modified date
 
-1.6.2 - 13/01/2013
+1.6.2 - 01/13/2013
 
 ENHANCEMENTS
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
@@ -1263,7 +1263,7 @@ FIXES
 CHANGES
 
 
-1.6.1 - 02/12/2011
+1.6.1 - 12/02/2011
 
 FIXES
 * core: fix freshness checks are generating stale alerts, even if result was received in time #2136
@@ -1272,7 +1272,7 @@ CHANGES
 
 
 
-1.6.0 - 30/11/2011
+1.6.0 - 11/30/2011
 
 ENHANCEMENTS
 
@@ -1388,7 +1388,7 @@ CHANGES
 
 
 
-1.5.0 - 24/08/2011
+1.5.0 - 08/24/2011
 
 ENHANCEMENTS
 * core: do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741
@@ -1513,7 +1513,7 @@ https://wiki.icinga.org/display/Dev/Changes
 	** data_processing_options=67108669
 
 
-1.4.0 - 11/05/2011
+1.4.0 - 05/11/2011
 
 ENHANCEMENTS
 * core: re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option #1413
@@ -1578,7 +1578,7 @@ FIXES
 * install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 
 
-1.3.0 - 16/02/2011
+1.3.0 - 02/16/2011
 
 ENHANCEMENTS
 * classic ui: add instance hostname to html title #954
@@ -1692,7 +1692,7 @@ FIXES
 * idoutils: fix check for empty command args in host|service|notification definitions #1047
 
 
-1.2.1 - 25/10/2010
+1.2.1 - 10/25/2010
 
 ENHANCEMENTS:
 * core: fix initscript, no error when stopping stale lock (OMD patch) #897
@@ -1717,7 +1717,7 @@ FIXES:
 * idoutils: fix disconnecting on errors misbheaving, not closing db and daemon #886
 
 
-1.2.0 - 06/10/2010
+1.2.0 - 10/06/2010
 
 ENHANCEMENTS
 * core: add eventhandler override (Sven Nierlein) #731
@@ -1773,7 +1773,7 @@ FIXES
 
 
 
-1.0.3 - 18/08/2010
+1.0.3 - 08/18/2010
 
 ENHANCEMENTS
 * core: new config option to set initial state of persistence for acknowledgements
@@ -1843,7 +1843,7 @@ FIXES
 * idoutils: update pgsql schema, replace varchar(n) by text
 * idoutils: change configfilevariables varvalue to 1024 length for mysql/oracle
 
-1.0.2 - 30/06/2010
+1.0.2 - 06/30/2010
 
 ENHANCEMENTS
 * core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
@@ -2049,7 +2049,7 @@ FIXES
 * idoutils: fix custom_variables object_id type int => unsigned long
 
 
-1.0 Stable - 16/12/2009
+1.0 Stable - 12/16/2009
 * core: create webserver conf.d dir if not existing
 * core: output the correct config parameter name on error message
 * core: run dos2unix on spec file
@@ -2093,7 +2093,7 @@ FIXES
 * --enable-oracle during configure decides which rdbm lib will be used
 
 
-1.0 RC - 28/10/2009
+1.0 RC - 10/28/2009
 * idoutils: add Oracle support with oclilib
 * idoutils: add ssl support
 * idoutils: add configure --enable-oracle
