@@ -19,6 +19,17 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
+1.13.3 - 07/15/2015
+
+FIXES
+
+* Bug #7337: Only use SCHEDULE_HOST_DOWNTIME command for Icinga 2.x
+* Bug #8130: Wrong values for percent_* when using hostgroup in availability report
+* Bug #9020: Solaris package behaves badly upon uninstall
+* Bug #9106: Icinga no longer sending acknowledgement notifications
+* Bug #9240: invalid JSON for flapping threshold configuration
+
+
 1.13.2 - 05/08/2015
 
 FIXES
