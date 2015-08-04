@@ -1165,14 +1165,19 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	/* make sure the return code is within bounds */
 	else if (queued_check_result->return_code < 0 || queued_check_result->return_code > 3) {
 
+		my_free(temp_service->plugin_output);
+		my_free(temp_service->long_plugin_output);
+		my_free(temp_service->perf_data);
+
 		if (queued_check_result->return_code == 126) {
-			asprintf(&temp_service->plugin_output, "The command defined for service %s is not an executable\n", queued_check_result->service_description);
+			asprintf(&temp_service->plugin_output, "The command defined for service %s is not an executable\n", temp_service->description);
 		} else if (queued_check_result->return_code == 127) {
-			asprintf(&temp_service->plugin_output, "The command defined for service %s does not exist\n", queued_check_result->service_description);
+			asprintf(&temp_service->plugin_output, "The command defined for service %s does not exist\n", temp_service->description);
 		} else {
 			asprintf(&temp_service->plugin_output, "Return code of %d is out of bounds", queued_check_result->return_code);
 		}
-		logit(NSLOG_RUNTIME_WARNING, TRUE, "%s", temp_service->plugin_output);
+
+		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Return code of %d for check of service '%s' on host '%s' was out of bounds: '%s'", queued_check_result->return_code, temp_service->description, temp_service->host_name, temp_service->plugin_output);
 
 		temp_service->current_state = STATE_CRITICAL;
 	}
@@ -3629,13 +3634,19 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 		/* make sure the return code is within bounds */
 		else if (queued_check_result->return_code < 0 || queued_check_result->return_code > 3) {
 
-			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Return code of %d for check of host '%s' was out of bounds.%s\n", queued_check_result->return_code, temp_host->name, (queued_check_result->return_code == 126 || queued_check_result->return_code == 127) ? " Make sure the plugin you're trying to run actually exists." : "");
-
 			my_free(temp_host->plugin_output);
 			my_free(temp_host->long_plugin_output);
 			my_free(temp_host->perf_data);
 
-			asprintf(&temp_host->plugin_output, "(Return code of %d is out of bounds%s)", queued_check_result->return_code, (queued_check_result->return_code == 126 || queued_check_result->return_code == 127) ? " - plugin may be missing" : "");
+			if (queued_check_result->return_code == 126) {
+				asprintf(&temp_host->plugin_output, "The command defined for host %s is not an executable\n", temp_host->name);
+			} else if (queued_check_result->return_code == 127) {
+				asprintf(&temp_host->plugin_output, "The command defined for host %s does not exist\n", temp_host->name);
+			} else {
+				asprintf(&temp_host->plugin_output, "Return code of %d is out of bounds", queued_check_result->return_code);
+			}
+
+			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Return code of %d for check of host '%s' was out of bounds: '%s'", queued_check_result->return_code, temp_host->name, temp_host->plugin_output);
 
 			result = STATE_CRITICAL;
 		}
