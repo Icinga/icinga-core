@@ -1864,18 +1864,18 @@ void get_time_string(time_t *raw_time, char *buffer, int buffer_length, int type
 
 /* get time string for an interval of time */
 void get_interval_time_string(double time_units, char *buffer, int buffer_length) {
-	unsigned long total_seconds;
-	int hours = 0;
-	int minutes = 0;
-	int seconds = 0;
+	double total_seconds;
+	int hours = 0.0;
+	int minutes = 0.0;
+	double seconds = 0.0;
 
-	total_seconds = (unsigned long)(time_units * interval_length);
+	total_seconds = (double)(time_units * interval_length);
 	hours = (int)total_seconds / 3600;
-	total_seconds %= 3600;
+	total_seconds -= (hours * 3600);
 	minutes = (int)total_seconds / 60;
-	total_seconds %= 60;
-	seconds = (int)total_seconds;
-	snprintf(buffer, buffer_length, "%dh %dm %ds", hours, minutes, seconds);
+	total_seconds -= (minutes * 60);
+	seconds = total_seconds;
+	snprintf(buffer, buffer_length, "%dh %dm %.2fs", hours, minutes, seconds);
 	buffer[buffer_length - 1] = '\x0';
 
 	return;

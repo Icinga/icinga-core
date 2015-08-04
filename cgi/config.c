@@ -774,7 +774,7 @@ void display_hosts(void) {
 	char *processed_string = NULL;
 	int options = 0;
 	int odd = 0;
-	char time_string[2][16];
+	char time_string[2][32];
 	char *bg_class = "";
 	int contact = 0;
 	int json_start = TRUE;
@@ -2069,7 +2069,7 @@ void display_services(void) {
 	char *processed_string = NULL;
 	char command_line[MAX_INPUT_BUFFER];
 	char host_service_name[MAX_INPUT_BUFFER];
-	char time_string[2][16];
+	char time_string[2][32];
 	char *bg_class;
 	int options;
 	int odd = 0;
@@ -3187,7 +3187,7 @@ void display_serviceescalations(void) {
 	serviceescalation *temp_se = NULL;
 	contactsmember *temp_contactsmember = NULL;
 	contactgroupsmember *temp_contactgroupsmember = NULL;
-	char time_string[16] = "";
+	char time_string[32] = "";
 	int options = FALSE;
 	int odd = 0;
 	char *bg_class = "";
@@ -3563,7 +3563,7 @@ void display_hostescalations(void) {
 	hostescalation *temp_he = NULL;
 	contactsmember *temp_contactsmember = NULL;
 	contactgroupsmember *temp_contactgroupsmember = NULL;
-	char time_string[16] = "";
+	char time_string[32] = "";
 	int options = FALSE;
 	int odd = 0;
 	char *bg_class = "";
