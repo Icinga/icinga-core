@@ -10,11 +10,11 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
-	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.menu.js"></script>
-	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.position.js"></script>
-	<script type="text/javascript" src="jquery-ui/ui/jquery.ui.autocomplete.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/minified/jquery.ui.core.min.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/minified/jquery.ui.widget.min.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/minified/jquery.ui.menu.min.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/minified/jquery.ui.position.min.js"></script>
+	<script type="text/javascript" src="jquery-ui/ui/minified/jquery.ui.autocomplete.min.js"></script>
 </head>
 <body>
 	<div id="menu">
