@@ -290,6 +290,8 @@ time_t current_time;					/**< current timestamp (calculated once in main) */
 
 authdata current_authdata;				/**< struct to hold current authentication data */
 
+html_request *html_request_list = NULL;			/**< contains html requested data */
+
 struct namedlist req_hosts[NUM_NAMED_ENTRIES];		/**< initialze list of requested hosts */
 struct namedlist req_hostgroups[NUM_NAMED_ENTRIES];	/**< initialze list of requested hostgroups */
 struct namedlist req_servicegroups[NUM_NAMED_ENTRIES];	/**< initialze list of requested servicegroups */
@@ -564,13 +566,10 @@ void show_filters(void);
 
 
 /** @brief Parses the requested GET/POST variables
- *  @retval TRUE
- *  @retval FALSE
- *  @return wether parsing was successful or not
  *
  *  @n This function parses the request and set's the necessary variables
 **/
-int process_cgivars(void);
+void process_cgivars(void);
 
 
 /** @brief print's the table header for differnt styles
@@ -635,6 +634,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -644,6 +644,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -653,6 +654,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -662,6 +664,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		free_memory();
 		return ERROR;
 	}
@@ -1657,6 +1660,7 @@ int main(void) {
 	document_footer(CGI_ID);
 
 	/* free all allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 	free_comment_data();
 
@@ -1683,66 +1687,47 @@ int main(void) {
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *temp_buffer = NULL;
 	char *key = NULL;
 	char *value = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		/* likewise, check the value if it exists (NULL is valid if it does not) */
-		if (value != NULL)
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* we found the search_string argument */
-		if (!strcmp(key, "search_string")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "search_string") && value != NULL) {
 
 			group_style_type = STYLE_HOST_SERVICE_DETAIL;
 			search_string = strdup(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the servicefilter argument */
-		else if (!strcmp(key, "servicefilter")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "servicefilter") && value != NULL) {
 
 			service_filter = (char *)strdup(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the navbar search argument */
 		/* kept for backwards compatibility */
-		else if (!strcmp(key, "navbarsearch")) {
+		else if (!strcmp(key, "navbarsearch") && value != NULL) {
 			navbar_search = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the hostgroup argument */
-		else if (!strcmp(key, "hostgroup")) {
+		else if (!strcmp(key, "hostgroup") && value != NULL) {
 			display_type = DISPLAY_HOSTGROUPS;
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
 
 			temp_buffer = (char *)strdup(value);
 			strip_html_brackets(temp_buffer);
@@ -1751,15 +1736,13 @@ int process_cgivars(void) {
 				req_hostgroups[num_req_hostgroups++].entry = strdup(temp_buffer);
 
 			my_free(temp_buffer);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the servicegroup argument */
-		else if (!strcmp(key, "servicegroup")) {
+		else if (!strcmp(key, "servicegroup") && value != NULL) {
 			display_type = DISPLAY_SERVICEGROUPS;
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
 
 			temp_buffer = strdup(value);
 			strip_html_brackets(temp_buffer);
@@ -1768,15 +1751,13 @@ int process_cgivars(void) {
 				req_servicegroups[num_req_servicegroups++].entry = strdup(temp_buffer);
 
 			my_free(temp_buffer);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the host argument */
-		else if (!strcmp(key, "host")) {
+		else if (!strcmp(key, "host") && value != NULL) {
 			display_type = DISPLAY_HOSTS;
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
 
 			temp_buffer = strdup(value);
 			strip_html_brackets(temp_buffer);
@@ -1785,66 +1766,54 @@ int process_cgivars(void) {
 				req_hosts[num_req_hosts++].entry = strdup(temp_buffer);
 
 			my_free(temp_buffer);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the columns argument */
-		else if (!strcmp(key, "columns")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "columns") && value != NULL) {
 
 			overview_columns = atoi(value);
 			if (overview_columns <= 0)
 				overview_columns = 1;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the service status type argument */
-		else if (!strcmp(key, "servicestatustypes")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "servicestatustypes") && value != NULL) {
 
 			service_status_types = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the host status type argument */
-		else if (!strcmp(key, "hoststatustypes")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hoststatustypes") && value != NULL) {
 
 			host_status_types = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the service properties argument */
-		else if (!strcmp(key, "serviceprops")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "serviceprops") && value != NULL) {
 
 			service_properties = strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the host properties argument */
-		else if (!strcmp(key, "hostprops")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hostprops") && value != NULL) {
 
 			host_properties = strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the host or service group style argument */
-		else if (!strcmp(key, "style")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "style") && value != NULL) {
 
 			if (!strcmp(value, "overview"))
 				group_style_type = STYLE_OVERVIEW;
@@ -1860,36 +1829,30 @@ int process_cgivars(void) {
 				group_style_type = STYLE_HOST_SERVICE_DETAIL;
 			else
 				group_style_type = STYLE_SERVICE_DETAIL;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the sort type argument */
-		else if (!strcmp(key, "sorttype")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sorttype") && value != NULL) {
 
 			sort_type = atoi(value);
 			user_sorted_manually = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the sort option argument */
-		else if (!strcmp(key, "sortoption")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sortoption") && value != NULL) {
 
 			sort_option = atoi(value);
 			user_sorted_manually = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the sort object argument */
-		else if (!strcmp(key, "sortobject")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sortobject") && value != NULL) {
 
 			if (!strcmp(value, "hosts"))
 				sort_object = HOST_STATUS;
@@ -1897,30 +1860,45 @@ int process_cgivars(void) {
 				sort_object = SERVICE_STATUS;
 
 			user_sorted_manually = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(key, "embedded"))
+		else if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nostatusheader option */
-		else if (!strcmp(key, "nostatusheader"))
+		else if (!strcmp(key, "nostatusheader")) {
 			nostatusheader_option = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the CSV output option */
 		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the JSON output option */
 		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the pause option */
@@ -1928,45 +1906,55 @@ int process_cgivars(void) {
 			return_live_search_data = TRUE;
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the pause option */
-		else if (!strcmp(key, "paused"))
+		else if (!strcmp(key, "paused")) {
 			refresh = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "allunhandledproblems"))
+		else if (!strcmp(key, "allunhandledproblems")) {
 			display_all_unhandled_problems = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "allproblems"))
+		else if (!strcmp(key, "allproblems")) {
 			display_all_problems = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(key, "start")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "start") && value != NULL) {
 
 			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(key, "limit")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "limit") && value != NULL) {
 
 			get_result_limit = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 	}
@@ -1975,10 +1963,7 @@ int process_cgivars(void) {
 	req_servicegroups[num_req_servicegroups].entry = NULL;
 	req_hosts[num_req_hosts].entry = NULL;
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 
@@ -7231,8 +7216,7 @@ void print_displayed_names(int style) {
 
 void status_page_num_selector(int local_result_start, int status_type) {
 	char link[MAX_INPUT_BUFFER] = "";
-	char stripped_query_string[MAX_INPUT_BUFFER] = "";
-	char *temp_buffer;
+	char temp_buffer[MAX_INPUT_BUFFER] = "";
 	int total_pages = 1;
 	int current_page = 1;
 //	int next_page = 0;
@@ -7240,34 +7224,30 @@ void status_page_num_selector(int local_result_start, int status_type) {
 	int display_total = 0;
 	int display_from = 0;
 	int display_to = 0;
+	html_request *temp_request_item = NULL;
 
 	/* define base url */
-	strcat(link, STATUS_CGI);
+	strncat(link, STATUS_CGI, sizeof(link));
+	link[sizeof(link) - 1] = '\x0';
 
-	/* get url options but filter out "limit" and "status" */
-	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("status_page_num_selector(): Query string exceeds max length. Returning without displaying page num selector.\n");
-			return;
-		}
-		strcpy(stripped_query_string, getenv("QUERY_STRING"));
-		strip_html_brackets(stripped_query_string);
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
-		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("status_page_num_selector(): Full query string exceeds max length. Returning without displaying page num selector.\n");
-			return;
+		if (temp_request_item->is_valid == FALSE || temp_request_item->option == NULL) {
+			continue;
 		}
 
-		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
-			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
-				if (strstr(link, "?"))
-					strcat(link, "&");
-				else
-					strcat(link, "?");
-				strcat(link, temp_buffer);
-			}
+		/* filter out "limit" and "start" */
+		if (!strcmp(temp_request_item->option, "limit") || !strcmp(temp_request_item->option, "start")) {
+			continue;
 		}
+
+		strncpy(temp_buffer, link, sizeof(temp_buffer));
+		if (temp_request_item->value != NULL) {
+			snprintf(link, sizeof(link) - 1, "%s%s%s=%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option), url_encode(temp_request_item->value));
+		} else {
+			snprintf(link, sizeof(link) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option));
+		}
+		link[sizeof(link) - 1] = '\x0';
 	}
 
 	/* calculate pages */

@@ -97,6 +97,9 @@ typedef struct hostoutage_struct {
 hostoutage *hostoutage_list = NULL;				/**< list of all host outage elements */
 
 authdata current_authdata;					/**< struct to hold current authentication data */
+
+html_request *html_request_list = NULL;				/**< contains html requested data */
+
 int CGI_ID = TAC_CGI_ID;					/**< ID to identify the cgi for functions in cgiutils.c */
 
 /** @name outages counters
@@ -345,13 +348,10 @@ int services_critical_disabled_unacknowledged_host_down = 0;
 
 
 /** @brief Parses the requested GET/POST variables
- *  @retval TRUE
- *  @retval FALSE
- *  @return wether parsing was successful or not
  *
  *  @n This function parses the request and set's the necessary variables
 **/
-int process_cgivars(void);
+void process_cgivars(void);
 
 
 /** @brief fills all the counters
@@ -432,6 +432,7 @@ int main(void) {
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, tac_header);
+		free_html_request(html_request_list);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -446,6 +447,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, tac_header);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -459,6 +461,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, tac_header);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -472,6 +475,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA, tac_header);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		free_memory();
 		return ERROR;
 	}
@@ -540,6 +544,7 @@ int main(void) {
 	free_hostoutage_list();
 
 	/* free allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 
 #ifdef DEBUG
@@ -557,69 +562,61 @@ int main(void) {
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *key = NULL;
-	char *value = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		/* likewise, check the value if it exists */
-		if (value != NULL) {
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-			}
-		}
-
+		key = temp_request_item->option;
 
 		/* we found the embed option */
-		if (!strcmp(key, "embedded"))
+		if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the pause option */
-		else if (!strcmp(key, "paused"))
+		else if (!strcmp(key, "paused")) {
 			refresh = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the tac_header option */
-		else if (!strcmp(key, "tac_header"))
+		else if (!strcmp(key, "tac_header")) {
 			tac_header = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the JSON output option */
 		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
-
-		/* we received an invalid argument */
-		else
-			error = TRUE;
-
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 void analyze_status_data(void) {

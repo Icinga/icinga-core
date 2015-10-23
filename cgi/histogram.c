@@ -128,6 +128,8 @@ typedef struct timeslice_data_struct {
 
 timeslice_data *tsdata;
 
+html_request *html_request_list = NULL;			/**< contains html requested data */
+
 void compute_report_times(void);
 void graph_all_histogram_data(void);
 void add_archived_state(int, time_t);
@@ -135,7 +137,7 @@ void read_archived_state_data(void);
 void draw_line(int, int, int, int, int);
 void draw_dashed_line(int, int, int, int, int);
 
-int process_cgivars(void);
+void process_cgivars(void);
 
 
 time_t t1;
@@ -235,6 +237,7 @@ int main(int argc, char **argv) {
 			document_header(CGI_ID, FALSE, "Error");
 			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 			document_footer(CGI_ID);
+			free_html_request(html_request_list);
 		}
 		return ERROR;
 	}
@@ -246,6 +249,7 @@ int main(int argc, char **argv) {
 			document_header(CGI_ID, FALSE, "Error");
 			print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 			document_footer(CGI_ID);
+			free_html_request(html_request_list);
 		}
 		return ERROR;
 	}
@@ -257,6 +261,7 @@ int main(int argc, char **argv) {
 			document_header(CGI_ID, FALSE, "Error");
 			print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 			document_footer(CGI_ID);
+			free_html_request(html_request_list);
 		}
 		return ERROR;
 	}
@@ -268,6 +273,7 @@ int main(int argc, char **argv) {
 			document_header(CGI_ID, FALSE, "Error");
 			print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 			document_footer(CGI_ID);
+			free_html_request(html_request_list);
 		}
 		free_memory();
 		return ERROR;
@@ -497,6 +503,7 @@ int main(int argc, char **argv) {
 		}
 
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		free_memory();
 		return ERROR;
 	}
@@ -886,136 +893,114 @@ int main(int argc, char **argv) {
 	document_footer(CGI_ID);
 
 	/* free all other allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *key = NULL;
 	char *value = NULL;
 	char *temp_buffer = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		/* likewise, check the value for length if it exists */
-		if (key != NULL)
-			if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* we found the host argument */
-		if (!strcmp(key, "host")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "host") && value != NULL) {
 
 			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
 			strip_html_brackets(host_name);
 
 			display_type = DISPLAY_HOST_HISTOGRAM;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the node width argument */
-		else if (!strcmp(key, "service")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "service") && value != NULL) {
 
 			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
 
 			display_type = DISPLAY_SERVICE_HISTOGRAM;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found a combined host/service */
-		else if (!strcmp(key, "hostservice")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hostservice") && value != NULL) {
 
 			temp_buffer = strtok(value, "^");
 
-			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
-				host_name = "";
-			else
+			if ((host_name = (char *)strdup(temp_buffer)) == NULL) {
+				continue;
+			} else {
 				strip_html_brackets(host_name);
+			}
 
 			temp_buffer = strtok(NULL, "");
 
-			if ((service_desc = (char *)strdup(temp_buffer)) == NULL)
-				service_desc = "";
-			else
+			if ((service_desc = (char *)strdup(temp_buffer)) == NULL) {
+				my_free(host_name);
+				continue;
+			} else {
 				strip_html_brackets(service_desc);
+			}
 
 			display_type = DISPLAY_SERVICE_HISTOGRAM;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(key, "t1")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "t1") && value != NULL) {
 
 			t1 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(key, "t2")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "t2") && value != NULL) {
 
 			t2 = (time_t)strtoul(value, NULL, 10);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the image creation option */
 		else if (!strcmp(key, "createimage")) {
 			content_type = IMAGE_CONTENT;
+
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the backtrack archives argument */
-		else if (!strcmp(key, "backtrack")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "backtrack") && value != NULL) {
 
 			backtrack_archives = atoi(value);
 			if (backtrack_archives < 0)
 				backtrack_archives = 0;
 			if (backtrack_archives > MAX_ARCHIVE_BACKTRACKS)
 				backtrack_archives = MAX_ARCHIVE_BACKTRACKS;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the standard timeperiod argument */
-		else if (!strcmp(key, "timeperiod")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "timeperiod") && value != NULL) {
 
 			if (!strcmp(value, "today"))
 				timeperiod_type = TIMEPERIOD_TODAY;
@@ -1051,14 +1036,12 @@ int process_cgivars(void) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				convert_timeperiod_to_times(timeperiod_type, &t1, &t2);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "smon")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "smon") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1066,14 +1049,12 @@ int process_cgivars(void) {
 			start_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "sday")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sday") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1081,14 +1062,12 @@ int process_cgivars(void) {
 			start_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "syear")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "syear") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1096,14 +1075,12 @@ int process_cgivars(void) {
 			start_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "smin")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "smin") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1111,14 +1088,12 @@ int process_cgivars(void) {
 			start_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "ssec")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "ssec") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1126,14 +1101,12 @@ int process_cgivars(void) {
 			start_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "shour")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "shour") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1141,15 +1114,13 @@ int process_cgivars(void) {
 			start_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 
 		/* we found time argument */
-		else if (!strcmp(key, "emon")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "emon") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1157,14 +1128,12 @@ int process_cgivars(void) {
 			end_month = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "eday")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "eday") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1172,14 +1141,12 @@ int process_cgivars(void) {
 			end_day = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "eyear")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "eyear") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1187,14 +1154,12 @@ int process_cgivars(void) {
 			end_year = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "emin")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "emin") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1202,14 +1167,12 @@ int process_cgivars(void) {
 			end_minute = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "esec")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "esec") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1217,14 +1180,12 @@ int process_cgivars(void) {
 			end_second = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found time argument */
-		else if (!strcmp(key, "ehour")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "ehour") && value != NULL) {
 
 			if (timeperiod_type != TIMEPERIOD_CUSTOM)
 				continue;
@@ -1232,26 +1193,33 @@ int process_cgivars(void) {
 			end_hour = atoi(value);
 			timeperiod_type = TIMEPERIOD_CUSTOM;
 			compute_time_from_parts = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(key, "embedded"))
+		else if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the input option */
-		else if (!strcmp(key, "input")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "input") && value != NULL) {
 
 			if (!strcmp(value, "gethost"))
 				input_type = GET_INPUT_HOST_TARGET;
@@ -1261,34 +1229,28 @@ int process_cgivars(void) {
 				input_type = GET_INPUT_OPTIONS;
 			else
 				input_type = GET_INPUT_TARGET_TYPE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the graph states option */
-		else if (!strcmp(key, "graphevents")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "graphevents") && value != NULL) {
 
 			graph_events = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the graph state types option */
-		else if (!strcmp(key, "graphstatetypes")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "graphstatetypes") && value != NULL) {
 
 			graph_statetypes = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the breakdown option */
-		else if (!strcmp(key, "breakdown")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "breakdown") && value != NULL) {
 
 			if (!strcmp(value, "monthly"))
 				breakdown_type = BREAKDOWN_MONTHLY;
@@ -1298,54 +1260,45 @@ int process_cgivars(void) {
 				breakdown_type = BREAKDOWN_DAY_OF_WEEK;
 			else
 				breakdown_type = BREAKDOWN_HOURLY;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the assume state retention option */
-		else if (!strcmp(key, "assumestateretention")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "assumestateretention") && value != NULL) {
 
 			if (!strcmp(value, "yes"))
 				assume_state_retention = TRUE;
 			else
 				assume_state_retention = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the initial states logged option */
-		else if (!strcmp(key, "initialstateslogged")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "initialstateslogged") && value != NULL) {
 
 			if (!strcmp(value, "yes"))
 				initial_states_logged = TRUE;
 			else
 				initial_states_logged = FALSE;
 
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the new states only option */
-		else if (!strcmp(key, "newstatesonly")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "newstatesonly") && value != NULL) {
 
 			if (!strcmp(value, "yes"))
 				new_states_only = TRUE;
 			else
 				new_states_only = FALSE;
 
+			temp_request_item->is_valid = TRUE;
 		}
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 
