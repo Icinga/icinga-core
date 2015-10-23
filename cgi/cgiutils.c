@@ -517,7 +517,7 @@ int read_cgi_config_file(char *filename) {
 			snprintf(url_js_path, sizeof(url_js_path), "%sjs/", url_html_path);
 			url_js_path[sizeof(url_js_path) - 1] = '\x0';
 
-			snprintf(url_jquiryui_path, sizeof(url_jquiryui_path), "%sjquery-ui/minified/", url_html_path);
+			snprintf(url_jquiryui_path, sizeof(url_jquiryui_path), "%sjquery-ui/", url_html_path);
 			url_jquiryui_path[sizeof(url_jquiryui_path) - 1] = '\x0';
 
 			snprintf(url_jquiryui_addon_path, sizeof(url_jquiryui_addon_path), "%sjquery-ui-addon/", url_html_path);

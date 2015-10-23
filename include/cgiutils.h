@@ -122,14 +122,14 @@ extern "C" {
 
 /**************************** JQUERY-UI PATH ******************************/
 
-#define JQ_UI_CORE_JS		"ui/jquery.ui.core.min.js"
-#define JQ_UI_WIDGET_JS		"ui/jquery.ui.widget.min.js"
-#define JQ_UI_MOUSE_JS		"ui/jquery.ui.mouse.min.js"
-#define JQ_UI_SLIDER_JS		"ui/jquery.ui.slider.min.js"
-#define JQ_UI_DATEPICKER_JS	"ui/jquery.ui.datepicker.min.js"
-#define JQ_UI_EFFECT_JS		"ui/jquery.ui.effect.min.js"
-#define JQ_UI_EFFECT_BLIND_JS	"ui/jquery.ui.effect-blind.min.js"
-#define JQ_UI_BUTTON_JS		"ui/jquery.ui.button.min.js"
+#define JQ_UI_CORE_JS		"ui/minified/jquery.ui.core.min.js"
+#define JQ_UI_WIDGET_JS		"ui/minified/jquery.ui.widget.min.js"
+#define JQ_UI_MOUSE_JS		"ui/minified/jquery.ui.mouse.min.js"
+#define JQ_UI_SLIDER_JS		"ui/minified/jquery.ui.slider.min.js"
+#define JQ_UI_DATEPICKER_JS	"ui/minified/jquery.ui.datepicker.min.js"
+#define JQ_UI_EFFECT_JS		"ui/minified/jquery.ui.effect.min.js"
+#define JQ_UI_EFFECT_BLIND_JS	"ui/minified/jquery.ui.effect-blind.min.js"
+#define JQ_UI_BUTTON_JS		"ui/minified/jquery.ui.button.min.js"
 #define JQ_UI_TIMEPICKER_JS	"jquery.ui.timepicker-addon.min.js"
 
 #define JQ_UI_ALL_CSS		"themes/base/jquery.ui.all.css"
