@@ -218,8 +218,6 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long max_downtimehistory_age;
 	unsigned long trim_db_interval;
 	unsigned long housekeeping_thread_startup_delay;
-	unsigned long clean_realtime_tables_on_core_startup;
-	unsigned long clean_config_tables_on_core_startup;
 	unsigned long oci_errors_to_syslog;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;

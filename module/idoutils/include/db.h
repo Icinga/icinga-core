@@ -35,8 +35,6 @@ typedef struct ido2db_dbconfig_struct{
 	unsigned long max_downtimehistory_age;
 	unsigned long trim_db_interval;
 	unsigned long housekeeping_thread_startup_delay;
-        unsigned long clean_realtime_tables_on_core_startup;
-        unsigned long clean_config_tables_on_core_startup;
 	unsigned long oci_errors_to_syslog;
 	unsigned int oracle_trace_level;
         }ido2db_dbconfig;
