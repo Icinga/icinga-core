@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS icinga_commenthistory (
   expiration_time timestamp  default '0000-00-00 00:00:00',
   deletion_time timestamp  default '0000-00-00 00:00:00',
   deletion_time_usec  int default 0,
+  unique_id TEXT character set latin1 default NULL,
   PRIMARY KEY  (commenthistory_id),
   UNIQUE KEY instance_id (instance_id,object_id,comment_time,internal_comment_id)
 ) ENGINE=InnoDB  COMMENT='Historical host and service comments';
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS icinga_comments (
   comment_source smallint default 0,
   expires smallint default 0,
   expiration_time timestamp  default '0000-00-00 00:00:00',
+  unique_id TEXT character set latin1 default NULL,
   PRIMARY KEY  (comment_id),
   UNIQUE KEY instance_id (instance_id,object_id,comment_time,internal_comment_id)
 ) ENGINE=InnoDB  COMMENT='Usercomments on Icinga objects';
@@ -340,6 +342,7 @@ CREATE TABLE IF NOT EXISTS icinga_customvariables (
   varname varchar(255) character set latin1 collate latin1_general_cs default NULL,
   varvalue TEXT character set latin1  default '',
   is_json smallint default 0,
+  session_token varchar(512) character set latin1 default NULL,
   PRIMARY KEY  (customvariable_id),
   UNIQUE KEY object_id_2 (object_id,config_type,varname),
   KEY varname (varname)
@@ -360,6 +363,7 @@ CREATE TABLE IF NOT EXISTS icinga_customvariablestatus (
   varname varchar(255) character set latin1 collate latin1_general_cs default NULL,
   varvalue TEXT character set latin1  default '',
   is_json smallint default 0,
+  session_token varchar(512) character set latin1 default NULL,
   PRIMARY KEY  (customvariablestatus_id),
   UNIQUE KEY object_id_2 (object_id,varname),
   KEY varname (varname)
@@ -409,6 +413,7 @@ CREATE TABLE IF NOT EXISTS icinga_downtimehistory (
   was_cancelled smallint default 0,
   is_in_effect smallint default 0,
   trigger_time timestamp  default '0000-00-00 00:00:00',
+  unique_id TEXT character set latin1 default NULL,
   PRIMARY KEY  (downtimehistory_id),
   UNIQUE KEY instance_id (instance_id,object_id,entry_time,internal_downtime_id)
 ) ENGINE=InnoDB  COMMENT='Historical scheduled host and service downtime';
@@ -666,7 +671,7 @@ CREATE TABLE IF NOT EXISTS icinga_hosts (
   high_flap_threshold double  default '0',
   process_performance_data smallint default 0,
   freshness_checks_enabled smallint default 0,
-  freshness_threshold smallint default 0,
+  freshness_threshold int default 0,
   passive_checks_enabled smallint default 0,
   event_handler_enabled smallint default 0,
   active_checks_enabled smallint default 0,
@@ -744,6 +749,7 @@ CREATE TABLE IF NOT EXISTS icinga_hoststatus (
   process_performance_data smallint default 0,
   obsess_over_host smallint default 0,
   modified_host_attributes  int default 0,
+  original_attributes TEXT character set latin1  default NULL,
   event_handler TEXT character set latin1  default '',
   check_command TEXT character set latin1  default '',
   normal_check_interval double  default '0',
@@ -969,6 +975,7 @@ CREATE TABLE IF NOT EXISTS icinga_scheduleddowntime (
   actual_start_time_usec  int default 0,
   is_in_effect smallint default 0,
   trigger_time timestamp  default '0000-00-00 00:00:00',
+  unique_id TEXT character set latin1 default NULL,
   PRIMARY KEY  (scheduleddowntime_id),
   UNIQUE KEY instance_id (instance_id,object_id,entry_time,internal_downtime_id)
 ) ENGINE=InnoDB COMMENT='Current scheduled host and service downtime';
@@ -1160,7 +1167,7 @@ CREATE TABLE IF NOT EXISTS icinga_services (
   high_flap_threshold double  default '0',
   process_performance_data smallint default 0,
   freshness_checks_enabled smallint default 0,
-  freshness_threshold smallint default 0,
+  freshness_threshold int default 0,
   passive_checks_enabled smallint default 0,
   event_handler_enabled smallint default 0,
   active_checks_enabled smallint default 0,
@@ -1230,6 +1237,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicestatus (
   process_performance_data smallint default 0,
   obsess_over_service smallint default 0,
   modified_service_attributes  int default 0,
+  original_attributes TEXT character set latin1  default NULL,
   event_handler TEXT character set latin1  default '',
   check_command TEXT character set latin1  default '',
   normal_check_interval double  default '0',
@@ -1362,6 +1370,7 @@ CREATE TABLE IF NOT EXISTS icinga_endpoints (
   endpoint_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   endpoint_object_id bigint(20) unsigned DEFAULT '0',
+  zone_object_id bigint(20) unsigned DEFAULT '0',
   config_type smallint(6) DEFAULT '0',
   identity varchar(255) DEFAULT NULL,
   node varchar(255) DEFAULT NULL,
@@ -1378,12 +1387,44 @@ CREATE TABLE IF NOT EXISTS icinga_endpointstatus (
   endpointstatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   endpoint_object_id bigint(20) unsigned DEFAULT '0',
+  zone_object_id bigint(20) unsigned DEFAULT '0',
   status_update_time timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   identity varchar(255) DEFAULT NULL,
   node varchar(255) DEFAULT NULL,
   is_connected smallint(6),
   PRIMARY KEY  (endpointstatus_id)
 ) ENGINE=InnoDB COMMENT='Endpoint status';
+
+--
+-- Table structure for table icinga_zones
+--
+
+CREATE TABLE IF NOT EXISTS icinga_zones (
+  zone_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  instance_id bigint unsigned default 0,
+  zone_object_id bigint(20) unsigned DEFAULT '0',
+  config_type smallint(6) DEFAULT '0',
+  parent_zone_object_id bigint(20) unsigned DEFAULT '0',
+  is_global smallint(6),
+  PRIMARY KEY  (zone_id)
+) ENGINE=InnoDB COMMENT='Zone configuration';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table icinga_zonestatus
+--
+
+CREATE TABLE IF NOT EXISTS icinga_zonestatus (
+  zonestatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  instance_id bigint unsigned default 0,
+  zone_object_id bigint(20) unsigned DEFAULT '0',
+  status_update_time timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  parent_zone_object_id bigint(20) unsigned DEFAULT '0',
+  PRIMARY KEY  (zonestatus_id)
+) ENGINE=InnoDB COMMENT='Zone status';
+
+
 
 
 ALTER TABLE icinga_servicestatus ADD COLUMN endpoint_object_id bigint default NULL;
@@ -1600,9 +1641,13 @@ CREATE INDEX sla_idx_obj ON icinga_objects (objecttype_id, is_active, name1);
 -- #4985
 CREATE INDEX commenthistory_delete_idx ON icinga_commenthistory (instance_id, comment_time, internal_comment_id);
 
+-- #10436
+CREATE INDEX cv_session_del_idx ON icinga_customvariables (session_token);
+CREATE INDEX cvs_session_del_idx ON icinga_customvariablestatus (session_token);
+
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.13.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.13.0', modify_time=NOW();
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.14.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.14.0', modify_time=NOW();
 
 

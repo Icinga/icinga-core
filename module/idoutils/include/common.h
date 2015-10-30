@@ -25,7 +25,7 @@
 #define IDO_DATE "07-15-2015"
 #define IDO_VERSION "1.13.3"
 
-#define IDO_SCHEMA_VERSION "1.13.0"
+#define IDO_SCHEMA_VERSION "1.14.0"
 
 #define IDO_COPYRIGHT 		"Copyright(c) 2005-2008 Ethan Galstad, Copyright(c) 2009-2015 Icinga Development Team (https://www.icinga.org)"
 #define IDO_LICENSE 		"License: GPL v2"
