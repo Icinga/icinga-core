@@ -71,7 +71,7 @@ typedef struct hostoutagesort_struct {
 	struct hostoutagesort_struct *next;
 } hostoutagesort;
 
-int process_cgivars(void);
+void process_cgivars(void);
 
 void display_network_outages(void);
 void find_hosts_causing_outages(void);
@@ -87,6 +87,8 @@ void add_affected_host(char *);
 
 
 authdata current_authdata;
+
+html_request *html_request_list = NULL;		/**< contains html requested data */
 
 hostoutage *hostoutage_list = NULL;
 hostoutagesort *hostoutagesort_list = NULL;
@@ -120,6 +122,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -129,6 +132,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -138,6 +142,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -147,6 +152,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		free_memory();
 		return ERROR;
 	}
@@ -191,80 +197,80 @@ int main(void) {
 	free_comment_data();
 
 	/* free all allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *key = NULL;
 	char *value = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = 1;
-			break;
-		}
-		if (value != NULL)
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = 1;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* we found the service severity divisor option */
-		if (!strcmp(key, "service_divisor")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "service_divisor") && value != NULL) {
 
 			service_severity_divisor = atoi(value);
 			if (service_severity_divisor < 1)
 				service_severity_divisor = 1;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the CSV output option */
 		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(key, "embedded"))
+		else if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the pause option */
-		else if (!strcmp(key, "paused"))
+		else if (!strcmp(key, "paused")) {
 			refresh = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 /* shows all hosts that are causing network outages */

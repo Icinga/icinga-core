@@ -31,6 +31,7 @@
 #include "../include/comments.h"
 
 #include "../include/cgiutils.h"
+#include "../include/getcgi.h"
 
 char            main_config_file[MAX_FILENAME_LENGTH];
 char            command_file[MAX_FILENAME_LENGTH];
@@ -208,6 +209,7 @@ extern serviceescalation *serviceescalation_list;
 
 extern hoststatus      *hoststatus_list;
 extern servicestatus   *servicestatus_list;
+extern html_request    *html_request_list;
 
 
 char encoded_url_string[4][MAX_INPUT_BUFFER]; // 4 to be able to use url_encode 4 times
@@ -2223,54 +2225,50 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 }
 
 void display_nav_table(time_t ts_start, time_t ts_end) {
-	char *temp_buffer;
+	char temp_buffer[MAX_INPUT_BUFFER] = "";
 	char url[MAX_INPUT_BUFFER] = "";
-	char stripped_query_string[MAX_INPUT_BUFFER] = "";
 	char date_time[MAX_INPUT_BUFFER];
 	struct tm *t;
 	time_t ts_midnight = 0L;
 	time_t current_time = 0L;
+	html_request *temp_request_item = NULL;
 
 	/* define base url */
 	switch (CGI_ID) {
 	case HISTORY_CGI_ID:
-		strcat(url, HISTORY_CGI);
+		strncpy(url, HISTORY_CGI, sizeof(url));
 		break;
 	case NOTIFICATIONS_CGI_ID:
-		strcat(url, NOTIFICATIONS_CGI);
+		strncpy(url, NOTIFICATIONS_CGI, sizeof(url));
 		break;
 	case SHOWLOG_CGI_ID:
-		strcat(url, SHOWLOG_CGI);
+		strncpy(url, SHOWLOG_CGI, sizeof(url));
 		break;
 	default:
-		strcat(url, "NO_URL_DEFINED");
+		strncpy(url, "NO_URL_DEFINED", sizeof(url));
 		break;
 	}
 
-	/* get url options but filter out "ts_end", "ts_start" and "start" */
-	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("display_nav_table(): Query string exceeds max length. Returning without displaying nav table.\n");
-			return;
-		}
-		strcpy(stripped_query_string, getenv("QUERY_STRING"));
-		strip_html_brackets(stripped_query_string);
+	url[sizeof(url) - 1] = '\x0';
 
-		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
-		if (strlen(url) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("display_nav_table(): Full query string exceeds max length. Returning without displaying nav table.\n");
-			return;
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
+
+		if (temp_request_item->is_valid == FALSE || temp_request_item->option == NULL) {
+			continue;
 		}
 
-		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
-			if (strncmp(temp_buffer, "ts_start=", 9) != 0 && strncmp(temp_buffer, "ts_end=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
-				if (strstr(url, "?"))
-					strcat(url, "&");
-				else
-					strcat(url, "?");
-				strcat(url, temp_buffer);
-			}
+		/* filter out "limit" and "start" */
+		if (!strcmp(temp_request_item->option, "ts_start") || !strcmp(temp_request_item->option, "ts_end") || !strcmp(temp_request_item->option, "start")) {
+			continue;
 		}
+
+		strncpy(temp_buffer, url, sizeof(temp_buffer));
+		if (temp_request_item->value != NULL) {
+			snprintf(url, sizeof(url) - 1, "%s%s%s=%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option), url_encode(temp_request_item->value));
+		} else {
+			snprintf(url, sizeof(url) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option));
+		}
+		url[sizeof(url) - 1] = '\x0';
 	}
 
 	/* get the current time */
@@ -2865,49 +2863,45 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
  *  a new page with the desired content.
 **/
 void print_export_link(int content_type, char *cgi, char *add_to_url) {
-	char stripped_query_string[MAX_INPUT_BUFFER] = "";
 	char link[MAX_INPUT_BUFFER] = "";
+	char temp_buffer[MAX_INPUT_BUFFER] = "";
+	html_request *temp_request_item = NULL;
 
 	if (cgi == NULL)
 		return;
 
-	strcat(link, cgi);
+	strncpy(link, cgi, sizeof(link));
+	link[sizeof(link) - 1] = '\x0';
 
-	/* just do stuff if some options are requested */
-	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("print_export_link(): Query string exceeds max length. Returning without displaying export link.\n");
-			return;
-		}
-		strcpy(stripped_query_string, getenv("QUERY_STRING"));
-		strip_html_brackets(stripped_query_string);
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
-		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("print_export_link(): Full query string exceeds max length. Returning without displaying export link.\n");
-			return;
+		if (temp_request_item->is_valid == FALSE || temp_request_item->option == NULL) {
+			continue;
 		}
 
-		strcat(link, "?");
-		strcat(link, stripped_query_string);
+		strncpy(temp_buffer, link, sizeof(temp_buffer));
+		if (temp_request_item->value != NULL) {
+			snprintf(link, sizeof(link) - 1, "%s%s%s=%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option), url_encode(temp_request_item->value));
+		} else {
+			snprintf(link, sizeof(link) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option));
+		}
+		link[sizeof(link) - 1] = '\x0';
 	}
 
 	/* add string to url */
-	if (add_to_url != NULL && strlen(add_to_url) != 0 && strlen(link) + strlen(stripped_query_string) + strlen(add_to_url) + 2 <= MAX_INPUT_BUFFER - 1) {
-		if (strlen(stripped_query_string) != 0)
-			strcat(link, "&");
-		else
-			strcat(link, "?");
-		strcat(link, add_to_url);
+	if (add_to_url != NULL && strlen(add_to_url) != 0) {
+		strncpy(temp_buffer, link, sizeof(temp_buffer));
+		snprintf(link, sizeof(link) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", add_to_url);
+		link[sizeof(link) - 1] = '\x0';
 	}
 
 	/* print formatted link */
 	if (content_type == CSV_CONTENT)
-		printf("<a href='%s%scsvoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, EXPORT_CSV_ICON_ALT);
+		printf("<a href='%s%scsvoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, EXPORT_CSV_ICON_ALT);
 	else if (content_type == JSON_CONTENT)
-		printf("<a href='%s%sjsonoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT, EXPORT_JSON_ICON_ALT);
+		printf("<a href='%s%sjsonoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT, EXPORT_JSON_ICON_ALT);
 	else if (content_type == XML_CONTENT)
-		printf("<a href='%s%sxmloutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_XML_ICON, EXPORT_XML_ICON_ALT, EXPORT_XML_ICON_ALT);
+		printf("<a href='%s%sxmloutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", url_images_path, EXPORT_XML_ICON, EXPORT_XML_ICON_ALT, EXPORT_XML_ICON_ALT);
 	else
 		printf("<a href='%s' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT, EXPORT_LINK_ICON_ALT);
 
@@ -3662,16 +3656,15 @@ void print_modified_attributes(int content_type, char *cgi, unsigned long modifi
 /*******************  pagination functions ************************/
 /******************************************************************/
 void page_num_selector(int result_start, int total_entries, int displayed_entries) {
-
 	char link[MAX_INPUT_BUFFER] = "";
-	char stripped_query_string[MAX_INPUT_BUFFER] = "";
-	char *temp_buffer;
+	char temp_buffer[MAX_INPUT_BUFFER] = "";
 	int total_pages = 1;
 	int current_page = 1;
 	//int next_page = 0;
 	int previous_page = 0;
 	int display_from = 0;
 	int display_to = 0;
+	html_request *temp_request_item = NULL;
 
 	/* define base url */
 	switch (CGI_ID) {
@@ -3680,49 +3673,44 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	// 	strcat(link, STATUS_CGI);
 	// 	break;
 	case CONFIG_CGI_ID:
-		strcat(link, CONFIG_CGI);
+		strncpy(link, CONFIG_CGI, sizeof(link));
 		break;
 	case EXTINFO_CGI_ID:
-		strcat(link, EXTINFO_CGI);
+		strncpy(link, EXTINFO_CGI, sizeof(link));
 		break;
 	case HISTORY_CGI_ID:
-		strcat(link, HISTORY_CGI);
+		strncpy(link, HISTORY_CGI, sizeof(link));
 		break;
 	case NOTIFICATIONS_CGI_ID:
-		strcat(link, NOTIFICATIONS_CGI);
+		strncpy(link, NOTIFICATIONS_CGI, sizeof(link));
 		break;
 	case SHOWLOG_CGI_ID:
-		strcat(link, SHOWLOG_CGI);
+		strncpy(link, SHOWLOG_CGI, sizeof(link));
 		break;
 	default:
-		strcat(link, "NO_URL_DEFINED");
+		strncpy(link, "NO_URL_DEFINED", sizeof(link));
 		break;
 	}
+	link[sizeof(link) - 1] = '\x0';
 
-	/* get url options but filter out "limit" and "status" */
-	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("page_num_selector(): Query string exceeds max length. Returning without displaying num selector.\n");
-			return;
-		}
-		strcpy(stripped_query_string, getenv("QUERY_STRING"));
-		strip_html_brackets(stripped_query_string);
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
-		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("page_num_selector(): Full query string exceeds max length. Returning without displaying num selector.\n");
-			return;
+		if (temp_request_item->is_valid == FALSE || temp_request_item->option == NULL) {
+			continue;
 		}
 
-		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
-			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
-				if (strstr(link, "?"))
-					strcat(link, "&");
-				else
-					strcat(link, "?");
-				strcat(link, temp_buffer);
-			}
+		/* filter out "limit" and "start" */
+		if (!strcmp(temp_request_item->option, "limit") || !strcmp(temp_request_item->option, "start")) {
+			continue;
 		}
+
+		strncpy(temp_buffer, link, sizeof(temp_buffer));
+		if (temp_request_item->value != NULL) {
+			snprintf(link, sizeof(link) - 1, "%s%s%s=%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option), url_encode(temp_request_item->value));
+		} else {
+			snprintf(link, sizeof(link) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option));
+		}
+		link[sizeof(link) - 1] = '\x0';
 	}
 
 	/* calculate pages */
@@ -3791,61 +3779,55 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 }
 
 void page_limit_selector(int result_start) {
-
 	static int id = 0;	// gets every dropdown a single id to activate msdropdown
 	char link[MAX_INPUT_BUFFER] = "";
-	char stripped_query_string[MAX_INPUT_BUFFER] = "";
-	char *temp_buffer;
+	char temp_buffer[MAX_INPUT_BUFFER] = "";
+	html_request *temp_request_item = NULL;
 
 	/* define base url */
 	switch (CGI_ID) {
 	case STATUS_CGI_ID:
-		strcat(link, STATUS_CGI);
+		strncpy(link, STATUS_CGI, sizeof(link));
 		break;
 	case CONFIG_CGI_ID:
-		strcat(link, CONFIG_CGI);
+		strncpy(link, CONFIG_CGI, sizeof(link));
 		break;
 	case EXTINFO_CGI_ID:
-		strcat(link, EXTINFO_CGI);
+		strncpy(link, EXTINFO_CGI, sizeof(link));
 		break;
 	case HISTORY_CGI_ID:
-		strcat(link, HISTORY_CGI);
+		strncpy(link, HISTORY_CGI, sizeof(link));
 		break;
 	case NOTIFICATIONS_CGI_ID:
-		strcat(link, NOTIFICATIONS_CGI);
+		strncpy(link, NOTIFICATIONS_CGI, sizeof(link));
 		break;
 	case SHOWLOG_CGI_ID:
-		strcat(link, SHOWLOG_CGI);
+		strncpy(link, SHOWLOG_CGI, sizeof(link));
 		break;
 	default:
-		strcat(link, "NO_URL_DEFINED");
+		strncpy(link, "NO_URL_DEFINED", sizeof(link));
 		break;
 	}
+	link[sizeof(link) - 1] = '\x0';
 
-	/* get url options but filter out "limit" and "status" */
-	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("page_limit_selector(): Query string exceeds max length. Returning without displaying page limit selector.\n");
-			return;
-		}
-		strcpy(stripped_query_string, getenv("QUERY_STRING"));
-		strip_html_brackets(stripped_query_string);
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* check if concatenated strings exceed MAX_INPUT_BUFFER */
-		if (strlen(link) + strlen(stripped_query_string) + 1 > MAX_INPUT_BUFFER - 1) {
-			write_to_cgi_log("page_limit_selector(): Full query string exceeds max length. Returning without displaying page limit selector.\n");
-			return;
+		if (temp_request_item->is_valid == FALSE || temp_request_item->option == NULL) {
+			continue;
 		}
 
-		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
-			if (strncmp(temp_buffer, "limit=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
-				if (strstr(link, "?"))
-					strcat(link, "&");
-				else
-					strcat(link, "?");
-				strcat(link, temp_buffer);
-			}
+		/* filter out "limit" and "start" */
+		if (!strcmp(temp_request_item->option, "limit") || !strcmp(temp_request_item->option, "start")) {
+			continue;
 		}
+
+		strncpy(temp_buffer, link, sizeof(temp_buffer));
+		if (temp_request_item->value != NULL) {
+			snprintf(link, sizeof(link) - 1, "%s%s%s=%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option), url_encode(temp_request_item->value));
+		} else {
+			snprintf(link, sizeof(link) - 1, "%s%s%s", temp_buffer, (strstr(temp_buffer, "?")) ? "&amp;" : "?", url_encode(temp_request_item->option));
+		}
+		link[sizeof(link) - 1] = '\x0';
 	}
 
 	/* display drop down menu to select result limit */

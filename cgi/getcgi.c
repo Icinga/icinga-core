@@ -138,22 +138,18 @@ void unescape_cgi_input(char *input) {
 	return;
 }
 
-
-
-/* read the CGI input and place all name/val pairs into list. returns list containing name1, value1, name2, value2, ... , NULL */
-/* this is a hacked version of a routine I found a long time ago somewhere - can't remember where anymore */
-char **getcgivars(void) {
-	register int i;
+html_request *getcgivars(void) {
 	char *request_method;
 	char *content_type;
 	char *content_length_string;
 	int content_length;
 	char *cgiinput;
-	char **cgivars;
-	char **pairlist;
-	int paircount;
 	char *nvpair;
 	char *eqpos;
+	char *temp_pair;
+	html_request *new_html_request_list = NULL;
+	html_request *new_request_item = NULL;
+	html_request *last_request_item = NULL;
 
 	/* initialize char variable(s) */
 	cgiinput = "";
@@ -237,92 +233,88 @@ char **getcgivars(void) {
 		exit(1);
 	}
 
-	/* first, split on ampersands (&) to extract the name-value pairs into pairlist */
-	/* allocate memory for 256 name-value pairs at a time, increasing by same
-	   amount as necessary... */
-	pairlist = (char **)malloc(256 * sizeof(char **));
-	if (pairlist == NULL) {
-		printf("getcgivars(): Could not allocate memory for name-value pairlist.\n");
-		exit(1);
-	}
-	paircount = 0;
-	nvpair = strtok(cgiinput, "&");
+	nvpair = my_strtok(cgiinput, "&");
 	while (nvpair) {
-		pairlist[paircount] = strdup(nvpair);
-		if(pairlist[paircount++] == NULL) {
-			printf("getcgivars(): Could not allocate memory for name-value pair element #%d.\n", paircount);
+
+		temp_pair = strdup(nvpair);
+		if(temp_pair == NULL) {
+			printf("getcgivars(): Could not allocate memory for name-value pair element %s.\n", nvpair);
 			exit(1);
 		}
-		if (paircount > MAX_CGI_INPUT_PAIRS)
-			break;
-		if (!(paircount % 256)) {
-			pairlist = (char **)realloc(pairlist, (paircount + 256) * sizeof(char **));
-			if (pairlist == NULL) {
-				printf("getcgivars(): Could not re-allocate memory for name-value pairlist.\n");
-				exit(1);
-			}
+
+		/* allocating new memory */
+		new_request_item = (html_request *)malloc(sizeof(html_request));
+		if(new_request_item == NULL) {
+			printf("getcgivars(): Could not allocate memory for new html_request element.\n");
+			my_free(temp_pair);
+			exit(1);
 		}
-		nvpair = strtok(NULL, "&");
-	}
 
-	/* terminate the list */
-	pairlist[paircount] = '\x0';
+		new_request_item->option = NULL;
+		new_request_item->value = NULL;
+		new_request_item->is_valid = FALSE;
+		new_request_item->next = NULL;
 
-	/* extract the names and values from the pairlist */
-	cgivars = (char **)malloc((paircount * 2 + 1) * sizeof(char **));
-	if (cgivars == NULL) {
-		printf("getcgivars(): Could not allocate memory for name-value list.\n");
-		exit(1);
-	}
-
-	for (i = 0; i < paircount; i++) {
-		/* get the variable name preceding the equal (=) sign */
-		if ((eqpos = strchr(pairlist[i], '=')) != NULL) {
+		/* get value */
+		if ((eqpos = strchr(temp_pair, '=')) != NULL) {
 			*eqpos = '\0';
-			cgivars[i*2+1] = strdup(eqpos + 1);
-			if(cgivars[i*2+1] == NULL) {
-				printf("getcgivars(): Could not allocate memory for cgi param value #%d,%s.\n", i,eqpos + 1);
+			new_request_item->value = strdup(eqpos + 1);
+			if(new_request_item->value == NULL) {
+				printf("getcgivars(): Could not allocate memory for cgi param value: %s=%s.\n", temp_pair,eqpos + 1);
 				exit(1);
 			}
-			unescape_cgi_input(cgivars[i*2+1]);
-
-		} else {
-			cgivars[i*2+1] = NULL;
+			unescape_cgi_input(new_request_item->value);
+			/* do some basic length checking */
+			if (strlen(new_request_item->value) >= MAX_INPUT_BUFFER - 1) {
+				printf("getcgivars(): length of cgi param value exceeds MAX_INPUT_BUFFER: %d.\n", MAX_INPUT_BUFFER);
+				exit(1);
+			}
 		}
 
-		/* get the variable value (or name/value of there was no real "pair" in the first place) */
-		cgivars[i*2] = strdup(pairlist[i]);
-		if(cgivars[i*2] == NULL) {
-			printf("getcgivars(): Could not allocate memory for cgi param name #%d,%s.\n", i,eqpos + 1);
+		/* get option name
+		   just reuse the temp_pair pointer without allocating new memory
+		*/
+		new_request_item->option = temp_pair;
+		unescape_cgi_input(new_request_item->option);
+		if (strlen(new_request_item->option) >= MAX_INPUT_BUFFER - 1) {
+			printf("getcgivars(): length of cgi param option exceeds MAX_INPUT_BUFFER: %d.\n", MAX_INPUT_BUFFER);
 			exit(1);
 		}
-		unescape_cgi_input(cgivars[i*2]);
-	}
 
-	/* terminate the name-value list */
-	cgivars[paircount*2] = '\x0';
+		if (new_html_request_list == NULL) {
+			new_html_request_list = new_request_item;
+			new_html_request_list->next = NULL;
+			last_request_item = new_html_request_list;
+		} else {
+			last_request_item->next = new_request_item;
+			last_request_item = new_request_item;
+			last_request_item->next = NULL;
+		}
+
+		nvpair = my_strtok(NULL, "&");
+	}
 
 	/* free allocated memory */
 	free(cgiinput);
-	for (i = 0; pairlist[i] != NULL; i++)
-		free(pairlist[i]);
-	free(pairlist);
-
-	/* sanitize the name-value strings */
-	sanitize_cgi_input(cgivars);
 
 	/* return the list of name-value strings */
-	return cgivars;
+	return new_html_request_list;
 }
 
+/* free() memory allocated to storing the CGI request data */
+void free_html_request(html_request *html_request_list) {
+	html_request *this_html_request = NULL;
+	html_request *next_html_request = NULL;
 
+	/* free memory for html request list */
+	for (this_html_request = html_request_list; this_html_request != NULL; this_html_request = next_html_request) {
+		next_html_request = this_html_request->next;
+		my_free(this_html_request->option);
+		my_free(this_html_request->value);
+		my_free(this_html_request);
+	}
 
-/* free() memory allocated to storing the CGI variables */
-void free_cgivars(char **cgivars) {
-	register int x;
-
-	for (x = 0; cgivars[x] != '\x0'; x++)
-		free(cgivars[x]);
+	html_request_list = NULL;
 
 	return;
 }

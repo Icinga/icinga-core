@@ -178,6 +178,7 @@ unsigned long attr = MODATTR_NONE;		/**< default modified_attributes */
 double interval = 1.0;				/**< default modified *_interval */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
+html_request *html_request_list = NULL;		/**< contains html requested data */
 
 /** Initialize the struct */
 struct hostlist commands[NUMBER_OF_STRUCTS];
@@ -283,13 +284,10 @@ void check_comment_sanity(int*);
 void check_time_sanity(int*);
 
 /** @brief Parses the requested GET/POST variables
- *  @retval TRUE
- *  @retval FALSE
- *  @return wether parsing was successful or not
  *
  *  @n This function parses the request and set's the necessary variables
 **/
-int process_cgivars(void);
+void process_cgivars(void);
 
 
 /** @brief Yes we need a main function **/
@@ -309,6 +307,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -318,6 +317,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -340,6 +340,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -350,6 +351,7 @@ int main(void) {
 		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 		document_footer(CGI_ID);
 		free_memory();
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -407,146 +409,112 @@ int main(void) {
 	document_footer(CGI_ID);
 
 	/* free allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 	free_object_data();
 
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *temp_buffer = NULL;
 	char *key = NULL;
 	char *value = NULL;
-	int error = FALSE;
-	int x;
+	int x = 0;
 	int z = 0;
 	int sticky_ack_set = FALSE;		/* default is TRUE */
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	/* Process the variables */
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		/* likewise, check the value if there is one */
-		if (value != NULL)
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* we found the command type */
-		if (!strcmp(key, "cmd_typ")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "cmd_typ") && value != NULL) {
 
 			command_type = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
                 /* we found the attr */
-                else if (!strcmp(key, "attr")) {
-                        if (value == NULL) {
-                                error = TRUE;
-                                break;
-                        }
+                else if (!strcmp(key, "attr") && value != NULL) {
 
                         attr = strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
                 }
 
                 /* we found the attr */
-                else if (!strcmp(key, "interval")) {
-                        if (value == NULL) {
-                                error = TRUE;
-                                break;
-                        }
+                else if (!strcmp(key, "interval") && value != NULL) {
 #ifdef HAVE_STRTOF
 			interval = strtof(value, NULL);
 #else
 			/* Solaris 8 doesn't have strtof() */
 			interval = (float)strtod(value, NULL);
 #endif
+
+			temp_request_item->is_valid = TRUE;
                 }
 
 		/* we found the command mode */
-		else if (!strcmp(key, "cmd_mod")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "cmd_mod") && value != NULL) {
 
 			command_mode = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found a comment id or a downtime id*/
-		else if (!strcmp(key, "com_id") || !strcmp(key, "down_id")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if ((!strcmp(key, "com_id") || !strcmp(key, "down_id"))  && value != NULL) {
 
 			multi_ids[z] = strtoul(value, NULL, 10);
 			z++;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the notification delay */
-		else if (!strcmp(key, "not_dly")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "not_dly") && value != NULL) {
 
 			notification_delay = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the schedule delay */
-		else if (!strcmp(key, "sched_dly")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sched_dly") && value != NULL) {
 
 			schedule_delay = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the comment author */
-		else if (!strcmp(key, "com_author")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "com_author") && value != NULL) {
 
 			if ((comment_author = (char *)strdup(value)) == NULL)
 				comment_author = "";
 			strip_html_brackets(comment_author);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the comment data */
-		else if (!strcmp(key, "com_data")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "com_data") && value != NULL) {
 
 			if ((comment_data = (char *)strdup(value)) == NULL)
 				comment_data = "";
 			strip_html_brackets(comment_data);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the host name */
-		else if (!strcmp(key, "host")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "host") && value != NULL) {
 
 			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "";
@@ -555,27 +523,24 @@ int process_cgivars(void) {
 
 				/* Store hostname in struct */
 				commands[x].host_name = host_name;
+				x++;
 			}
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the hostgroup name */
-		else if (!strcmp(key, "hostgroup")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hostgroup") && value != NULL) {
 
 			if ((hostgroup_name = (char *)strdup(value)) == NULL)
 				hostgroup_name = "";
 			strip_html_brackets(hostgroup_name);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the service name */
-		else if (!strcmp(key, "service")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "service") && value != NULL) {
 
 			if ((service_desc = (char *)strdup(value)) == NULL)
 				service_desc = "";
@@ -583,51 +548,54 @@ int process_cgivars(void) {
 				strip_html_brackets(service_desc);
 
 				/* Store service description in struct */
-				commands[(x-2)].description = service_desc;
+				commands[(x-1)].description = service_desc;
 			}
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found a combined host/service */
-		else if (!strcmp(key, "hostservice")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hostservice") && value != NULL) {
 
 			temp_buffer = strtok(value, "^");
 
-			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
-				host_name = "";
-			else {
+			if ((host_name = (char *)strdup(temp_buffer)) == NULL) {
+				continue;
+			} else {
 				strip_html_brackets(host_name);
 				commands[x].host_name = host_name;
 			}
 
 			temp_buffer = strtok(NULL, "");
 
-			if ((service_desc = (char *)strdup(temp_buffer)) == NULL)
-				service_desc = "";
-			else {
+			if ((service_desc = (char *)strdup(temp_buffer)) == NULL) {
+				my_free(commands[x].host_name);
+				continue;
+			} else {
 				strip_html_brackets(service_desc);
 				commands[x].description = service_desc;
 			}
+
+			x++;
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the servicegroup name */
-		else if (!strcmp(key, "servicegroup")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "servicegroup") && value != NULL) {
 
 			if ((servicegroup_name = (char *)strdup(value)) == NULL)
 				servicegroup_name = "";
 			strip_html_brackets(servicegroup_name);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we got the persistence option for a comment */
-		else if (!strcmp(key, "persistent"))
+		else if (!strcmp(key, "persistent")) {
 			persistent_comment = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we got the notification option for an acknowledgement */
 		else if (!strcmp(key, "send_notification")) {
@@ -636,6 +604,8 @@ int process_cgivars(void) {
 			/* if the value was omitted, assume it is enabled */
 			if (value == NULL)
 				send_notification = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we got the acknowledgement type */
@@ -645,155 +615,154 @@ int process_cgivars(void) {
 			/* if the value was omitted, assume it is enabled */
 			if (value == NULL)
 				sticky_ack_set = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we use the end_time as expire time */
-		else if (!strcmp(key, "use_ack_end_time"))
+		else if (!strcmp(key, "use_ack_end_time")) {
 			use_ack_end_time = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we use the end_time as disabled notifcations expire time */
-		else if (!strcmp(key, "use_disabled_notif_end_time"))
+		else if (!strcmp(key, "use_disabled_notif_end_time")) {
 			use_disabled_notif_end_time = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we got the service check force option */
-		else if (!strcmp(key, "force_check"))
+		else if (!strcmp(key, "force_check")) {
 			force_check = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we got the option to affect host and all its services */
-		else if (!strcmp(key, "ahas"))
+		else if (!strcmp(key, "ahas")) {
 			affect_host_and_services = TRUE;
-
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 		/* we got the option to propagate to child hosts */
-		else if (!strcmp(key, "ptc"))
+		else if (!strcmp(key, "ptc")) {
 			propagate_to_children = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we got the option for fixed downtime */
-		else if (!strcmp(key, "fixed")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "fixed") && value != NULL) {
 
 			fixed = (atoi(value) > 0) ? TRUE : FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we got the triggered by downtime option */
-		else if (!strcmp(key, "trigger")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "trigger") && value != NULL) {
 
 			triggered_by = strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we got the child options */
-		else if (!strcmp(key, "childoptions")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "childoptions") && value != NULL) {
 
 			child_options = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the plugin output */
-		else if (!strcmp(key, "plugin_output")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "plugin_output") && value != NULL) {
 
-			strcpy(plugin_output, value);
+			strncpy(plugin_output, value, MAX_INPUT_BUFFER);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the performance data */
-		else if (!strcmp(key, "performance_data")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "performance_data") && value != NULL) {
 
-			strcpy(performance_data, value);
+			strncpy(performance_data, value, MAX_INPUT_BUFFER);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the plugin state */
-		else if (!strcmp(key, "plugin_state")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "plugin_state") && value != NULL) {
 
 			plugin_state = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the hour duration */
-		else if (!strcmp(key, "hours")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hours") && value != NULL) {
 
 			if (atoi(value) < 0) {
-				error = TRUE;
-				break;
+				continue;
 			}
 			duration += (unsigned long)(atoi(value) * 3600);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the minute duration */
-		else if (!strcmp(key, "minutes")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "minutes") && value != NULL) {
 
 			if (atoi(value) < 0) {
-				error = TRUE;
-				break;
+				continue;
 			}
 			duration += (unsigned long)(atoi(value) * 60);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the start time */
-		else if (!strcmp(key, "start_time")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
+		else if (!strcmp(key, "start_time") && value != NULL) {
+
+			if ((start_time_string = (char *)strdup(value)) == NULL) {
+				start_time_string = "";
 			}
 
-			start_time_string = (char *)malloc(strlen(value) + 1);
-			if (start_time_string == NULL)
-				start_time_string = "";
-			else
-				strcpy(start_time_string, value);
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the end time */
-		else if (!strcmp(key, "end_time")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
+		else if (!strcmp(key, "end_time") && value != NULL) {
+
+			if ((end_time_string = (char *)strdup(value)) == NULL) {
+				end_time_string = "";
 			}
 
-			end_time_string = (char *)malloc(strlen(value) + 1);
-			if (end_time_string == NULL)
-				end_time_string = "";
-			else
-				strcpy(end_time_string, value);
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the forced notification option */
-		else if (!strcmp(key, "force_notification"))
+		else if (!strcmp(key, "force_notification")) {
 			force_notification = NOTIFICATION_OPTION_FORCED;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the broadcast notification option */
-		else if (!strcmp(key, "broadcast_notification"))
+		else if (!strcmp(key, "broadcast_notification")) {
 			broadcast_notification = NOTIFICATION_OPTION_BROADCAST;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we got the persistence option for a comment */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 	}
 
@@ -801,10 +770,7 @@ int process_cgivars(void) {
 		sticky_ack = sticky_ack_set;
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 void print_object_list(int list_type) {

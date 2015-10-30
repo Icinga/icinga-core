@@ -22,12 +22,25 @@
  *
  *****************************************************************************/
 
+#include "../include/cgiutils.h"
+
 #ifdef __cplusplus
   extern "C" {
 #endif
 
-char **getcgivars(void);
-void free_cgivars(char **);
+/** @brief html request struct
+ *
+ *  structure to hold html reqest data to prevent XSS attacks
+**/
+typedef struct html_request_struct {
+	char *option;					/**< pointer to option string */
+	char *value;					/**< pointer to value string */
+	int is_valid;					/**< bool to mark if this request is valid */
+	struct html_request_struct *next;		/**< next html_request entry */
+} html_request;
+
+html_request *getcgivars(void);
+void free_html_request(html_request *);
 void unescape_cgi_input(char *);
 void sanitize_cgi_input(char **);
 unsigned char hex_to_char(char *);

@@ -91,7 +91,7 @@ typedef struct layer_struct {
 	struct layer_struct *next;
 } layer;
 
-int process_cgivars(void);
+void process_cgivars(void);
 
 void display_page_header(void);
 void display_map(void);
@@ -141,6 +141,8 @@ void draw_circular_layer_markup(host *, double, double, int, int);
 char physical_logo_images_path[MAX_FILENAME_LENGTH];
 
 authdata current_authdata;
+
+html_request *html_request_list = NULL;			/**< contains html requested data */
 
 extern int content_type;
 
@@ -256,6 +258,7 @@ int main(int argc, char **argv) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -265,6 +268,7 @@ int main(int argc, char **argv) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -274,6 +278,7 @@ int main(int argc, char **argv) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		free_memory();
 		return ERROR;
 	}
@@ -293,43 +298,27 @@ int main(int argc, char **argv) {
 	document_footer(CGI_ID);
 
 	/* free all allocated memory */
+	free_html_request(html_request_list);
 	free_memory();
 	free_layer_list();
 
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *key = NULL;
 	char *value = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		/* likewise, check the value if it exists */
-		if (value != NULL)
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* we found the host argument */
-		if (!strcmp(key, "host")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "host") && value != NULL) {
 
 			if ((host_name = (char *)strdup(value)) == NULL)
 				host_name = "all";
@@ -340,160 +329,174 @@ int process_cgivars(void) {
 				show_all_hosts = TRUE;
 			else
 				show_all_hosts = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the image creation option */
 		else if (!strcmp(key, "createimage")) {
 			content_type = IMAGE_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(key, "embedded"))
+		else if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the canvas origin */
-		else if (!strcmp(key, "canvas_x")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "canvas_x") && value != NULL) {
+
 			canvas_x = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(key, "canvas_y")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+
+			temp_request_item->is_valid = TRUE;
+
+		} else if (!strcmp(key, "canvas_y") && value != NULL) {
+
 			canvas_y = atoi(value);
 			user_supplied_canvas = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the canvas size */
-		else if (!strcmp(key, "canvas_width")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "canvas_width") && value != NULL) {
+
 			canvas_width = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(key, "canvas_height")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+
+			temp_request_item->is_valid = TRUE;
+
+		} else if (!strcmp(key, "canvas_height") && value != NULL) {
+
 			canvas_height = atoi(value);
 			user_supplied_canvas = TRUE;
-		} else if (!strcmp(key, "proximity_width")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+
+			temp_request_item->is_valid = TRUE;
+
+		} else if (!strcmp(key, "proximity_width") && value != NULL) {
+
 			proximity_width = atoi(value);
 			if (proximity_width < 0)
 				proximity_width = DEFAULT_PROXIMITY_WIDTH;
-		} else if (!strcmp(key, "proximity_height")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+
+			temp_request_item->is_valid = TRUE;
+		} else if (!strcmp(key, "proximity_height") && value != NULL) {
+
 			proximity_height = atoi(value);
 			if (proximity_height < 0)
 				proximity_height = DEFAULT_PROXIMITY_HEIGHT;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the scaling factor */
-		else if (!strcmp(key, "scaling_factor")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "scaling_factor") && value != NULL) {
+
 			user_scaling_factor = strtod(value, NULL);
 			if (user_scaling_factor > 0.0)
 				user_supplied_scaling = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the max image size */
-		else if (!strcmp(key, "max_width")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "max_width") && value != NULL) {
+
 			max_image_width = atoi(value);
-		} else if (!strcmp(key, "max_height")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+
+			temp_request_item->is_valid = TRUE;
+
+		} else if (!strcmp(key, "max_height") && value != NULL) {
+
 			max_image_height = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the layout method option */
-		else if (!strcmp(key, "layout")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "layout") && value != NULL) {
+
 			layout_method = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the no links argument*/
-		else if (!strcmp(key, "nolinks"))
+		else if (!strcmp(key, "nolinks")) {
 			use_links = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the no text argument*/
-		else if (!strcmp(key, "notext"))
+		else if (!strcmp(key, "notext")) {
 			use_text = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the no highlights argument*/
-		else if (!strcmp(key, "nohighlights"))
+		else if (!strcmp(key, "nohighlights")) {
 			use_highlights = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the no popups argument*/
-		else if (!strcmp(key, "nopopups"))
+		else if (!strcmp(key, "nopopups")) {
 			display_popups = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the layer inclusion/exclusion argument */
-		else if (!strcmp(key, "layermode")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "layermode") && value != NULL) {
 
 			if (!strcmp(value, "include"))
 				exclude_layers = FALSE;
 			else
 				exclude_layers = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the layer argument */
-		else if (!strcmp(key, "layer")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "layer") && value != NULL) {
 
 			strip_html_brackets(value);
 			add_layer(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the pause option */
-		else if (!strcmp(key, "paused"))
+		else if (!strcmp(key, "paused")) {
 			refresh = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
-
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 

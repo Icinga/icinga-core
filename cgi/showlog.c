@@ -85,17 +85,16 @@ time_t ts_end = 0L;				/**< end time as unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
+html_request *html_request_list = NULL;		/**< contains html requested data */
+
 int CGI_ID = SHOWLOG_CGI_ID;			/**< ID to identify the cgi for functions in cgiutils.c */
 /** @} */
 
 /** @brief Parses the requested GET/POST variables
- *  @return wether parsing was successful or not
- *	@retval TRUE
- *	@retval FALSE
  *
  *  @n This function parses the request and set's the necessary variables
 **/
-int process_cgivars(void);
+void process_cgivars(void);
 
 /** @brief displays the requested log entries
  *
@@ -126,6 +125,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -135,6 +135,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -144,6 +145,7 @@ int main(void) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
+		free_html_request(html_request_list);
 		return ERROR;
 	}
 
@@ -224,102 +226,73 @@ int main(void) {
 
 	/* free allocated memory */
 	free_memory();
+	free_html_request(html_request_list);
 
 	return OK;
 }
 
-int process_cgivars(void) {
-	char **variables;
+void process_cgivars(void) {
 	char *key = NULL;
 	char *value = NULL;
-	int error = FALSE;
-	int x;
+	html_request *temp_request_item = NULL;
 
-	variables = getcgivars();
+	html_request_list = getcgivars();
 
-	for (x = 0; variables[x] != NULL; x+=2) {
-		key = variables[x];
-		value = variables[x+1];
+	for (temp_request_item = html_request_list; temp_request_item != NULL; temp_request_item = temp_request_item->next) {
 
-		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if (strlen(key) >= MAX_INPUT_BUFFER - 1) {
-			error = TRUE;
-			break;
-		}
-		if (value != NULL)
-			if (strlen(value) >= MAX_INPUT_BUFFER - 1) {
-				error = TRUE;
-				break;
-		}
+		key = temp_request_item->option;
+		value = temp_request_item->value;
 
 		/* found query string */
-		if (!strcmp(key, "query_string")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		if (!strcmp(key, "query_string") && value != NULL) {
 
 			query_string = strdup(value);
 			strip_html_brackets(query_string);
 
 			if (strlen(query_string) == 0)
 				my_free(query_string);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found first time argument */
-		else if (!strcmp(key, "ts_start")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "ts_start") && value != NULL) {
 
 			ts_start = (time_t)strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found last time argument */
-		else if (!strcmp(key, "ts_end")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "ts_end") && value != NULL) {
 
 			ts_end = (time_t)strtoul(value, NULL, 10);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the start time */
-		else if (!strcmp(key, "start_time")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
+		else if (!strcmp(key, "start_time") && value != NULL) {
+
+			if ((start_time_string = (char *)strdup(value)) == NULL) {
+				start_time_string = "";
 			}
 
-			start_time_string = (char *)malloc(strlen(value) + 1);
-			if (start_time_string == NULL)
-				start_time_string = "";
-			else
-				strcpy(start_time_string, value);
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the end time */
-		else if (!strcmp(key, "end_time")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
+		else if (!strcmp(key, "end_time") && value != NULL) {
+
+			if ((end_time_string = (char *)strdup(value)) == NULL) {
+				end_time_string = "";
 			}
 
-			end_time_string = (char *)malloc(strlen(value) + 1);
-			if (end_time_string == NULL)
-				end_time_string = "";
-			else
-				strcpy(end_time_string, value);
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the standard timeperiod argument */
-		else if (!strcmp(key, "timeperiod")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "timeperiod") && value != NULL) {
 
 			if (!strcmp(value, "today"))
 				timeperiod_type = TIMEPERIOD_TODAY;
@@ -349,186 +322,174 @@ int process_cgivars(void) {
 				continue;
 
 			convert_timeperiod_to_times(timeperiod_type, &ts_start, &ts_end);
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the order argument */
-		else if (!strcmp(key, "order")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "order") && value != NULL) {
 
 			if (!strcmp(value, "new2old"))
 				reverse = FALSE;
 			else if (!strcmp(value, "old2new"))
 				reverse = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* show filter */
-		else if (!strcmp(key, "display_filter")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "display_filter") && value != NULL) {
 
 			if (!strcmp(value, "true"))
 				display_filter = TRUE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* notification filter */
-		else if (!strcmp(key, "noti")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "noti") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_notifications = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* host status filter */
-		else if (!strcmp(key, "hst")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "hst") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_host_status = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* service status filter */
-		else if (!strcmp(key, "sst")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sst") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_service_status = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* external commands filter */
-		else if (!strcmp(key, "cmd")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "cmd") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_external_commands = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* system messages filter */
-		else if (!strcmp(key, "sms")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "sms") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_system_messages = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* event handler filter */
-		else if (!strcmp(key, "evh")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "evh") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_event_handler = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* flapping filter */
-		else if (!strcmp(key, "flp")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "flp") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_flapping = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* downtime filter */
-		else if (!strcmp(key, "dwn")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "dwn") && value != NULL) {
 
 			if (!strcmp(value, "off"))
 				show_downtime = FALSE;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* we found the CSV output option */
 		else if (!strcmp(key, "csvoutput")) {
 			display_header = FALSE;
 			content_type = CSV_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the CSV output option */
 		else if (!strcmp(key, "jsonoutput")) {
 			display_header = FALSE;
 			content_type = JSON_CONTENT;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
 		}
 
 		/* we found the embed option */
-		else if (!strcmp(key, "embedded"))
+		else if (!strcmp(key, "embedded")) {
 			embedded = TRUE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the noheader option */
-		else if (!strcmp(key, "noheader"))
+		else if (!strcmp(key, "noheader")) {
 			display_header = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nofrills option */
-		else if (!strcmp(key, "nofrills"))
+		else if (!strcmp(key, "nofrills")) {
 			display_frills = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the notimebreaks option */
-		else if (!strcmp(key, "notimebreaks"))
+		else if (!strcmp(key, "notimebreaks")) {
 			display_timebreaks = FALSE;
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* we found the nodaemoncheck option */
-		else if (!strcmp(key, "nodaemoncheck"))
+		else if (!strcmp(key, "nodaemoncheck")) {
 			daemon_check = FALSE;
-
+			temp_request_item->is_valid = TRUE;
+			my_free(temp_request_item->value);
+		}
 
 		/* start num results to skip on displaying statusdata */
-		else if (!strcmp(key, "start")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "start") && value != NULL) {
 
 			result_start = atoi(value);
 
 			if (result_start < 1)
 				result_start = 1;
+
+			temp_request_item->is_valid = TRUE;
 		}
 
 		/* amount of results to display */
-		else if (!strcmp(key, "limit")) {
-			if (value == NULL) {
-				error = TRUE;
-				break;
-			}
+		else if (!strcmp(key, "limit") && value != NULL) {
 
 			get_result_limit = atoi(value);
+
+			temp_request_item->is_valid = TRUE;
 		}
-
-		/* we received an invalid argument */
-		else
-			error = TRUE;
-
 	}
 
-	/* free memory allocated to the CGI variables */
-	free_cgivars(variables);
-
-	return error;
+	return;
 }
 
 void display_logentries() {
