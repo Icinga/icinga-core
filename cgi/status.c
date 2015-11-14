@@ -901,7 +901,7 @@ int main(void) {
 				else {
 					strncpy(temp_buffer, url_hosts_part, sizeof(temp_buffer));
 					my_free(url_hosts_part);
-					asprintf(&url_hosts_part, "%s&host=%s", temp_buffer, url_encode(req_hosts[i].entry));
+					asprintf(&url_hosts_part, "%s&amp;host=%s", temp_buffer, url_encode(req_hosts[i].entry));
 				}
 			}
 		}
@@ -935,7 +935,7 @@ int main(void) {
 				else {
 					strncpy(temp_buffer, url_hostgroups_part, sizeof(temp_buffer));
 					my_free(url_hostgroups_part);
-					asprintf(&url_hostgroups_part, "%s&hostgroup=%s", temp_buffer, url_encode(req_hostgroups[i].entry));
+					asprintf(&url_hostgroups_part, "%s&amp;hostgroup=%s", temp_buffer, url_encode(req_hostgroups[i].entry));
 				}
 			}
 		}
@@ -969,7 +969,7 @@ int main(void) {
 				else {
 					strncpy(temp_buffer, url_servicegroups_part, sizeof(temp_buffer));
 					my_free(url_servicegroups_part);
-					asprintf(&url_servicegroups_part, "%s&servicegroup=%s", temp_buffer, url_encode(req_servicegroups[i].entry));
+					asprintf(&url_servicegroups_part, "%s&amp;servicegroup=%s", temp_buffer, url_encode(req_servicegroups[i].entry));
 				}
 			}
 		}
@@ -1176,10 +1176,10 @@ int main(void) {
 		/* see if we should display services for hosts with this type of status */
 		if (!(host_status_types & temp_hoststatus->status)) {
 			/* see if we should display a hostgroup */
-			if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG) {
+			if (display_type == DISPLAY_HOSTGROUPS && temp_hoststatus->added & STATUS_BELONGS_TO_HG && display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 				temp_hoststatus->added = temp_hoststatus->added - STATUS_BELONGS_TO_HG;
 			/* see if we should display a servicegroup */
-			} else if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG) {
+			} else if (display_type == DISPLAY_SERVICEGROUPS && temp_servicestatus->added & STATUS_BELONGS_TO_SG && display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 				temp_servicestatus->added = temp_servicestatus->added - STATUS_BELONGS_TO_SG;
 			}
 			continue;
@@ -2013,6 +2013,29 @@ void show_service_status_totals(void) {
 
 	status_url[sizeof(status_url) - 1] = '\x0';
 
+	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE) {
+		if (show_all_hosts == FALSE && url_hosts_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_hosts_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+
+		if (show_all_hostgroups == FALSE && url_hostgroups_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_hostgroups_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+
+		if (show_all_servicegroups == FALSE && url_servicegroups_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_servicegroups_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+	}
+
 	if (service_properties != 0 && display_all_unhandled_problems == FALSE) {
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;serviceprops=%lu", service_properties);
 		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
@@ -2145,6 +2168,29 @@ void show_host_status_totals(void) {
 	my_free(style);
 
 	status_url[sizeof(status_url) - 1] = '\x0';
+
+	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE) {
+		if (show_all_hosts == FALSE && url_hosts_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_hosts_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+
+		if (show_all_hostgroups == FALSE && url_hostgroups_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_hostgroups_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+
+		if (show_all_servicegroups == FALSE && url_servicegroups_part != NULL) {
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;%s", url_servicegroups_part);
+			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
+			strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+			status_url[sizeof(status_url) - 1] = '\x0';
+		}
+	}
 
 	if (service_status_types != all_service_status_types) {
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&amp;servicestatustypes=%d", service_status_types);
@@ -2383,6 +2429,24 @@ void show_service_detail(void) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
 				asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
+			}
+		} else {
+			if (show_all_hosts == FALSE && url_hosts_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_hosts_part);
+			}
+
+			if (show_all_hostgroups == FALSE && url_hostgroups_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_hostgroups_part);
+			}
+
+			if (show_all_servicegroups == FALSE && url_servicegroups_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_servicegroups_part);
 			}
 		}
 
@@ -3021,6 +3085,24 @@ void show_host_detail(void) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
 				asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
+			}
+		} else {
+			if (show_all_hosts == FALSE && url_hosts_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_hosts_part);
+			}
+
+			if (show_all_hostgroups == FALSE && url_hostgroups_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_hostgroups_part);
+			}
+
+			if (show_all_servicegroups == FALSE && url_servicegroups_part != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				asprintf(&temp_url, "%s&amp;%s", temp_buffer, url_servicegroups_part);
 			}
 		}
 
