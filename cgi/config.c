@@ -4184,14 +4184,27 @@ void display_command_expansion(void) {
 	service *svc = NULL;
 	char *processed_command;
 
-	if (status_file_icinga_version != NULL && status_file_icinga_version[0] != '1') {
-		printf("<p><div align='center' class='dataTitle'>Sorry, command expander only available using Icinga 1.x.</div></p>\n");
-		return;
-	}
-
 	/* show host and/or service related raw command */
 	hst = find_host(host_name);
 	svc = find_service(host_name, service_desc);
+
+	if (status_file_icinga_version != NULL && status_file_icinga_version[0] != '1') {
+
+		if (hst == NULL && svc == NULL) {
+			printf("<p><div align='center' class='dataTitle'>Sorry, command expander only available using Icinga 1.x.</div></p>\n");
+			return;
+		}
+
+		printf("<p><div align='center' class='dataTitle'>Let's assume you have Icinga >= 2.4.0 and your API is set up properly, you can paste following text to your commandline to retrieve the check commando!</div></p><br>");
+		printf("<p><div align='center' class='dataTitle'><input type='text' name='expand' size='200%%' value='curl -k -s -u apiuser:apipassword &#x27;https://localhost:5665/v1/objects/");
+		if (hst != NULL && svc == NULL) {
+			printf("hosts?host=%s&#x26;attrs=host.last_check_result", url_encode(host_name));
+		} else if (hst != NULL && svc != NULL) {
+			printf("services?service=%s!%s&#x26;attrs=service.last_check_result", url_encode(host_name), url_encode(service_desc));
+		}
+		printf("&#x27; | sed &#x27;s/.*command&#x22;:&#x5C;[&#x22;//g&#x27; | cut -d&#x27;]&#x27; -f1 | sed &#x27;s/&#x22;,&#x22;/ /g&#x27; | tr -d &#x27;&#x22;$&#x27;'>\n</div></p>");
+		return;
+	}
 
 	if (hst != NULL && svc == NULL)
 		printf("<p><div align='center' class='dataTitle'>Command Expansion for host '%s'</div></p>\n", host_name);
