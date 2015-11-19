@@ -66,6 +66,8 @@ extern char *action_url_target;
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
+extern char *status_file_icinga_version;
+
 extern int enable_splunk_integration;
 extern int status_show_long_plugin_output;
 extern int suppress_maintenance_downtime;
@@ -7168,7 +7170,9 @@ void show_hostcommand_table(void) {
 		printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>\n", CMD_STOP_OBSESSING_OVER_HOST, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>\n", CMD_START_OBSESSING_OVER_HOST, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>\n", CMD_ACKNOWLEDGE_HOST_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem And All Services</option>\n", CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
+		if (status_file_icinga_version != NULL && status_file_icinga_version[0] == '1') {
+			printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem And All Services</option>\n", CMD_ACKNOWLEDGE_HOST_SVC_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
+		}
 		printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>\n", CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
 		printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>\n", CMD_DISABLE_HOST_NOTIFICATIONS, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>\n", CMD_ENABLE_HOST_NOTIFICATIONS, url_images_path, ENABLED_ICON);
