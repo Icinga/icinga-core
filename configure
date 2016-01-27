@@ -8639,7 +8639,6 @@ echo "Creating sample config files in sample-config/ ..."
 
 perl subst $srcdir/sample-config/icinga.cfg
 perl subst $srcdir/sample-config/cgi.cfg
-perl subst $srcdir/sample-config/cgiauth.cfg
 perl subst $srcdir/sample-config/resource.cfg
 perl subst $srcdir/sample-config/httpd.conf
 perl subst $srcdir/sample-config/mrtg.cfg

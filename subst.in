@@ -9,15 +9,15 @@ while ($f = shift @ARGV) {
 
 	if (-x "/bin/mktemp") { 
 		$TEMP = `/bin/mktemp $f.$$.XXXXXX`;
-		die 'Cannot make temporary file $TEMP' if($?);
+		die "Cannot make temporary file $TEMP" if($?);
 		chomp $TEMP;
 	} else {
 		$XXXXXX = rand;
 		$TEMP = "$f.$$.$XXXXXX";
 	}
 
-	open(IN,"<$f.in");
-	open(OUT,">$TEMP") || die 'Cannot make temporary file $TEMP';
+	open(IN,"<$f.in") || die "Cannot open template file $f.in";
+	open(OUT,">$TEMP") || die "Cannot open temporary file $TEMP";
 
 	while (<IN>) {
 		s|\@icinga_user\@|@icinga_user@|g;
