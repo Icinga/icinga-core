@@ -1809,6 +1809,18 @@ void get_time_string(time_t *raw_time, char *buffer, int buffer_length, int type
 	else
 		tm_ptr = localtime(&t);
 
+	if (tm_ptr==NULL) {
+		//we read at least the local time
+		t = time(NULL);
+		tm_ptr = gmtime(&t);
+	}
+
+	if (tm_ptr==NULL) {
+		snprintf(buffer, buffer_length, "Error retrieving current time!");
+		buffer[buffer_length - 1] = '\x0';
+		return;
+	}
+
 	hour = tm_ptr->tm_hour;
 	minute = tm_ptr->tm_min;
 	second = tm_ptr->tm_sec;
