@@ -750,9 +750,9 @@ int main(int argc, char **argv) {
 			string_height = gdFontSmall->h;
 
 			if (display_type == DISPLAY_HOST_TRENDS)
-				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "State History For Host '%s'", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "State History For Host '%s'", (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
 			else
-				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "State History For Service '%s' On Host '%s'", (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "State History For Service '%s' On Host '%s'", (temp_service != NULL && temp_service->display_name != NULL) ? temp_service->display_name : service_desc, (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 			string_width = gdFontSmall->w * strlen(temp_buffer);
 			gdImageString(trends_image, gdFontSmall, (drawing_width / 2) - (string_width / 2) + drawing_x_offset, string_height, (unsigned char *)temp_buffer, color_black);
@@ -894,9 +894,10 @@ int main(int argc, char **argv) {
 			printf("<select name='hostservice'>\n");
 
 			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE)
+				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE) {
 					temp_host = find_host(temp_service->host_name);
-				printf("<option value='%s^%s'>%s;%s\n", escape_string(temp_service->host_name), escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+					printf("<option value='%s^%s'>%s;%s\n", escape_string(temp_service->host_name), escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_service->host_name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				}
 			}
 
 			printf("</select>\n");
@@ -1570,7 +1571,6 @@ void graph_all_trend_data(void) {
 	hoststatus *hststatus = NULL;
 	servicestatus *svcstatus = NULL;
 	unsigned long wobble = 300;
-//	int first_real_state = AS_NO_DATA;			<- unused, but why, FIXME
 	time_t initial_assumed_time;
 	int initial_assumed_state = AS_SVC_OK;
 	int error = FALSE;
@@ -1583,10 +1583,17 @@ void graph_all_trend_data(void) {
 		return;
 
 	/* find current state for host or service */
-	if (display_type == DISPLAY_HOST_TRENDS)
+	if (display_type == DISPLAY_HOST_TRENDS) {
 		hststatus = find_hoststatus(host_name);
-	else
+		if (hststatus == NULL) {
+			return;
+		}
+	} else {
 		svcstatus = find_servicestatus(host_name, service_desc);
+		if (svcstatus == NULL) {
+			return;
+		}
+	}
 
 
 	/************************************/
@@ -1613,9 +1620,6 @@ void graph_all_trend_data(void) {
 
 				/* add a dummy archived state item, so something can get graphed */
 				add_archived_state(last_known_state, AS_HARD_STATE, t1, "Current Host State Assumed (Faked Log Entry)");
-
-				/* use the current state as the last known real state */
-//				first_real_state = last_known_state;
 			}
 		} else {
 			if (svcstatus != NULL) {
@@ -1631,9 +1635,6 @@ void graph_all_trend_data(void) {
 
 				/* add a dummy archived state item, so something can get graphed */
 				add_archived_state(last_known_state, AS_HARD_STATE, t1, "Current Service State Assumed (Faked Log Entry)");
-
-				/* use the current state as the last known real state */
-//				first_real_state = last_known_state;
 			}
 		}
 	}
