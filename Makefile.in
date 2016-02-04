@@ -426,7 +426,6 @@ install-basic:
 install-cgiconf:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgiauth.cfg $(DESTDIR)$(CFGDIR)/cgiauth.cfg
 
 
 install-config: install-cgiconf

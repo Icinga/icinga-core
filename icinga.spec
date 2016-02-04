@@ -548,7 +548,6 @@ fi
 %defattr(-,root,root,-)
 %doc README.md LICENSE Changelog UPGRADING %{readme}
 %config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
 %config(noreplace) %{apacheconfdir}/icinga.conf
 %config(noreplace) %attr(0640,root,%{apachegroup}) %{_sysconfdir}/%{name}/passwd
 

@@ -16,8 +16,6 @@ CONTENTS:
 
 cgi.cfg           - This is a sample CGI config file
 
-cgiauth.cfg       - This is a sample CGI attribute based authorization config file
-
 icinga.cfg        - This is a sample main config file
 
 resource.cfg      - This is a sample resource config file, used for definining
