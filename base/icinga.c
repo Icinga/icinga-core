@@ -126,6 +126,7 @@ int             check_external_commands = DEFAULT_CHECK_EXTERNAL_COMMANDS;
 int             check_orphaned_services = DEFAULT_CHECK_ORPHANED_SERVICES;
 int             check_orphaned_hosts = DEFAULT_CHECK_ORPHANED_HOSTS;
 int             check_service_freshness = DEFAULT_CHECK_SERVICE_FRESHNESS;
+int             log_stale_services = DEFAULT_LOG_STALE_SERVICES;
 int             check_host_freshness = DEFAULT_CHECK_HOST_FRESHNESS;
 int             auto_reschedule_checks = DEFAULT_AUTO_RESCHEDULE_CHECKS;
 int             auto_rescheduling_window = DEFAULT_AUTO_RESCHEDULING_WINDOW;

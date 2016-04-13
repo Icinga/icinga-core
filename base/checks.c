@@ -88,6 +88,7 @@ extern int      translate_passive_host_checks;
 extern int      passive_host_checks_are_soft;
 
 extern int      check_service_freshness;
+extern int      log_stale_services;
 extern int      check_host_freshness;
 extern int      additional_freshness_latency;
 
@@ -2241,7 +2242,7 @@ void check_service_result_freshness(void) {
 			continue;
 
 		/* the results for the last check of this service are stale! */
-		if (is_service_result_fresh(temp_service, current_time, TRUE) == FALSE) {
+		if (is_service_result_fresh(temp_service, current_time, log_stale_services) == FALSE) {
 
 			/* set the freshen flag */
 			temp_service->is_being_freshened = TRUE;
