@@ -89,6 +89,7 @@ extern int      passive_host_checks_are_soft;
 
 extern int      check_service_freshness;
 extern int      log_stale_services;
+extern int      log_stale_hosts;
 extern int      check_host_freshness;
 extern int      additional_freshness_latency;
 
@@ -2652,7 +2653,7 @@ void check_host_result_freshness(void) {
 			continue;
 
 		/* the results for the last check of this host are stale */
-		if (is_host_result_fresh(temp_host, current_time, TRUE) == FALSE) {
+		if (is_host_result_fresh(temp_host, current_time, log_stale_hosts) == FALSE) {
 
 			/* set the freshen flag */
 			temp_host->is_being_freshened = TRUE;
