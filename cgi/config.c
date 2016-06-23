@@ -1112,7 +1112,7 @@ void display_hosts(void) {
 			if (temp_host->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&amp;irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
