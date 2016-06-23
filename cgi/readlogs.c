@@ -200,6 +200,8 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	int return_val = READLOG_OK;
 	int data_found = FALSE;
 	int open_read_failed = FALSE;
+	// this is roughly 10 years of log files on hourly rotation
+	int num_max_log_files = 87600;
 	short keep_entry = TRUE;
 	time_t timestamp = 0L;
 	time_t last_timestamp = 0L;
@@ -210,7 +212,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	logfilter *temp_filter;
 	DIR *dirp;
 	struct dirent *dptr;
-	struct file_data files[10000];
+	struct file_data files[num_max_log_files + 1];
 #ifdef HAVE_ZLIB_H
 	gzFile gzfile = NULL;
 	char gz_buffer[MAX_COMMAND_BUFFER * 2];
@@ -256,8 +258,9 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	}
 
 	/* initialize file data array */
-	for (i=0;i<10000;i++)
+	for (i=0;i<=num_max_log_files;i++) {
 		files[i].file_name = NULL;
+	}
 
 	/* try to open log_archive_path, return if it fails */
 	if ((dirp=opendir(log_archive_path)) == NULL){
@@ -279,8 +282,17 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			/* filter dir for icinga / nagios log files */
 			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) &&
 			    ((strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24 ) ||
-			    (read_gzip_logs == TRUE && strstr(dptr->d_name, ".log.gz") && strlen(dptr->d_name) == 27 )))
-				files[file_num++].file_name = strdup(dptr->d_name);
+			    (read_gzip_logs == TRUE && strstr(dptr->d_name, ".log.gz") && strlen(dptr->d_name) == 27 ))) {
+				if ( file_num <= num_max_log_files ) {
+					files[file_num++].file_name = strdup(dptr->d_name);
+				} else {
+					asprintf(&temp_buffer, "The amount of log files in the archive directory exceeds the maximum of \"%d\" readable log files! Consider deleting old log files.", num_max_log_files);
+					*error_text = strdup(temp_buffer);
+					my_free(temp_buffer);
+					return_val = READLOG_ERROR_WARNING;
+					break;
+				}
+			}
 		}
 		closedir(dirp);
 	}
