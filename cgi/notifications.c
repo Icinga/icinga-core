@@ -791,15 +791,15 @@ void display_notifications(void) {
 				}
 			} else {
 
-				if (!strcmp(alert_level, "DOWN")) {
+				if (strstr(alert_level, "DOWN")) {
 					strncpy(alert_level, "HOST DOWN", sizeof(alert_level));
 					strcpy(alert_level_class, "HOSTDOWN");
 					notification_detail_type = NOTIFICATION_HOST_DOWN;
-				} else if (!strcmp(alert_level, "UNREACHABLE")) {
+				} else if (strstr(alert_level, "UNREACHABLE")) {
 					strncpy(alert_level, "HOST UNREACHABLE", sizeof(alert_level));
 					strcpy(alert_level_class, "HOSTUNREACHABLE");
 					notification_detail_type = NOTIFICATION_HOST_UNREACHABLE;
-				} else if (!strcmp(alert_level, "RECOVERY") || !strcmp(alert_level, "UP")) {
+				} else if (strstr(alert_level, "RECOVERY") || strstr(alert_level, "UP")) {
 					strncpy(alert_level, "HOST UP", sizeof(alert_level));
 					strcpy(alert_level_class, "HOSTUP");
 					notification_detail_type = NOTIFICATION_HOST_RECOVERY;
