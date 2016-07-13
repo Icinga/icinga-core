@@ -9,11 +9,14 @@ $(document).ready(function() {
 
 		elem.prepend( img )
 			.css( "cursor", "pointer" )
-			.toggle( function() {
-				img.attr('src', 'images/menu_more.gif');
-				list.slideToggle("slow");
-			}, function() {
-				img.attr('src', 'images/menu_less.gif');
+			.click( function() {
+				if($(this).hasClass("collapsed")) {
+					img.attr('src', 'images/menu_less.gif');
+					$(this).removeClass("collapsed");
+				} else {
+					img.attr('src', 'images/menu_more.gif');
+					$(this).addClass("collapsed");
+				}
 				list.slideToggle("slow");
 		});
 

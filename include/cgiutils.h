@@ -113,7 +113,7 @@ extern "C" {
 
 #define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
 #define COMMON_FUNCTIONS_JS	"common_functions.js"
-#define JQUERY_MAIN_JS		"jquery-1.8.0.min.js"
+#define JQUERY_MAIN_JS		"jquery-1.12.4.min.js"
 #define JQUERY_DD_JS		"jquery.dd.min.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 #define PAGE_REFRESH_JS		"page_refresh.js"
