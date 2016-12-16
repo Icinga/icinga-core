@@ -2651,7 +2651,7 @@ WARNINGS
 ------------------
 * Configure script fix for no mail program found/installed on system
 * Fix for compilation warnings about implicit declaration of round() - may (strangely enough) also
-  fix segfaults that were occuring on some systems
+  fix segfaults that were occurring on some systems
 * Added detection of Apache conf.d directory and 'make install-webconf' functionality
 * Configure script option bug fixes for cygwin and embedded perl
 * Added buffer stats and check statistics to performance information in extinfo CGI

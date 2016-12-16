@@ -3043,7 +3043,7 @@ int rotate_cgi_log_file() {
 	write_to_cgi_log(temp_buffer);
 
 	/* give a warning about use */
-	write_to_cgi_log("This log is highly experimental and changes may occure without notice. Use at your own risk!!");
+	write_to_cgi_log("This log is highly experimental and changes may occur without notice. Use at your own risk!!");
 
 	if (stat_result == 0) {
 		chmod(cgi_log_file, log_file_stat.st_mode);

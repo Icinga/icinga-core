@@ -7108,7 +7108,7 @@ int ido2db_oci_set_session_info(OCI_Connection *cn, char * action) {
  * print bind names and values
  * @param OCI_Connection
  * @param buffer pointer
- * @returns new output buffer length or -1 if an error occured
+ * @returns new output buffer length or -1 if an error occurred
  */
 int ido2db_oci_print_binds(OCI_Statement *st, char **outp) {
 	OCI_Bind *bn;

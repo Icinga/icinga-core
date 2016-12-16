@@ -587,7 +587,7 @@ void display_logentries() {
 			print_generic_error_message(error_text, NULL, 0);
 			my_free(error_text);
 		} else
-			print_generic_error_message("Unkown error!", NULL, 0);
+			print_generic_error_message("Unknown error!", NULL, 0);
 	}
 
 	if (status == READLOG_ERROR_MEMORY)

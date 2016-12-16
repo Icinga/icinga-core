@@ -2547,7 +2547,7 @@ void commit_command_data(int cmd) {
 	if (e > 0) {
 		printf("<div class='errorBox'>\n");
 		printf("<div class='errorMessage'><table cellspacing='0' cellpadding='0' border='0'><tr><td width='55'><img src=\"%s%s\" border='0'></td>", url_images_path, CMD_STOP_ICON);
-		printf("<td class='errorMessage'>Following errors occured.</td></tr></table></div>\n");
+		printf("<td class='errorMessage'>Following errors occurred.</td></tr></table></div>\n");
 		printf("<table cellspacing='0' cellpadding='0' border='0' class='errorTable'>\n");
 		for (e = 0; e < NUMBER_OF_STRUCTS; e++) {
 			if (error[e].message == NULL)

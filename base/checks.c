@@ -1536,7 +1536,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 
 			/* we're using aggressive host checking, so really do recheck the host... */
 			if (use_aggressive_host_checking == TRUE) {
-				log_debug_info(DEBUGL_CHECKS, 1, "Agressive host checking is enabled, so we'll recheck the host state...\n");
+				log_debug_info(DEBUGL_CHECKS, 1, "Aggressive host checking is enabled, so we'll recheck the host state...\n");
 				perform_on_demand_host_check(temp_host, &route_result, CHECK_OPTION_NONE, TRUE, cached_host_check_horizon);
 			}
 

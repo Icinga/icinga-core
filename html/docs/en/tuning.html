@@ -146,8 +146,8 @@
         need to schedule regular checks of your hosts (see above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Don't use agressive host checking</strong></span>. Unless you're having problems with Icinga
-        recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off host checks
+        <p><span class="bold"><strong>Don't use aggressive host checking</strong></span>. Unless you're having problems with Icinga
+        recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off host checks
         will execute much faster, resulting in speedier processing of service check results. However, host recoveries can be missed under
         certain circumstances when this it turned off. For example, if a host recovers and all of the services associated with that host
         stay in non-OK states (and don't "wobble" between different non-OK states), Icinga may miss the fact that the host has
