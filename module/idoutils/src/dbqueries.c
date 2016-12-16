@@ -76,7 +76,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[11])[strlen(*(char **) data[11]) - 1] == '\\') {
 					(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -347,7 +347,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[17])[strlen(*(char **) data[17]) - 1] == '\\') {
 					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -671,7 +671,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[10])[strlen(*(char **) data[10]) - 1] == '\\') {
 					(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -1527,7 +1527,7 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[17])[strlen(*(char **) data[17]) - 1] == '\\') {
 					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -1537,7 +1537,7 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:perfdata truncated\n");
 				if ((*(char **) data[18])[strlen(*(char **) data[18]) - 1] == '\\') {
 					(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -1778,7 +1778,7 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[21])[strlen(*(char **) data[21]) - 1] == '\\') {
 					(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -1788,7 +1788,7 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:perfdata truncated\n");
 				if ((*(char **) data[22])[strlen(*(char **) data[22]) - 1] == '\\') {
 					(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -3423,7 +3423,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[4])[strlen(*(char **) data[4]) - 1] == '\\') {
 					(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -3433,7 +3433,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
 				if ((*(char **) data[5])[strlen(*(char **) data[5]) - 1] == '\\') {
 					(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -3944,7 +3944,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
 				if ((*(char **) data[4])[strlen(*(char **) data[4]) - 1] == '\\') {
 					(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}	
@@ -3954,7 +3954,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
 				if ((*(char **) data[5])[strlen(*(char **) data[5]) - 1] == '\\') {
 					(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN - 1]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, trucating a bit more\n");
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:backslash detected at the end, truncating a bit more\n");
 				}
 			}
 		}
@@ -4741,7 +4741,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 			        if (result == IDO_OK) {
 			                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
-		                                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+		                                      " preceding ido2db_query_insert_or_update_configfilevariables_add OK \n");
 		                        /* mysql doesn't use sequences */
                 		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfile_id\n", *id);
@@ -4817,7 +4817,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 		        if (result == IDO_OK) {
 		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
-                		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+                		                      " preceding ido2db_query_insert_or_update_configfilevariables_add OK \n");
 	                        /* depending on tableprefix/tablename a sequence will be used */
         	                if (asprintf(&buf1, "%s_configfile_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES]) == -1)
                 	                buf1 = NULL;

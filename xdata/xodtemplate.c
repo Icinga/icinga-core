@@ -8076,7 +8076,7 @@ int xodtemplate_recombobulate_hostgroups(void) {
 			continue;
 
 		/* preprocess the hostgroup list, to change "grp1,grp2,grp3,!grp2" into "grp1,grp3" */
-		/* 10/18/07 EG an empty return value means an error occured */
+		/* 10/18/07 EG an empty return value means an error occurred */
 		if ((hostgroup_names = xodtemplate_process_hostgroup_names(temp_host->host_groups, temp_host->_config_file, temp_host->_start_line)) == NULL)
 			return ERROR;
 
@@ -8303,7 +8303,7 @@ int xodtemplate_recombobulate_servicegroups(void) {
 			continue;
 
 		/* preprocess the servicegroup list, to change "grp1,grp2,grp3,!grp2" into "grp1,grp3" */
-		/* 10/19/07 EG an empry return value means an error occured */
+		/* 10/19/07 EG an empry return value means an error occurred */
 		if ((servicegroup_names = xodtemplate_process_servicegroup_names(temp_service->service_groups, temp_service->_config_file, temp_service->_start_line)) == NULL)
 			return ERROR;
 

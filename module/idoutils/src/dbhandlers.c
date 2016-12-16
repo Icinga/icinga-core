@@ -366,7 +366,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	data[3] = (void *) &es[1];
 
 	/* FIXME: OCILIB claimed this already prepared statement is not prepared ,
-	 * but no prepare error occured and statement sql is available with statement handle
+	 * but no prepare error occurred and statement sql is available with statement handle
 	 * (https://dev.icinga.org/issues/1638)
 	 *
 	 * this bad workaround prepares new statement handle at every call
@@ -4821,7 +4821,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements"
 				                      "(File %lu) ERROR:Rollback %d items\n", configfile_id, arrsize);
@@ -5042,7 +5042,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
 				                      "ERROR:Rollback %d items\n", arrsize);
@@ -5446,7 +5446,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent "
 				                      "(hostid %lu) ERROR:Rollback %d items\n", host_id, arrsize);
@@ -5577,7 +5577,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 				                      "(hostid %lu) ERROR:Rollback %d items\n", host_id, arrsize);
@@ -5704,7 +5704,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 				                      "(hostid %lu) ERROR:Rollback %d items\n", host_id, arrsize);
@@ -5915,7 +5915,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members"
 				                      "(groupid %lu) ERROR:Rollback %d items\n", group_id, arrsize);
@@ -6281,7 +6281,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 				                      "(hostid %lu) ERROR:Rollback %d items\n", service_id, arrsize);
@@ -6408,7 +6408,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 				                      "(hostid %lu) ERROR:Rollback %d items\n", service_id, arrsize);
@@ -6633,7 +6633,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members"
 				                      "(groupid %lu) ERROR:Rollback %d items\n", group_id, arrsize);
@@ -7232,7 +7232,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 				                      "(Period %lu) ERROR:Rollback %d items\n", timeperiod_id, arrsize);
@@ -7730,7 +7730,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 				arrsize = 0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			} else {
-				/* execute error occured, need rollback and exit */
+				/* execute error occurred, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
 				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members"
 				                      "(groupid %lu) ERROR:Rollback %d items\n", group_id, arrsize);
