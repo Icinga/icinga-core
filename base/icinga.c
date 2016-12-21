@@ -678,9 +678,6 @@ int main(int argc, char **argv, char **env) {
 			my_free(mac->x[MACRO_PROCESSSTARTTIME]);
 			asprintf(&mac->x[MACRO_PROCESSSTARTTIME], "%lu", (unsigned long)program_start);
 
-			/* open debug log */
-			open_debug_log();
-
 			/* drop privileges */
 			if (drop_privileges(nagios_user, nagios_group) == ERROR) {
 
@@ -689,6 +686,9 @@ int main(int argc, char **argv, char **env) {
 				cleanup();
 				exit(ERROR);
 			}
+
+			/* open debug log */
+			open_debug_log();
 
 #ifdef USE_EVENT_BROKER
 			/* initialize modules */
