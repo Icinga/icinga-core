@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.13 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.14 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgicmd.html" title="6.4. Ausführen von Classic UI-Modulen (CGIs) auf der Kommandozeile">
 <link rel="next" href="icinga-web-config.html" title="6.6. Konfigurationsübersicht Icinga Web">
@@ -46,7 +46,7 @@
 
     <p>Das neue Icinga Web wird aktuell sehr stark weiterentwickelt, sodass sich diese Dokumentation unter Umständen noch ändern
     kann/wird. Falls Sie eine detaillierte Installationsanleitung benötigen, konsultieren Sie bitte <code class="filename">doc/INSTALL</code> aus dem
-    Source-Paket. Mehr Informationen über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">https://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga Web-Development und die
+    Source-Paket. Mehr Informationen über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">https://www.icinga.com/architecture/</a> Falls Sie mehr über das Icinga Web-Development und die
     Modularchitektur wissen wollen, verfolgen Sie bitte stetig aktualisierte Einträge im Development-Wiki von Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
 
     <p>Diese Installationsanleitung beschreibt die Installation von Icinga Web mit MySQL bzw. PostgreSQL als verwendeter
@@ -206,11 +206,11 @@
 
         <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-        <pre class="screen"> #&gt; tar xzvf icinga-web-1.13.tar.gz</pre>
+        <pre class="screen"> #&gt; tar xzvf icinga-web-1.14.tar.gz</pre>
 
         <p>Wechseln Sie in das Verzeichnis:</p>
 
-        <pre class="screen"> #&gt; cd icinga-web-1.13</pre>
+        <pre class="screen"> #&gt; cd icinga-web-1.14</pre>
 
         <p>Icinga Web stellt verschiedene configure-Optionen zur Verfügung z.B.</p>
 
@@ -770,18 +770,8 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <a name="webtroubleshooting"></a>6.5.6. Test &amp; Fehler?</h3></div></div></div>
     
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>Der folgende Abschnitt versucht, einige Hinweise zu üblichen Problemen zu geben, aber aufgrund der Natur von "geschriebenem"
-        Material wird die <a class="link" href="https://wiki.icinga.org/display/testing/Icinga+Web+Testing" target="_top">Wiki-Seite</a>
-        höchstwahrscheinlich aktueller sein, so dass es dort ggf. eine Lösung gibt, die Sie hier nicht finden.</p>
-      </td></tr>
-</table></div>
-<p>Diese Sammlung enthält einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf hingewiesen,
+    <p>
+      Diese Sammlung enthält einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf hingewiesen,
     welche Informationen Sie im Fehlerfall angeben sollten, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -971,16 +961,15 @@ Alias /icinga-web /usr/local/icinga-web/pub
       </li>
 <li class="listitem">
         <p>Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/. Weiterhin
-        können Sie die angezeigten Daten in Ihrem Browser debuggen. Ausführliche Informationen dazu finden Sie im Icinga-Wiki
-        <code class="uri">https://wiki.icinga.org/display/Dev/Icinga+Web+Testing</code></p>
+		können Sie die angezeigten Daten in Ihrem Browser debuggen.</p>
       </li>
 </ul></div>
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idm214362343216"></a>
+    <a class="indexterm" name="idm139734667619152"></a>
 
-    <a class="indexterm" name="idm214362341968"></a>
+    <a class="indexterm" name="idm139734667617792"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -1000,6 +989,6 @@ Alias /icinga-web /usr/local/icinga-web/pub
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2015 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2017 Icinga Development Team, https://www.icinga.com</P>
 </body>
 </html>

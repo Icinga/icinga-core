@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>1.2. What's New in Icinga 1.13</title>
+<title>1.2. What's New in Icinga 1.14</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.13 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.14 Documentation">
 <link rel="up" href="ch01.html" title="Chapter 1. About">
 <link rel="prev" href="about.html" title="1.1. About Icinga">
 <link rel="next" href="ch02.html" title="Chapter 2. Getting Started">
@@ -15,7 +15,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">1.2. What's New in Icinga 1.13</th></tr>
+<tr><th colspan="3" align="center">1.2. What's New in Icinga 1.14</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Prev</a> </td>
@@ -26,195 +26,41 @@
 </table>
 <hr>
 </div>
-<div class="section" title="1.2. What's New in Icinga 1.13">
+<div class="section" title="1.2. What's New in Icinga 1.14">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>1.2. What's New in Icinga 1.13</h2></div></div></div>
+<a name="whatsnew"></a>1.2. What's New in Icinga 1.14</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">1.2.1. <a href="whatsnew.html#whatsnew-changes">CHANGES</a></span></dt>
-<dt><span class="section">1.2.2. <a href="whatsnew.html#whatsnew-core">Core</a></span></dt>
-<dt><span class="section">1.2.3. <a href="whatsnew.html#whatsnew-classicui">Classic UI</a></span></dt>
-<dt><span class="section">1.2.4. <a href="whatsnew.html#whatsnew-idoutils">IDOutils</a></span></dt>
-<dt><span class="section">1.2.5. <a href="whatsnew.html#whatsnew-web">Icinga-Web</a></span></dt>
-<dt><span class="section">1.2.6. <a href="whatsnew.html#docs">Docs</a></span></dt>
-<dt><span class="section">1.2.7. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
+<dt><span class="section">1.2.1. <a href="whatsnew.html#whatsnew-changes"></a></span></dt>
+<dt><span class="section">1.2.2. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
 </dl></div>
   
 
-  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.7. More information">Changelog</a> as well if you are
+  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.2. More information">Changelog</a> as well if you are
   missing something.</p>
 
-  <a class="indexterm" name="idm214404990080"></a>
+  <a class="indexterm" name="idm140381638662688"></a>
 
-  <div class="section" title="1.2.1. CHANGES">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="whatsnew-changes"></a>1.2.1. CHANGES</h3></div></div></div>
-    
+  <div class="section" title="1.2.1. ">
+<div class="titlepage"></div>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Releases are now hosted at <a class="link" href="https://www.icinga.org/download" target="_top">GitHub</a>!</p>
+        <p>Fix possible root privilege escalation during opening logs (CVE-2016-9566) #13709</p>
       </li>
 <li class="listitem">
-        <p>Mailinglists have been migrated to <a class="link" href="https://www.icinga.org/support" target="_top">lists.icinga.org</a>!</p>
-      </li>
-<li class="listitem">
-	<p>docs: rename nagios plugins to monitoring plugins #5460</p>
-      </li>
-<li class="listitem">
-        <p>classic ui: fix vulnerability against CSRF attacks CVE-2013-7107 #5346 requires HTTP_REFFERER on the cmd line</p>
-      </li>
-<li class="listitem">
-        <p>idoutils: dump customvariable status by default (restore feature for icinga web (2)) #5732</p>
-      </li>
-<li class="listitem">
-        <p>Icinga Web 1.11 requires IDO schema version &gt;= 1.11</p>
+        <p>Minor bugfixes and enhancements</p>
       </li>
 </ul></div>
 
   </div>
 
-  <div class="section" title="1.2.2. Core">
+  <div class="section" title="1.2.2. More information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="whatsnew-core"></a>1.2.2. Core</h3></div></div></div>
-    
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-       <p>Added commands for {en,dis}able freshness checks per host/service (thanks Philip Matuskiewicz) #5422 #4430</p>
-      </li>
-<li class="listitem">
-        <p>Added state history entries for newly added services (check result with OK state) #3854</p>
-      </li>
-<li class="listitem">
-        <p>Added option to make external command user in Icinga log anonymous #5689</p>
-      </li>
-<li class="listitem">
-        <p>Allow exclude (!) to work for regexp matches for hosts (thanks Franky Van Liedekerke) #5324</p>
-      </li>
-<li class="listitem">
-        <p>Fixed passive check result processing for host checks (Marco Hoyer) #5671</p>
-      </li>
-<li class="listitem">
-        <p>Accept service escalations without host mapping (Tomas Dubec) #5697</p>
-      </li>
-</ul></div>
-  </div>
-
-  <div class="section" title="1.2.3. Classic UI">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="whatsnew-classicui"></a>1.2.3. Classic UI</h3></div></div></div>
-    
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>Added status.cgi modifed_attributes filter parameter #4880</p>
-      </li>
-<li class="listitem">
-        <p>Added "current_notification_number" to JSON output of hosts and services in status.cgi #5370</p>
-      </li>
-<li class="listitem">
-        <p>Added group notes and action URL links to status summary, overview and grid #5301</p>
-      </li>
-<li class="listitem">
-        <p>Integrated a range of logos #4057</p>
-      </li>
-<li class="listitem">
-        <p>Added support for gzip compressed logs #4519</p>
-      </li>
-<li class="listitem">
-        <p>Time picker no longer resets time in input field #5239</p>
-      </li>
-</ul></div>
-  </div>
-
-  <div class="section" title="1.2.4. IDOutils">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="whatsnew-idoutils"></a>1.2.4. IDOutils</h3></div></div></div>
-    
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>ido2db should check database schema on start up, and bail early on errors #5272</p>
-      </li>
-<li class="listitem">
-        <p>Wait for child processes on exit preventing zombies (Laurent Bigonville) #4427</p>
-      </li>
-<li class="listitem">
-        <p>Fixed errors in oracle.sql with timed event sequences #5688</p>
-      </li>
-<li class="listitem">
-        <p>Fixed SEGV in ido2db and idomod syslog call in Solaris - #5687, #5686</p>
-      </li>
-<li class="listitem">
-        <p>Allow agent_version to store more than 16 chars #5731</p>
-      </li>
-</ul></div>
-  </div>
-
-  <div class="section" title="1.2.5. Icinga-Web">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="whatsnew-web"></a>1.2.5. Icinga-Web</h3></div></div></div>
-    
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>Timezone handling has been fixed for duration and command fields. #5713</p>
-      </li>
-<li class="listitem">
-        <p>Added reload progress bar (Immobilienscout24) #5098 #5107</p>
-      </li>
-<li class="listitem">
-        <p> Expanded macros in action_url and notes_url #1882</p>
-      </li>
-<li class="listitem">
-        <p>Added jump links to host and service status from performance view - #4984</p>
-      </li>
-<li class="listitem">
-        <p>ExtJS framework has been updated to 3.4.1.1 #5620</p>
-      </li>
-</ul></div>
-  </div>
-
-  <div class="section" title="1.2.6. Docs">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="docs"></a>1.2.6. Docs</h3></div></div></div>
-    
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>Define SELinux contexts rather than using chcon command #3555</p>
-      </li>
-<li class="listitem">
-        <p>explain "Check results for service x on host y are stale by 0d 0h 0m 10s (threshold=0d 0h 10m 0s). Forcing an immediate check of the service..." #5252</p>
-      </li>
-<li class="listitem">
-        <p>addons: suggest nsca-ng as nsca alternative #5253</p>
-      </li>
-<li class="listitem">
-        <p>rename nagios plugins to monitoring plugins #5460</p>
-      </li>
-<li class="listitem">
-        <p>icinga web rest api updates #4970</p>
-      </li>
-<li class="listitem">
-        <p>clean mysql creation commands #5426</p>
-      </li>
-<li class="listitem">
-        <p>replace sourceforge download links with github releases #5429</p>
-      </li>
-</ul></div>
-  </div>
-
-  <div class="section" title="1.2.7. More information">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="moreinfo"></a>1.2.7. More information</h3></div></div></div>
+<a name="moreinfo"></a>1.2.2. More information</h3></div></div></div>
     
 
-    <p><a class="link" href="https://wiki.icinga.org/display/Dev/Changelogs" target="_top">More at Icinga Wiki</a></p>
+    <p><a class="link" href="https://github.com/icinga" target="_top">More at Github</a></p>
 
-    <p>Should you find any issues, please report them to one of the following links:</p>
-
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
-
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
-
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga Reporting</a></p>
-
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
+    <p>Should you find any issues, please report them on Github.</p>
   </div>
 </div>
 <div class="navfooter">
@@ -234,6 +80,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2015 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2017 Icinga Development Team, https://www.icinga.com</P>
 </body>
 </html>

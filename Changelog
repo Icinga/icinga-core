@@ -19,6 +19,45 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
+1.14.0 - 12/22/2016
+
+SECURITY FIXES
+
+* Bug #13709: CVE-2016-9566: Root priviledge escalation during log file opening
+* Bug #10453: Icinga Classic-UI 1.13.3 and older are vulnerable to XSS - CVE-2015-8010
+
+Icinga is **not** vulnerable to CVE-2016-9565 since we do not provide any PHP
+files nor external advertising RSS feeds inside the Classic UI.
+
+CHANGES
+
+* Classic UI: Remove attribute based authorization (cgiauth.cfg is not parsed anymore) 
+* IDO: Remove deprecated config options
+
+FIXES
+
+* Bug #882: trends.cgi segfaults
+* Bug #6831: Remove broken attribute-based authorization
+* Bug #9157: Only timestamp and "Return code of 255 is out of bounds" in icinga.log
+* Bug #9409: Add sources for jquery-ui and install minified versions only
+* Bug #9750: Classic UI is showing inaccurate value to retry_interval
+* Bug #9847: max filename length reached for config file paths
+* Bug #10453: Icinga Classic-UI 1.13.3 and older are vulnerable to XSS - CVE-2015-8010
+* Bug #10633: status.cgi doesn't honor host/servicegroup filter once allproblems option is set
+* Bug #11044: configure tries to process obsolete .in file
+* Bug #11048: cgi/cgiutils.c NULL value with segfault in
+* Bug #11221: trends.cgi segfault while reading log files
+* Bug #11732: Classic UI hides menu items (JQuery 1.11, Debian/Ubuntu)
+* Bug #11929: config.cgi notification_period link has a typo
+* Bug #12007: Fix icinga2 Host state notification entries in compat log to interpret states properly
+* Bug #13709: CVE-2016-9566: Root priviledge escalation during log file opening
+* Bug #13745: Spelling errors
+* Bug #13747: make fullinstall doesn't call install-webconf-auth
+* Bug #13749: Update README for icinga.com
+* Feature #3175: Add command "Acknowledge problem for this host and its services"
+* Feature #10684: Help Icinga2 User to use command expansion in Classic-UI
+
+
 1.13.3 - 07/15/2015
 
 FIXES

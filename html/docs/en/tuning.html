@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.13 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.14 Documentation">
 <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
 <link rel="prev" href="cgisecurity.html" title="8.2. Enhanced Classic UI Security and Authentication">
 <link rel="next" href="faststartup.html" title="8.4. Fast Startup Options">
@@ -146,8 +146,8 @@
         need to schedule regular checks of your hosts (see above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Don't use aggressive host checking</strong></span>. Unless you're having problems with Icinga
-        recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off host checks
+        <p><span class="bold"><strong>Don't use agressive host checking</strong></span>. Unless you're having problems with Icinga
+        recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off host checks
         will execute much faster, resulting in speedier processing of service check results. However, host recoveries can be missed under
         certain circumstances when this it turned off. For example, if a host recovers and all of the services associated with that host
         stay in non-OK states (and don't "wobble" between different non-OK states), Icinga may miss the fact that the host has
@@ -185,7 +185,7 @@
       </li>
 </ol></div>
 
-    <a class="indexterm" name="idm214389356032"></a>
+    <a class="indexterm" name="idm140381623126288"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -205,6 +205,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2015 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2017 Icinga Development Team, https://www.icinga.com</P>
 </body>
 </html>

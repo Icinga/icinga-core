@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.13 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.14 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="howtos.html" title="2.9. Links zu weiteren Howtos">
 <link rel="next" href="upgrading_idoutils.html" title="2.11. IDOUtils-Datenbank aktualisieren">
@@ -60,7 +60,7 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idm214373577616"></a>
+  <a class="indexterm" name="idm139734678849936"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -112,7 +112,7 @@
 
     <pre class="programlisting"> $&gt; su -l icinga</pre>
 
-    <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.org/</a> für den Verweis auf die letzte Version) und entpacken Sie das
+    <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.com/</a> für den Verweis auf die letzte Version) und entpacken Sie das
     Quellcode-Archiv.</p>
 
     <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
@@ -172,7 +172,7 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idm214373553632"></a>
+    <a class="indexterm" name="idm139734678825824"></a>
   </div>
 
   <div class="section" title="2.10.2. Upgrade von Nagios 3.x">
@@ -226,14 +226,14 @@
 
     <pre class="programlisting"> $ su -l nagios</pre>
 
-    <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">https://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
+    <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">https://www.icinga.com/</a> für den Verweis auf die letzte Version).</p>
 
-    <pre class="programlisting"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><strong>1.13</strong></span>/icinga-<span class="emphasis"><strong>1.13</strong></span>.tar.gz</pre>
+    <pre class="programlisting"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><strong>1.14</strong></span>/icinga-<span class="emphasis"><strong>1.14</strong></span>.tar.gz</pre>
 
     <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-    <pre class="programlisting"> #&gt; tar xzf icinga-<span class="emphasis"><strong>1.13</strong></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><strong>1.13</strong></span> </pre>
+    <pre class="programlisting"> #&gt; tar xzf icinga-<span class="emphasis"><strong>1.14</strong></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><strong>1.14</strong></span> </pre>
 
     <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim <code class="code">./configure</code> von Nagios benutzt
     haben. Den Aufruf finden Sie in der Datei <code class="filename">config.log</code>. Beispiel:</p>
@@ -324,11 +324,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idm214373503968"></a>
+    <a class="indexterm" name="idm139734678776528"></a>
 
-    <a class="indexterm" name="idm214373503808"></a>
+    <a class="indexterm" name="idm139734678776368"></a>
 
-    <a class="indexterm" name="idm214373500672"></a>
+    <a class="indexterm" name="idm139734678773232"></a>
   </div>
 
   <div class="section" title="2.10.3. Upgrade von Nagios 2.x">
@@ -336,9 +336,9 @@
 <a name="upgradenagios2x"></a>2.10.3. Upgrade von Nagios 2.x</h3></div></div></div>
     
 
-    <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.13 zu aktualisieren. Die Aktualisierung
+    <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.14 zu aktualisieren. Die Aktualisierung
     ist im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre Konfigurationsdateien
-    ein wenig ändern, damit sie mit Icinga 1.13 funktionieren:</p>
+    ein wenig ändern, damit sie mit Icinga 1.14 funktionieren:</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -376,7 +376,7 @@
       </li>
 </ul></div>
 
-    <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.13">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
+    <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.14">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
     Er beschreibt all die Änderungen am Icinga-Code.</p>
   </div>
 
@@ -447,9 +447,9 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idm214373458128"></a>
+    <a class="indexterm" name="idm139734678730688"></a>
 
-    <a class="indexterm" name="idm214373456224"></a>
+    <a class="indexterm" name="idm139734678728784"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -469,6 +469,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2015 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2017 Icinga Development Team, https://www.icinga.com</P>
 </body>
 </html>

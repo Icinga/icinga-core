@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.13 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.14 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="howtos.html" title="2.9. Links to other published Howtos">
 <link rel="next" href="upgrading_idoutils.html" title="2.11. Upgrading IDOUtils Database">
@@ -92,7 +92,7 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idm214403990864"></a>
+  <a class="indexterm" name="idm140381637755696"></a>
 
   <div class="section" title="2.10.1. Upgrading from previous Icinga Releases">
 <div class="titlepage"><div><div><h3 class="title">
@@ -104,7 +104,7 @@
 
     <p><span class="bold"><strong>Normal Icinga update Path</strong></span></p>
 
-    <p>If there's a new Icinga version available on <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.org/</a> you should
+    <p>If there's a new Icinga version available on <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.com/</a> you should
     consider updating. Newer versions contain bugfixes, minor or major, which makes it even more important to get the latest and the
     greatest. If you already installed Icinga using the quickstart guides it's rather easy to install newer versions. It's also
     possible to perform that without root privileges by doing an install from source. It highly depends on your likings.</p>
@@ -118,7 +118,7 @@
     <p>Become the icinga user. Debian/Ubuntu users might use <code class="code">sudo -s icinga</code>. </p>
 <pre class="programlisting"> $&gt; su -l icinga</pre>
 <p>Get
-    the latest Icinga version from <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.org/</a> and extract it. Then run configure like you
+    the latest Icinga version from <a class="link" href="http://www.icinga.org/" target="_top">https://www.icinga.com/</a> and extract it. Then run configure like you
     did with the old version. </p>
 <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
 <p> </p>
@@ -147,7 +147,7 @@
  #&gt; /etc/init.d/icinga restart</pre>
 <p>That's it!</p>
 
-    <p><span class="bold"><strong>Icinga 0.8.0 to Icinga 1.13</strong></span></p>
+    <p><span class="bold"><strong>Icinga 0.8.0 to Icinga 1.14</strong></span></p>
 
     <p><span class="emphasis"><em>Archived Logfilename</em></span></p>
 
@@ -187,7 +187,7 @@
 
     <pre class="screen">#&gt; a2emod cgi</pre>
 
-    <a class="indexterm" name="idm214403965744"></a>
+    <a class="indexterm" name="idm140381637730576"></a>
   </div>
 
   <div class="section" title="2.10.2. Upgrading from Nagios 3.x Releases">
@@ -196,7 +196,7 @@
     
 
     <p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very little you
-    have to do to "upgrade" from Nagios 3.x to Icinga 1.13. Assuming you've already installed Nagios from
+    have to do to "upgrade" from Nagios 3.x to Icinga 1.14. Assuming you've already installed Nagios from
     source code as described in the Nagios quickstart guide, you can install Icinga quite easily.</p>
 
     <p>If you are upgrading from Nagios 3.0.x you might need to install PHP:</p>
@@ -242,14 +242,14 @@
 
     <pre class="screen"> $ su -l nagios</pre>
 
-    <p>Get the latest Icinga version from <a class="link" href="http://www.icinga.org/download/" target="_top">https://www.icinga.org/</a></p>
+    <p>Get the latest Icinga version from <a class="link" href="http://www.icinga.org/download/" target="_top">https://www.icinga.com/</a></p>
 
-    <pre class="screen"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><em>1.13</em></span>/icinga-<span class="emphasis"><em>1.13</em></span>.tar.gz</pre>
+    <pre class="screen"> #&gt; wget https://github.com/Icinga/icinga-core/releases/download/v<span class="emphasis"><em>1.14</em></span>/icinga-<span class="emphasis"><em>1.14</em></span>.tar.gz</pre>
 
     <p>Extract the tarball and change to the directory just created</p>
 
-    <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.13</em></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><em>1.13</em></span> </pre>
+    <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.14</em></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><em>1.14</em></span> </pre>
 
     <p>Start the Icinga-configure-script with the options you used the last time with Nagios. You'll find the call in the
     file config.log. Example:</p>
@@ -344,11 +344,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idm214403915808"></a>
+    <a class="indexterm" name="idm140381637680576"></a>
 
-    <a class="indexterm" name="idm214403915680"></a>
+    <a class="indexterm" name="idm140381637678912"></a>
 
-    <a class="indexterm" name="idm214403912480"></a>
+    <a class="indexterm" name="idm140381637677152"></a>
   </div>
 
   <div class="section" title="2.10.3. Upgrading from Nagios 2.x Releases">
@@ -356,9 +356,9 @@
 <a name="upgradenagios2x"></a>2.10.3. Upgrading from Nagios 2.x Releases</h3></div></div></div>
     
 
-    <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.13. The upgrade is essentially the same
+    <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.14. The upgrade is essentially the same
     as what is described above for upgrading from Nagios 3.x releases. You will, however, have to change your configuration files a
-    bit so they work with Icinga 1.13:</p>
+    bit so they work with Icinga 1.14:</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -391,7 +391,7 @@
       </li>
 </ul></div>
 
-    <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.13">What's New</a>" section of the documentation. It describes all the changes
+    <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.14">What's New</a>" section of the documentation. It describes all the changes
     that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has changed, so make sure
     you read it over.</p>
   </div>
@@ -456,9 +456,9 @@
     backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
     problems.</p>
 
-    <a class="indexterm" name="idm214403873296"></a>
+    <a class="indexterm" name="idm140381637637648"></a>
 
-    <a class="indexterm" name="idm214403875776"></a>
+    <a class="indexterm" name="idm140381637635888"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -478,6 +478,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2015 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 1999-2009 Ethan Galstad, 2009-2017 Icinga Development Team, https://www.icinga.com</P>
 </body>
 </html>
