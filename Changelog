@@ -19,6 +19,15 @@ NEWS
 * This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
   please check https://www.icinga.org/icinga2
 
+1.13.4 - 22/12/2016
+
+SECURITY FIXES
+
+* Fix possible root privilege escalation during opening logs (CVE-2016-9566) #13709
+
+Icinga is **not** vulnerable to CVE-2016-9565 since we do not provide any PHP
+files nor external advertising RSS feeds inside the Classic UI.
+
 1.13.3 - 07/15/2015
 
 FIXES
