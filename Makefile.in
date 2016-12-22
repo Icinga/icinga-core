@@ -120,7 +120,8 @@ none:
 	@printf "\t%-23s - %s\n" "install-cgis" "install classical web"
 	@printf "\t%-23s - %s\n" "install-html" "install html files"
 	@printf "\t%-23s - %s\n" "install-config" "install sample config"
-	@printf "\t%-23s - %s\n" "install-webconf" "install apache config and http auth file for Classic UI"
+	@printf "\t%-23s - %s\n" "install-webconf" "install apache config for Classic UI"
+	@printf "\t%-23s - %s\n" "install-webconf-auth" "install http auth file for Classic UI"
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
 	@printf "\t%-23s - %s\n" "install-systemd" "install systemd init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
@@ -182,8 +183,10 @@ all:
 	@echo "       things get monitored!"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file and http auth file for"
-	@echo "       the Icinga Classic UI"
+	@echo "     - This installs the Apache config file for the Icinga Classic UI"
+	@echo ""
+	@echo "  make install-webconf-auth"
+	@echo "     - This installs the Apache http auth file for the Icinga Classic UI"
 	@echo ""
 	@echo ""
 	@echo "*** Support Notes *******************************************"
@@ -476,7 +479,6 @@ install-webconf:
 	@echo ""
 
 install-webconf-auth:
-
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
 	$(INSTALL) -b -m 644 $(INSTALL_OPTS) icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
 
@@ -584,10 +586,10 @@ install-classicui-standalone: install-cgis install-html
 
 fullinstall:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
-		${MAKE} install install-init install-commandmode install-webconf install-idoutils install-eventhandlers;\
+		${MAKE} install install-init install-commandmode install-webconf install-webconf-auth install-idoutils install-eventhandlers;\
 		echo "Run make install-config for installing/overwriting the configs..." ;\
         else \
-		${MAKE} install install-init install-commandmode install-webconf ;\
+		${MAKE} install install-init install-commandmode install-webconf install-webconf-auth;\
 		echo "Run make install-config for installing/overwriting the configs..." ;\
         fi
 
@@ -612,7 +614,7 @@ Prototype:
 	mkdir -p $(PACKDIR)/$(CFGDIR)/objects
 	$(MAKE) all
 	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' \
-	    install install-commandmode install-webconf install-idoutils
+	    install install-commandmode install-webconf install-webconf-auth install-idoutils
 	cd sample-config; \
 	for file in *.cfg; \
 	do \
