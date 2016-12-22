@@ -1,4 +1,17 @@
-# What is Icinga 1.x?
+# Icinga 1.x
+
+![Icinga Logo](https://www.icinga.org/wp-content/uploads/2014/06/icinga_logo.png)
+
+#### Table of Contents
+
+1. [About][About]
+2. [License][License]
+3. [Installation][Installation]
+4. [Documentation][Documentation]
+5. [Support][Support]
+6. [Development and Contributions][Development]
+
+## About
 
 Icinga 1.x began as a fork of Nagios and is backward compatible.
 So, Nagios configurations, plugins and addons can all be used with Icinga 1.x.
@@ -11,60 +24,59 @@ and generates performance data for reporting.
 Scalable and extensible, Icinga can monitor complex, large environments across dispersed
 locations. Icinga is licensed under GPL V2 and is free to use, distribute and modify.
 
-If you are looking for Icinga 2, please checkout https://www.icinga.org/icinga/icinga-2/
+Icinga 2 is the new monitoring core flagship and actively developed. Icinga 1.x
+receives security and bug fixes only.
 
-# With Icinga you can
+Please checkout https://www.icinga.com/products/icinga-2/ for more details.
 
-MONITOR – ANY NETWORK AND ALL ITS RESOURCES
+## License
 
-Network services: SMTP, POP3, HTTP, SNMP, NNTP, PING, etc.
-Host resources: CPU load, disk utilization, system logs, etc
-Server components: Switches, routers, temperature and humidity sensors, etc
+Icinga 1 and the Icinga 1 documentation are licensed under the terms of the GNU
+General Public License Version 2, you will find a copy of this license in the
+LICENSE file included in the source package.
 
-NOTIFY –WHEN ISSUES ARISE AND ARE RESOLVED
+## Installation
 
-Through any channel (eMail, SMS, phone call, etc)
-Escalate alerts to other users or communication channels
-Fine tune notification settings (accounting for dependencies between hosts & services)
+Read the [INSTALLING](INSTALLING) file for more information about how to install it.
 
-REPORT – ON PERFORMANCE AND PLAN AHEAD
+## Documentation
 
-Capacity utilization to plan for growth
-Chart graphs with addons like PNP or Grapher
+The documentation is located in the [html/doc/](html/doc/) directory. The latest documentation
+is also available on https://docs.icinga.com
 
-# More on Icinga
+## Support
 
-Icinga takes open source monitoring to the next level - check out the features new and old.
+Check the project website at https://www.icinga.com for status updates. Join the
+[community channels](https://www.icinga.com/community/get-involved/) for questions
+or ask an Icinga partner for [professional support](https://www.icinga.com/services/support/).
 
-https://www.icinga.org/icinga/icinga-1/
+## Development
 
-For installation instructions, use a web browser to read the HTML documentation
-in the html/docs subdirectory.
+The Git repository is located on [GitHub](https://github.com/Icinga/icinga-core).
 
-# Online resources
+Icinga 1 is written in C and can be built on Linux/Unix.
 
-Visit the Icinga homepage at https://www.icinga.org for
+### Contributing
 
-* online documentation 		http://docs.icinga.org
-* wiki 				https://wiki.icinga.org
-* new releases			https://www.icinga.org/blog/
-* bug reports 			https://dev.icinga.org
-* faq				https://www.icinga.org/icinga/faq/get-help/
-* support			https://www.icinga.org/support/
-* packages			https://www.icinga.org/download/
+There are many ways to contribute to Icinga -- whether it be sending patches,
+testing, reporting bugs, or reviewing and updating the documentation. Every
+contribution is appreciated!
 
-Please report any bugs, feature requests, ideas, feedback and help make Icinga
-better!
+Read the [contributing section](https://www.icinga.com/community/get-involved/) and
+get familiar with the code.
 
-Thanks for using Icinga :-)
+Pull requests on [GitHub](https://github.com/Icinga/icinga-core) are preferred.
 
+### Testing
 
-# Known Issues
+Basic unit test coverage is provided by running `make test` during package builds.
 
-These items are known to be buggy/not working. Feel free to help reproduce and
-patch these issues away.
+Snapshot packages from the laster development branch are available inside the
+[package repository](http://packages.icinga.org).
 
-* `check_period != 24x7` causes scheduler to skip checks [#1782](https://dev.icinga.org/issues/1782)
-* Duplicated service in service groups when service is added via nested servicegroup [#4856](https://dev.icinga.org/issues/4856)
-* 'reset modified attributes' does not restore old configuration value [#4928](https://dev.icinga.org/issues/4928)
-
+[About]: #about
+[License]: #license
+[Installation]: #installation
+[Documentation]: #documentation
+[Support]: #support
+[Development]: #development
