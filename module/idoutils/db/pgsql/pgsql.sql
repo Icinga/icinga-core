@@ -108,7 +108,7 @@ CREATE TABLE  icinga_commenthistory (
   expiration_time timestamp with time zone default '1970-01-01 00:00:00+00',
   deletion_time timestamp with time zone default '1970-01-01 00:00:00+00',
   deletion_time_usec INTEGER  default 0,
-  name TEXT default NULL,
+  unique_id TEXT default NULL,
   CONSTRAINT PK_commenthistory_id PRIMARY KEY (commenthistory_id) ,
   CONSTRAINT UQ_commenthistory UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 );
@@ -135,7 +135,7 @@ CREATE TABLE  icinga_comments (
   comment_source INTEGER  default 0,
   expires INTEGER  default 0,
   expiration_time timestamp with time zone default '1970-01-01 00:00:00+00',
-  name TEXT default NULL,
+  unique_id TEXT default NULL,
   CONSTRAINT PK_comment_id PRIMARY KEY (comment_id) ,
   CONSTRAINT UQ_comments UNIQUE (instance_id,object_id,comment_time,internal_comment_id)
 )  ;
@@ -368,7 +368,7 @@ CREATE TABLE  icinga_customvariables (
   varname TEXT  default '',
   varvalue TEXT  default '',
   is_json INTEGER  default 0,
-  session_token INTEGER default NULL,
+  session_token TEXT default NULL,
   CONSTRAINT PK_customvariable_id PRIMARY KEY (customvariable_id) ,
   CONSTRAINT UQ_customvariables UNIQUE (object_id,config_type,varname)
 ) ;
@@ -389,7 +389,7 @@ CREATE TABLE  icinga_customvariablestatus (
   varname TEXT  default '',
   varvalue TEXT  default '',
   is_json INTEGER  default 0,
-  session_token INTEGER default NULL,
+  session_token TEXT default NULL,
   CONSTRAINT PK_customvariablestatus_id PRIMARY KEY (customvariablestatus_id) ,
   CONSTRAINT UQ_customvariablestatus UNIQUE (object_id,varname)
 ) ;
@@ -440,7 +440,7 @@ CREATE TABLE  icinga_downtimehistory (
   was_cancelled INTEGER  default 0,
   is_in_effect INTEGER  default 0,
   trigger_time timestamp with time zone default '1970-01-01 00:00:00+00',
-  name TEXT default NULL,
+  unique_id TEXT default NULL,
   CONSTRAINT PK_downtimehistory_id PRIMARY KEY (downtimehistory_id) ,
   CONSTRAINT UQ_downtimehistory UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
@@ -1002,7 +1002,7 @@ CREATE TABLE  icinga_scheduleddowntime (
   actual_start_time_usec INTEGER  default 0,
   is_in_effect INTEGER  default 0,
   trigger_time timestamp with time zone default '1970-01-01 00:00:00+00',
-  name TEXT default NULL,
+  unique_id TEXT default NULL,
   CONSTRAINT PK_scheduleddowntime_id PRIMARY KEY (scheduleddowntime_id) ,
   CONSTRAINT UQ_scheduleddowntime UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
