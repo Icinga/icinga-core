@@ -2221,7 +2221,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 			printf("<div class='infoBoxBadProcStatus'>- Service checks are disabled</div>");
 	}
 
-	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata)) {
+	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata) && status_file_icinga_version != NULL && status_file_icinga_version[0] == '1') {
 		if (access(resource_file, R_OK) != 0)
 			printf("<div class='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</div>");
 	}

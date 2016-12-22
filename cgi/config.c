@@ -4193,14 +4193,16 @@ void display_command_expansion(void) {
 		if (hst == NULL && svc == NULL) {
 			printf("<p><div align='center' class='dataTitle'>Sorry, command expander only available using Icinga 1.x.</div></p>\n");
 			return;
+		} else {
+			printf("<p><div align='center' class='dataTitle'>Icinga 2.x as backend detected. The executed command line is calculated at runtime unlike with Icinga 1.x.</div></p>\n");
 		}
 
-		printf("<p><div align='center' class='dataTitle'>Let's assume you have Icinga >= 2.4.0 and your API is set up properly, you can paste following text to your commandline to retrieve the check commando!</div></p><br>");
-		printf("<p><div align='center' class='dataTitle'><input type='text' name='expand' size='200%%' value='curl -k -s -u apiuser:apipassword &#x27;https://localhost:5665/v1/objects/");
+		printf("<p><div align='center' class='dataTitle'>In case you have access to the <a href='https://docs.icinga.com' target='_blank'>Icinga 2 API</a>, you can retrieve the executed command line using this query:</div></p><br>");
+		printf("<p><div align='center' class='dataTitle'><input type='text' name='expand' size='200%%' value='curl -k -s -u root:icinga &#x27;https://localhost:5665/v1/objects/");
 		if (hst != NULL && svc == NULL) {
-			printf("hosts?host=%s&#x26;attrs=host.last_check_result", url_encode(host_name));
+			printf("hosts?host=%s&#x26;attrs=last_check_result", url_encode(host_name));
 		} else if (hst != NULL && svc != NULL) {
-			printf("services?service=%s!%s&#x26;attrs=service.last_check_result", url_encode(host_name), url_encode(service_desc));
+			printf("services?service=%s!%s&#x26;attrs=last_check_result", url_encode(host_name), url_encode(service_desc));
 		}
 		printf("&#x27; | sed &#x27;s/.*command&#x22;:&#x5C;[&#x22;//g&#x27; | cut -d&#x27;]&#x27; -f1 | sed &#x27;s/&#x22;,&#x22;/ /g&#x27; | tr -d &#x27;&#x22;$&#x27;'>\n</div></p>");
 		return;
