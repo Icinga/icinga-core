@@ -3,6 +3,7 @@ Alexander Wirt <formorer@debian.org>
 Andreas Ericsson <ae@op5.se>
 Andrew Hoag <andrew.hoag@gmail.com>
 Assaf Flatto <icinga@flatto.net>
+Bas Couwenberg <sebastic@xs4all.nl>
 Bernd Arnold <bernd_a@gmx.de>
 Carl Friend <crfriend@rcn.com>
 Carl R. Friend <crfriend@rcn.com>
@@ -11,26 +12,30 @@ Christian Doebler <christian.doebler@netways.de>
 Christian Ruppert <idl0r@gentoo.org>
 Christoph Maser <cmr@financial.com>
 David Ressman <davidr@ressman.org>
-Dirk Goetz <dirk.goetz@netways.de>
+Dirk Goetz <dirk.goetz@icinga.com>
 Ethan Galstad <egalstad@nagios.org>
 Franz Holzer <office@frankstar.at>
-Gunnar Beutner <gunnar.beutner@netways.de>
+Gunnar Beutner <gunnar.beutner@icinga.com>
 Hendrik Baecker <andurin@process-zero.de>
+hiren patel <hir3npatel@gmail.com>
+Hiren Patel <hir3npatel@gmail.com>
 James Hunt <james@niftylogic.com>
 Joerg Linge <pitchfork@pnp4nagios.org>
+John C. Frickson <jfrickson@nagios.com>
 Karl DeBisschop <kdebisschop@users.sourceforge.net>
 Kepi <kepi@igloonet.cz>
 Lara Berdelsmann <berdelsmann@arcor.de>
 Lars Engels <lars.engels@0x20.net>
+Marco Hoyer <marco.hoyer@immobilienscout24.de>
 Mario Rimann <typo3-coding@rimann.org>
 Marius Hein <marius.hein@netways.de>
+Markus Frosch <markus.frosch@icinga.com>
 Mark Young <myoung@nagios.org>
-Markus Frosch <markus@lazyfrosch.de>
 Martin Skuta <mskuta@posteo.net>
 Massimo Forni <forni.massimo@gmail.com>
 Matt Bostock <matt@mattbostock.com>
 Matthew J. Brooks <matthew@sonomatechpartners.com>
-Michael Friedrich <michael.friedrich@netways.de>
+Michael Friedrich <michael.friedrich@icinga.com>
 Michael Luebben <michael_luebben@web.de>
 Mike Becker <mike.becker@redpeppersworld.de>
 Patricia Jung <pju@censhare.de>
@@ -52,10 +57,5 @@ Tobias Scherbaum <tobias@scherbaum.info>
 Tomas Dubec <tomas.dubec@gmail.com>
 Ton Voon <ton.voon@opsera.com>
 Torsten Rehn <trehn@nagify.com>
-Wolfgang <wnd@gmx.net>
-assaf <icinga@flatto.net>
-cmr <cmr@financial.com>
-hiren patel <hir3npatel@gmail.com>
-hirenp <hir3npatel@gmail.com>
-marco-hoyer <marco.hoyer@immobilienscout24.de>
 uid21444 <uid21444>
+Wolfgang <wnd@gmx.net>
