@@ -197,7 +197,7 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 			/* grab the macro value */
 			result = grab_macro_value_r(mac, temp_buffer, &selected_macro, &clean_options, &free_macro);
-			log_debug_info(DEBUGL_MACROS, 2, "  Processed '%s', Clean Options: %d, Free: %d\n, Value: '%s'", temp_buffer, clean_options, free_macro, selected_macro ? selected_macro : "");
+			log_debug_info(DEBUGL_MACROS, 2, "  Processed '%s', Clean Options: %d, Free: %d, Value: '%s'\n", temp_buffer, clean_options, free_macro, selected_macro ? selected_macro : "");
 
 			/* an error occurred - we couldn't parse the macro, so continue on */
 			if (result == ERROR) {
