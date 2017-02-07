@@ -963,7 +963,7 @@ sub set_cmd {
 				$extcmd = "SCHEDULE_HOSTGROUP_SVC_DOWNTIME;$h;$data";
 				add_cmd (\@$cmd,$h,$key2,$extcmd);
 			} else { # one or more services defined
-				next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
+				return 1 if (already_planned (\@member,"HG",1,$key,$key2,$duration));
 				for my $idx (0..$#member) {
 					if (exists $sObject{"$member[$idx]"}->{lc($s)}) {
 						$extcmd = "SCHEDULE_SVC_DOWNTIME;$member[$idx];$s;$data";
