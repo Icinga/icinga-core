@@ -1,0 +1,22 @@
+sudo: false
+
+language: c
+
+compiler:
+  - gcc
+
+addons:
+  apt_packages:
+    - build-essential
+    - libgd2-xpm-dev
+    - libjpeg-dev
+    - libpng12-dev
+    - mysql-client
+    - libdbi-dev
+    - libdbd-mysql
+
+before_script:
+  - ./configure --with-init-dir=/etc/init.d --with-plugin-dir=/usr/lib64/nagios/plugins --with-icinga-user=$(id -u -n) --with-icinga-group=$(id -g -n) --with-command-group=$(id -g -n) --with-web-user=$(id -g -n) --with-web-group=$(id -g -n) --prefix=/tmp/icinga1
+
+script:
+  - make all && make install install-config && /tmp/icinga1/bin/icinga -v /tmp/icinga1/etc/icinga.cfg

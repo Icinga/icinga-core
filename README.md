@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Icinga/icinga-core.svg?branch=master)](https://travis-ci.org/Icinga/icinga-core)
+
 # Icinga 1.x
 
 ![Icinga Logo](https://www.icinga.org/wp-content/uploads/2014/06/icinga_logo.png)
