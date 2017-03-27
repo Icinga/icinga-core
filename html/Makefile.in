@@ -118,10 +118,3 @@ install-dev-docu:
 	#do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/doxygen; done
 	for file in doxygen/html/*.*; \
 	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/doxygen/html; done
-
-install-unstripped:
-	$(MAKE) install
-
-
-
-

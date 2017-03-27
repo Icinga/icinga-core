@@ -23,7 +23,6 @@ AC_CANONICAL_HOST
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_MAKE_SET
-AC_PATH_PROG([STRIP],[strip],[true])
 
 dnl Checks for header files.
 AC_HEADER_STDC

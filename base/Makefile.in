@@ -49,7 +49,6 @@ HTMLDIR=@datarootdir@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
 COMMAND_OPTS=@COMMAND_OPTS@
-STRIP=@STRIP@
 
 CGIURL=@cgiurl@
 HTMURL=@htmurl@
@@ -61,7 +60,7 @@ SOCKETLIBS=@SOCKETLIBS@
 THREADLIBS=@THREADLIBS@
 BROKERLIBS=@BROKERLIBS@
 
-BROKER_LDFLAGS=@BROKER_LDFLAGS@ 
+BROKER_LDFLAGS=@BROKER_LDFLAGS@
 
 CP=@CP@
 
@@ -184,18 +183,7 @@ distclean: clean
 devclean: distclean
 
 install:
-	$(MAKE) install-basic
-	$(MAKE) strip-post-install
-
-install-unstripped:
-	$(MAKE) install-basic
-
-install-basic:
 	$(INSTALL) -m 755 -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 -d $(DESTDIR)$(LIBDIR)
 	$(INSTALL) -m 755 $(INSTALL_OPTS) @icinga_name@ $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 $(INSTALL_OPTS) @icingastats_name@ $(DESTDIR)$(BINDIR)
-
-strip-post-install:
-	$(STRIP) $(DESTDIR)$(BINDIR)/@icinga_name@
-	$(STRIP) $(DESTDIR)$(BINDIR)/@icingastats_name@

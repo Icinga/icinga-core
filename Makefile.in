@@ -368,16 +368,6 @@ install:
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
 
-	$(MAKE) install-basic
-
-install-unstripped:
-	cd $(SRC_BASE) && $(MAKE) $@
-	cd $(SRC_CGI) && $(MAKE) $@
-	cd $(SRC_HTM) && $(MAKE) $@
-
-	$(MAKE) install-basic
-
-install-basic:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBEXECDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
