@@ -1618,7 +1618,7 @@ void display_recent_alerts(void) {
 			continue;
 
 		/* find the service */
-		if ((temp_service = find_service(temp_event->host_name, temp_event->service_description)) == NULL)
+		if (temp_event->event_type != AE_HOST_ALERT && (temp_service = find_service(temp_event->host_name, temp_event->service_description)) == NULL)
 			continue;
 
 		get_time_string(&temp_event->time_stamp, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
