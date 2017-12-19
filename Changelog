@@ -16,8 +16,25 @@ UPGRADE NOTES
 
 NEWS
 
-* This is the Icinga 1.x development branch. If you are looking for Icinga 2.x
-  please check https://www.icinga.org/icinga2
+* This is the Icinga 1.x development branch. It will only receive security
+patches for 1.14.x, feature/bug patches are EOL.
+
+Consider a migration to Icinga 2: https://www.icinga.com/docs
+
+1.14.1 - 12/19/2017
+
+SECURITY FIXES
+
+* #1601 & #1604: CVE-2017-16882: Fix source installation permissions (packages are not affected)
+
+FIXES
+
+* #8 & #1578 Remove "are stale" log entries
+* #1603 Fix SOFT recovery for services
+* #7 Feature/initd run with precache
+* #1599 & #1600 No host alerts included in alert summary report of type "Most Recent Alert"
+* #1595 Fix database upgrade to 1.13.0 with old schema
+
 
 1.14.0 - 12/22/2016
 
