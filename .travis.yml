@@ -11,7 +11,7 @@ addons:
     - libgd2-xpm-dev
     - libjpeg-dev
     - libpng12-dev
-    - mysql-client
+    - libmysqlclient-dev
     - libdbi-dev
     - libdbd-mysql
 
