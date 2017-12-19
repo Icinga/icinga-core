@@ -27,6 +27,7 @@ IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
 IcingaChkFile=@ICINGACHKFILE@
 IcingaPrecacheFallback=0
+IcingaPrecache=0
 
 # load extra environment variables
 if [ -f /etc/sysconfig/icinga ]; then
@@ -199,7 +200,15 @@ start(){
 case "$1" in
 
 	start)
-		if test $IcingaPrecacheFallback != 1; then
+		if test $IcingaPrecache != 0; then
+			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details." precache
+
+			if test $? != 0; then
+				exit 6
+			fi
+
+			start precache
+		elif test $IcingaPrecacheFallback != 1; then
 			chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
 
 			if test $? != 0; then
@@ -239,10 +248,10 @@ case "$1" in
 			# new IcingaRunFile, allowing multiple icinga daemons
 			# to (sooner or later) run - John Sellens
 			printf 'Waiting for icinga to exit .'
-			for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+			for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17; do
 				if status_icinga; then
 					printf '.'
-					sleep 1
+					sleep $(echo $i | awk '{printf "%.2f \n", $1/10}')
 				else
 					break
 				fi
@@ -282,7 +291,13 @@ case "$1" in
 		;;
 
 	restart)
-		if test $IcingaPrecacheFallback != 1; then
+		if test $IcingaPrecache != 0; then
+			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details." precache
+
+			if test $? != 0; then
+				exit 6
+			fi
+		elif test $IcingaPrecacheFallback != 1; then
 			chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
 
 			if test $? != 0; then
@@ -291,7 +306,11 @@ case "$1" in
 		fi
 
 		$0 stop
-		start
+		if test $IcingaPrecache != 0; then
+			start precache
+		else
+			start
+		fi
 		;;
 
 	reload|force-reload)
