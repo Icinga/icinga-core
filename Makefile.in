@@ -369,13 +369,13 @@ install:
 	cd $(SRC_HTM) && $(MAKE) $@
 
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBEXECDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(LIBEXECDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CHECKRESULTDIR)
 	if [ $(INSTALLPERLSTUFF) = yes ]; then \
-		$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(P1FILELOC); \
-		$(INSTALL) -m 664 $(INSTALL_OPTS) p1.pl $(DESTDIR)$(P1FILELOC); \
+		$(INSTALL) -m 775 -d $(DESTDIR)$(P1FILELOC); \
+		$(INSTALL) -m 664 p1.pl $(DESTDIR)$(P1FILELOC); \
 	fi;
 
 	@echo ""
@@ -417,30 +417,30 @@ install:
 	@echo ""
 
 install-cgiconf:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -b -m 664 sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
 
 
 install-config: install-cgiconf
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/conf.d
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
-	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/commands.cfg $(DESTDIR)$(CFGDIR)/objects/commands.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/contacts.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/notifications.cfg $(DESTDIR)$(CFGDIR)/objects/notifications.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/timeperiods.cfg $(DESTDIR)$(CFGDIR)/objects/timeperiods.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/localhost.cfg $(DESTDIR)$(CFGDIR)/objects/localhost.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/windows.cfg $(DESTDIR)$(CFGDIR)/objects/windows.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/printer.cfg $(DESTDIR)$(CFGDIR)/objects/printer.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/switch.cfg $(DESTDIR)$(CFGDIR)/objects/switch.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/modules/livestatus.cfg $(DESTDIR)$(CFGDIR)/modules/livestatus.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/modules/mod_gearman.cfg $(DESTDIR)$(CFGDIR)/modules/mod_gearman.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/modules/pnp4nagios.cfg $(DESTDIR)$(CFGDIR)/modules/pnp4nagios.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/modules/flapjack.cfg $(DESTDIR)$(CFGDIR)/modules/flapjack.cfg
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/objects
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/conf.d
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/modules
+	$(INSTALL) -b -m 664 sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
+	$(INSTALL) -b -m 660 sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/commands.cfg $(DESTDIR)$(CFGDIR)/objects/commands.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/contacts.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/notifications.cfg $(DESTDIR)$(CFGDIR)/objects/notifications.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/timeperiods.cfg $(DESTDIR)$(CFGDIR)/objects/timeperiods.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/localhost.cfg $(DESTDIR)$(CFGDIR)/objects/localhost.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/windows.cfg $(DESTDIR)$(CFGDIR)/objects/windows.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/printer.cfg $(DESTDIR)$(CFGDIR)/objects/printer.cfg
+	$(INSTALL) -b -m 664 sample-config/template-object/switch.cfg $(DESTDIR)$(CFGDIR)/objects/switch.cfg
+	$(INSTALL) -b -m 664 sample-config/modules/livestatus.cfg $(DESTDIR)$(CFGDIR)/modules/livestatus.cfg
+	$(INSTALL) -b -m 664 sample-config/modules/mod_gearman.cfg $(DESTDIR)$(CFGDIR)/modules/mod_gearman.cfg
+	$(INSTALL) -b -m 664 sample-config/modules/pnp4nagios.cfg $(DESTDIR)$(CFGDIR)/modules/pnp4nagios.cfg
+	$(INSTALL) -b -m 664 sample-config/modules/flapjack.cfg $(DESTDIR)$(CFGDIR)/modules/flapjack.cfg
 
 	@echo ""
 	@echo "*** Config files installed ***"
@@ -451,14 +451,14 @@ install-config: install-cgiconf
 	@echo ""
 
 install-testconfig:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/tests
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/tests
 	for file in tests/etc/*.cfg; \
-	do $(INSTALL) -b -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(CFGDIR)/tests; done
+	do $(INSTALL) -b -m 664 $$file $(DESTDIR)$(CFGDIR)/tests; done
 
 
 install-webconf:
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
-	$(INSTALL) -b -m 644 $(INSTALL_OPTS) sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
+	$(INSTALL) -b -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
 	@if [ x$(APACHE24_DEBIAN) = xyes ]; then \
 		echo " Debian Apache 2.4 detected. " ;\
 		echo " Run 'a2enconf icinga' and 'service apache2 reload'" ;\
@@ -470,7 +470,8 @@ install-webconf:
 
 install-webconf-auth:
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
-	$(INSTALL) -b -m 644 $(INSTALL_OPTS) icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -b -m 644 icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
 
 	@echo ""
 	@echo "*** Icinga http auth file installed ***"
@@ -528,27 +529,27 @@ install-commandmode:
 	@echo ""
 
 install-eventhandlers:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/submit_check_result $(DESTDIR)$(EVENTHANDLERDIR)/submit_check_result
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/disable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/disable_active_service_checks
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/enable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/enable_active_service_checks
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/disable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/disable_notifications
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/enable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/enable_notifications
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/distributed-monitoring/obsessive_svc_handler $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/obsessive_svc_handler
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/distributed-monitoring/submit_check_result_via_nsca $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/submit_check_result_via_nsca
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/redundancy-scenario1/handle-master-host-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-host-event
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-proc-event
+	$(INSTALL) -m 775 -d $(DESTDIR)$(EVENTHANDLERDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring
+	$(INSTALL) -m 775 -d $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1
+	$(INSTALL) -b -m 775 contrib/eventhandlers/submit_check_result $(DESTDIR)$(EVENTHANDLERDIR)/submit_check_result
+	$(INSTALL) -b -m 775 contrib/eventhandlers/disable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/disable_active_service_checks
+	$(INSTALL) -b -m 775 contrib/eventhandlers/enable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/enable_active_service_checks
+	$(INSTALL) -b -m 775 contrib/eventhandlers/disable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/disable_notifications
+	$(INSTALL) -b -m 775 contrib/eventhandlers/enable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/enable_notifications
+	$(INSTALL) -b -m 775 contrib/eventhandlers/distributed-monitoring/obsessive_svc_handler $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/obsessive_svc_handler
+	$(INSTALL) -b -m 775 contrib/eventhandlers/distributed-monitoring/submit_check_result_via_nsca $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/submit_check_result_via_nsca
+	$(INSTALL) -b -m 775 contrib/eventhandlers/redundancy-scenario1/handle-master-host-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-host-event
+	$(INSTALL) -b -m 775 contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-proc-event
 
 	@echo ""
 	@echo "*** Sample Eventhandlers installed ***"
 	@echo ""
 
 install-downtimes:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(DOWNTIMESDIR)
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) tools/downtimes/sched_down.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_down.pl
-	$(INSTALL) -b -m 774 $(INSTALL_OPTS) tools/downtimes/sched_conv.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_conv.pl
+	$(INSTALL) -m 775 -d $(DESTDIR)$(DOWNTIMESDIR)
+	$(INSTALL) -b -m 775 tools/downtimes/sched_down.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_down.pl
+	$(INSTALL) -b -m 775 tools/downtimes/sched_conv.pl $(DESTDIR)$(DOWNTIMESDIR)/sched_conv.pl
 
 	@echo ""
 	@echo "*** Recurring downtimes scripts installed ***"

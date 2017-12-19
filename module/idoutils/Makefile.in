@@ -54,11 +54,11 @@ install-idoutils: install
 
 install: 
 	cd $(SRC_BASE) && $(MAKE) $@
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) config/ido2db.cfg-sample $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) config/idomod.cfg-sample $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) config/idoutils.cfg-sample $(DESTDIR)$(CFGDIR)/modules
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) config/ido2db_check_proc.cfg $(DESTDIR)$(CFGDIR)/objects/ido2db_check_proc.cfg
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/objects
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CFGDIR)/modules
+	$(INSTALL) -b -m 664 config/ido2db.cfg-sample $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -b -m 664 config/idomod.cfg-sample $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -b -m 664 config/idoutils.cfg-sample $(DESTDIR)$(CFGDIR)/modules
+	$(INSTALL) -b -m 664 config/ido2db_check_proc.cfg $(DESTDIR)$(CFGDIR)/objects/ido2db_check_proc.cfg
 

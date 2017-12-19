@@ -185,7 +185,7 @@ devclean: distclean
 
 install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS_WEB) -d $(DESTDIR)$(CGILOGDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CGIDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(CGIDIR)
 	for file in *.cgi; do \
-		$(INSTALL) -m 775 $(INSTALL_OPTS) $$file $(DESTDIR)$(CGIDIR); \
+		$(INSTALL) -m 775 $$file $(DESTDIR)$(CGIDIR); \
 	done

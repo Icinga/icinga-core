@@ -185,5 +185,5 @@ devclean: distclean
 install:
 	$(INSTALL) -m 755 -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 -d $(DESTDIR)$(LIBDIR)
-	$(INSTALL) -m 755 $(INSTALL_OPTS) @icinga_name@ $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 755 $(INSTALL_OPTS) @icingastats_name@ $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 @icinga_name@ $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 @icingastats_name@ $(DESTDIR)$(BINDIR)
