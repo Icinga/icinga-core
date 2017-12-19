@@ -35,86 +35,86 @@ distclean: clean
 devclean: distclean
 
 install:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/media
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/stylesheets
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/stylesheets
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/js
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/en
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/de
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/images
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/docs/images/flags
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos/equipment
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos/hardware
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos/other
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos/vendors
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base/images
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui/ui
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui/ui/minified
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/jquery-ui-addon
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/js
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/ssi
-	$(INSTALL) -m 444 $(INSTALL_OPTS) log/.htaccess $(DESTDIR)$(CGILOGDIR)
-	$(INSTALL) -m 644 $(INSTALL_OPTS) log/index.htm $(DESTDIR)$(CGILOGDIR)
-	$(INSTALL) -m 664 $(INSTALL_OPTS) robots.txt $(DESTDIR)$(HTMLDIR)
-	$(INSTALL) -m 664 $(INSTALL_OPTS) docs/robots.txt $(DESTDIR)$(HTMLDIR)/docs
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/media
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/stylesheets
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/stylesheets
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/js
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/en
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/de
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/images
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/docs/images/flags
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images/logos
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images/logos/equipment
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images/logos/hardware
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images/logos/other
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/images/logos/vendors
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base/images
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui/ui
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui/ui/minified
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/jquery-ui-addon
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/js
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/ssi
+	$(INSTALL) -m 444 log/.htaccess $(DESTDIR)$(CGILOGDIR)
+	$(INSTALL) -m 644 log/index.htm $(DESTDIR)$(CGILOGDIR)
+	$(INSTALL) -m 664 robots.txt $(DESTDIR)$(HTMLDIR)
+	$(INSTALL) -m 664 docs/robots.txt $(DESTDIR)$(HTMLDIR)/docs
 	for file in *.html; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR); done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR); done
 	for file in stylesheets/*.css; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/stylesheets; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/stylesheets; done
 	for file in docs/*.html; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs; done
 	for file in docs/js/*.js; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/js; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/js; done
 	for file in docs/stylesheets/*.css; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/stylesheets; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/stylesheets; done
 	for file in docs/en/*.html; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/en; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/en; done
 	for file in docs/de/*.html; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/de; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/de; done
 	for file in docs/images/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/images; done
 	for file in docs/images/flags/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/docs/images/flags; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/docs/images/flags; done
 	for file in images/*.png; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/*.jpg; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/*.gif; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/*.ico; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/logos/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images/logos; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images/logos; done
 	for file in images/logos/equipment/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images/logos/equipment; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images/logos/equipment; done
 	for file in images/logos/hardware/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images/logos/hardware; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images/logos/hardware; done
 	for file in images/logos/other/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images/logos/other; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images/logos/other; done
 	for file in images/logos/vendors/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images/logos/vendors; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/images/logos/vendors; done
 	for file in jquery-ui/ui/minified/*.js; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/ui/minified; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/ui/minified; done
 	for file in jquery-ui/themes/base/*.css; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base; done
 	for file in jquery-ui/themes/base/images/*.png; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base/images; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/jquery-ui/themes/base/images; done
 	for file in jquery-ui-addon/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/jquery-ui-addon; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/jquery-ui-addon; done
 	for file in js/*.js; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/js; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/js; done
 
 install-dev-docu:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/doxygen
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/doxygen/html
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/doxygen
+	$(INSTALL) -m 775 -d $(DESTDIR)$(HTMLDIR)/doxygen/html
 	#for file in doxygen/*.*; \
-	#do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/doxygen; done
+	#do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/doxygen; done
 	for file in doxygen/html/*.*; \
-	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/doxygen/html; done
+	do $(INSTALL) -m 664 $$file $(DESTDIR)$(HTMLDIR)/doxygen/html; done

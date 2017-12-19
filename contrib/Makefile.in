@@ -56,8 +56,8 @@ distclean: clean
 devclean: distclean
 
 install:
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
-	for f in $(UTILS); do $(INSTALL) -m 775 $(INSTALL_OPTS) $$f $(DESTDIR)$(BINDIR); done
+	$(INSTALL) -m 775 -d $(DESTDIR)$(BINDIR)
+	for f in $(UTILS); do $(INSTALL) -m 775 $$f $(DESTDIR)$(BINDIR); done
 
 ##############################################################################
 # rules and dependencies for actual target programs
