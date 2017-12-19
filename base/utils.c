@@ -144,6 +144,8 @@ extern int      check_external_commands;
 extern int      check_orphaned_services;
 extern int      check_orphaned_hosts;
 extern int      check_service_freshness;
+extern int      log_stale_services;
+extern int      log_stale_hosts;
 extern int      check_host_freshness;
 extern int      auto_reschedule_checks;
 
@@ -4558,6 +4560,8 @@ int reset_variables(void) {
 	check_orphaned_services = DEFAULT_CHECK_ORPHANED_SERVICES;
 	check_orphaned_hosts = DEFAULT_CHECK_ORPHANED_HOSTS;
 	check_service_freshness = DEFAULT_CHECK_SERVICE_FRESHNESS;
+	log_stale_services = DEFAULT_LOG_STALE_SERVICES;
+	log_stale_hosts = DEFAULT_LOG_STALE_HOSTS;
 	check_host_freshness = DEFAULT_CHECK_HOST_FRESHNESS;
 	auto_reschedule_checks = DEFAULT_AUTO_RESCHEDULE_CHECKS;
 

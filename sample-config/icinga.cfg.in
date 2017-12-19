@@ -1156,6 +1156,23 @@ check_service_freshness=1
 
 
 
+# STALE SERVICES LOGGING OPTION
+# If you don't want notifications to be logged, set this value to 0.
+# If notifications should be logged, set the value to 1.
+
+log_stale_services=1
+
+
+
+# STALE HOSTS LOGGING OPTION
+# If you don't want notifications to be logged, set this value to 0.
+# If notifications should be logged, set the value to 1.
+
+log_stale_hosts=1
+
+
+
+
 # SERVICE FRESHNESS CHECK INTERVAL
 # This setting determines how often (in seconds) Icinga will
 # check the "freshness" of service check results.  If you have

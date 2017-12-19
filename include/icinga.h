@@ -117,6 +117,8 @@ extern "C" {
 #define DEFAULT_ENABLE_FLAP_DETECTION           		0       /* don't enable flap detection */
 #define DEFAULT_PROCESS_PERFORMANCE_DATA        		0       /* don't process performance data */
 #define DEFAULT_CHECK_SERVICE_FRESHNESS         		1       /* check service result freshness */
+#define DEFAULT_LOG_STALE_SERVICES              		1       /* log stale services messages */
+#define DEFAULT_LOG_STALE_HOSTS                 		1       /* log stale hosts messages */
 #define DEFAULT_CHECK_HOST_FRESHNESS            		0       /* don't check host result freshness */
 #define DEFAULT_AUTO_RESCHEDULE_CHECKS          		0       /* don't auto-reschedule host and service checks */
 #define DEFAULT_TRANSLATE_PASSIVE_HOST_CHECKS                   0       /* should we translate DOWN/UNREACHABLE passive host checks? */

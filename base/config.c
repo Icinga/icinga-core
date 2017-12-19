@@ -126,6 +126,8 @@ extern int      check_external_commands;
 extern int      check_orphaned_services;
 extern int      check_orphaned_hosts;
 extern int      check_service_freshness;
+extern int      log_stale_services;
+extern int      log_stale_hosts;
 extern int      check_host_freshness;
 extern int      auto_reschedule_checks;
 
@@ -1162,6 +1164,28 @@ int read_main_config_file(char *main_config_file) {
 			}
 
 			check_service_freshness = (atoi(value) > 0) ? TRUE : FALSE;
+		}
+
+		else if (!strcmp(variable, "log_stale_services")) {
+
+			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+				asprintf(&error_message, "Illegal value for log_stale_services");
+				error = TRUE;
+				break;
+			}
+
+			log_stale_services = (atoi(value) > 0) ? TRUE : FALSE;
+		}
+
+		else if (!strcmp(variable, "log_stale_hosts")) {
+
+			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+				asprintf(&error_message, "Illegal value for log_stale_hosts");
+				error = TRUE;
+				break;
+			}
+
+			log_stale_hosts = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
 		else if (!strcmp(variable, "check_host_freshness")) {
