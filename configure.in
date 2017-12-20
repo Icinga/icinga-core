@@ -318,7 +318,7 @@ dnl Location of temp path
 TMPDIR=no
 AC_ARG_WITH(temp-dir,AC_HELP_STRING([--with-temp-dir=<path>],[sets path to temp directory path where Icinga can create temp files for service/host check results]),TMPDIR=$withval,TMPDIR=no)
 if test x$TMPDIR = xno; then
-	TMPDIR="/tmp"
+	TMPDIR="$localstatedir"
 fi
 AC_SUBST(TMPDIR)
 
@@ -326,7 +326,7 @@ dnl Location of temp file
 TMPFILE=no
 AC_ARG_WITH(temp-file,AC_HELP_STRING([--with-temp-file=<filepath>],[sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp]),TMPFILE=$withval,TMPFILE=no)
 if test x$TMPFILE = xno; then
-	        TMPFILE="/tmp/icinga.tmp"
+	        TMPFILE="$localstatedir/icinga.tmp"
 	fi
 AC_SUBST(TMPFILE)
 
