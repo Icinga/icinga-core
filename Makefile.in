@@ -368,7 +368,7 @@ install:
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
 
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(STATEDIR)
 	$(INSTALL) -m 775 -d $(DESTDIR)$(LIBEXECDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
@@ -564,7 +564,7 @@ install-classicui-standalone-conf: install-cgiconf install-webconf
 install-classicui-standalone: install-cgis install-html
 
 	# make sure we keep all the needed dirs for data
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
+	$(INSTALL) -m 775 -d $(DESTDIR)$(STATEDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
 	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)
