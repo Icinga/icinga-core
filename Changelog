@@ -21,6 +21,15 @@ patches for 1.14.x, feature/bug patches are EOL.
 
 Consider a migration to Icinga 2: https://www.icinga.com/docs
 
+1.14.2 - 12/20/2017
+
+SECURITY FIXES
+
+* Don't change ownership of STATEDIR
+* Change --with-tmp-{file,path} to default to $localstatedir instead of /tmp
+
+Again, this only affects source installations. Packages are safe.
+
 1.14.1 - 12/19/2017
 
 SECURITY FIXES
