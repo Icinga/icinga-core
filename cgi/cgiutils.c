@@ -3047,7 +3047,10 @@ int rotate_cgi_log_file() {
 
 	if (stat_result == 0) {
 		chmod(cgi_log_file, log_file_stat.st_mode);
-		chown(cgi_log_file, log_file_stat.st_uid, log_file_stat.st_gid);
+		if (chown(cgi_log_file, log_file_stat.st_uid, log_file_stat.st_gid) < 0) {
+			perror("chown failed");
+			return ERROR;
+		}
 	}
 
 	my_free(log_archive);
