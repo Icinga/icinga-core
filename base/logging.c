@@ -606,7 +606,10 @@ int rotate_log_file(time_t rotation_time) {
 
 	if (stat_result == 0) {
 		chmod(log_file, log_file_stat.st_mode);
-		chown(log_file, log_file_stat.st_uid, log_file_stat.st_gid);
+		if (chown(log_file, log_file_stat.st_uid, log_file_stat.st_gid) < 0) {
+			perror("chown failed");
+			return ERROR;
+		}
 	}
 
 	/* log current host and service state if activated*/
