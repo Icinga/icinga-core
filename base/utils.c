@@ -480,7 +480,10 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 #endif
 
 	/* create a pipe */
-	pipe(fd);
+	if (pipe(fd) < 0) {
+		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: pipe() in my_system_r() failed for command \"%s\"\n", cmd);
+		return STATE_UNKNOWN;
+	}
 
 	/* make the pipe non-blocking */
 	fcntl(fd[0], F_SETFL, O_NONBLOCK);
@@ -2507,9 +2510,14 @@ int daemon_init(void) {
 	/* change working directory. scuttle home if we're dumping core */
 	homedir = getenv("HOME");
 	if (daemon_dumps_core == TRUE && homedir != NULL)
-		chdir(homedir);
+		val = chdir(homedir);
 	else
-		chdir("/");
+		val = chdir("/");
+	if (val < 0) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Failed to change dir: %s\n", strerror(errno));
+		cleanup();
+		exit(ERROR);
+	}
 
 	umask(S_IWGRP | S_IWOTH);
 
