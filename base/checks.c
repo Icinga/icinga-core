@@ -4397,9 +4397,10 @@ int handle_host_state(host *hst) {
 	if (state_change == TRUE || hard_state_change == TRUE) {
 
 		/* update last state change times */
-		hst->last_state_change = current_time;
+		if (hst->last_state != hst->current_state)
+			hst->last_state_change = hst->last_check;
 		if (hst->state_type == HARD_STATE)
-			hst->last_hard_state_change = current_time;
+			hst->last_hard_state_change = hst->last_check;
 
 		/* update the event id */
 		hst->last_event_id = hst->current_event_id;
